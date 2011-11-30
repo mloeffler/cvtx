@@ -467,6 +467,38 @@ function remove_quick_edit($actions) {
     return $actions;
 }
 
-
+// replaces filter "the title" in order to generate custom titles for post-types "antrag" and "aeantrag"
+add_filter('the_title','cvtx_the_title',1,2);
+function cvtx_the_title($before='',$title='') {
+	if(is_numeric($title)) $post = &get_post($title);
+	if(isset($post)) {
+		$title_new = $post->post_title;
+	  if($post->post_type == 'cvtx_antrag') {
+	  	// number of antrag
+			$nr = get_post_meta($post->ID, 'cvtx_antrag_ord',true);
+  		// top short
+  		$top = get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_short', true);
+  		// put it together!
+  		$title_new = $top.'-'.$nr.' '.$post->post_title;
+  	}
+  	else if($post->post_type == 'cvtx_aeantrag') {
+  		// id of antrag
+    	$a_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
+    	// id of top
+    	$top_id = get_post_meta($a_id, 'cvtx_antrag_top', true);
+    	// number of antrag
+			$nr = get_post_meta($a_id, 'cvtx_antrag_ord',true);
+			// top short
+    	$top = get_post_meta($top_id, 'cvtx_top_short', true);
+    	// zeile of ae_antrag
+    	$zeile = get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true);
+    	// put it together!
+    	$title_new = '&Auml;'.$top.'-'.$nr.'-'.$zeile;
+  	}
+    return $title_new;
+  }
+  else
+  	return $title;
+}
 
 ?>
