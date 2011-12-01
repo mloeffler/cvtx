@@ -1,0 +1,162 @@
+/*
+Theme Name: Cvtx
+Theme URI: http://alexander-fecke.de/
+Description: Wordpress-Theme for the cvtx-plugin.
+Author: Max L&ouml;ffler & Alexander Fecke
+Author URI: http://alexander-fecke.de
+Version: 0.1
+
+License:
+License URI:
+
+*/
+
+body {
+	font-family: "Trebuchet MS";
+	background: url(images/bg.png);
+	margin:0px;
+	padding:0px;
+}
+
+/**
+ * Structure
+ */
+
+.wrapper {
+	width: 980px;
+	margin: 0 auto;
+}
+
+#c_wrap {
+	margin-top:10px;
+}
+
+#content {
+	background: white;
+	width:610px;
+	min-height: 100px;
+	float:left;
+}
+
+#sidebar {
+	width: 350px;
+	margin-left:620px;
+	min-height:100px;
+}
+
+nav {
+	position: absolute;
+	margin-top:-1.7em;
+}
+
+nav ul {
+	padding:0px;
+	margin:0px;
+}
+
+nav ul li {
+	float: left;
+	margin-right:5px;
+	padding:4px 10px;
+	list-style:none;
+	background: #ffe500;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+nav ul li a {
+	text-transform: uppercase;
+	color: #58ab27;
+	text-decoration: none;
+	font-weight:bold;
+	font-size:0.8em;
+}
+
+nav ul li.current_page_item {
+	background: #266209;
+}
+
+nav ul li.current_page_item a {
+	color: #ffe500;
+}
+
+nav div.inside {
+	clear: both;
+}
+
+div.filler {
+	background: #ffe500;
+	height: 2em;
+	width: 100%;
+}
+
+
+/**
+ * Header
+ */
+header {
+	background: #6ab141;
+	height:200px;
+	padding:20px;
+	box-shadow: 0px 0px 15px #000;
+	-webkit-box-shadow: 0px 0px 15px #000;
+	-moz-box-shadow: 0px 0px 15px #000;
+}
+
+header h1 a{
+	color: #ffe500;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-size:1.2em;
+}
+
+header .description {
+	color: white;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+/**
+ * Content
+ */
+
+#content .inner {
+	padding: 0px 15px;
+}
+ 
+#content h2, h3, a {
+	color: #58ab27;
+}
+
+/**
+ * Sidebar
+ */
+#sidebar ul.side {
+	padding:0px;
+	margin:0px;
+}
+
+#sidebar ul.side li {
+	background: white;
+	list-style-type: none;
+	padding: 0px 0px 15px 0px;
+	font-size:0.9em;
+	margin-bottom:10px;
+}
+
+#sidebar ul.side li div.inner {
+	padding:15px;
+}
+
+#sidebar ul.side li h2 {
+	background: #ffe500;
+	color: #58ab27;
+	text-transform: uppercase;
+	font-size:1.1em;
+	padding:7px 13px 7px 13px;
+	margin-top:0px;
+}
