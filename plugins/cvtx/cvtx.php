@@ -140,10 +140,13 @@ function cvtx_antrag_grund() {
 function cvtx_antrag_pdf() {
     global $post;
     
-    $dir  = wp_upload_dir();
+    $dir = wp_upload_dir();
+    // check if pdf file exists
     if (is_file($dir['basedir'].'/'.sanitize_title(get_the_title($post->ID)).'.pdf')) {
         echo('<a href="'.$dir['baseurl'].'/'.sanitize_title(get_the_title($post->ID)).'.pdf">Download (pdf)</a>');
-    } else {
+    }
+    // show info otherwise
+    else {
         echo('Kein PDF erstellt.');
     }
 }
@@ -580,10 +583,10 @@ function cvtx_format_aeantrag($antrag, $zeile) {
  * Erstellt ein PDF aus gespeicherten Anträgen
  */
 add_action('save_post', 'cvtx_create_pdf', 10, 2);
-function cvtx_create_pdf($post_id, $post) {
+function cvtx_create_pdf($post_id, $post = null) {
     $pdflatex = get_option('cvtx_pdflatex_cmd');
     
-    if (!empty($pdflatex)) {
+    if (isset($post) && is_object($post) && !empty($pdflatex)) {
         if ($post->post_type == 'cvtx_antrag') {
             // directory and filename settings            
             $dir  = wp_upload_dir();
@@ -596,9 +599,8 @@ function cvtx_create_pdf($post_id, $post) {
             ob_end_clean();
             file_put_contents($file.'.tex', $out);
             
-            // change dir and run pdflatex
-            chdir($dir['basedir']);
-            exec($pdflatex.' -interaction=nonstopmode '.$file.'.tex');
+            // run pdflatex
+            exec($pdflatex.' -interaction=nonstopmode -output-directory='.$dir['basedir'].' '.$file.'.tex');
             
             // remove .aux-file
             if (is_file($file.'.aux')) unlink($file.'.aux');
