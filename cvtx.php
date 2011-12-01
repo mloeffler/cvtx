@@ -48,13 +48,13 @@ function cvtx_add_meta_boxes() {
     
     // Anträge
     add_meta_box('cvtx_antrag_ord', 'Antragsnummer', 'cvtx_antrag_ord', 'cvtx_antrag', 'side', 'high');
-    add_meta_box('cvtx_antrag_steller', 'Antragsteller', 'cvtx_antrag_steller', 'cvtx_antrag', 'normal', 'high');
+    add_meta_box('cvtx_antrag_steller', 'AntragstellerIn(nen)', 'cvtx_antrag_steller', 'cvtx_antrag', 'normal', 'high');
     add_meta_box('cvtx_antrag_grund', 'Begründung', 'cvtx_antrag_grund', 'cvtx_antrag', 'normal', 'high');
     add_meta_box('cvtx_antrag_top', 'Tagesordnungspunkt', 'cvtx_antrag_top', 'cvtx_antrag', 'side', 'high');
     
     // Änderungsanträge
     add_meta_box('cvtx_aeantrag_zeile', 'Zeile(n)', 'cvtx_aeantrag_zeile', 'cvtx_aeantrag', 'side', 'high');
-    add_meta_box('cvtx_aeantrag_steller', 'Antragsteller', 'cvtx_aeantrag_steller', 'cvtx_aeantrag', 'normal', 'high');
+    add_meta_box('cvtx_aeantrag_steller', 'AntragstellerIn(nen)', 'cvtx_aeantrag_steller', 'cvtx_aeantrag', 'normal', 'high');
     add_meta_box('cvtx_aeantrag_grund', 'Begründung', 'cvtx_aeantrag_grund', 'cvtx_aeantrag', 'normal', 'high');
     add_meta_box('cvtx_aeantrag_verfahren', 'Verfahren', 'cvtx_aeantrag_verfahren', 'cvtx_aeantrag', 'normal', 'high');
     add_meta_box('cvtx_aeantrag_antrag', 'Antrag', 'cvtx_aeantrag_antrag', 'cvtx_aeantrag', 'side', 'high');
@@ -255,7 +255,7 @@ function create_post_types() {
         '_builtin' => false,
         'has_archive' => true,
         'rewrite' => array('slug' => 'aeantrag'),
-        'supports' => array('title', 'editor'),
+        'supports' => array('editor'),
         )
     );
 }
@@ -266,12 +266,10 @@ function create_post_types() {
 
 add_filter('manage_edit-cvtx_top_columns', 'cvtx_top_columns');
 function cvtx_top_columns($columns) {
-	$columns = array(
-		"cb"             => '<input type="checkbox" />',
-		"cvtx_top_ord"   => "Nummer",
-		"title"          => "Tagesordnungspunkt",
-		"cvtx_top_short" => "Kürzel",
-	);
+	$columns = array('cb'             => '<input type="checkbox" />',
+                     'cvtx_top_ord'   => 'Nummer',
+                     'title'          => 'Tagesordnungspunkt',
+                     'cvtx_top_short' => 'Kürzel');
 	return $columns;
 }
 
@@ -284,13 +282,11 @@ function cvtx_register_sortable_top($columns) {
 
 add_filter('manage_edit-cvtx_antrag_columns', 'cvtx_antrag_columns');
 function cvtx_antrag_columns($columns) {
-	$columns = array(
-		"cb"                  => '<input type="checkbox" />',
-		"cvtx_antrag_ord"     => "Nummer",
-		"title"               => "Antragstitel",
-		'cvtx_antrag_steller' => "Antragsteller",
-		"cvtx_antrag_top"     => "Tagesordnungspunkt"
-	);
+    $columns = array('cb'                  => '<input type="checkbox" />',
+                     'cvtx_antrag_ord'     => 'Nummer',
+                     'title'               => 'Antragstitel',
+                     'cvtx_antrag_steller' => 'AntragstellerIn(nen)',
+                     'cvtx_antrag_top'     => 'Tagesordnungspunkt');
 	return $columns;
 }
 
@@ -304,15 +300,13 @@ function cvtx_register_sortable_antrag($columns) {
 
 add_filter('manage_edit-cvtx_aeantrag_columns', 'cvtx_aeantrag_columns');
 function cvtx_aeantrag_columns($columns) {
-	$columns = array(
-		"cb"                      => '<input type="checkbox" />',
-		"cvtx_aeantrag_ord"       => "Nummer",
-		"title"                   => "Änderungsantrag",
-		'cvtx_aeantrag_steller'   => "Antragsteller",
-		"cvtx_aeantrag_verfahren" => "Verfahren",
-		"cvtx_aeantrag_antrag"    => "Antrag",
-		"cvtx_aeantrag_top"       => "Tagesordnungspunkt"
-	);
+	$columns = array('cb'                      => '<input type="checkbox" />',
+                     'cvtx_aeantrag_ord'       => 'Nummer',
+                     'title'                   => 'Änderungsantrag',
+                     'cvtx_aeantrag_steller'   => 'AntragstellerIn(nen)',
+                     'cvtx_aeantrag_verfahren' => 'Verfahren',
+                     'cvtx_aeantrag_antrag'    => 'Antrag',
+                     'cvtx_aeantrag_top'       => 'Tagesordnungspunkt');
 	return $columns;
 }
 
@@ -417,10 +411,10 @@ function cvtx_insert_post($post_id, $post = null) {
         // Loop through the POST data
         foreach ($types[$post->post_type] as $key) {
             // Add sortable antrag_num-field
-            if ($post->post_type == 'cvtx_antrag') {
+            if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top']) && isset($_POST['cvtx_antrag_ord'])) {
                 $_POST['cvtx_antrag_num'] = get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true)
                                            .'-'.$_POST['cvtx_antrag_ord'];
-            } else if ($post->post_type == 'cvtx_aeantrag') {
+            } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_antrag_zeile'])) {
                 $top_id = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
                 $_POST['cvtx_aeantrag_num'] = get_post_meta($top_id, 'cvtx_top_ord', true)
                                              .'-'.get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true)
