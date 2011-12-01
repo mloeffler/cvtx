@@ -32,7 +32,7 @@ Template Name: Antrags&uuml;bersicht
 				<li class="antrag"><h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
 				<span class="steller"><strong>AntragstellerInnen:</strong> <?php print get_post_meta($post->ID,'cvtx_antrag_steller',true);?></strong></span>
 				<ul class="options">
-					<li><a href="#">PDF ansehen</a></li>
+					<li><?php print cvtx_antrag_pdf() ?></li>
 					<li><a href="#">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
 					<li><a href="#">&Auml;nderungsantrags&uuml;bersicht</a></li>
 				</ul>

@@ -22,6 +22,7 @@
 						printf(__('<strong>Begr&uuml;ndung:</strong> %1$s'),$grund);
 					}
 					?>
+				</div>
 					<p class="postmetadata alt">
 					<small>
 						<?php printf(__('Dieser %1$s wurde am %2$s um %3$s eingestellt.'),
@@ -56,7 +57,6 @@
 					<?php endwhile;?>
 					</table>
 				<?php endif; ?>
-			</div>
 		</div>
 	<?php endwhile; else: ?>
 
