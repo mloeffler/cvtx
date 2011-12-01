@@ -5,9 +5,9 @@
 
 \begin{document}
 
-\textbf{\huge <?php echo(get_the_title()); ?>}
+\textbf{\huge <?php echo(get_the_title()); ?> Änderungsantrag}
 
-\textbf{Antragsteller:} <?php echo(get_post_meta(get_the_ID(), 'cvtx_antrag_steller', true)); ?>\\[2em]
+\textbf{AntragstellerInnen:} <?php echo(get_post_meta(get_the_ID(), 'cvtx_aeantrag_steller', true)); ?>\\[2em]
 
 \begin{linenumbers}
 \modulolinenumbers[5]
@@ -15,6 +15,6 @@
 \end{linenumbers}
 
 \textbf{Begründung:}\\
-<?php echo(get_post_meta(get_the_ID(), 'cvtx_antrag_grund', true)); ?>
+<?php echo(get_post_meta(get_the_ID(), 'cvtx_aeantrag_grund', true)); ?>
 
 \end{document}
