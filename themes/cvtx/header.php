@@ -11,11 +11,15 @@
 </head>
 <body>
 <header>
+	<div id="verlauf">
 	<div class="wrapper">
-		<h1><a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a></h1>
-     <div class="description">
-       <?php bloginfo('description'); ?>
-     </div>
+		<div id="headerimg"><h1><a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a></h1>
+	    	<div class="description">
+    			<?php bloginfo('description'); ?>
+     		</div>
+     	</div>
+		<div id="b90"></div>
+	</div>
 	</div>
 </header>
 <div id="c_wrap" class="wrapper">

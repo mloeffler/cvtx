@@ -100,11 +100,25 @@ div.filler {
  */
 header {
 	background: #6ab141;
+	padding:0px;
 	height:200px;
-	padding:20px;
 	box-shadow: 0px 0px 15px #000;
 	-webkit-box-shadow: 0px 0px 15px #000;
 	-moz-box-shadow: 0px 0px 15px #000;
+}
+
+#headerimg {
+	position: absolute;
+	margin-top:2.5em;
+}
+
+#b90 {
+	width: 147px;
+	height: 78px;
+	background: url(images/b90.png);
+	position: absolute;
+	margin-left:820px;
+	margin-top:70px;
 }
 
 header h1 a{
@@ -114,10 +128,20 @@ header h1 a{
 	font-size:1.2em;
 }
 
+header h1 {
+	margin-top:0px;
+}
+
 header .description {
 	color: white;
 	text-transform: uppercase;
 	font-weight: bold;
+}
+
+#verlauf {
+	background: url(images/verlauf.png) top right no-repeat;
+	height:200px;
+	width:100%;
 }
 
 /**
@@ -126,6 +150,10 @@ header .description {
 
 #content .inner {
 	padding: 0px 15px 15px 15px;
+}
+
+#content .inner .entry {
+	font-size:0.9em;
 }
  
 #content h2, h3, a {
