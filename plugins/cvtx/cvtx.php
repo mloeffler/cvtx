@@ -138,7 +138,14 @@ function cvtx_antrag_grund() {
 
 // Link zum PDF
 function cvtx_antrag_pdf() {
-    echo('Kein PDF erstellt');
+    global $post;
+    
+    $dir  = wp_upload_dir();
+    if (is_file($dir['basedir'].'/'.sanitize_title(get_the_title($post->ID)).'.pdf')) {
+        echo('<a href="'.$dir['baseurl'].'/'.sanitize_title(get_the_title($post->ID)).'.pdf">Download (pdf)</a>');
+    } else {
+        echo('Kein PDF erstellt.');
+    }
 }
 
 
