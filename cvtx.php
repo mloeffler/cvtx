@@ -4,7 +4,7 @@
  * @version 0.1
  */
 /*
-Plugin Name: cvtx
+Plugin Name: cvtx Antragstool
 Plugin URI: http://wordpress.org/extend/plugins/cvtx/
 Description: Dunno.
 Author: Alexander Fecke & Max Löffler
@@ -51,6 +51,7 @@ function cvtx_add_meta_boxes() {
     add_meta_box('cvtx_antrag_steller', 'AntragstellerIn(nen)', 'cvtx_antrag_steller', 'cvtx_antrag', 'normal', 'high');
     add_meta_box('cvtx_antrag_grund', 'Begründung', 'cvtx_antrag_grund', 'cvtx_antrag', 'normal', 'high');
     add_meta_box('cvtx_antrag_top', 'Tagesordnungspunkt', 'cvtx_antrag_top', 'cvtx_antrag', 'side', 'high');
+    add_meta_box('cvtx_antrag_pdf', 'PDF', 'cvtx_antrag_pdf', 'cvtx_antrag', 'side', 'low');
     
     // Änderungsanträge
     add_meta_box('cvtx_aeantrag_zeile', 'Zeile(n)', 'cvtx_aeantrag_zeile', 'cvtx_aeantrag', 'side', 'high');
@@ -99,7 +100,6 @@ function cvtx_antrag_top() {
             $lquery->the_post();
             
             echo('<option value="'.get_the_ID().'"'.(get_the_ID() == $top_id ? ' selected="selected"' : '').'>');
-            echo('TOP '.get_post_meta(get_the_ID(), 'cvtx_top_ord', true).': ');
             echo(get_the_title());
             echo('</option>');
         }
@@ -123,6 +123,11 @@ function cvtx_antrag_steller() {
 function cvtx_antrag_grund() {
     global $post;
     echo('<textarea style="width: 100%" name="cvtx_antrag_grund">'.get_post_meta($post->ID, 'cvtx_antrag_grund', true).'</textarea>');
+}
+
+// Link zum PDF
+function cvtx_antrag_pdf() {
+    echo('Kein PDF erstellt');
 }
 
 
@@ -149,21 +154,18 @@ function cvtx_aeantrag_antrag() {
         
         while ($tquery->have_posts()) {
             $tquery->the_post();
-            $top_id = get_the_ID();
-            $ord    = get_post_meta($top_id, 'cvtx_top_ord', true);
-            $short  = get_post_meta($top_id, 'cvtx_top_short', true);
             
-            echo('<optgroup label="TOP '.$ord.': '.get_the_title().'">');
+            echo('<optgroup label="'.get_the_title().'">');
             
             // Zugehörige Anträge auflisten
             $aquery = new WP_Query(array('post_type'  => 'cvtx_antrag',
                                          'meta_key'   => 'cvtx_antrag_top',
-                                         'meta_value' => $top_id));
+                                         'meta_value' => get_the_ID()));
             if ($aquery->have_posts()) {
                 while ($aquery->have_posts()) {
                     $aquery->the_post();
                     echo('<option value="'.get_the_ID().'"'.(get_the_ID() == $antrag_id ? ' selected="selected"' : '').'>');
-                    echo($short.'-'.get_post_meta(get_the_ID(), 'cvtx_antrag_ord', true).' '.get_the_title());
+                    echo(get_the_title());
                     echo('</option>');
                 }
             }
@@ -287,7 +289,7 @@ function cvtx_antrag_columns($columns) {
                      'title'               => 'Antragstitel',
                      'cvtx_antrag_steller' => 'AntragstellerIn(nen)',
                      'cvtx_antrag_top'     => 'Tagesordnungspunkt',
-                     'cvtx_antrag_pdf'     => '');
+/*                     'cvtx_antrag_pdf'     => ''*/);
 	return $columns;
 }
 
@@ -512,7 +514,7 @@ function cvtx_the_title($before='', $title='') {
 add_action('admin_menu', 'cvtx_config_page');
 function cvtx_config_page() {
     if (function_exists('add_submenu_page')) {
-        add_submenu_page('plugins.php', 'cvtx Konfiguration', 'cvtx Konfiguration', 'manage_options', 'cvtx-config', 'cvtx_conf');
+        add_submenu_page('plugins.php', 'cvtx Antragstool', 'cvtx Antragstool', 'manage_options', 'cvtx-config', 'cvtx_conf');
     }
 }
 
@@ -541,11 +543,45 @@ function cvtx_conf() {
     require('cvtx_conf.php');
 }
 
+/**
+ * Formatiert die Kurzbezeichnung eines Änderungsantrags
+ *
+ * @param $antrag Kurzbezeichnung des Antrags
+ * @param $zeile Zeilenangaben zum Ä-Antrag
+ * @return Formatierte Kurzbezeichnung
+ */
 function cvtx_format_aeantrag($antrag, $zeile) {
     $title = get_option('cvtx_config_format_aeantrag');
     $title = str_replace('%antrag%', $antrag, $title);
     $title = str_replace('%zeile%', $zeile, $title);
     return $title;
+}
+
+
+/**
+ * Erstellt ein PDF aus gespeicherten Anträgen
+ */
+add_action('save_post', 'cvtx_create_pdf', 10, 2);
+function cvtx_create_pdf($post_id, $post) {
+    $latex = get_option('cvtx_config_latex');
+    
+    if (!empty($latex)) {
+        if ($post->post_type == 'cvtx_antrag') {
+            $tpl  = get_template_directory().'/latex/single-cvtx_antrag.tex';
+            $dir  = wp_upload_dir();
+            $file = $dir['basedir'].'/'.$post->post_name;
+            
+            // change dir and copy template file here
+            chdir($dir['basedir']);
+            copy($tpl, $file.'.tex');
+            
+            // start pdflatex
+            exec($latex.' '.$file.'.tex');
+            
+            // remove .aux-file
+            unlink($file.'.aux');
+        }
+    }
 }
 
 ?>
