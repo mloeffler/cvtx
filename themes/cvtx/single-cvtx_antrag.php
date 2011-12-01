@@ -16,16 +16,46 @@
 					}
 					?>
 					<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'kubrick') . '</p>'); ?>
+					<?php
+					$grund = get_post_meta($post->ID,'cvtx_antrag_grund',true);
+					if(!empty($grund)){
+						printf(__('<strong>Begr&uuml;ndung:</strong> %1$s'),$grund);
+					}
+					?>
 					<p class="postmetadata alt">
 					<small>
-						<?php /* This is commented, because it requires a little adjusting sometimes.
-							You'll need to download this plugin, and follow the instructions:
-							http://binarybonsai.com/wordpress/time-since/ */
-							/* $entry_datetime = abs(strtotime($post->post_date) - (60*120)); $time_since = sprintf(__('%s ago', 'kubrick'), time_since($entry_datetime)); */ ?>
-						<?php printf(__('Dieser %1$s wurde am %2$s um %3$s eingestellt.', 'kubrick'),get_post_type_object(get_post_type())->labels->singular_name, get_the_time(__('l, j. F Y', 'kubrick')), get_the_time(), get_the_category_list(', ')); ?>
+						<?php printf(__('Dieser %1$s wurde am %2$s um %3$s eingestellt.'),
+									 get_post_type_object(get_post_type())->labels->singular_name, 
+								     get_the_time(__('j. F Y')), 
+								     get_the_time()); ?>
 					</small>
 				</p>
-
+				<?php $antrag_id = $post->ID; ?>
+				<?php $loop3 = new WP_Query(array('post_type' => 'cvtx_aeantrag',
+												  'meta_key' => 'cvtx_aeantrag_antrag',
+												  'meta_value' => $antrag_id,
+												  'order_by' => 'cvtx_aeantrag_zeile',
+												  'order' => 'ASC'));
+				if($loop3->have_posts()):?>
+					<h3>&Auml;nderungsantr&auml;ge</h3>
+					<table id="ae_antraege" cellpadding="0" cellspacing="0">
+						<tr>
+							<th><strong>Zeile</strong></th>
+							<th><strong>AntragstellerInnen</strong></th>
+							<th><strong>Antragstext</strong></th>
+							<th><strong>Begr&uuml;ndung</strong></th>
+						</tr>
+					<?php 
+					while($loop3->have_posts()):$loop3->the_post();?>
+						<tr>
+							<td class="zeile"><?php print get_post_meta($post->ID,'cvtx_aeantrag_zeile',true); ?></td>
+							<td class="steller"><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller',true);?></td>
+							<td class="text"><?php the_content(); ?></td>
+							<td class="grund"><?php print get_post_meta($post->ID,'cvtx_aeantrag_grund',true);?></td>
+						</tr>
+					<?php endwhile;?>
+					</table>
+				<?php endif; ?>
 			</div>
 		</div>
 	<?php endwhile; else: ?>

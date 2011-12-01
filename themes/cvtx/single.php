@@ -23,10 +23,8 @@
 			</div>
 		</div>
 	<?php endwhile; else: ?>
-
 		<p><?php _e('Sorry, no posts matched your criteria.', 'kubrick'); ?></p>
-
-<?php endif; ?>
+	<?php endif; ?>
 	</div>
 	</div>
 	<?php get_sidebar(); ?>

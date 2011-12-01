@@ -125,11 +125,21 @@ header .description {
  */
 
 #content .inner {
-	padding: 0px 15px;
+	padding: 0px 15px 15px 15px;
 }
  
 #content h2, h3, a {
 	color: #58ab27;
+}
+
+.clear-block {
+	clear: both;
+}
+
+.postmetadata {
+	background: #eee;
+	padding:0.3em 0.5em;
+	border-radius: 3px;
 }
 
 /**
@@ -159,4 +169,82 @@ header .description {
 	font-size:1.1em;
 	padding:7px 13px 7px 13px;
 	margin-top:0px;
+}
+
+/**
+ * Antraege
+ */
+ 
+ul#antraege {
+	margin: 0px;
+	padding:0px;
+	list-style:none;
+}
+
+ul#antraege li.top h3 {
+	border-bottom: 1px solid #eee;
+}
+
+ul#antraege li.top {
+	margin-bottom:2em;
+	clear: both;
+}
+
+ul#antraege li.top ul li.antrag span {
+	font-size:0.8em;
+}
+
+ul#antraege li.top ul li.antrag {
+	list-style:none;
+}
+
+ul#antraege li.top ul li.antrag h4 {
+	margin-bottom:0.5em;
+}
+
+ul#antraege li.top ul li.antrag ul {
+	margin-top:0.5em;
+	padding:0px;
+}
+
+ul#antraege li.top ul li.antrag ul.options li {
+	list-style: none;
+	margin-right:10px;
+	font-size:0.8em;
+	float:left;
+	margin-bottom:1em;
+}
+
+ul#antraege li.top ul li.antrag ul.ae_antraege li {
+	float:none;
+	list-style:none;
+}
+
+ul#antraege li.top ul li.antrag ul.ae_antraege {
+	clear: both;
+	margin-top:1em;
+	font-size:0.8em;
+}
+
+table#ae_antraege {
+	font-size:0.8em;
+	width:100%;
+}
+
+table#ae_antraege tr td.text {
+	width: 40%;
+}
+
+table#ae_antraege tr td {
+	padding-right:10px;
+}
+
+table#ae_antraege tr td{
+	border-bottom:1px solid #eee;
+}
+
+table#ae_antraege th {
+	text-align:left;
+	border-bottom: 2px solid #ffe500;
+	padding-bottom:5px;
 }
