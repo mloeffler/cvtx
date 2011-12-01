@@ -33,9 +33,20 @@ define('CVTX_VERSION', '0.1');
 define('CVTX_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 
 
-$types = array('cvtx_top'      => array('cvtx_top_ord', 'cvtx_top_short'),
-               'cvtx_antrag'   => array('cvtx_antrag_ord', 'cvtx_antrag_num', 'cvtx_antrag_top', 'cvtx_antrag_steller', 'cvtx_antrag_grund'),
-               'cvtx_aeantrag' => array('cvtx_aeantrag_zeile', 'cvtx_aeantrag_num', 'cvtx_aeantrag_antrag', 'cvtx_aeantrag_steller', 'cvtx_aeantrag_grund', 'cvtx_aeantrag_verfahren', 'cvtx_aeantrag_detail'));
+$types = array('cvtx_top'      => array('cvtx_top_ord',
+                                        'cvtx_top_short'),
+               'cvtx_antrag'   => array('cvtx_antrag_ord',
+                                        'cvtx_antrag_num',
+                                        'cvtx_antrag_top',
+                                        'cvtx_antrag_steller',
+                                        'cvtx_antrag_grund'),
+               'cvtx_aeantrag' => array('cvtx_aeantrag_zeile',
+                                        'cvtx_aeantrag_num',
+                                        'cvtx_aeantrag_antrag',
+                                        'cvtx_aeantrag_steller',
+                                        'cvtx_aeantrag_grund',
+                                        'cvtx_aeantrag_verfahren',
+                                        'cvtx_aeantrag_detail'));
 
 
 /* add custom meta boxes */
@@ -525,17 +536,17 @@ function cvtx_conf() {
         }
         
         // Formatierungseinstellungen
-        if (empty($_POST['cvtx_config_format_aeantrag'])) {
-            update_option('cvtx_config_format_aeantrag', '%antrag%-%zeile%');
+        if (empty($_POST['cvtx_aeantrag_format'])) {
+            update_option('cvtx_aeantrag_format', '%antrag%-%zeile%');
         } else {
-            update_option('cvtx_config_format_aeantrag', $_POST['cvtx_config_format_aeantrag']);
+            update_option('cvtx_aeantrag_format', $_POST['cvtx_aeantrag_format']);
         }
         
         // LaTeX-Pfad
-        if (empty($_POST['cvtx_config_latex'])) {
-            $ms[] = 'no_cvtx_config_latex';
+        if (empty($_POST['cvtx_pdflatex_cmd'])) {
+            $ms[] = 'no_cvtx_pdflatex_cmd';
         } else {
-            update_option('cvtx_config_latex', $_POST['cvtx_config_latex']);
+            update_option('cvtx_pdflatex_cmd', $_POST['cvtx_pdflatex_cmd']);
         }
     }
 
@@ -551,7 +562,7 @@ function cvtx_conf() {
  * @return Formatierte Kurzbezeichnung
  */
 function cvtx_format_aeantrag($antrag, $zeile) {
-    $title = get_option('cvtx_config_format_aeantrag');
+    $title = get_option('cvtx_aeantrag_format');
     $title = str_replace('%antrag%', $antrag, $title);
     $title = str_replace('%zeile%', $zeile, $title);
     return $title;
@@ -563,23 +574,27 @@ function cvtx_format_aeantrag($antrag, $zeile) {
  */
 add_action('save_post', 'cvtx_create_pdf', 10, 2);
 function cvtx_create_pdf($post_id, $post) {
-    $latex = get_option('cvtx_config_latex');
+    $pdflatex = get_option('cvtx_pdflatex_cmd');
     
-    if (!empty($latex)) {
+    if (!empty($pdflatex)) {
         if ($post->post_type == 'cvtx_antrag') {
-            $tpl  = get_template_directory().'/latex/single-cvtx_antrag.tex';
+            // directory and filename settings            
             $dir  = wp_upload_dir();
-            $file = $dir['basedir'].'/'.$post->post_name;
+            $file = $dir['basedir'].'/'.sanitize_title(get_the_title($post_id));
+
+            // run template, produce and save latex code
+            ob_start();
+            require(get_template_directory().'/latex/single-cvtx_antrag.php');
+            $out = ob_get_contents();
+            ob_end_clean();
+            file_put_contents($file.'.tex', $out);
             
-            // change dir and copy template file here
+            // change dir and run pdflatex
             chdir($dir['basedir']);
-            copy($tpl, $file.'.tex');
-            
-            // start pdflatex
-            exec($latex.' '.$file.'.tex');
+            exec($pdflatex.' -interaction=nonstopmode '.$file.'.tex');
             
             // remove .aux-file
-            unlink($file.'.aux');
+            if (is_file($file.'.aux')) unlink($file.'.aux');
         }
     }
 }
