@@ -286,7 +286,8 @@ function cvtx_antrag_columns($columns) {
                      'cvtx_antrag_ord'     => 'Nummer',
                      'title'               => 'Antragstitel',
                      'cvtx_antrag_steller' => 'AntragstellerIn(nen)',
-                     'cvtx_antrag_top'     => 'Tagesordnungspunkt');
+                     'cvtx_antrag_top'     => 'Tagesordnungspunkt',
+                     'cvtx_antrag_pdf'     => '');
 	return $columns;
 }
 
@@ -346,12 +347,15 @@ function cvtx_format_lists($column) {
             $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);
             echo(get_the_title($top_id));
             break;
+        case "cvtx_antrag_pdf":
+            echo('<a href="plugins/cvtx/download.php?cvtx_antrag='.$post->ID.'">Download (pdf)</a>');
+            break;
             
         // Ä-Anträge
         case 'cvtx_aeantrag_ord':
             $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
             $top_id    = get_post_meta($antrag_id, 'cvtx_antrag_top', true);
-            echo(get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true).'-'.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true));
+            echo(cvtx_format_aeantrag(get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true), get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true)));
             break;
         case 'cvtx_aeantrag_num':
             echo(get_post_meta($post->ID, 'cvtx_aeantrag_num', true));
@@ -490,7 +494,7 @@ function cvtx_the_title($before='', $title='') {
             // zeile of ae_antrag
             $zeile = get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true);
             // put it together!
-            $title = '&Auml;'.$top.'-'.$nr.'-'.$zeile;
+            $title = cvtx_format_aeantrag($top.'-'.$nr, $zeile);
         }
         // Tagesordnungspunkt
         else if($post->post_type == 'cvtx_top') {
@@ -501,6 +505,46 @@ function cvtx_the_title($before='', $title='') {
         }
     }
     
+    return $title;
+}
+
+
+add_action('admin_menu', 'cvtx_config_page');
+function cvtx_config_page() {
+    if (function_exists('add_submenu_page')) {
+        add_submenu_page('plugins.php', 'cvtx Konfiguration', 'cvtx Konfiguration', 'manage_options', 'cvtx-config', 'cvtx_conf');
+    }
+}
+
+function cvtx_conf() {
+    if (isset($_POST['submit'])) {
+        if (function_exists('current_user_can') && !current_user_can('manage_options')) {
+            die(__('Cheatin&#8217; uh?'));
+        }
+        
+        // Formatierungseinstellungen
+        if (empty($_POST['cvtx_config_format_aeantrag'])) {
+            update_option('cvtx_config_format_aeantrag', '%antrag%-%zeile%');
+        } else {
+            update_option('cvtx_config_format_aeantrag', $_POST['cvtx_config_format_aeantrag']);
+        }
+        
+        // LaTeX-Pfad
+        if (empty($_POST['cvtx_config_latex'])) {
+            $ms[] = 'no_cvtx_config_latex';
+        } else {
+            update_option('cvtx_config_latex', $_POST['cvtx_config_latex']);
+        }
+    }
+
+    // load config page
+    require('cvtx_conf.php');
+}
+
+function cvtx_format_aeantrag($antrag, $zeile) {
+    $title = get_option('cvtx_config_format_aeantrag');
+    $title = str_replace('%antrag%', $antrag, $title);
+    $title = str_replace('%zeile%', $zeile, $title);
     return $title;
 }
 
