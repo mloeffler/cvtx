@@ -344,7 +344,7 @@ function cvtx_format_lists($column) {
             break;
         case "cvtx_antrag_top":
             $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);
-            echo('TOP '.get_post_meta($top_id, 'cvtx_top_ord', true).': '.get_the_title($top_id));
+            echo(get_the_title($top_id));
             break;
             
         // Ä-Anträge
@@ -364,13 +364,12 @@ function cvtx_format_lists($column) {
             break;
         case "cvtx_aeantrag_antrag":
             $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
-            $top_id    = get_post_meta($antrag_id, 'cvtx_antrag_top', true);
-            echo(get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true).' '.get_the_title($antrag_id));
+            echo(get_the_title($antrag_id));
             break;
         case "cvtx_aeantrag_top":
             $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
             $top_id    = get_post_meta($antrag_id, 'cvtx_antrag_top', true);
-            echo('TOP '.get_post_meta($top_id, 'cvtx_top_ord', true).': '.get_the_title($top_id));
+            echo(get_the_title($top_id));
             break;
     }
 }
@@ -461,38 +460,48 @@ function remove_quick_edit($actions) {
     return $actions;
 }
 
-// replaces filter "the title" in order to generate custom titles for post-types "antrag" and "aeantrag"
-add_filter('the_title','cvtx_the_title',1,2);
-function cvtx_the_title($before='',$title='') {
-	if(is_numeric($title)) $post = &get_post($title);
-	if(isset($post)) {
-		$title_new = $post->post_title;
-	  if($post->post_type == 'cvtx_antrag') {
-	  	// number of antrag
-			$nr = get_post_meta($post->ID, 'cvtx_antrag_ord',true);
-  		// top short
-  		$top = get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_short', true);
-  		// put it together!
-  		$title_new = $top.'-'.$nr.' '.$post->post_title;
-  	}
-  	else if($post->post_type == 'cvtx_aeantrag') {
-  		// id of antrag
-    	$a_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
-    	// id of top
-    	$top_id = get_post_meta($a_id, 'cvtx_antrag_top', true);
-    	// number of antrag
-			$nr = get_post_meta($a_id, 'cvtx_antrag_ord',true);
-			// top short
-    	$top = get_post_meta($top_id, 'cvtx_top_short', true);
-    	// zeile of ae_antrag
-    	$zeile = get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true);
-    	// put it together!
-    	$title_new = '&Auml;'.$top.'-'.$nr.'-'.$zeile;
-  	}
-    return $title_new;
-  }
-  else
-  	return $title;
+// replaces filter "the title" in order to generate custom titles for post-types "top", "antrag" and "aeantrag"
+add_filter('the_title', 'cvtx_the_title', 1, 2);
+function cvtx_the_title($before='', $title='') {
+    if(is_numeric($title)) $post = &get_post($title);
+    
+    if(isset($post)) {
+        $title = $post->post_title;
+        
+        // Antrag
+        if($post->post_type == 'cvtx_antrag') {
+            // number of antrag
+            $nr = get_post_meta($post->ID, 'cvtx_antrag_ord',true);
+            // top short
+            $top = get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_short', true);
+            // put it together!
+            $title = $top.'-'.$nr.' '.$post->post_title;
+        }
+        // Änderungsantrag
+        else if($post->post_type == 'cvtx_aeantrag') {
+            // id of aeantrag
+            $a_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
+            // id of top
+            $top_id = get_post_meta($a_id, 'cvtx_antrag_top', true);
+            // number of antrag
+            $nr = get_post_meta($a_id, 'cvtx_antrag_ord',true);
+            // top short
+            $top = get_post_meta($top_id, 'cvtx_top_short', true);
+            // zeile of ae_antrag
+            $zeile = get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true);
+            // put it together!
+            $title = '&Auml;'.$top.'-'.$nr.'-'.$zeile;
+        }
+        // Tagesordnungspunkt
+        else if($post->post_type == 'cvtx_top') {
+            // top nr
+            $top_ord = get_post_meta($post->ID, 'cvtx_top_ord', true);
+            // put it together!
+            $title = 'TOP '.$top_ord.': '.$post->post_title;
+        }
+    }
+    
+    return $title;
 }
 
 ?>
