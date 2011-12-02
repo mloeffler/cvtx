@@ -27,7 +27,9 @@ Template Name: Antrags&uuml;bersicht
 			<?php
 			$loop2 = new WP_Query(array('post_type' => 'cvtx_antrag',
 										'meta_key' => 'cvtx_antrag_top',
-										'meta_value' => $top_id));
+										'meta_value' => $top_id,
+										'orderby' => 'cvtx_antrag_ord',
+										'order' => 'ASC'));
 			while ($loop2->have_posts() ) : $loop2->the_post();?>
 				<li class="antrag"><h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
 				<span class="steller"><strong>AntragstellerInnen:</strong> <?php print get_post_meta($post->ID,'cvtx_antrag_steller',true);?></strong></span>
@@ -36,18 +38,22 @@ Template Name: Antrags&uuml;bersicht
 					<li><a href="#">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
 					<li><a href="#">&Auml;nderungsantrags&uuml;bersicht</a></li>
 				</ul>
+				<?php $antrag_id = $post->ID; ?>
+				<?php $loop3 = new WP_Query(array('post_type' => 'cvtx_aeantrag',
+												  'meta_key' => 'cvtx_aeantrag_antrag',
+												  'meta_value' => $antrag_id,
+												  'order_by' => 'cvtx_aeantrag_zeile',
+												  'order' => 'ASC'));
+				if($loop3->have_posts()):?>
 				<ul class="ae_antraege">
 					<h4>&Auml;nderungsantr&auml;ge</h4>
-					<?php $antrag_id = $post->ID; ?>
-					<?php $loop3 = new WP_Query(array('post_type' => 'cvtx_aeantrag',
-													  'meta_key' => 'cvtx_aeantrag_antrag',
-													  'meta_value' => $antrag_id,
-													  'order_by' => 'cvtx_aeantrag_zeile',
-													  'order' => 'ASC'));
+				<?php
 					while($loop3->have_posts()):$loop3->the_post();?>
-						<li><?php the_title(); ?> (AntragstellerInnen: <em><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller',true);?></em>)</li>
+						<li><span><?php the_title(); ?></span> (AntragstellerInnen: <em><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller',true);?></em>)</li>
 					<?php endwhile;?>
-				</ul></li>
+				</ul>
+				<?php endif;?>
+				<div class="clear-block"></div></li>
 			<?php endwhile;?>
 			</ul></li>
 		<?php endwhile;?>

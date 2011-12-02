@@ -13,7 +13,7 @@ License URI:
 
 body {
 	font-family: "Trebuchet MS";
-	background: url(images/carbon_fibre_big.png);
+	background: url(images/old_wall.png);
 	margin:0px;
 	padding:0px;
 }
@@ -36,6 +36,12 @@ body {
 	width:610px;
 	min-height: 100px;
 	float:left;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-top-right-radius:6px;
+	-webkit-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
+	box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
 }
 
 #sidebar {
@@ -60,10 +66,6 @@ nav ul li {
 	padding:4px 10px;
 	list-style:none;
 	background: #ffe500;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 3px;
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 }
@@ -92,8 +94,8 @@ div.filler {
 	background: #ffe500;
 	height: 2em;
 	width: 100%;
+	border-top-right-radius: 3px;
 }
-
 
 /**
  * Header
@@ -103,7 +105,7 @@ header {
 	padding:0px;
 	height:200px;
 	box-shadow: 0px 0px 15px #000;
-	-webkit-box-shadow: 0px 0px 15px #000;
+	-webkit-box-shadow: 0px 0px 15px rgba(0,0,0,0.6);
 	-moz-box-shadow: 0px 0px 15px #000;
 }
 
@@ -186,10 +188,22 @@ header .description {
 	margin-bottom:10px;
 	border-top-left-radius:4px;
 	border-top-right-radius:4px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	-webkit-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
+	box-shadow: 0px 4px 7px rgba(0,0,0,0.1)
+}
+
+#sidebar ul.side li ul li {
+	box-shadow: none;
+	-webkit-box-shadow: 0px 0px 0px white;
+	-moz-box-shadow: 0px 0px 0px white;
 }
 
 #sidebar ul.side li#first {
-	border-radius: 0px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
 }
 
 #sidebar ul.side li div.inner {
@@ -218,18 +232,25 @@ ul#antraege {
 }
 
 ul#antraege li.top h3 {
-	padding:0.4em;
-	border-bottom: 1px solid #eee;
-	background: #eee;
-	border-radius:3px;
+	padding:0.5em 0.7em;
+	border-bottom: 1px solid #ffe500;
+	background: #fafafa;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+	margin:0px;
 }
 
 ul#antraege li.top {
-	margin-bottom:2em;
 	clear: both;
+	background: url(images/verlauf2.png) bottom repeat-x;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	padding-bottom:1em;
+	border: 1px solid #eee;
+	margin-bottom:1em;
 }
 
-ul#antraege li.top ul li.antrag span {
+ul#antraege li.top ul li.antrag span.steller {
 	font-size:0.8em;
 }
 
@@ -257,6 +278,13 @@ ul#antraege li.top ul li.antrag ul.options li {
 ul#antraege li.top ul li.antrag ul.ae_antraege li {
 	float:none;
 	list-style:none;
+	margin-left:1em;
+	line-height:1.5em;
+}
+
+ul#antraege li.top ul li.antrag ul.ae_antraege li span {
+	color: #58ab27;
+	font-weight: bold;
 }
 
 ul#antraege li.top ul li.antrag ul.ae_antraege {
