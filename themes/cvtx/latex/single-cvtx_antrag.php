@@ -1,20 +1,24 @@
-\documentclass[a4paper]{article}
+\documentclass[paper=A4, fontsize=12pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8x]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{fixltx2e}
+\usepackage[onehalfspacing]{setspace}
 \usepackage{lineno}
-\usepackage{ngerman}
-\usepackage[utf8]{inputenc}
 
 \begin{document}
 
-\textbf{\huge <?php echo(get_the_title()); ?>}
+\textbf{\huge <?php cvtx_titel(); ?> (<?php cvtx_kuerzel(); ?>)}
 
-\textbf{Antragsteller:} <?php echo(get_post_meta(get_the_ID(), 'cvtx_antrag_steller', true)); ?>\\[2em]
+\textbf{Antragsteller:} <?php cvtx_antragsteller(); ?>\\[2em]
 
 \begin{linenumbers}
 \modulolinenumbers[5]
-<?php echo($post->post_content); ?>\\[2em]
+<?php cvtx_antragstext(); ?>\\[2em]
 \end{linenumbers}
 
 \textbf{Begründung:}\\
-<?php echo(get_post_meta(get_the_ID(), 'cvtx_antrag_grund', true)); ?>
+<?php cvtx_begruendung(); ?>
 
 \end{document}

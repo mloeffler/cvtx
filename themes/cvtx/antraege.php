@@ -10,7 +10,7 @@ Template Name: Antrags&uuml;bersicht
 			<div <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 				<h2><?php the_title(); ?></h2>
 				<div class="entry">
-					<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'kubrick') . '</p>'); ?>
+					<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx') . '</p>'); ?>
 			</div>
 		</div>
 		<?php endwhile; endif;?>
@@ -19,8 +19,9 @@ Template Name: Antrags&uuml;bersicht
 		<?php
 		// TOP-Query
 		$loop = new WP_Query(array('post_type' => 'cvtx_top',
-								   'orderby' => 'cvtx_top_ord',
-								   'order' => 'ASC'));
+                                   'orderby'   => 'meta_value_num',
+                                   'meta_key'  => 'cvtx_top_ord',
+								   'order'     => 'ASC'));
 		while ($loop->have_posts()):$loop->the_post();
 			$top_id = $post->ID;?>
 			<li class="top"><h3><?php the_title(); ?></h3><ul>
@@ -34,7 +35,7 @@ Template Name: Antrags&uuml;bersicht
 				<li class="antrag"><h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
 				<span class="steller"><strong>AntragstellerInnen:</strong> <?php print get_post_meta($post->ID,'cvtx_antrag_steller',true);?></strong></span>
 				<ul class="options">
-					<li><?php print cvtx_antrag_pdf() ?></li>
+					<li><?php if ($file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
 					<li><a href="#">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
 					<li><a href="#">&Auml;nderungsantrags&uuml;bersicht</a></li>
 				</ul>
