@@ -15,16 +15,25 @@ Template Name: Antrags&uuml;bersicht
 		</div>
 		<?php endwhile; endif;?>
 	
-		<ul id="antraege">
 		<?php
 		// TOP-Query
 		$loop = new WP_Query(array('post_type' => 'cvtx_top',
                                    'orderby'   => 'meta_value_num',
                                    'meta_key'  => 'cvtx_top_ord',
 								   'order'     => 'ASC'));
+		if($loop->have_posts()):?>
+			<ul id="antraege">
+				<li class="top overview"><h3>&Uuml;bersicht</h3>
+					<ul>
+					<?php while ($loop->have_posts()):$loop->the_post();?>
+						<li class="antrag"><a href="#<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>"><?php the_title(); ?></a></li>
+					<?php endwhile; ?>
+					</ul>
+				</li><div class="tester"></div>
+		<?php
 		while ($loop->have_posts()):$loop->the_post();
 			$top_id = $post->ID;?>
-			<li class="top"><h3><?php the_title(); ?></h3><ul>
+			<li class="top" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>"><h3><?php the_title(); ?></h3><ul>
 			<?php
 			$loop2 = new WP_Query(array('post_type' => 'cvtx_antrag',
 										'meta_key' => 'cvtx_antrag_top',
@@ -37,15 +46,17 @@ Template Name: Antrags&uuml;bersicht
 				<ul class="options">
 					<li><?php if ($file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
 					<li><a href="#">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
-					<li><a href="#">&Auml;nderungsantrags&uuml;bersicht</a></li>
-				</ul>
 				<?php $antrag_id = $post->ID; ?>
 				<?php $loop3 = new WP_Query(array('post_type' => 'cvtx_aeantrag',
 												  'meta_key' => 'cvtx_aeantrag_antrag',
 												  'meta_value' => $antrag_id,
 												  'order_by' => 'cvtx_aeantrag_zeile',
-												  'order' => 'ASC'));
-				if($loop3->have_posts()):?>
+												  'order' => 'ASC')); ?>
+					<?php if($loop3->have_posts()): ?>
+					<li><a href="<?php the_permalink(); ?>&ae_antraege=1" rel="extern" class="ae_antraege_overview" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrags&uuml;bersicht</a></li>
+					<?php endif;?>
+				</ul><div id="result-<?php print $post->ID; ?>" class="ae_antraege_result"></div>
+				<?php if($loop3->have_posts()): ?>
 				<ul class="ae_antraege">
 					<h4>&Auml;nderungsantr&auml;ge</h4>
 				<?php
@@ -59,6 +70,7 @@ Template Name: Antrags&uuml;bersicht
 			</ul></li>
 		<?php endwhile;?>
 		</ul>
+		<?php endif; ?>
 	</div>
 	</div>
 	<?php get_sidebar(); ?>

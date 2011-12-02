@@ -38,8 +38,15 @@
 												  'order_by' => 'cvtx_aeantrag_zeile',
 												  'order' => 'ASC'));
 				if($loop3->have_posts()):?>
-					<h3>&Auml;nderungsantr&auml;ge</h3>
-					<table id="ae_antraege" cellpadding="0" cellspacing="0">
+				<div id="ae_antraege">
+					<h3>&Auml;nderungsantr&auml;ge<?php
+						if(isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) { 
+							echo ' zu "'; 
+							the_title(); 
+							echo '"';
+						}
+					?></h3>
+					<table cellpadding="0" cellspacing="0">
 						<tr>
 							<th><strong>Zeile</strong></th>
 							<th><strong>AntragstellerInnen</strong></th>
@@ -56,6 +63,7 @@
 						</tr>
 					<?php endwhile;?>
 					</table>
+				</div>
 				<?php endif; ?>
 		</div>
 	<?php endwhile; else: ?>

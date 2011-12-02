@@ -97,16 +97,68 @@ div.filler {
 	border-top-right-radius: 3px;
 }
 
+.ae_antraege_overlay {
+	position: absolute;
+	top:0px;
+	left:0px;
+	background: rgba(0,0,0,0.6);
+}
+
+#ae_window {
+	position: absolute;
+	left:50px;
+	background: white;
+	border-radius:5px;
+	box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
+	-webkit-box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
+	-moz-box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
+}
+
+#ae_window .navi {
+	height:1.8em;
+	background: rgba(0,0,0,0.8);
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	font-size:0.8em;
+	padding-top:0.4em;
+}
+
+#ae_window .result {
+	padding:15px;
+}
+
+span.replace {
+	text-indent:-9999px;
+}
+
+.navi .close {
+	background: url(images/cross.png) no-repeat;
+	width:20px;
+	height:20px;
+	display: block;
+	margin-left:10px;
+	float: left;
+}
+
+.navi .print {
+	background: url(images/printer.png) no-repeat;
+	margin-right:12px;
+	width:20px;
+	height:20px;
+	display: block;
+	float: right;
+}
+
 /**
  * Header
  */
 header {
-	background: #6ab141;
+	background-color: #6ab141;
 	padding:0px;
 	height:200px;
-	box-shadow: 0px 0px 15px #000;
+	box-shadow: 0px 0px 15px rgba(0,0,0,0.6);
 	-webkit-box-shadow: 0px 0px 15px rgba(0,0,0,0.6);
-	-moz-box-shadow: 0px 0px 15px #000;
+	-moz-box-shadow: 0px 0px 15px rgba(0,0,0,0.6);
 }
 
 #headerimg {
@@ -247,11 +299,21 @@ ul#antraege li.top {
 	border-bottom-right-radius: 3px;
 	padding-bottom:1em;
 	border: 1px solid #eee;
-	margin-bottom:1em;
+	margin-bottom: 1em;
+	margin-top: 1em;
 }
 
 ul#antraege li.top ul li.antrag span.steller {
 	font-size:0.8em;
+}
+
+ul#antraege li.overview ul li a {
+	text-decoration: none;
+}
+
+ul#antraege li.overview ul li {
+	margin-top:0.8em;
+	font-size:0.9em;
 }
 
 ul#antraege li.top ul li.antrag {
@@ -293,25 +355,26 @@ ul#antraege li.top ul li.antrag ul.ae_antraege {
 	font-size:0.8em;
 }
 
-table#ae_antraege {
+#ae_antraege table {
 	font-size:0.8em;
 	width:100%;
 }
 
-table#ae_antraege tr td.text {
+#ae_antraege table tr td.text {
 	width: 40%;
 }
 
-table#ae_antraege tr td {
+#ae_antraege table tr td {
 	padding-right:10px;
 }
 
-table#ae_antraege tr td{
+#ae_antraege table tr td{
 	border-bottom:1px solid #eee;
 }
 
-table#ae_antraege th {
+#ae_antraege table th {
 	text-align:left;
 	border-bottom: 2px solid #ffe500;
 	padding-bottom:5px;
+	padding-right:10px;
 }
