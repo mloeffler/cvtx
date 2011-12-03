@@ -649,11 +649,35 @@ function cvtx_get_file($post, $ending = 'pdf', $base = 'url') {
 
 /**
  * Returns latex formatted output
+ *
+ * @todo - how to handle '\' -> '{\\textbackslash}' ??
+ *
+ * @param $out input
+ * @return formatted output
  */
 function cvtx_get_latex($out) {
-    $out = preg_replace('/([\$\%_{}\&#])/', '\\\$1', $out);
-    $out = preg_replace(array('/<strong>(.*)<\/strong>/', '/<b>(.*)<\/b>/'), '\textbf{$1}', $out);
-    $out = preg_replace(array('/<em>(.*)<\/em>/', '/<i>(.*)<\/i>/'), '\textit{$1}', $out);
+    // strip html entities
+//    $out = html_entity_decode($out);
+    $out = str_replace('&nbsp;', ' ', $out);
+    
+    // recode special chars
+    $out = str_replace(array('$', '%', '_', '{', '}', '&', '#'),
+                       array('\\$', '\\%', '\\_', '\\{', '\\}', '\\&', '\\#'), $out);
+    
+    // recode formatting rules
+    $out = str_replace(array('<strong>', '</strong>'), array('\textbf{', '}'), $out);
+    $out = str_replace(array('<b>', '</b>'), array('\textbf{', '}'), $out);
+    $out = str_replace(array('<em>', '</em>'), array('\textit{', '}'), $out);
+    $out = str_replace(array('<i>', '</i>'), array('\textit{', '}'), $out);
+    
+    // strip
+    $out = strip_tags($out);
+    $out = trim($out);
+    
+    // add new lines
+    $out = str_replace("\r\n", "\n", $out);
+    $out = str_replace("\n", "\\par\n", $out);
+    
     return $out;
 }
 
@@ -744,6 +768,14 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
  * LaTeX Functions
  ************************************************************************************/
 
+function cvtx_name() {
+    echo(cvtx_get_latex(get_bloginfo('name')));
+}
+
+function cvtx_beschreibung() {
+    echo(cvtx_get_latex(get_bloginfo('description')));
+}
+
 function cvtx_kuerzel() {
     global $post, $cvtx_types;
     if (in_array($post->post_type, array_keys($cvtx_types))) {
@@ -752,14 +784,14 @@ function cvtx_kuerzel() {
 }
 
 function cvtx_titel() {
-    global $post, $cvtx_types;;
+    global $post, $cvtx_types;
     if (in_array($post->post_type, array_keys($cvtx_types))) {
         echo(cvtx_get_latex($post->post_title));
     }
 }
 
 function cvtx_antragstext() {
-    global $post, $cvtx_types;;
+    global $post, $cvtx_types;
     if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag') {
         echo(cvtx_get_latex($post->post_content));
     }
@@ -780,6 +812,37 @@ function cvtx_antragsteller() {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_steller', true)));
     } else if ($post->post_type == 'cvtx_aeantrag') {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_steller', true)));
+    }
+}
+
+function cvtx_top() {
+    global $post;
+    if ($post->post_type == 'cvtx_antrag') {
+        echo(cvtx_get_latex(get_the_title(get_post_meta($post->ID, 'cvtx_antrag_top', true))));
+    } else if ($post->post_type == 'cvtx_aeantrag') {
+        $top_id = get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true);
+        echo(cvtx_get_latex(get_the_title($top_id)));
+    }
+}
+
+function cvtx_top_titel() {
+    global $post;
+    if ($post->post_type == 'cvtx_antrag') {
+        $top = get_post(get_post_meta($post->ID, 'cvtx_antrag_top', true));
+        echo(cvtx_get_latex($top->post_title));
+    } else if ($post->post_type == 'cvtx_aeantrag') {
+        $top = get_post(get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true));
+        echo(cvtx_get_latex($top->post_title));
+    }
+}
+
+function cvtx_top_kuerzel() {
+    global $post;
+    if ($post->post_type == 'cvtx_antrag') {
+        echo('TOP '.cvtx_get_latex(get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_ord', true)));
+    } else if ($post->post_type == 'cvtx_aeantrag') {
+        $top_id = get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true);
+        echo('TOP '.cvtx_get_latex(get_post_meta($top_id, 'cvtx_top_ord', true)));
     }
 }
 
