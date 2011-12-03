@@ -1,20 +1,51 @@
-\documentclass[a4paper]{article}
+\documentclass[paper=A4, fontsize=12pt, parskip]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8x]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{fixltx2e}
+%\usepackage[onehalfspacing]{setspace}
 \usepackage{lineno}
-\usepackage{ngerman}
-\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{calc}
+\usepackage{scrpage2}
+
+\sloppy
+\pagestyle{scrheadings}
+\ohead{Änderungsantrag <?php cvtx_kuerzel(); ?>}
+\setheadsepline{0.4pt}
 
 \begin{document}
 
-\textbf{\huge <?php echo(get_the_title()); ?> Änderungsantrag}
+\thispagestyle{empty}
 
-\textbf{AntragstellerInnen:} <?php echo(get_post_meta(get_the_ID(), 'cvtx_aeantrag_steller', true)); ?>\\[2em]
+\begin{flushright}
+ \textbf{\large <?php cvtx_name(); ?>}\\
+ <?php cvtx_beschreibung(); ?>
+\end{flushright}
+
+\newcommand*\adjust{\setlength\hsize{\textwidth-2\tabcolsep}}
+\begin{tabularx}{\textwidth}{|lX|}
+    \hline
+                                                &                                                                           \\
+    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel(); ?>}}     \\
+%    \textbf{\LARGE <?php cvtx_kuerzel(); ?>}    &   \textbf{\large <?php cvtx_top_titel(); ?>}                              \\
+                                                &                                                                           \\
+    AntragstellerInnen:                         &   <?php cvtx_antragsteller(); ?>                                          \\
+                                                &                                                                           \\
+    Gegenstand:                                 &   <?php cvtx_antrag(); ?>               \\
+                                                &                                                                           \\
+    \hline
+\end{tabularx}
+
+\section*{Änderungsantrag <?php cvtx_kuerzel(); ?>}
 
 \begin{linenumbers}
-\modulolinenumbers[5]
-<?php echo($post->post_content); ?>\\[2em]
+%\modulolinenumbers[5]
+<?php cvtx_antragstext(); ?>
 \end{linenumbers}
 
 \textbf{Begründung:}\\
-<?php echo(get_post_meta(get_the_ID(), 'cvtx_aeantrag_grund', true)); ?>
+<?php cvtx_begruendung(); ?>
 
 \end{document}

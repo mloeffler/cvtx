@@ -47,7 +47,7 @@ $cvtx_types = array('cvtx_top'      => array('cvtx_top_ord',
                                              'cvtx_aeantrag_steller',
                                              'cvtx_aeantrag_grund',
                                              'cvtx_aeantrag_verfahren',
-                                           'cvtx_aeantrag_detail'));
+                                             'cvtx_aeantrag_detail'));
 
 
 /* add custom meta boxes */
@@ -514,80 +514,64 @@ function cvtx_create_pdf($post_id, $post = null) {
     $pdflatex = get_option('cvtx_pdflatex_cmd');
     
     if (isset($post) && is_object($post) && !empty($pdflatex)) {
-        if ($post->post_type == 'cvtx_antrag' && is_file(get_template_directory().'/latex/single-cvtx_antrag.php')) {
-            // directory and filename settings            
-            $dir  = wp_upload_dir();
-            $file = $dir['basedir'].'/'.sanitize_title(cvtx_get_short($post).'_'.$post->post_name);
-
-            // run template, produce and save latex code
-            ob_start();
+        $out_dir = wp_upload_dir();
+        $tpl_dir = get_template_directory().'/latex';
+    
+        // prepare antrag
+        if ($post->post_type == 'cvtx_antrag') {
+            // file
+            $file = $out_dir['basedir'].'/'.sanitize_title(cvtx_get_short($post).'_'.$post->post_name);
+            
             // use special template for id=x if exists
-            if (is_file(get_template_directory().'/latex/single-cvtx_antrag-'.$post_id.'.php')) {
-                require(get_template_directory().'/latex/single-cvtx_antrag-'.$post_id.'.php');
+            if (is_file($tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php')) {
+                $tpl = $tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php';
             }
             // use default template
-            else {
-                require(get_template_directory().'/latex/single-cvtx_antrag.php');
+            else if(is_file($tpl_dir.'/single-cvtx_antrag.php')) {
+                $tpl = $tpl_dir.'/single-cvtx_antrag.php';
             }
+        }
+        // prepare Ä-Antrag if pdf-option enabled
+        else if ($post->post_type == 'cvtx_aeantrag' && get_option('cvtx_aeantrag_pdf')) {
+            // file
+            $file = $out_dir['basedir'].'/'.sanitize_title(cvtx_get_short($post));
+            
+            // use special template for id=x if exists
+            if (is_file($tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php')) {
+                $tpl = $tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php';
+            }
+            // use default template
+            else if(is_file($tpl_dir.'/single-cvtx_aeantrag.php')) {
+                $tpl = $tpl_dir.'/single-cvtx_aeantrag.php';
+            }
+        }
+        
+        // create pdf if template found
+        if (isset($tpl) && !empty($tpl) && isset($file) && !empty($file)) {
+            ob_start();
+            // run latex template
+            require($tpl);
             // capture output
             $out = ob_get_contents();
             ob_end_clean();
-            // save latex file
-            file_put_contents($file.'.tex', $out);
-            
-            // run pdflatex
-            exec($pdflatex.' -interaction=nonstopmode -output-directory='.$dir['basedir'].' '.$file.'.tex');
-            
-            // remove .aux-file
-            if (is_file($file.'.aux')) unlink($file.'.aux');
-            // remove .log-file
-            if (get_option('cvtx_drop_logfile') == 1 || (get_option('cvtx_drop_logfile') == 2 && is_file($file.'.pdf'))) {
-                if (is_file($file.'.log')) unlink($file.'.log');
-            }
-            // remove .tex-file
-            if (get_option('cvtx_drop_texfile') == 1 || (get_option('cvtx_drop_texfile') == 2 && is_file($file.'.pdf'))) {
-                if (is_file($file.'.tex')) unlink($file.'.tex');
-            }
-            
-//            echo("<pre>$out</pre>");
-        }
-        /*
-        else if (get_option('cvtx_aeantrag_pdf') && $post->post_type == 'cvtx_aeantrag' && is_file(get_template_directory().'/latex/single-cvtx_aeantrag.php')) {
-            // directory and filename settings            
-            $dir  = wp_upload_dir();
-            $file = $dir['basedir'].'/'.sanitize_title(cvtx_get_short($post).'_'.$post->post_name);
 
-            // run template, produce and save latex code
-            ob_start();
-            // use special template for id=x if exists
-            if (is_file(get_template_directory().'/latex/single-cvtx_aeantrag-'.$post_id.'.php')) {
-                require(get_template_directory().'/latex/single-cvtx_aeantrag-'.$post_id.'.php');
-            }
-            // use default template
-            else {
-                require(get_template_directory().'/latex/single-cvtx_aeantrag.php');
-            }
-            // capture output
-            $out = ob_get_contents();
-            ob_end_clean();
-            // save latex file
-            file_put_contents($file.'.tex', $out);
-            
-            // run pdflatex
-            exec($pdflatex.' -interaction=nonstopmode -output-directory='.$dir['basedir'].' '.$file.'.tex');
-            
-            // remove .aux-file
-            if (is_file($file.'.aux')) unlink($file.'.aux');
-            // remove .log-file
-            if ((get_option('cvtx_drop_logfile') == 2 && is_file($file.'.pdf')) || get_option('cvtx_drop_logfile') == 1) {
-                if (is_file($file.'.log')) unlink($file.'.log');
-            }
-            // remove .tex-file
-            if ((get_option('cvtx_drop_texfile') == 2 && is_file($file.'.pdf')) || get_option('cvtx_drop_texfile') == 1) {
-                if (is_file($file.'.tex')) unlink($file.'.tex');
+            // save output to latex file. success?
+            if (file_put_contents($file.'.tex', $out) !== false) {
+                // run pdflatex
+                exec($pdflatex.' -interaction=nonstopmode -output-directory='.$out_dir['basedir'].' '.$file.'.tex');
+                
+                // remove .aux-file
+                if (is_file($file.'.aux')) unlink($file.'.aux');
+                // remove .log-file
+                if (get_option('cvtx_drop_logfile') == 1 || (get_option('cvtx_drop_logfile') == 2 && is_file($file.'.pdf'))) {
+                    if (is_file($file.'.log')) unlink($file.'.log');
+                }
+                // remove .tex-file
+                if (get_option('cvtx_drop_texfile') == 1 || (get_option('cvtx_drop_texfile') == 2 && is_file($file.'.pdf'))) {
+                    if (is_file($file.'.tex')) unlink($file.'.tex');
+                }
             }
         }
-        */
     }
 }
 
@@ -635,8 +619,14 @@ function cvtx_get_short($post) {
  */
 function cvtx_get_file($post, $ending = 'pdf', $base = 'url') {
     $dir  = wp_upload_dir();
-    $base = 'base'.($base == 'dir' ? 'dir' : 'url');
-    $file = sanitize_title(cvtx_get_short($post)).'_'.$post->post_name.'.'.$ending;
+    $base = 'base'.($base == 'dir' ? $base : 'url');
+
+    // specify filename
+    if ($post->post_type == 'cvtx_antrag') {
+        $file = sanitize_title(cvtx_get_short($post)).'_'.$post->post_name.'.'.$ending;
+    } else if ($post->post_type == 'cvtx_aeantrag') {
+        $file = sanitize_title(cvtx_get_short($post)).'.'.$ending;
+    }
     
     // return filename if file exists
     if (is_file($dir['basedir'].'/'.$file)) {
@@ -847,6 +837,29 @@ function cvtx_top_kuerzel() {
     } else if ($post->post_type == 'cvtx_aeantrag') {
         $top_id = get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true);
         echo('TOP '.cvtx_get_latex(get_post_meta($top_id, 'cvtx_top_ord', true)));
+    }
+}
+
+function cvtx_antrag() {
+    global $post;
+    if ($post->post_type == 'cvtx_aeantrag') {
+        echo(cvtx_get_latex(get_the_title(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true))));
+    }
+}
+
+function cvtx_antrag_titel() {
+    global $post;
+    if ($post->post_type == 'cvtx_aeantrag') {
+        $antrag = get_post(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true));
+        echo(cvtx_get_latex($antrag->post_title));
+    }
+}
+
+function cvtx_antrag_kuerzel() {
+    global $post;
+    if ($post->post_type == 'cvtx_aeantrag') {
+        $antrag = get_post(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true));
+        echo(cvtx_get_latex(cvtx_get_short($antrag)));
     }
 }
 
