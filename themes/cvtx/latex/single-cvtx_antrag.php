@@ -8,10 +8,12 @@
 \usepackage{lineno}
 \usepackage{tabularx}
 %\usepackage{calc}
+\usepackage{scrpage2}
 
 \sloppy
-\pagestyle{myheadings}
-\markright{<?php cvtx_kuerzel(); ?> <?php cvtx_titel(); ?>}
+\pagestyle{scrheadings}
+\ohead{<?php cvtx_kuerzel(); ?> <?php cvtx_titel(); ?>}
+\setheadsepline{0.4pt}
 
 \begin{document}
 
@@ -36,7 +38,7 @@
     \hline
 \end{tabularx}
 
-\textbf{\Large <?php cvtx_titel(); ?>}
+\section*{<?php cvtx_titel(); ?>}
 
 \begin{linenumbers}
 %\modulolinenumbers[5]
