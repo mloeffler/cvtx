@@ -35,11 +35,13 @@ Template Name: Antrags&uuml;bersicht
 			$top_id = $post->ID;?>
 			<li class="top" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>"><h3><?php the_title(); ?></h3><ul>
 			<?php
-			$loop2 = new WP_Query(array('post_type' => 'cvtx_antrag',
-										'meta_key' => 'cvtx_antrag_top',
-										'meta_value' => $top_id,
-										'orderby' => 'cvtx_antrag_ord',
-										'order' => 'ASC'));
+			$loop2 = new WP_Query(array('post_type'  => 'cvtx_antrag',
+										'meta_key'   => 'cvtx_antrag_ord',
+										'orderby'    => 'meta_value_num',
+										'order'      => 'ASC',
+                                        'meta_query' => array(array('key'     => 'cvtx_antrag_top',
+                                                                    'value'   => $top_id,
+                                                                    'compare' => '='))));
 			while ($loop2->have_posts() ) : $loop2->the_post();?>
 				<li class="antrag"><h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
 				<span class="steller"><strong>AntragstellerInnen:</strong> <?php print get_post_meta($post->ID,'cvtx_antrag_steller',true);?></strong></span>
@@ -47,11 +49,13 @@ Template Name: Antrags&uuml;bersicht
 					<li><?php if ($file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
 					<li><a href="#">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
 				<?php $antrag_id = $post->ID; ?>
-				<?php $loop3 = new WP_Query(array('post_type' => 'cvtx_aeantrag',
-												  'meta_key' => 'cvtx_aeantrag_antrag',
-												  'meta_value' => $antrag_id,
-												  'order_by' => 'cvtx_aeantrag_zeile',
-												  'order' => 'ASC')); ?>
+				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
+												  'meta_key'   => 'cvtx_aeantrag_num',
+												  'orderby'    => 'meta_value_num',
+                                                  'order'      => 'ASC',
+                                                  'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                                              'value'   => $antrag_id,
+                                                                              'compare' => '=')))); ?>
 					<?php if($loop3->have_posts()): ?>
 					<li><a href="<?php the_permalink(); ?>&ae_antraege=1" rel="extern" class="ae_antraege_overview" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrags&uuml;bersicht</a></li>
 					<?php endif;?>

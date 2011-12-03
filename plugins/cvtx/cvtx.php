@@ -726,9 +726,9 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
 
     // Tagesordnungspunkte auflisten
     $tquery = new WP_Query(array('post_type' => 'cvtx_top',
-                                'orderby'   => 'meta_value_num',
-                                'meta_key'  => 'cvtx_top_ord',
-                                'order'     => 'ASC'));
+                                 'orderby'   => 'meta_value_num',
+                                 'meta_key'  => 'cvtx_top_ord',
+                                 'order'     => 'ASC'));
     if ($tquery->have_posts()) {
         echo('<select name="cvtx_aeantrag_antrag">');
         while ($tquery->have_posts()) {
@@ -738,8 +738,12 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
             
             // list anträge in top
             $aquery = new WP_Query(array('post_type'  => 'cvtx_antrag',
-                                         'meta_key'   => 'cvtx_antrag_top',
-                                         'meta_value' => get_the_ID()));
+                                         'orderby'    => 'meta_value_num',
+                                         'meta_key'   => 'cvtx_antrag_ord',
+                                         'order'      => 'ASC',
+                                         'meta_query' => array(array('key'     => 'cvtx_antrag_top',
+                                                                     'value'   => get_the_ID(),
+                                                                     'compare' => '='))));
             if ($aquery->have_posts()) {
                 while ($aquery->have_posts()) {
                     $aquery->the_post();

@@ -15,7 +15,7 @@
 						printf(__('<strong>AntragstellerInnen:</strong> %1$s'),$antragsteller);
 					}
 					?>
-					<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'kubrick') . '</p>'); ?>
+					<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx') . '</p>'); ?>
 					<?php
 					$grund = get_post_meta($post->ID,'cvtx_antrag_grund',true);
 					if(!empty($grund)){
@@ -32,11 +32,13 @@
 					</small>
 				</p>
 				<?php $antrag_id = $post->ID; ?>
-				<?php $loop3 = new WP_Query(array('post_type' => 'cvtx_aeantrag',
-												  'meta_key' => 'cvtx_aeantrag_antrag',
-												  'meta_value' => $antrag_id,
-												  'order_by' => 'cvtx_aeantrag_zeile',
-												  'order' => 'ASC'));
+				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
+												  'meta_key'   => 'cvtx_aeantrag_num',
+												  'orderby'    => 'meta_value_num',
+												  'order'      => 'ASC',
+                                                  'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                                              'value'   => $antrag_id,
+                                                                              'compare' => '='))));
 				if($loop3->have_posts()):?>
 				<div id="ae_antraege">
 					<h3>&Auml;nderungsantr&auml;ge<?php
