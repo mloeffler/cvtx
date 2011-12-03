@@ -16,6 +16,10 @@ $(document).ready(function(){
 		$(".ae_antraege_overlay").fadeOut().remove();
 		return false;
 	});
+	$('body').delegate('a.print','click', function() {
+		$('#ae_window .result').printElement();
+		return false;
+	});
 	$('a.ae_antraege_overview').click(function() {
 		var target = $(this).attr("href");
 		var id = $(this).attr("meta-id");
@@ -38,7 +42,7 @@ $(document).ready(function(){
 		$("#ae_window .result").load(target+' #ae_antraege');
 		return false;
 	});
-});
+ });
 
 // getPageScroll()
 // Returns array with x,y page scroll values.
