@@ -548,10 +548,12 @@ function cvtx_create_pdf($post_id, $post = null) {
         
         // create pdf if template found
         if (isset($tpl) && !empty($tpl) && isset($file) && !empty($file)) {
+            // drop old pdf file
+            if (is_file($file.'.pdf')) unlink($file.'.pdf');
+            
+            // run latex template, caputure output
             ob_start();
-            // run latex template
             require($tpl);
-            // capture output
             $out = ob_get_contents();
             ob_end_clean();
 
@@ -659,6 +661,8 @@ function cvtx_get_latex($out) {
     $out = str_replace(array('<b>', '</b>'), array('\textbf{', '}'), $out);
     $out = str_replace(array('<em>', '</em>'), array('\textit{', '}'), $out);
     $out = str_replace(array('<i>', '</i>'), array('\textit{', '}'), $out);
+    $out = str_replace(array('<h3>', '</h3>'), array('\subsection*{', '}'), $out);
+    $out = str_replace(array('<h4>', '</h4>'), array('\subsubsection*{', '}'), $out);
     
     // strip
     $out = strip_tags($out);

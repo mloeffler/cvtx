@@ -11,11 +11,14 @@
 \usepackage{scrpage2}
 
 \sloppy
+
 \pagestyle{scrheadings}
 \ohead{Änderungsantrag <?php cvtx_kuerzel(); ?>}
 \setheadsepline{0.4pt}
 
 \begin{document}
+
+\shorthandoff{"}
 
 \thispagestyle{empty}
 
@@ -33,7 +36,7 @@
                                                 &                                                                           \\
     AntragstellerInnen:                         &   <?php cvtx_antragsteller(); ?>                                          \\
                                                 &                                                                           \\
-    Gegenstand:                                 &   <?php cvtx_antrag(); ?>               \\
+    Gegenstand:                                 &   <?php cvtx_antrag(); ?> (<?php cvtx_top(); ?>)                          \\
                                                 &                                                                           \\
     \hline
 \end{tabularx}
@@ -45,7 +48,8 @@
 <?php cvtx_antragstext(); ?>
 \end{linenumbers}
 
-\textbf{Begründung:}\\
+%\textbf{Begründung:}\\
+\subsection*{Begründung}
 <?php cvtx_begruendung(); ?>
 
 \end{document}

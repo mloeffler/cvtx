@@ -11,11 +11,14 @@
 \usepackage{scrpage2}
 
 \sloppy
+
 \pagestyle{scrheadings}
 \ohead{<?php cvtx_kuerzel(); ?> <?php cvtx_titel(); ?>}
 \setheadsepline{0.4pt}
 
 \begin{document}
+
+\shorthandoff{"}
 
 \thispagestyle{empty}
 
@@ -45,7 +48,8 @@
 <?php cvtx_antragstext(); ?>
 \end{linenumbers}
 
-\textbf{Begründung:}\\
+%\textbf{Begründung:}\\
+\subsection*{Begründung}
 <?php cvtx_begruendung(); ?>
 
 \end{document}
