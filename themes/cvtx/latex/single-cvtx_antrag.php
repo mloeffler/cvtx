@@ -38,6 +38,8 @@
                                                 &                                                                           \\
     Gegenstand:                                 &   <?php cvtx_top_titel(); ?> (<?php cvtx_top_kuerzel(); ?>)               \\
                                                 &                                                                           \\
+    Anmerkungen:                                &   <?php cvtx_info(); ?>                                                   \\
+                                                &                                                                           \\
     \hline
 \end{tabularx}
 

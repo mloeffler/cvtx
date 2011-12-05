@@ -38,6 +38,8 @@
                                                 &                                                                           \\
     Gegenstand:                                 &   <?php cvtx_antrag(); ?> (<?php cvtx_top(); ?>)                          \\
                                                 &                                                                           \\
+    Anmerkungen:                                &   <?php cvtx_info(); ?>                                                   \\
+                                                &                                                                           \\
     \hline
 \end{tabularx}
 

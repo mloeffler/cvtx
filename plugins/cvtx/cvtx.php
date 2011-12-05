@@ -40,14 +40,16 @@ $cvtx_types = array('cvtx_top'      => array('cvtx_top_ord',
                                              'cvtx_antrag_num',
                                              'cvtx_antrag_top',
                                              'cvtx_antrag_steller',
-                                             'cvtx_antrag_grund'),
+                                             'cvtx_antrag_grund',
+                                             'cvtx_antrag_info'),
                     'cvtx_aeantrag' => array('cvtx_aeantrag_zeile',
                                              'cvtx_aeantrag_num',
                                              'cvtx_aeantrag_antrag',
                                              'cvtx_aeantrag_steller',
                                              'cvtx_aeantrag_grund',
                                              'cvtx_aeantrag_verfahren',
-                                             'cvtx_aeantrag_detail'));
+                                             'cvtx_aeantrag_detail',
+                                             'cvtx_aeantrag_info'));
 
 
 /* add custom meta boxes */
@@ -62,6 +64,7 @@ function cvtx_add_meta_boxes() {
     add_meta_box('cvtx_antrag_ord', 'Antragsnummer', 'cvtx_antrag_ord', 'cvtx_antrag', 'side', 'high');
     add_meta_box('cvtx_antrag_steller', 'AntragstellerIn(nen)', 'cvtx_antrag_steller', 'cvtx_antrag', 'normal', 'high');
     add_meta_box('cvtx_antrag_grund', 'Begründung', 'cvtx_antrag_grund', 'cvtx_antrag', 'normal', 'high');
+    add_meta_box('cvtx_antrag_info', 'Weitere Informationen', 'cvtx_antrag_info', 'cvtx_antrag', 'normal', 'low');
     add_meta_box('cvtx_antrag_top', 'Tagesordnungspunkt', 'cvtx_antrag_top', 'cvtx_antrag', 'side', 'high');
     add_meta_box('cvtx_antrag_pdf', 'PDF', 'cvtx_metabox_pdf', 'cvtx_antrag', 'side', 'low');
     
@@ -70,6 +73,7 @@ function cvtx_add_meta_boxes() {
     add_meta_box('cvtx_aeantrag_steller', 'AntragstellerIn(nen)', 'cvtx_aeantrag_steller', 'cvtx_aeantrag', 'normal', 'high');
     add_meta_box('cvtx_aeantrag_grund', 'Begründung', 'cvtx_aeantrag_grund', 'cvtx_aeantrag', 'normal', 'high');
     add_meta_box('cvtx_aeantrag_verfahren', 'Verfahren', 'cvtx_aeantrag_verfahren', 'cvtx_aeantrag', 'normal', 'high');
+    add_meta_box('cvtx_aeantrag_info', 'Weitere Informationen', 'cvtx_aeantrag_info', 'cvtx_aeantrag', 'normal', 'low');
     add_meta_box('cvtx_aeantrag_antrag', 'Antrag', 'cvtx_aeantrag_antrag', 'cvtx_aeantrag', 'side', 'high');
     // show/hide pdf-box for of aeantrag
     if (get_option('cvtx_aeantrag_pdf')) {
@@ -121,6 +125,12 @@ function cvtx_antrag_grund() {
     echo('<textarea style="width: 100%" name="cvtx_antrag_grund">'.get_post_meta($post->ID, 'cvtx_antrag_grund', true).'</textarea>');
 }
 
+// Weitere Infos
+function cvtx_antrag_info() {
+    global $post;
+    echo('<textarea style="width: 100%" name="cvtx_antrag_info">'.get_post_meta($post->ID, 'cvtx_antrag_info', true).'</textarea>');
+}
+
 
 /* Änderungsanträge */
 
@@ -149,6 +159,12 @@ function cvtx_aeantrag_steller() {
 function cvtx_aeantrag_grund() {
     global $post;
     echo('<textarea style="width: 100%" name="cvtx_aeantrag_grund">'.get_post_meta($post->ID, 'cvtx_aeantrag_grund', true).'</textarea>');
+}
+
+// Weitere Infos
+function cvtx_aeantrag_info() {
+    global $post;
+    echo('<textarea style="width: 100%" name="cvtx_aeantrag_info">'.get_post_meta($post->ID, 'cvtx_aeantrag_info', true).'</textarea>');
 }
 
 // Verfahren
@@ -864,6 +880,15 @@ function cvtx_antrag_kuerzel() {
     if ($post->post_type == 'cvtx_aeantrag') {
         $antrag = get_post(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true));
         echo(cvtx_get_latex(cvtx_get_short($antrag)));
+    }
+}
+
+function cvtx_info() {
+    global $post;
+    if ($post->post_type == 'cvtx_antrag') {
+        echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_info', true)));
+    } else if ($post->post_type == 'cvtx_aeantrag') {
+        echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_info', true)));
     }
 }
 
