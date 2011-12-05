@@ -125,6 +125,7 @@ div.filler {
 
 #ae_window .result {
 	padding:15px;
+	overflow: auto;
 }
 
 span.replace {

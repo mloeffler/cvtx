@@ -27,6 +27,8 @@ $(document).ready(function(){
 		var height = $(document).height();
 		var width = $(document).width();
 		var rheight = $(window).height()-100;
+		var r2height = rheight-65;
+		var r2width = rwidth-65;
 		var rwidth = width-100;
 		var scroll = getPageScroll();
 		var top = scroll[1]+35;
@@ -35,7 +37,7 @@ $(document).ready(function(){
 					 '</div></div>';
 		$("body").append(output);
 		var navi = '<div class="navi"><span class="replace"><a href="#" class="close">Close</a><a href="#" class="print">Print</a></span></div>';
-		var result = '<div class="result"></div>';
+		var result = '<div class="result" style="height:'+r2height+'px;width:'+r2width+'px"></div>';
 		$("#ae_window").append(navi);
 		$("#ae_window").append(result);
 		$(".ae_antraege_overlay").fadeIn();
