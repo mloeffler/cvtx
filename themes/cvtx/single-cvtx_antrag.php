@@ -48,7 +48,7 @@
 							echo '"';
 						}
 					?></h3>
-					<table cellpadding="3" cellspacing="0" valign="left">
+					<table cellpadding="3" cellspacing="0" valign="top">
 						<tr>
 							<th><strong>Zeile</strong></th>
 							<th><strong>AntragstellerInnen</strong></th>
