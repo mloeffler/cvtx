@@ -401,7 +401,7 @@ function cvtx_order_lists($vars) {
 add_action('wp_insert_post', 'cvtx_insert_post', 10, 2);
 function cvtx_insert_post($post_id, $post = null) {
     global $cvtx_types;
-                   
+
     if (in_array($post->post_type, array_keys($cvtx_types))) {
         // Loop through the POST data
         foreach ($cvtx_types[$post->post_type] as $key) {
@@ -525,7 +525,7 @@ function cvtx_conf() {
 /**
  * Erstellt ein PDF aus gespeicherten Anträgen
  */
-add_action('save_post', 'cvtx_create_pdf', 10, 2);
+add_action('save_post', 'cvtx_create_pdf', 20, 2);
 function cvtx_create_pdf($post_id, $post = null) {
     $pdflatex = get_option('cvtx_pdflatex_cmd');
     
@@ -667,26 +667,54 @@ function cvtx_get_latex($out) {
     // strip html entities
 //    $out = html_entity_decode($out);
     $out = str_replace('&nbsp;', ' ', $out);
+    $out = str_replace('&amp;', '&', $out);
     
     // recode special chars
+    $tmp = time().'\\textbackslash'.rand();
+    $out = str_replace('\\', $tmp, $out);
     $out = str_replace(array('$', '%', '_', '{', '}', '&', '#'),
                        array('\\$', '\\%', '\\_', '\\{', '\\}', '\\&', '\\#'), $out);
+    $out = str_replace($tmp, '{\\textbackslash}', $out);
     
     // recode formatting rules
-    $out = str_replace(array('<strong>', '</strong>'), array('\textbf{', '}'), $out);
-    $out = str_replace(array('<b>', '</b>'), array('\textbf{', '}'), $out);
-    $out = str_replace(array('<em>', '</em>'), array('\textit{', '}'), $out);
-    $out = str_replace(array('<i>', '</i>'), array('\textit{', '}'), $out);
-    $out = str_replace(array('<h3>', '</h3>'), array('\subsection*{', '}'), $out);
-    $out = str_replace(array('<h4>', '</h4>'), array('\subsubsection*{', '}'), $out);
+    $rules = array(array('search'  => array('<strong>', '</strong>'),
+                         'replace' => array('\textbf{', '}')),
+                   array('search'  => array('<b>', '</b>'),
+                         'replace' => array('\textbf{', '}')),
+                   array('search'  => array('<em>', '</em>'),
+                         'replace' => array('\textit{', '}')),
+                   array('search'  => array('<i>', '</i>'),
+                         'replace' => array('\textit{', '}')),
+                   array('search'  => array('<h3>', '</h3>'),
+                         'replace' => array('\subsection*{', '}')),
+                   array('search'  => array('<h4>', '</h4>'),
+                         'replace' => array('\subsubsection*{', '}')),
+                   array('search'  => array('<ul>', '</ul>'),
+                         'replace' => array('\begin{itemize}', '\end{itemize}')),
+                   array('search'  => array('<ol>', '</ol>'),
+                         'replace' => array('\begin{enumerate}', '\end{enumerate}')),
+                   array('search'  => array('<li>', '</li>'),
+                         'replace' => array('\item ', '')),
+                   array('search'  => '/<br[ ]*[\/]?>/',
+                         'replace' => "\n",
+                         'mode'    => 'preg'));
+    // run replacing rules
+    foreach ($rules as $rule) {
+        if (!isset($rule['mode']) || $rule['mode'] != 'preg') {
+            $out = str_replace($rule['search'], $rule['replace'], $out);
+        } else {
+            $out = preg_replace($rule['search'], $rule['replace'], $out);
+        }
+    }
     
     // strip
     $out = strip_tags($out);
     $out = trim($out);
     
     // add new lines
-    $out = str_replace("\r\n", "\n", $out);
-    $out = str_replace("\n", "\\par\n", $out);
+    $out = preg_replace("/[\r\n]+/", "\\par\n", $out);
+#    $out = str_replace("\r\n", "\n", $out);
+#    $out = str_replace("\n", "\\par\n", $out);
     
     return $out;
 }

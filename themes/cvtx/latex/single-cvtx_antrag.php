@@ -1,4 +1,4 @@
-\documentclass[paper=A4, fontsize=12pt, parskip]{scrartcl}
+\documentclass[a4paper, 12pt, pagesize, halfparskip]{scrartcl}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[utf8x]{inputenc}
