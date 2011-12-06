@@ -54,7 +54,7 @@ $cvtx_types = array('cvtx_top'      => array('cvtx_top_ord',
 
 /* add custom meta boxes */
 
-add_action('add_meta_boxes', 'cvtx_add_meta_boxes');
+if (is_admin()) add_action('add_meta_boxes', 'cvtx_add_meta_boxes');
 function cvtx_add_meta_boxes() {
     // Tagesordnungspunkte
     add_meta_box('cvtx_top_ord', 'Nummer', 'cvtx_top_ord', 'cvtx_top', 'side', 'high');
@@ -110,7 +110,7 @@ function cvtx_antrag_ord() {
 function cvtx_antrag_top() {
     global $post;
     $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);    
-    echo (cvtx_dropdown_tops($top_id, 'Keine Tagesordnungspunkte angelegt.'));
+    echo(cvtx_dropdown_tops($top_id, 'Keine Tagesordnungspunkte angelegt.'));
 }
 
 // Antragsteller
@@ -146,7 +146,7 @@ function cvtx_aeantrag_zeile() {
 function cvtx_aeantrag_antrag() {
     global $post;
     $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
-    cvtx_dropdown_antraege($antrag_id, 'Keine Tagesordnungspunkte angelegt.');
+    echo(cvtx_dropdown_antraege($antrag_id, 'Keine Tagesordnungspunkte angelegt.'));
 }
 
 // Antragsteller
@@ -261,7 +261,7 @@ function create_post_types() {
 
 /* Update lists */
 
-add_filter('manage_edit-cvtx_top_columns', 'cvtx_top_columns');
+if (is_admin()) add_filter('manage_edit-cvtx_top_columns', 'cvtx_top_columns');
 function cvtx_top_columns($columns) {
 	$columns = array('cb'              => '<input type="checkbox" />',
                      'title'           => 'Tagesordnungspunkt',
@@ -270,7 +270,7 @@ function cvtx_top_columns($columns) {
 	return $columns;
 }
 
-add_filter('manage_edit-cvtx_antrag_columns', 'cvtx_antrag_columns');
+if (is_admin()) add_filter('manage_edit-cvtx_antrag_columns', 'cvtx_antrag_columns');
 function cvtx_antrag_columns($columns) {
     $columns = array('cb'                  => '<input type="checkbox" />',
                      'title'               => 'Antragstitel',
@@ -281,13 +281,13 @@ function cvtx_antrag_columns($columns) {
 }
 
 // Register the column as sortable
-add_filter('manage_edit-cvtx_antrag_sortable_columns', 'cvtx_register_sortable_antrag');
+if (is_admin()) add_filter('manage_edit-cvtx_antrag_sortable_columns', 'cvtx_register_sortable_antrag');
 function cvtx_register_sortable_antrag($columns) {
     $columns['cvtx_antrag_steller'] = 'cvtx_antrag_steller';
     return $columns;
 }
 
-add_filter('manage_edit-cvtx_aeantrag_columns', 'cvtx_aeantrag_columns');
+if (is_admin()) add_filter('manage_edit-cvtx_aeantrag_columns', 'cvtx_aeantrag_columns');
 function cvtx_aeantrag_columns($columns) {
 	$columns = array('cb'                      => '<input type="checkbox" />',
                      'title'                   => 'Änderungsantrag',
@@ -299,14 +299,14 @@ function cvtx_aeantrag_columns($columns) {
 }
 
 // Register the column as sortable
-add_filter('manage_edit-cvtx_aeantrag_sortable_columns', 'cvtx_register_sortable_aeantrag');
+if (is_admin()) add_filter('manage_edit-cvtx_aeantrag_sortable_columns', 'cvtx_register_sortable_aeantrag');
 function cvtx_register_sortable_aeantrag($columns) {
     $columns['cvtx_aeantrag_steller']   = 'cvtx_aeantrag_steller';
     $columns['cvtx_aeantrag_verfahren'] = 'cvtx_aeantrag_verfahren';
     return $columns;
 }
 
-add_action('manage_posts_custom_column', 'cvtx_format_lists');
+if (is_admin()) add_action('manage_posts_custom_column', 'cvtx_format_lists');
 function cvtx_format_lists($column) {
     global $post;
     switch ($column) {
@@ -369,7 +369,7 @@ function cvtx_format_lists($column) {
     }
 }
 
-add_filter('request', 'cvtx_order_lists');
+if (is_admin()) add_filter('request', 'cvtx_order_lists');
 function cvtx_order_lists($vars) {
     global $post_type;
     if (isset($vars['orderby'])) {
@@ -442,7 +442,7 @@ function cvtx_insert_post($post_id, $post = null) {
         }
         
         // create pdf
-        cvtx_create_pdf($post_id, $post);
+        if (is_admin()) cvtx_create_pdf($post_id, $post);
     }
 }
 
@@ -485,7 +485,7 @@ function cvtx_the_title($before='', $title='') {
 }
 
 
-add_action('admin_menu', 'cvtx_config_page');
+if (is_admin()) add_action('admin_menu', 'cvtx_config_page');
 function cvtx_config_page() {
     if (function_exists('add_submenu_page')) {
         add_submenu_page('plugins.php', 'cvtx Antragstool', 'cvtx Antragstool', 'manage_options', 'cvtx-config', 'cvtx_conf');
@@ -529,7 +529,6 @@ function cvtx_conf() {
 /**
  * Erstellt ein PDF aus gespeicherten Anträgen
  */
-//add_action('save_post', 'cvtx_create_pdf', 20, 2);
 function cvtx_create_pdf($post_id, $post = null) {
     $pdflatex = get_option('cvtx_pdflatex_cmd');
     
@@ -540,7 +539,7 @@ function cvtx_create_pdf($post_id, $post = null) {
         // prepare antrag
         if ($post->post_type == 'cvtx_antrag') {
             // file
-            $file = $file = $out_dir['basedir'].'/';
+            $file = $out_dir['basedir'].'/';
             if ($short = cvtx_get_short($post)) {
                 $file .= sanitize_title($short.'_'.$post->post_title);
             } else {
@@ -559,7 +558,7 @@ function cvtx_create_pdf($post_id, $post = null) {
         // prepare Ä-Antrag if pdf-option enabled
         else if ($post->post_type == 'cvtx_aeantrag' && get_option('cvtx_aeantrag_pdf')) {
             // file
-            $file = $file = $out_dir['basedir'].'/';
+            $file = $out_dir['basedir'].'/';
             if ($short = cvtx_get_short($post)) {
                 $file .= sanitize_title($short);
             } else {
@@ -578,8 +577,12 @@ function cvtx_create_pdf($post_id, $post = null) {
         
         // create pdf if template found
         if (isset($tpl) && !empty($tpl) && isset($file) && !empty($file)) {
-            // drop old pdf file
-            if (is_file($file.'.pdf')) unlink($file.'.pdf');
+            // drop old files by name/id and ending
+            foreach (array($file, $out_dir['basedir'].'/'.$post->ID) as $oldfile) {
+                foreach (array('pdf', 'log', 'tex') as $ending) {
+                    if (is_file($oldfile.'.'.$ending)) unlink($oldfile.'.'.$ending);
+                }
+            }
             
             // run latex template, caputure output
             ob_start();
@@ -767,7 +770,7 @@ function cvtx_dropdown_tops($selected = null, $message = '') {
         }
         $output .= '</select>';
     }
-    // print info message if no top exists
+    // return info message if no top exists
     else {
         return $message;
     }
@@ -788,6 +791,7 @@ function cvtx_dropdown_tops($selected = null, $message = '') {
 function cvtx_dropdown_antraege($selected = null, $message = '') {
     global $post;
     $post_bak = $post;
+	$output = '';
 
     // Tagesordnungspunkte auflisten
     $tquery = new WP_Query(array('post_type' => 'cvtx_top',
@@ -795,11 +799,11 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
                                  'meta_key'  => 'cvtx_top_ord',
                                  'order'     => 'ASC'));
     if ($tquery->have_posts()) {
-        echo('<select name="cvtx_aeantrag_antrag">');
+        $output .= '<select name="cvtx_aeantrag_antrag">';
         while ($tquery->have_posts()) {
             $tquery->the_post();
-            // print optgroup for top
-            echo('<optgroup label="'.get_the_title().'">');
+            // optgroup for top
+            $output .= '<optgroup label="'.get_the_title().'">';
             
             // list anträge in top
             $aquery = new WP_Query(array('post_type'  => 'cvtx_antrag',
@@ -812,24 +816,25 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
             if ($aquery->have_posts()) {
                 while ($aquery->have_posts()) {
                     $aquery->the_post();
-                    echo('<option value="'.get_the_ID().'"'.(get_the_ID() == $selected ? ' selected="selected"' : '').'>');
-                    echo(get_the_title());
-                    echo('</option>');
+                    $output .= '<option value="'.get_the_ID().'"'.(get_the_ID() == $selected ? ' selected="selected"' : '').'>';
+                    $output .= get_the_title();
+                    $output .= '</option>';
                 }
             }
             
-            echo('</optgroup>');
+            $output .= '</optgroup>';
         }
-        echo('</select>');
+        $output .= '</select>';
     }
     // print info message if no top exists
     else {
-        echo($message);
+        return $message;
     }
     
     // reset data
     wp_reset_postdata();
     $post = $post_bak;
+    return $output;
 }
 
 /**
