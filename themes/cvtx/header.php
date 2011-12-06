@@ -11,9 +11,6 @@
 <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/ae_antraege.css" type="text/css" media="screen" />
 <?php endif; ?>
 <?php wp_head(); ?>
-<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/jquery.js"></script>
-<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/script.js"></script>
-<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/jquery.printElement.min.js"></script>
 </head>
 <body>
 <div id="overlay"></div>

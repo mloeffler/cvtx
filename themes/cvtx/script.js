@@ -1,4 +1,4 @@
-$(document).ready(function(){
+(function($){
 	$('ul#antraege li.overview a').click(function() {
 		var pathname = $(this).attr("href");
 		if (location.pathname.replace(/^\//,") == this.pathname.replace(/^\//,") && location.hostname == this.hostname) {
@@ -32,12 +32,12 @@ $(document).ready(function(){
 		$("#ae_window .result").load(target+' #add_aeantrag');
 		return false;
 	});*/
- });
+ })(jQuery);
  
 function create_Overlay() {
-	var height = $(document).height();
-	var width = $(document).width();
-	var rheight = $(window).height()-100;
+	var height = jQuery(document).height();
+	var width = jQuery(document).width();
+	var rheight = jQuery(window).height()-100;
 	var r2height = rheight-65;
 	var r2width = rwidth-65;
 	var rwidth = width-100;
@@ -46,12 +46,12 @@ function create_Overlay() {
 	var output = '<div class="ae_antraege_overlay" style="width:'+width+'px;height:'+height+'px;z-index:10090;display:none">'+
 				 '<div id="ae_window" style="width:'+rwidth+'px;height:'+rheight+'px;top:'+top+'px">'+
 				 '</div></div>';
-	$("body").append(output);
+	jQuery("body").append(output);
 	var navi = '<div class="navi"><span class="replace"><a href="#" class="close">Close</a><a href="#" class="print">Print</a></span></div>';
 	var result = '<div class="result" style="height:'+r2height+'px;width:'+r2width+'px"></div>';
-	$("#ae_window").append(navi);
-	$("#ae_window").append(result);
-	$(".ae_antraege_overlay").fadeIn();
+	jQuery("#ae_window").append(navi);
+	jQuery("#ae_window").append(result);
+	jQuery(".ae_antraege_overlay").fadeIn();
 }
 
 // getPageScroll()

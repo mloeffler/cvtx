@@ -9,4 +9,6 @@ function register_my_menus() {
     array('header-menu' => __( 'Header Menu' ) )
   );
 }
+
+wp_enqueue_script("jquery");
 ?>
