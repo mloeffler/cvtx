@@ -78,5 +78,4 @@ Template Name: Antrags&uuml;bersicht
 	</div>
 	</div>
 	<?php get_sidebar(); ?>
-</div>
 <?php get_footer(); ?>
