@@ -1,11 +1,13 @@
 <?php
 
-$aeformat = get_option('cvtx_aeantrag_format');
-$aepdf    = get_option('cvtx_aeantrag_pdf');
-$pdflatex = get_option('cvtx_pdflatex_cmd');
-$texfile  = get_option('cvtx_drop_texfile');
-$logfile  = get_option('cvtx_drop_logfile');
+$aeformat  = get_option('cvtx_aeantrag_format');
+$aepdf     = get_option('cvtx_aeantrag_pdf');
+$pdflatex  = get_option('cvtx_pdflatex_cmd');
+$texfile   = get_option('cvtx_drop_texfile');
+$logfile   = get_option('cvtx_drop_logfile');
+$anon_user = get_option('cvtx_anon_user');
 
+$wp_users  = get_users();
 ?>
 
 <h2>cvtx Konfiguration</h2>
@@ -54,7 +56,18 @@ if (isset($ms) && count($ms) > 0) {
    <input id="cvtx_drop_logfile_if" name="cvtx_drop_logfile" type="radio" value="2" <?php echo($logfile != 1 && $logfile != 3 ? 'checked="checked"' : ''); ?>" />
    <label for="cvtx_drop_logfile_if">nur wenn fehlerfrei</label>
    <input id="cvtx_drop_logfile_no" name="cvtx_drop_logfile" type="radio" value="3" <?php echo($logfile == 3 ? 'checked="checked"' : ''); ?>" />
-   <label for="cvtx_drop_logfile_no">nie</label>
+   <label for="cvtx_drop_logfile_no" value="">nie</label>
+  </p>
+  
+  <h3>Wordpress-Einstellungen</h3>
+  <p>
+  	<label for="cvtx_anon_user">Wordpress-Nutzer, dem alle anonym eingetragenen Anträge und Änderungsanträge zugeordnet werden.</label><br/>
+    <select name="cvtx_anon_user">
+      <?php
+      foreach($wp_users as $user)
+      	echo '<option'.($user->ID == $anon_user ? ' selected="selected" ' : '').' label="'.$user->user_login.'">'.$user->ID.'</option';
+      ?>
+    </select>
   </p>
 
   <p class="submit">
