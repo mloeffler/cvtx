@@ -70,7 +70,7 @@
 					<?php 
 					while($loop3->have_posts()):$loop3->the_post();?>
 						<tr>
-							<td class="zeile"><?php print get_post_meta($post->ID,'cvtx_aeantrag_zeile',true); ?></td>
+							<td class="zeile"><strong><?php print get_post_meta($post->ID,'cvtx_aeantrag_zeile',true); ?></strong></td>
 							<td class="steller"><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller',true);?></td>
 							<td class="text"><?php the_content(); ?></td>
 							<td class="grund"><?php print get_post_meta($post->ID,'cvtx_aeantrag_grund',true);?></td>

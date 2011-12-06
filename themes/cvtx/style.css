@@ -372,6 +372,12 @@ ul#antraege li.top ul li.antrag ul.ae_antraege {
 
 #ae_antraege table tr td{
 	border-bottom:1px solid #eee;
+	vertical-align: top;
+	padding: 1em;
+}
+
+#ae_antraege table tr td p {
+	margin:0;
 }
 
 #ae_antraege table th {
