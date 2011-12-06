@@ -937,7 +937,9 @@ function cvtx_create_antrag_form($cvtx_antrag_title = '', $cvtx_antrag_steller =
 	$output .= '</div>';
 	
 	// Submit-Button
-	$output .= '<input type="submit" id="cvtx_antrag_submit" value="Antrag erstellen">';
+	$output .= '<div class="form-item">';
+	$output .= '<input type="submit" id="cvtx_antrag_submit" class="submit" value="Antrag erstellen">';
+	$output .= '</div>';
 	$output .= '</form>';
 	
 	return $output;
@@ -1033,7 +1035,9 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_zeile = '', $cvtx_aeantrag_tex
 	$output .= '</div>';
 	
 	// Submit-Button
-	$output .= '<input type="submit" id="cvtx_aeantrag_submit" value="Änderungsantrag erstellen">';
+	$output .= '<div class="form-item">';
+	$output .= '<input type="submit" id="cvtx_aeantrag_submit" class="submit" value="Änderungsantrag erstellen">';
+	$output .= '</div>';
 	$output .= '</form>';
 	
 	return $output;

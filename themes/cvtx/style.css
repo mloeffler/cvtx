@@ -220,8 +220,9 @@ header .description {
 }
 
 .postmetadata {
-	background: #eee;
-	padding:0.3em 0.5em;
+	background: url(images/verlauf2.png) center repeat-x;
+	border: 1px solid #eee;
+	padding:0.5em 1em;
 	border-radius: 3px;
 }
 
@@ -386,6 +387,7 @@ ul#antraege li.top ul li.antrag ul.ae_antraege {
 
 form.cvtx_antrag label {
 	font-weight: bold;
+	color: #333;
 }
 
 form.cvtx_antrag div.form-item {
@@ -395,6 +397,20 @@ form.cvtx_antrag div.form-item {
 #add_aeantrag form,
 #add_aeantrag p {
 	font-size:0.8em;
+}
+
+form.cvtx_antrag input,
+form.cvtx_antrag textarea {
+	background: url(images/verlauf2.png) bottom repeat-x;
+	border: 1px solid #eee;
+	padding: 0.3em;
+	border-radius:3px;
+}
+
+form.cvtx_antrag input.submit {
+	font-weight: bold;
+	color: #58ab27;
+	padding: 1em;
 }
 
 p#message {
