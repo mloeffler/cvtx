@@ -26,6 +26,19 @@
 		$("#ae_window .result").load(target+' #ae_antraege');
 		return false;
 	});
+	$(".cvtx_antrag_form .submit").click(function() {
+		var ret = true;
+		$(".cvtx_antrag_form .required").each(function() {
+			if(!$(this).val()) {
+				$(this).addClass("error");
+				ret = false;
+			}
+			else {
+				$(this).removeClass("error");
+			}
+		})
+		return ret;
+	});
 /*	$('a.add_ae_antraeg').click(function() {
 		var target = $(this).attr("href");
 		create_Overlay();

@@ -901,7 +901,7 @@ function cvtx_create_antrag_form($cvtx_antrag_title = '', $cvtx_antrag_steller =
 	$output  = '';
 	
 	// specify form
-	$output .= '<form id="create_antrag_form" class="cvtx_antrag" method="post" action="">';
+	$output .= '<form id="create_antrag_form" class="cvtx_antrag_form" method="post" action="">';
 	
 	// Wp-nonce for security reasons
 	$output .= wp_nonce_field('cvtx_form_create_antrag','cvtx_form_create_antrag_submitted');
@@ -909,7 +909,7 @@ function cvtx_create_antrag_form($cvtx_antrag_title = '', $cvtx_antrag_steller =
 	// Antragstitel
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_antrag_title">Antragstitel: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<input type="text" id="cvtx_antrag_title" name="cvtx_antrag_title" value="'.$cvtx_antrag_title.'" size="100%" /><br>';
+	$output .= '<input type="text" id="cvtx_antrag_title" name="cvtx_antrag_title" class="required" value="'.$cvtx_antrag_title.'" size="100%" /><br>';
 	$output .= '</div>';
 	
 	// TOP
@@ -921,13 +921,13 @@ function cvtx_create_antrag_form($cvtx_antrag_title = '', $cvtx_antrag_steller =
 	// Antragsteller
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_antrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<input type="text" id="cvtx_antrag_steller" name="cvtx_antrag_steller" value="'.$cvtx_antrag_steller.'" size="100%" /><br/>';
+	$output .= '<input type="text" id="cvtx_antrag_steller" name="cvtx_antrag_steller" class="required" value="'.$cvtx_antrag_steller.'" size="100%" /><br/>';
 	$output .= '</div>';
 	
 	// Antragstext
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_antrag_text">Antragstext: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<textarea id="cvtx_antrag_text" name="cvtx_antrag_text" size="100%" cols="60" rows="20" />'.$cvtx_antrag_text.'</textarea><br/>';
+	$output .= '<textarea id="cvtx_antrag_text" name="cvtx_antrag_text" class="required" size="100%" cols="60" rows="20" />'.$cvtx_antrag_text.'</textarea><br/>';
 	$output .= '</div>';
 
 	// Antragsgrund
@@ -980,7 +980,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
 		}
 		else {
 			echo '<p id="message" class="error">Der Änderungsantrag konnte nicht gespeichert werden, weil einige benötigte Felder'.
-				 '(mit einem <span class="form-required" title="Dieses Feld wird benötigt">*</span> be'.
+				 ' (mit einem <span class="form-required" title="Dieses Feld wird benötigt">*</span> be'.
 				 'zeichnet) nicht ausgefüllt wurden.';
 		}
 	}
@@ -1002,21 +1002,21 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_zeile = '', $cvtx_aeantrag_tex
 	$output  = '';
 	
 	// specify form
-	$output .= '<form id="create_aeantrag_form" class="cvtx_antrag" method="post" action="">';
+	$output .= '<form id="create_aeantrag_form" class="cvtx_antrag_form" method="post" action="">';
 	
 	// Wp-nonce for security reasons
 	$output .= wp_nonce_field('cvtx_form_create_aeantrag','cvtx_form_create_aeantrag_submitted');
 	
-	// Antragstitel
+	// Antragszeile
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_aeantrag_zeile">Zeile: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<input type="text" id="cvtx_aeantrag_zeile" name="cvtx_aeantrag_zeile" value="'.$cvtx_aeantrag_zeile.'" size="4" /><br>';
+	$output .= '<input type="text" id="cvtx_aeantrag_zeile" name="cvtx_aeantrag_zeile" class="required" value="'.$cvtx_aeantrag_zeile.'" size="4" /><br>';
 	$output .= '</div>';
 		
 	// Antragsteller
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_aeantrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<input type="text" id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" value="'.$cvtx_aeantrag_steller.'" size="80" /><br/>';
+	$output .= '<input type="text" id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" class="required" value="'.$cvtx_aeantrag_steller.'" size="80" /><br/>';
 	$output .= '</div>';
 	
 	// Antrag
@@ -1025,7 +1025,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_zeile = '', $cvtx_aeantrag_tex
 	// Antragstext
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_aeantrag_text">Antragstext: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<textarea id="cvtx_aeantrag_text" name="cvtx_aeantrag_text" size="100%" cols="60" rows="10" />'.$cvtx_aeantrag_text.'</textarea><br/>';
+	$output .= '<textarea id="cvtx_aeantrag_text" name="cvtx_aeantrag_text" class="required" size="100%" cols="60" rows="10" />'.$cvtx_aeantrag_text.'</textarea><br/>';
 	$output .= '</div>';
 
 	// Antragsgrund
