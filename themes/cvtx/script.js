@@ -29,6 +29,7 @@
 	$(".cvtx_antrag_form .submit").click(function() {
 		var ret = true;
 		var i = 0;
+		$("#message").remove();
 		$(".cvtx_antrag_form .required").each(function() {
 			if(!$(this).val()) {
 				$(this).addClass("error");
