@@ -11,7 +11,8 @@ nav,
 #sidebar,
 .filler,
 .inner h2,
-.postmetadata {
+.postmetadata,
+#add_aeantrag {
 	display:none;
 }
 

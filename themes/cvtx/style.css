@@ -379,3 +379,37 @@ ul#antraege li.top ul li.antrag ul.ae_antraege {
 	padding-bottom:5px;
 	padding-right:10px;
 }
+
+.form-required {
+	color: red;
+}
+
+form.cvtx_antrag label {
+	font-weight: bold;
+}
+
+form.cvtx_antrag div.form-item {
+	margin-top: 1em;
+}
+
+#add_aeantrag form,
+#add_aeantrag p {
+	font-size:0.8em;
+}
+
+p#message {
+	background: #fafafa;
+	padding:1em;
+	border-radius: 4px;
+	border: 1px solid #333;
+}
+
+p#message.error {
+	background: #fef5f1;
+	border-color: #ed541d;
+}
+
+p#message.success {
+	background: #f8fff0;
+	border-color: #be7;
+}

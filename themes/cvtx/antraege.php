@@ -47,7 +47,7 @@ Template Name: Antrags&uuml;bersicht
 				<span class="steller"><strong>AntragstellerInnen:</strong> <?php print get_post_meta($post->ID,'cvtx_antrag_steller',true);?></strong></span>
 				<ul class="options">
 					<li><?php if ($file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
-					<li><a href="#">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
+					<li><a href="<?php the_permalink(); ?>&add_aeantrag=1#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
 				<?php $antrag_id = $post->ID; ?>
 				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
 												  'meta_key'   => 'cvtx_aeantrag_num',

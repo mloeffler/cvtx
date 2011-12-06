@@ -22,6 +22,12 @@
 						printf(__('<strong>Begr&uuml;ndung:</strong> %1$s'),$grund);
 					}
 					?>
+					
+					<?php if ($file = cvtx_get_file($post, 'pdf')): ?>
+						<h3>PDF</h3>
+							<a href="<?php echo $file; ?>">Download (pdf)</a>
+					<?php endif; ?>
+
 				</div>
 					<p class="postmetadata alt">
 					<small>
@@ -31,6 +37,14 @@
 								     get_the_time()); ?>
 					</small>
 				</p>
+				
+				<div id="add_aeantrag">
+					<h3>&Auml;nderungsantrag zu <?php echo cvtx_get_short($post); ?> erstellen</h3>
+					<?php
+						cvtx_submit_aeantrag($post->ID);
+					?>
+				</div>
+				
 				<?php $antrag_id = $post->ID; ?>
 				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
 												  'meta_key'   => 'cvtx_aeantrag_num',
@@ -43,9 +57,7 @@
 				<div id="ae_antraege">
 					<h3>&Auml;nderungsantr&auml;ge<?php
 						if(isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) { 
-							echo ' zu "'; 
-							the_title(); 
-							echo '"';
+							echo ' zu '.cvtx_get_short($post);
 						}
 					?></h3>
 					<table cellpadding="3" cellspacing="0" valign="top">
