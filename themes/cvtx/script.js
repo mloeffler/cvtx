@@ -28,14 +28,19 @@
 	});
 	$(".cvtx_antrag_form .submit").click(function() {
 		var ret = true;
+		var i = 0;
 		$(".cvtx_antrag_form .required").each(function() {
 			if(!$(this).val()) {
 				$(this).addClass("error");
+				if(i==0)
+					$(".cvtx_antrag_form").prepend('<p id="message" class="error">Bitte f&uuml;lle alle Felder aus die mit einem'+
+					 						'<span class="form-required">*</span> gekennzeichnet sind!</p>');
 				ret = false;
 			}
 			else {
 				$(this).removeClass("error");
 			}
+			i++;
 		})
 		return ret;
 	});

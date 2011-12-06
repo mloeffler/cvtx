@@ -385,12 +385,12 @@ ul#antraege li.top ul li.antrag ul.ae_antraege {
 	color: red;
 }
 
-form.cvtx_antrag label {
+form.cvtx_antrag_form label {
 	font-weight: bold;
 	color: #333;
 }
 
-form.cvtx_antrag div.form-item {
+form.cvtx_antrag_form div.form-item {
 	margin-top: 1em;
 }
 
