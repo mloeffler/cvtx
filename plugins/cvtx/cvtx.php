@@ -403,20 +403,20 @@ function cvtx_insert_post($post_id, $post = null) {
     global $cvtx_types;
 
     if (in_array($post->post_type, array_keys($cvtx_types))) {
+        // Add sortable antrag_num-field
+        if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
+            $_POST['cvtx_antrag_num'] = get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true) * 100000
+                                      + (isset($_POST['cvtx_antrag_ord']) ? $_POST['cvtx_antrag_ord'] : 0);
+        } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
+            preg_match('/([0-9]+)(.*)/', $_POST['cvtx_aeantrag_zeile'], $match);
+            $top_id = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
+            $_POST['cvtx_aeantrag_num'] = get_post_meta($top_id, 'cvtx_top_ord', true) * 100000
+                                        + get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true)
+                                        + $match[1]/1000000;
+        }
+            
         // Loop through the POST data
         foreach ($cvtx_types[$post->post_type] as $key) {
-            // Add sortable antrag_num-field
-            if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top']) && isset($_POST['cvtx_antrag_ord'])) {
-                $_POST['cvtx_antrag_num'] = get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true) * 100000
-                                          + $_POST['cvtx_antrag_ord'];
-            } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
-                preg_match('/([0-9]+)(.*)/', $_POST['cvtx_aeantrag_zeile'], $match);
-                $top_id = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
-                $_POST['cvtx_aeantrag_num'] = get_post_meta($top_id, 'cvtx_top_ord', true) * 100000
-                                            + get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true)
-                                            + $match[1]/1000000;
-            }
-            
             // save data
             $value = @$_POST[$key];
             if (empty($value)) {
