@@ -440,6 +440,9 @@ function cvtx_insert_post($post_id, $post = null) {
                     add_post_meta($post_id, $key, $entry);
             }
         }
+        
+        // create pdf
+        cvtx_create_pdf($post_id, $post);
     }
 }
 
@@ -525,7 +528,7 @@ function cvtx_conf() {
 /**
  * Erstellt ein PDF aus gespeicherten Anträgen
  */
-add_action('save_post', 'cvtx_create_pdf', 20, 2);
+//add_action('save_post', 'cvtx_create_pdf', 20, 2);
 function cvtx_create_pdf($post_id, $post = null) {
     $pdflatex = get_option('cvtx_pdflatex_cmd');
     
@@ -536,7 +539,12 @@ function cvtx_create_pdf($post_id, $post = null) {
         // prepare antrag
         if ($post->post_type == 'cvtx_antrag') {
             // file
-            $file = $out_dir['basedir'].'/'.sanitize_title(cvtx_get_short($post).'_'.$post->post_name);
+            $file = $file = $out_dir['basedir'].'/';
+            if ($short = cvtx_get_short($post)) {
+                $file .= sanitize_title($short.'_'.$post->post_title);
+            } else {
+                $file .= $post->ID;
+            }
             
             // use special template for id=x if exists
             if (is_file($tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php')) {
@@ -550,7 +558,12 @@ function cvtx_create_pdf($post_id, $post = null) {
         // prepare Ä-Antrag if pdf-option enabled
         else if ($post->post_type == 'cvtx_aeantrag' && get_option('cvtx_aeantrag_pdf')) {
             // file
-            $file = $out_dir['basedir'].'/'.sanitize_title(cvtx_get_short($post));
+            $file = $file = $out_dir['basedir'].'/';
+            if ($short = cvtx_get_short($post)) {
+                $file .= sanitize_title($short);
+            } else {
+                $file .= $post->ID;
+            }
             
             // use special template for id=x if exists
             if (is_file($tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php')) {
@@ -603,28 +616,35 @@ function cvtx_create_pdf($post_id, $post = null) {
 function cvtx_get_short($post) {
     // post type top
     if ($post->post_type == 'cvtx_top') {
-        return 'TOP '.get_post_meta($post->ID, 'cvtx_top_ord', true);
+        $top = get_post_meta($post->ID, 'cvtx_top_ord', true);
+
+        if (!empty($top)) return 'TOP '.$top;
     }
     // post type antrag
     else if ($post->post_type == 'cvtx_antrag') {
-        return get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_short', true).'-'.get_post_meta($post->ID, 'cvtx_antrag_ord', true);
+        $top    = get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_short', true);
+        $antrag = get_post_meta($post->ID, 'cvtx_antrag_ord', true);
+
+        if (!empty($top) && !empty($antrag)) return $top.'-'.$antrag;
     }
     // post type antrag
     else if ($post->post_type == 'cvtx_aeantrag') {
-        // fetch antrag_id and top_id
+        // fetch antrag_id, antag, top and zeile
         $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
-        $top_id    = get_post_meta($antrag_id, 'cvtx_antrag_top', true);
+        $antrag    = get_post_meta($antrag_id, 'cvtx_antrag_ord', true);
+        $top       = get_post_meta(get_post_meta($antrag_id, 'cvtx_antrag_top', true), 'cvtx_top_short', true);
+        $zeile     = get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true);
         
         // format and return aeantrag_short
         $format = get_option('cvtx_aeantrag_format');
-        $format = str_replace('%antrag%', get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true), $format);
-        $format = str_replace('%zeile%', get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true), $format);
-        return $format;
+        $format = str_replace('%antrag%', $top.'-'.$antrag, $format);
+        $format = str_replace('%zeile%', $zeile, $format);
+        
+        if (!empty($top) && !empty($antrag) && !empty($zeile)) return $format;
     }
+
     // default
-    else {
-        return false;
-    }
+    return false;
 }
 
 
@@ -640,15 +660,19 @@ function cvtx_get_file($post, $ending = 'pdf', $base = 'url') {
     $base = 'base'.($base == 'dir' ? $base : 'url');
 
     // specify filename
-    if ($post->post_type == 'cvtx_antrag') {
-        $file = sanitize_title(cvtx_get_short($post)).'_'.$post->post_name.'.'.$ending;
-    } else if ($post->post_type == 'cvtx_aeantrag') {
-        $file = sanitize_title(cvtx_get_short($post)).'.'.$ending;
+    if ($short = cvtx_get_short($post)) {
+        if ($post->post_type == 'cvtx_antrag') {
+            $file = sanitize_title($short.'_'.$post->post_title);
+        } else if ($post->post_type == 'cvtx_aeantrag') {
+            $file = sanitize_title($short);
+        }
+    } else {
+        $file = $post->ID;
     }
     
     // return filename if file exists
-    if (is_file($dir['basedir'].'/'.$file)) {
-        return $dir[$base].'/'.$file;
+    if (is_file($dir['basedir'].'/'.$file.'.'.$ending)) {
+        return $dir[$base].'/'.$file.'.'.$ending;
     }
     
     return false;
@@ -818,29 +842,28 @@ function cvtx_beschreibung() {
     echo(cvtx_get_latex(get_bloginfo('description')));
 }
 
-function cvtx_kuerzel() {
-    global $post, $cvtx_types;
+function cvtx_kuerzel($post) {
+    global $cvtx_types;
     if (in_array($post->post_type, array_keys($cvtx_types))) {
         echo(cvtx_get_latex(cvtx_get_short($post)));
     }
 }
 
-function cvtx_titel() {
-    global $post, $cvtx_types;
+function cvtx_titel($post) {
+    global $cvtx_types;
     if (in_array($post->post_type, array_keys($cvtx_types))) {
         echo(cvtx_get_latex($post->post_title));
     }
 }
 
-function cvtx_antragstext() {
-    global $post, $cvtx_types;
+function cvtx_antragstext($post) {
+    global $cvtx_types;
     if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag') {
         echo(cvtx_get_latex($post->post_content));
     }
 }
 
-function cvtx_begruendung() {
-    global $post;
+function cvtx_begruendung($post) {
     if ($post->post_type == 'cvtx_antrag') {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_grund', true)));
     } else if ($post->post_type == 'cvtx_aeantrag') {
@@ -848,8 +871,7 @@ function cvtx_begruendung() {
     }
 }
 
-function cvtx_antragsteller() {
-    global $post;
+function cvtx_antragsteller($post) {
     if ($post->post_type == 'cvtx_antrag') {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_steller', true)));
     } else if ($post->post_type == 'cvtx_aeantrag') {
@@ -857,8 +879,7 @@ function cvtx_antragsteller() {
     }
 }
 
-function cvtx_top() {
-    global $post;
+function cvtx_top($post) {
     if ($post->post_type == 'cvtx_antrag') {
         echo(cvtx_get_latex(get_the_title(get_post_meta($post->ID, 'cvtx_antrag_top', true))));
     } else if ($post->post_type == 'cvtx_aeantrag') {
@@ -867,8 +888,7 @@ function cvtx_top() {
     }
 }
 
-function cvtx_top_titel() {
-    global $post;
+function cvtx_top_titel($post) {
     if ($post->post_type == 'cvtx_antrag') {
         $top = get_post(get_post_meta($post->ID, 'cvtx_antrag_top', true));
         echo(cvtx_get_latex($top->post_title));
@@ -878,8 +898,7 @@ function cvtx_top_titel() {
     }
 }
 
-function cvtx_top_kuerzel() {
-    global $post;
+function cvtx_top_kuerzel($post) {
     if ($post->post_type == 'cvtx_antrag') {
         echo('TOP '.cvtx_get_latex(get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_ord', true)));
     } else if ($post->post_type == 'cvtx_aeantrag') {
@@ -888,31 +907,27 @@ function cvtx_top_kuerzel() {
     }
 }
 
-function cvtx_antrag() {
-    global $post;
+function cvtx_antrag($post) {
     if ($post->post_type == 'cvtx_aeantrag') {
         echo(cvtx_get_latex(get_the_title(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true))));
     }
 }
 
-function cvtx_antrag_titel() {
-    global $post;
+function cvtx_antrag_titel($post) {
     if ($post->post_type == 'cvtx_aeantrag') {
         $antrag = get_post(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true));
         echo(cvtx_get_latex($antrag->post_title));
     }
 }
 
-function cvtx_antrag_kuerzel() {
-    global $post;
+function cvtx_antrag_kuerzel($post) {
     if ($post->post_type == 'cvtx_aeantrag') {
         $antrag = get_post(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true));
         echo(cvtx_get_latex(cvtx_get_short($antrag)));
     }
 }
 
-function cvtx_info() {
-    global $post;
+function cvtx_info($post) {
     if ($post->post_type == 'cvtx_antrag') {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_info', true)));
     } else if ($post->post_type == 'cvtx_aeantrag') {
