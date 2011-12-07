@@ -705,8 +705,6 @@ function cvtx_conf() {
     $sendaeantragadmin_subject = get_option('cvtx_send_create_aeantrag_admin_subject');
     $sendaeantragadmin_body    = get_option('cvtx_send_create_aeantrag_admin_body');
 
-    echo('<h2>cvtx Konfiguration</h2>');
-
     if (isset($ms) && count($ms) > 0) {
         echo('<ul>');
         foreach ($ms as $msg) {
@@ -718,7 +716,9 @@ function cvtx_conf() {
     }
 
     echo('<div class="wrap">');
-    	
+    echo('<div id="icon-options-general" class="icon32"><br /></div>');
+    echo('<h2>cvtx Konfiguration</h2>');
+
     echo('<h2 class="nav-tab-wrapper" id="cvtx_navi">');
     	echo('<a class="nav-tab cvtx_aeantraege" href="#cvtx_aeantraege">Änderungsanträge</a>');
     	echo('<a class="nav-tab cvtx_latex" href="#cvtx_latex">Latex</a>');
@@ -1369,6 +1369,7 @@ function cvtx_create_antrag_form($cvtx_antrag_top = 0, $cvtx_antrag_title = '', 
 	$output .= '</div>';
 	
 	// Antragsteller
+	$output .= '<div class="form-group">';
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_antrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
 	$output .= '<input type="text" id="cvtx_antrag_steller" name="cvtx_antrag_steller" class="required" value="'.$cvtx_antrag_steller.'" size="100%" /><br/>';
@@ -1384,6 +1385,7 @@ function cvtx_create_antrag_form($cvtx_antrag_top = 0, $cvtx_antrag_title = '', 
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_antrag_phone">Telefonnummer: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
 	$output .= '<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" class="required" value="'.$cvtx_antrag_phone.'" size="100%" /><br/>';
+	$output .= '</div>';
 	$output .= '</div>';
 	
 	// Antragstext
@@ -1483,6 +1485,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
 	$output .= '</div>';
 		
 	// Antragsteller
+	$output .= '<div class="form-group">';
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_aeantrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
 	$output .= '<input type="text" id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" class="required" value="'.$cvtx_aeantrag_steller.'" size="80" /><br/>';
@@ -1498,6 +1501,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_aeantrag_phone">Telefonnummer: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
 	$output .= '<input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" class="required" value="'.$cvtx_aeantrag_phone.'" size="80" /><br/>';
+	$output .= '</div>';
 	$output .= '</div>';
 	
 	// Antrag
