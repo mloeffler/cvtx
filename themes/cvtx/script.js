@@ -34,7 +34,7 @@
 			if(!$(this).val()) {
 				$(this).addClass("error");
 				if(i==0)
-					$(".cvtx_antrag_form").prepend('<p id="message" class="error">Bitte f&uuml;lle alle Felder aus die mit einem'+
+					$(".cvtx_antrag_form").prepend('<p id="message" class="error">Bitte f&uuml;lle alle Felder aus die mit einem '+
 					 						'<span class="form-required">*</span> gekennzeichnet sind!</p>');
 				ret = false;
 			}

@@ -40,12 +40,18 @@ $cvtx_types = array('cvtx_top'      => array('cvtx_top_ord',
                                              'cvtx_antrag_num',
                                              'cvtx_antrag_top',
                                              'cvtx_antrag_steller',
+                                             'cvtx_antrag_steller_short',
+                                             'cvtx_antrag_email',
+                                             'cvtx_antrag_phone',
                                              'cvtx_antrag_grund',
                                              'cvtx_antrag_info'),
                     'cvtx_aeantrag' => array('cvtx_aeantrag_zeile',
                                              'cvtx_aeantrag_num',
                                              'cvtx_aeantrag_antrag',
                                              'cvtx_aeantrag_steller',
+                                             'cvtx_aeantrag_steller_short',
+                                             'cvtx_aeantrag_email',
+                                             'cvtx_aeantrag_phone',
                                              'cvtx_aeantrag_grund',
                                              'cvtx_aeantrag_verfahren',
                                              'cvtx_aeantrag_detail',
@@ -103,7 +109,8 @@ function cvtx_top_short() {
 function cvtx_antrag_ord() {
     global $post;
     $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);
-    echo(get_post_meta($top_id, 'cvtx_top_short', true).'-<input name="cvtx_antrag_ord" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
+    echo('<label for="cvtx_antag_ord">'.get_post_meta($top_id, 'cvtx_top_short', true).'-</label>');
+    echo('<input name="cvtx_antrag_ord" id="cvtx_antag_ord" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
 }
 
 // Tagesordnungspunkt
@@ -116,7 +123,13 @@ function cvtx_antrag_top() {
 // Antragsteller
 function cvtx_antrag_steller() {
     global $post;
-    echo('<textarea style="width: 100%" name="cvtx_antrag_steller">'.get_post_meta($post->ID, 'cvtx_antrag_steller', true).'</textarea>');
+    echo('<label for="cvtx_antrag_steller_short">Kurzfassung:</label> ');
+    echo('<input type="text" id="cvtx_antrag_steller_short" name="cvtx_antrag_steller_short" value="'.get_post_meta($post->ID, 'cvtx_antrag_steller_short', true).'" /><br />');
+    echo('<textarea style="width: 100%" name="cvtx_antrag_steller">'.get_post_meta($post->ID, 'cvtx_antrag_steller', true).'</textarea><br />');
+    echo('<label for="cvtx_antrag_email">Kontakt (E-Mail):</label> ');
+    echo('<input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" value="'.get_post_meta($post->ID, 'cvtx_antrag_email', true).'" /> ');
+    echo('<label for="cvtx_antrag_phone">Kontakt (Telefon):</label> ');
+    echo('<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" value="'.get_post_meta($post->ID, 'cvtx_antrag_phone', true).'" />');
 }
 
 // Begründung
@@ -139,7 +152,8 @@ function cvtx_aeantrag_zeile() {
     global $post;
     $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
     $top_id    = get_post_meta($antrag_id, 'cvtx_antrag_top', true);
-    echo(get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true).'-<input name="cvtx_aeantrag_zeile" type="text" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'" />');
+    echo('<label for="cvtx_aeantrag_zeile">'.get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true).'-</label>');
+    echo('<input name="cvtx_aeantrag_zeile" id="cvtx_aeantrag_zeile" type="text" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'" />');
 }
 
 // Antrag
@@ -152,7 +166,13 @@ function cvtx_aeantrag_antrag() {
 // Antragsteller
 function cvtx_aeantrag_steller() {
     global $post;
-    echo('<textarea style="width: 100%" name="cvtx_aeantrag_steller">'.get_post_meta($post->ID, 'cvtx_aeantrag_steller', true).'</textarea>');
+    echo('<label for="cvtx_aeantrag_steller_short">Kurzfassung:</label> ');
+    echo('<input type="text" id="cvtx_aeantrag_steller_short" name="cvtx_aeantrag_steller_short" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_steller_short', true).'" /><br />');
+    echo('<textarea style="width: 100%" name="cvtx_aeantrag_steller">'.get_post_meta($post->ID, 'cvtx_aeantrag_steller', true).'</textarea><br />');
+    echo('<label for="cvtx_aeantrag_email">Kontakt (E-Mail):</label> ');
+    echo('<input type="text" id="cvtx_aeantrag_email" name="cvtx_aeantrag_email" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_email', true).'" /> ');
+    echo('<label for="cvtx_aeantrag_phone">Kontakt (Telefon):</label> ');
+    echo('<input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_phone', true).'" />');
 }
 
 // Begründung
@@ -329,7 +349,7 @@ function cvtx_format_lists($column) {
             echo(get_post_meta($post->ID, 'cvtx_antrag_num', true));
             break;
         case 'cvtx_antrag_steller':
-            echo(get_post_meta($post->ID, 'cvtx_antrag_steller', true));
+            echo(get_post_meta($post->ID, 'cvtx_antrag_steller_short', true));
             break;
         case "cvtx_antrag_top":
             $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);
@@ -350,7 +370,7 @@ function cvtx_format_lists($column) {
             echo(get_post_meta($post->ID, 'cvtx_aeantrag_num', true));
             break;
         case 'cvtx_aeantrag_steller':
-            echo(get_post_meta($post->ID, 'cvtx_aeantrag_steller', true));
+            echo(get_post_meta($post->ID, 'cvtx_aeantrag_steller_short', true));
             break;
         case "cvtx_aeantrag_verfahren":
             echo(get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true));
@@ -377,13 +397,13 @@ function cvtx_order_lists($vars) {
         if ($vars['orderby'] == 'cvtx_antrag_ord' || ($post_type == 'cvtx_antrag' && $vars['orderby'] == 'title')) {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_antrag_num', 'orderby' => 'meta_value_num'));
         } else if ($vars['orderby'] == 'cvtx_antrag_steller') {
-            $vars = array_merge($vars, array('meta_key' => 'cvtx_antrag_steller', 'orderby' => 'meta_value'));
+            $vars = array_merge($vars, array('meta_key' => 'cvtx_antrag_steller_short', 'orderby' => 'meta_value'));
         }
         // Änderungsanträge
         else if ($vars['orderby'] == 'cvtx_aeantrag_ord' || ($post_type == 'cvtx_aeantrag' && $vars['orderby'] == 'title')) {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_num', 'orderby' => 'meta_value_num'));
         } else if ($vars['orderby'] == 'cvtx_aeantrag_steller') {
-            $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_steller', 'orderby' => 'meta_value'));
+            $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_steller_short', 'orderby' => 'meta_value'));
         } else if ($vars['orderby'] == 'cvtx_aeantrag_verfahren') {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_verfahren', 'orderby' => 'meta_value'));
         }
@@ -414,6 +434,19 @@ function cvtx_insert_post($post_id, $post = null) {
                                         + get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true)
                                         + $match[1]/1000000;
         }
+        
+        // Generate short antragsteller if field is empty
+        if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_steller']) && !empty($_POST['cvtx_antrag_steller'])
+         && (!isset($_POST['cvtx_antrag_steller_short']) || empty($_POST['cvtx_antrag_steller_short']))) {
+            $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_antrag_steller'], 2);
+            if (count($parts) == 2) $_POST['cvtx_antrag_steller_short'] = trim($parts[0]).' u.a.';
+            else                    $_POST['cvtx_antrag_steller_short'] = $_POST['cvtx_antrag_steller'];
+        } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_steller']) && !empty($_POST['cvtx_aeantrag_steller'])
+                && (!isset($_POST['cvtx_aeantrag_steller_short']) || empty($_POST['cvtx_aeantrag_steller_short']))) {
+            $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_aeantrag_steller'], 2);
+            if (count($parts) == 2) $_POST['cvtx_aeantrag_steller_short'] = trim($parts[0]).' u.a.';
+            else                    $_POST['cvtx_aeantrag_steller_short'] = $_POST['cvtx_aeantrag_steller'];
+        }
             
         // Loop through the POST data
         foreach ($cvtx_types[$post->post_type] as $key) {
@@ -443,6 +476,91 @@ function cvtx_insert_post($post_id, $post = null) {
         
         // create pdf
         if (is_admin()) cvtx_create_pdf($post_id, $post);
+    }
+}
+
+
+/**
+ * Erstellt ein PDF aus gespeicherten Anträgen
+ */
+function cvtx_create_pdf($post_id, $post = null) {
+    $pdflatex = get_option('cvtx_pdflatex_cmd');
+    
+    if (isset($post) && is_object($post) && !empty($pdflatex)) {
+        $out_dir = wp_upload_dir();
+        $tpl_dir = get_template_directory().'/latex';
+    
+        // prepare antrag
+        if ($post->post_type == 'cvtx_antrag') {
+            // file
+            $file = $out_dir['basedir'].'/';
+            if ($short = cvtx_get_short($post)) {
+                $file .= cvtx_sanitize_file_name($short.'_'.$post->post_title);
+            } else {
+                $file .= $post->ID;
+            }
+            
+            // use special template for id=x if exists
+            if (is_file($tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php')) {
+                $tpl = $tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php';
+            }
+            // use default template
+            else if(is_file($tpl_dir.'/single-cvtx_antrag.php')) {
+                $tpl = $tpl_dir.'/single-cvtx_antrag.php';
+            }
+        }
+        // prepare Ä-Antrag if pdf-option enabled
+        else if ($post->post_type == 'cvtx_aeantrag' && get_option('cvtx_aeantrag_pdf')) {
+            // file
+            $file = $out_dir['basedir'].'/';
+            if ($short = cvtx_get_short($post)) {
+                $file .= cvtx_sanitize_file_name($short);
+            } else {
+                $file .= $post->ID;
+            }
+            
+            // use special template for id=x if exists
+            if (is_file($tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php')) {
+                $tpl = $tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php';
+            }
+            // use default template
+            else if(is_file($tpl_dir.'/single-cvtx_aeantrag.php')) {
+                $tpl = $tpl_dir.'/single-cvtx_aeantrag.php';
+            }
+        }
+        
+        // create pdf if template found
+        if (isset($tpl) && !empty($tpl) && isset($file) && !empty($file)) {
+            // drop old files by name/id and ending
+            foreach (array($file, $out_dir['basedir'].'/'.$post->ID) as $oldfile) {
+                foreach (array('pdf', 'log', 'tex') as $ending) {
+                    if (is_file($oldfile.'.'.$ending)) unlink($oldfile.'.'.$ending);
+                }
+            }
+            
+            // run latex template, caputure output
+            ob_start();
+            require($tpl);
+            $out = ob_get_contents();
+            ob_end_clean();
+
+            // save output to latex file. success?
+            if (file_put_contents($file.'.tex', $out) !== false) {
+                // run pdflatex
+                exec($pdflatex.' -interaction=nonstopmode -output-directory='.$out_dir['basedir'].' '.$file.'.tex');
+                
+                // remove .aux-file
+                if (is_file($file.'.aux')) unlink($file.'.aux');
+                // remove .log-file
+                if (get_option('cvtx_drop_logfile') == 1 || (get_option('cvtx_drop_logfile') == 2 && is_file($file.'.pdf'))) {
+                    if (is_file($file.'.log')) unlink($file.'.log');
+                }
+                // remove .tex-file
+                if (get_option('cvtx_drop_texfile') == 1 || (get_option('cvtx_drop_texfile') == 2 && is_file($file.'.pdf'))) {
+                    if (is_file($file.'.tex')) unlink($file.'.tex');
+                }
+            }
+        }
     }
 }
 
@@ -594,91 +712,6 @@ function cvtx_conf() {
 
 
 /**
- * Erstellt ein PDF aus gespeicherten Anträgen
- */
-function cvtx_create_pdf($post_id, $post = null) {
-    $pdflatex = get_option('cvtx_pdflatex_cmd');
-    
-    if (isset($post) && is_object($post) && !empty($pdflatex)) {
-        $out_dir = wp_upload_dir();
-        $tpl_dir = get_template_directory().'/latex';
-    
-        // prepare antrag
-        if ($post->post_type == 'cvtx_antrag') {
-            // file
-            $file = $out_dir['basedir'].'/';
-            if ($short = cvtx_get_short($post)) {
-                $file .= sanitize_title($short.'_'.$post->post_title);
-            } else {
-                $file .= $post->ID;
-            }
-            
-            // use special template for id=x if exists
-            if (is_file($tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php';
-            }
-            // use default template
-            else if(is_file($tpl_dir.'/single-cvtx_antrag.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_antrag.php';
-            }
-        }
-        // prepare Ä-Antrag if pdf-option enabled
-        else if ($post->post_type == 'cvtx_aeantrag' && get_option('cvtx_aeantrag_pdf')) {
-            // file
-            $file = $out_dir['basedir'].'/';
-            if ($short = cvtx_get_short($post)) {
-                $file .= sanitize_title($short);
-            } else {
-                $file .= $post->ID;
-            }
-            
-            // use special template for id=x if exists
-            if (is_file($tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php';
-            }
-            // use default template
-            else if(is_file($tpl_dir.'/single-cvtx_aeantrag.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_aeantrag.php';
-            }
-        }
-        
-        // create pdf if template found
-        if (isset($tpl) && !empty($tpl) && isset($file) && !empty($file)) {
-            // drop old files by name/id and ending
-            foreach (array($file, $out_dir['basedir'].'/'.$post->ID) as $oldfile) {
-                foreach (array('pdf', 'log', 'tex') as $ending) {
-                    if (is_file($oldfile.'.'.$ending)) unlink($oldfile.'.'.$ending);
-                }
-            }
-            
-            // run latex template, caputure output
-            ob_start();
-            require($tpl);
-            $out = ob_get_contents();
-            ob_end_clean();
-
-            // save output to latex file. success?
-            if (file_put_contents($file.'.tex', $out) !== false) {
-                // run pdflatex
-                exec($pdflatex.' -interaction=nonstopmode -output-directory='.$out_dir['basedir'].' '.$file.'.tex');
-                
-                // remove .aux-file
-                if (is_file($file.'.aux')) unlink($file.'.aux');
-                // remove .log-file
-                if (get_option('cvtx_drop_logfile') == 1 || (get_option('cvtx_drop_logfile') == 2 && is_file($file.'.pdf'))) {
-                    if (is_file($file.'.log')) unlink($file.'.log');
-                }
-                // remove .tex-file
-                if (get_option('cvtx_drop_texfile') == 1 || (get_option('cvtx_drop_texfile') == 2 && is_file($file.'.pdf'))) {
-                    if (is_file($file.'.tex')) unlink($file.'.tex');
-                }
-            }
-        }
-    }
-}
-
-
-/**
  * Returns the formatted short title for post $post. If post_type not equal
  * to top/antrag/aeantrag, function will return false.
  *
@@ -733,9 +766,9 @@ function cvtx_get_file($post, $ending = 'pdf', $base = 'url') {
     // specify filename
     if ($short = cvtx_get_short($post)) {
         if ($post->post_type == 'cvtx_antrag') {
-            $file = sanitize_title($short.'_'.$post->post_title);
+            $file = cvtx_sanitize_file_name($short.'_'.$post->post_title);
         } else if ($post->post_type == 'cvtx_aeantrag') {
-            $file = sanitize_title($short);
+            $file = cvtx_sanitize_file_name($short);
         }
     } else {
         $file = $post->ID;
@@ -815,6 +848,13 @@ function cvtx_get_latex($out) {
 }
 
 
+function cvtx_sanitize_file_name($str) {
+    $str = str_replace(array('ä',  'ö',  'ü',  'ß',  'Ä',  'Ö',  'Ü'),
+                       array('ae', 'oe', 'ue', 'ss', 'Ae', 'Oe', 'Ue'), $str);
+    return sanitize_key(sanitize_file_name($str));
+}
+
+
 /**
  * Print dropdown menu of all tops
  *
@@ -828,7 +868,7 @@ function cvtx_dropdown_tops($selected = null, $message = '') {
 
     $tquery = new WP_Query(array('post_type' => 'cvtx_top', 'orderby' => 'meta_value_num', 'meta_key' => 'cvtx_top_ord', 'order' => 'ASC'));
     if ($tquery->have_posts()) {
-        $output .= '<select name="cvtx_antrag_top">';
+        $output .= '<select name="cvtx_antrag_top" id="cvtx_antrag_top">';
         while ($tquery->have_posts()) {
             $tquery->the_post();
             $output .= '<option value="'.get_the_ID().'"'.(get_the_ID() == $selected ? ' selected="selected"' : '').'>';
@@ -866,7 +906,7 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
                                  'meta_key'  => 'cvtx_top_ord',
                                  'order'     => 'ASC'));
     if ($tquery->have_posts()) {
-        $output .= '<select name="cvtx_aeantrag_antrag">';
+        $output .= '<select name="cvtx_aeantrag_antrag" id="cvtx_aeantrag_antrag">';
         while ($tquery->have_posts()) {
             $tquery->the_post();
             // optgroup for top
@@ -904,40 +944,37 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
     return $output;
 }
 
-/**
- * Shortcode for including an antrag-formular inside a post or page. Usage: [submit_antrag]
- */
-add_shortcode('submit_antrag', 'cvtx_submit_antrag');
 
 /**
  * Method which evaluates input of antrags-creation form and saves it to the wordpress database
  */
 function cvtx_submit_antrag() {
-
 	// Request Variables, if already submitted, set corresponding variables to '' else
-    $cvtx_antrag_title   = (!empty($_POST['cvtx_antrag_title']) ? trim($_POST['cvtx_antrag_title']) : '');
+    $cvtx_antrag_title   = (!empty($_POST['cvtx_antrag_title'])   ? trim($_POST['cvtx_antrag_title'])   : '');
     $cvtx_antrag_steller = (!empty($_POST['cvtx_antrag_steller']) ? trim($_POST['cvtx_antrag_steller']) : '');
-    $cvtx_antrag_top     = (!empty($_POST['cvtx_antrag_top']) ? trim($_POST['cvtx_antrag_top']) : '');
-    $cvtx_antrag_text    = (!empty($_POST['cvtx_antrag_text']) ? trim($_POST['cvtx_antrag_text']) : '');
-    $cvtx_antrag_grund   = (!empty($_POST['cvtx_antrag_grund']) ? trim($_POST['cvtx_antrag_grund']) : '');
-    $cvtx_antrag_info    = (!empty($_POST['cvtx_antrag_info']) ? trim($_POST['cvtx_antrag_info']) : '');
+    $cvtx_antrag_email   = (!empty($_POST['cvtx_antrag_email'])   ? trim($_POST['cvtx_antrag_email'])   : '');
+    $cvtx_antrag_phone   = (!empty($_POST['cvtx_antrag_phone'])   ? trim($_POST['cvtx_antrag_phone'])   : '');
+    $cvtx_antrag_top     = (!empty($_POST['cvtx_antrag_top'])     ? trim($_POST['cvtx_antrag_top'])     : '');
+    $cvtx_antrag_text    = (!empty($_POST['cvtx_antrag_text'])    ? trim($_POST['cvtx_antrag_text'])    : '');
+    $cvtx_antrag_grund   = (!empty($_POST['cvtx_antrag_grund'])   ? trim($_POST['cvtx_antrag_grund'])   : '');
 
 	// Check whether the form has been submitted and the wp_nonce for security reasons
 	if (isset($_POST['cvtx_form_create_antrag_submitted'] ) && wp_verify_nonce($_POST['cvtx_form_create_antrag_submitted'], 'cvtx_form_create_antrag') ){
   		
   		// check whether the required fields have been submitted
- 		if($cvtx_antrag_title != '' && $cvtx_antrag_text != '' && $cvtx_antrag_steller != ''){
+ 		if(!empty($cvtx_antrag_title) && !empty($cvtx_antrag_text) && !empty($cvtx_antrag_steller) && !empty($cvtx_antrag_email) && !empty($cvtx_antrag_phone)) {
  			// create an array which holds all data about the antrag
 			$antrag_data = array(
-				'post_title' => $cvtx_antrag_title,
+				'post_title'          => $cvtx_antrag_title,
+				'post_content'        => $cvtx_antrag_text,
 				'cvtx_antrag_steller' => $cvtx_antrag_steller,
-				'cvtx_antrag_top' => $cvtx_antrag_top,
-				'post_status' => 'pending',
-				'post_author' => get_option('cvtx_anon_user'),
-				'post_content' => $cvtx_antrag_text,
-				'post_type' => 'cvtx_antrag',
-				'cvtx_antrag_grund' => $cvtx_antrag_grund,
-				'cvtx_antrag_info' => $cvtx_antrag_info);
+				'cvtx_antrag_email'   => $cvtx_antrag_email,
+				'cvtx_antrag_phone'   => $cvtx_antrag_phone,
+				'cvtx_antrag_top'     => $cvtx_antrag_top,
+				'cvtx_antrag_grund'   => $cvtx_antrag_grund,
+				'post_status'         => 'pending',
+				'post_author'         => get_option('cvtx_anon_user'),
+				'post_type'           => 'cvtx_antrag');
 			// submit the post
 			if($antrag_id = wp_insert_post($antrag_data)) {
 				echo '<p id="message" class="success">Der Antrag wurde erstellt und muss noch freigeschaltet werden.</p>';
@@ -949,27 +986,31 @@ function cvtx_submit_antrag() {
 		}
 		// return error-message because some required fields have not been submitted
 		else {
-			echo '<p id="message" class="error">Der Antrag konnte nicht gespeichert werden, weil einige benötigte Felder'. 
+			echo '<p id="message" class="error">Der Antrag konnte nicht gespeichert werden, weil einige benötigte Felder '. 
 				 '(mit einem <span class="form-required" title="Dieses Feld wird benötigt">*<'.
-				 '/span> bezeichnet) nicht ausgefüllt wurden.';
+				 '/span> bezeichnet) nicht ausgefüllt wurden.</p>';
 		}
 	}
+	
 	// nothing has been submitted yet -> include creation form
 	if(!isset($erstellt))
-	    echo cvtx_create_antrag_form($cvtx_antrag_title, $cvtx_antrag_steller, $cvtx_antrag_text);
+        echo cvtx_create_antrag_form($cvtx_antrag_top, $cvtx_antrag_title, $cvtx_antrag_text, $cvtx_antrag_steller,
+                                     $cvtx_antrag_email, $cvtx_antrag_phone, $cvtx_antrag_grund);
 }
 
 /**
  * Creates formular for creating antraege
  *
- * @param $cvtx_antrag_title title if it has been already submitted
- * @param $cvtx_antrag_steller antrag_steller if it have been already submitted
- * @param $cvtx_antrag_top top of antrag if it has already been submitted
- * @param $cvtx_antrag_text text of antrag if it has already been submitted
- * @param $cvtx_antrag_grund antragsbegruendung, if already submitted
- * @param $cvtx_antrag_info info if it has already been submitted
+ * @param int $cvtx_antrag_top top of antrag if it has already been submitted
+ * @param string $cvtx_antrag_title title if it has been already submitted
+ * @param string $cvtx_antrag_text text of antrag if it has already been submitted
+ * @param string $cvtx_antrag_steller antrag_steller if it have been already submitted
+ * @param string $cvtx_antrag_email contact address if it has already been submitted
+ * @param string $cvtx_antrag_phone phone number if it has already been submitted
+ * @param string $cvtx_antrag_grund antragsbegruendung, if already submitted
  */
-function cvtx_create_antrag_form($cvtx_antrag_title = '', $cvtx_antrag_steller = '', $cvtx_antrag_top = null, $cvtx_antrag_text = '', $cvtx_antrag_grund = '', $cvtx_antrag_info = '') {
+function cvtx_create_antrag_form($cvtx_antrag_top = 0, $cvtx_antrag_title = '', $cvtx_antrag_text = '', $cvtx_antrag_steller = '',
+                                 $cvtx_antrag_email = '', $cvtx_antrag_phone = '', $cvtx_antrag_grund = '') {
 	$output  = '';
 	
 	// specify form
@@ -986,14 +1027,26 @@ function cvtx_create_antrag_form($cvtx_antrag_title = '', $cvtx_antrag_steller =
 	
 	// TOP
 	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_antrag_top">TOP:</label><br/>';
-	$output .= cvtx_dropdown_tops($cvtx_antrag_top,'Keine Tagesordnungspunkte angelegt').'<br/>';
+	$output .= '<label for="cvtx_antrag_top">TOP: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
+	$output .= cvtx_dropdown_tops($cvtx_antrag_top, 'Keine Tagesordnungspunkte angelegt').'<br/>';
 	$output .= '</div>';
 	
 	// Antragsteller
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_antrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
 	$output .= '<input type="text" id="cvtx_antrag_steller" name="cvtx_antrag_steller" class="required" value="'.$cvtx_antrag_steller.'" size="100%" /><br/>';
+	$output .= '</div>';
+	
+	// Kontakt (E-Mail)
+	$output .= '<div class="form-item">';
+	$output .= '<label for="cvtx_antrag_email">E-Mail-Adresse: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
+	$output .= '<input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" class="required" value="'.$cvtx_antrag_email.'" size="100%" /><br/>';
+	$output .= '</div>';
+	
+	// Kontakt (Telefon)
+	$output .= '<div class="form-item">';
+	$output .= '<label for="cvtx_antrag_phone">Telefonnummer: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
+	$output .= '<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" class="required" value="'.$cvtx_antrag_phone.'" size="100%" /><br/>';
 	$output .= '</div>';
 	
 	// Antragstext
@@ -1021,25 +1074,28 @@ function cvtx_create_antrag_form($cvtx_antrag_title = '', $cvtx_antrag_steller =
  * Method which evaluates the input of an ae_antrags_creation-form and saves it to the wordpress database
  */
 function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
-
-	$cvtx_aeantrag_zeile = (!empty($_POST['cvtx_aeantrag_zeile']) ? trim($_POST['cvtx_aeantrag_zeile']) : '');
+	$cvtx_aeantrag_zeile   = (!empty($_POST['cvtx_aeantrag_zeile'])   ? trim($_POST['cvtx_aeantrag_zeile'])   : '');
 	$cvtx_aeantrag_steller = (!empty($_POST['cvtx_aeantrag_steller']) ? trim($_POST['cvtx_aeantrag_steller']) : '');
-	$cvtx_aeantrag_text = (!empty($_POST['cvtx_aeantrag_text']) ? trim($_POST['cvtx_aeantrag_text']) : '');
-	$cvtx_aeantrag_grund = (!empty($_POST['cvtx_aeantrag_grund']) ? trim($_POST['cvtx_aeantrag_grund']) : '');
+	$cvtx_aeantrag_email   = (!empty($_POST['cvtx_aeantrag_email'])   ? trim($_POST['cvtx_aeantrag_email'])   : '');
+	$cvtx_aeantrag_phone   = (!empty($_POST['cvtx_aeantrag_phone'])   ? trim($_POST['cvtx_aeantrag_phone'])   : '');
+	$cvtx_aeantrag_text    = (!empty($_POST['cvtx_aeantrag_text'])    ? trim($_POST['cvtx_aeantrag_text'])    : '');
+	$cvtx_aeantrag_grund   = (!empty($_POST['cvtx_aeantrag_grund'])   ? trim($_POST['cvtx_aeantrag_grund'])   : '');
 	
-	if(isset($_POST['cvtx_form_create_aeantrag_submitted']) && wp_verify_nonce($_POST['cvtx_form_create_aeantrag_submitted'], 'cvtx_form_create_aeantrag') && $cvtx_aeantrag_antrag != 0) {
+	if (isset($_POST['cvtx_form_create_aeantrag_submitted']) && wp_verify_nonce($_POST['cvtx_form_create_aeantrag_submitted'], 'cvtx_form_create_aeantrag') && $cvtx_aeantrag_antrag != 0) {
 		
 		// check whethter the required fields have been set
-		if($cvtx_aeantrag_zeile != '' && $cvtx_aeantrag_text != '' && $cvtx_aeantrag_steller != '' && $cvtx_aeantrag_antrag != '') {
+		if (!empty($cvtx_aeantrag_zeile) && !empty($cvtx_aeantrag_text) && !empty($cvtx_aeantrag_steller) && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email) && !empty($cvtx_aeantrag_phone)) {
 			$aeantrag_data = array(
 				'cvtx_aeantrag_steller' => $cvtx_aeantrag_steller,
-				'cvtx_aeantrag_antrag' => $cvtx_aeantrag_antrag,
-				'cvtx_aeantrag_grund' => $cvtx_aeantrag_grund,
-				'cvtx_aeantrag_zeile' => $cvtx_aeantrag_zeile,
-				'post_status' => 'pending',
-				'post_author' => get_option('cvtx_anon_user'),
-				'post_content' => $cvtx_aeantrag_text,
-				'post_type' => 'cvtx_aeantrag',
+				'cvtx_aeantrag_antrag'  => $cvtx_aeantrag_antrag,
+				'cvtx_aeantrag_grund'   => $cvtx_aeantrag_grund,
+				'cvtx_aeantrag_zeile'   => $cvtx_aeantrag_zeile,
+				'cvtx_aeantrag_email'   => $cvtx_aeantrag_email,
+				'cvtx_aeantrag_phone'   => $cvtx_aeantrag_phone,
+				'post_status'           => 'pending',
+				'post_author'           => get_option('cvtx_anon_user'),
+				'post_content'          => $cvtx_aeantrag_text,
+				'post_type'             => 'cvtx_aeantrag',
 			);
 			// submit the post!
 			if($antrag_id = wp_insert_post($aeantrag_data)) {
@@ -1047,30 +1103,34 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
 				$erstellt = true;
 			}
 			else {
-				echo '<p id="message" class="error">Der Änderungsantrag wurde nicht gespeichert. Bitte tanzen Sie um den Tisch und probieren sie es dann mit einer anderen Computer-Stellung noch einmal.';
+				echo '<p id="message" class="error">Der Änderungsantrag wurde nicht gespeichert. Bitte tanzen Sie um den Tisch und probieren sie es dann mit einer anderen Computer-Stellung noch einmal.</p>';
 			}
 		}
 		else {
-			echo '<p id="message" class="error">Der Änderungsantrag konnte nicht gespeichert werden, weil einige benötigte Felder'.
+			echo '<p id="message" class="error">Der Änderungsantrag konnte nicht gespeichert werden, weil einige benötigte Felder '.
 				 ' (mit einem <span class="form-required" title="Dieses Feld wird benötigt">*</span> be'.
-				 'zeichnet) nicht ausgefüllt wurden.';
+				 'zeichnet) nicht ausgefüllt wurden.</p>';
 		}
 	}
 	if(!isset($erstellt))
-		echo cvtx_create_aeantrag_form($cvtx_aeantrag_zeile,$cvtx_aeantrag_text,$cvtx_aeantrag_steller,$cvtx_aeantrag_grund,$cvtx_aeantrag_antrag);
+        echo cvtx_create_aeantrag_form($cvtx_aeantrag_antrag, $cvtx_aeantrag_zeile, $cvtx_aeantrag_text, $cvtx_aeantrag_steller,
+                                       $cvtx_aeantrag_email, $cvtx_aeantrag_phone, $cvtx_aeantrag_grund);
 }
 
 
 /**
  * Creates formular for creating ae_antraege
  *
- * @param $cvtx_aeantrag_zeile zeile if it has been already submitted
- * @param $cvtx_aeantrag_text text of aeantrag if it has already been submitted
- * @param $cvtx_aeantrag_steller aeantrag_steller if it have been already submitted
- * @param $cvtx_aeantrag_grund aeantragsbegruendung, if already submitted
- * @param $cvtx_aeantrag_antrag antrag to which the ae_antrag is dedicated
+ * @param int $cvtx_aeantrag_antrag antrag to which the ae_antrag is dedicated
+ * @param string $cvtx_aeantrag_zeile zeile if it has been already submitted
+ * @param string $cvtx_aeantrag_text text of aeantrag if it has already been submitted
+ * @param string $cvtx_aeantrag_steller aeantrag_steller if it have been already submitted
+ * @param string $cvtx_aeantrag_email email of antragsteller if it have been already submitted
+ * @param string $cvtx_aeantrag_phone phone number of antragsteller if it have been already submitted
+ * @param string $cvtx_aeantrag_grund aeantragsbegruendung, if already submitted
  */
-function cvtx_create_aeantrag_form($cvtx_aeantrag_zeile = '', $cvtx_aeantrag_text = '', $cvtx_aeantrag_steller = '', $cvtx_aeantrag_grund = '', $cvtx_aeantrag_antrag = 0) {
+function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zeile = '', $cvtx_aeantrag_text = '', $cvtx_aeantrag_steller = '',
+                                   $cvtx_aeantrag_email = '', $cvtx_aeantrag_phone = '', $cvtx_aeantrag_grund = '') {
 	$output  = '';
 	
 	// specify form
@@ -1089,6 +1149,18 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_zeile = '', $cvtx_aeantrag_tex
 	$output .= '<div class="form-item">';
 	$output .= '<label for="cvtx_aeantrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
 	$output .= '<input type="text" id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" class="required" value="'.$cvtx_aeantrag_steller.'" size="80" /><br/>';
+	$output .= '</div>';
+	
+	// E-Mail-Adresse
+	$output .= '<div class="form-item">';
+	$output .= '<label for="cvtx_aeantrag_email">E-Mail-Adresse: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
+	$output .= '<input type="text" id="cvtx_aeantrag_email" name="cvtx_aeantrag_email" class="required" value="'.$cvtx_aeantrag_email.'" size="80" /><br/>';
+	$output .= '</div>';
+	
+	// Telefonnummer
+	$output .= '<div class="form-item">';
+	$output .= '<label for="cvtx_aeantrag_phone">Telefonnummer: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
+	$output .= '<input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" class="required" value="'.$cvtx_aeantrag_phone.'" size="80" /><br/>';
 	$output .= '</div>';
 	
 	// Antrag
@@ -1161,6 +1233,14 @@ function cvtx_antragsteller($post) {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_steller', true)));
     } else if ($post->post_type == 'cvtx_aeantrag') {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_steller', true)));
+    }
+}
+
+function cvtx_antragsteller_kurz($post) {
+    if ($post->post_type == 'cvtx_antrag') {
+        echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_steller_short', true)));
+    } else if ($post->post_type == 'cvtx_aeantrag') {
+        echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_steller_short', true)));
     }
 }
 
