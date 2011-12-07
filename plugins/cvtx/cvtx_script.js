@@ -4,7 +4,7 @@ jQuery(document).ready(function($){
 		showTarget(target1);
 	}
 	else{
-		showTarget('cvtx_aeantraege');
+		showTarget('cvtx_tool');
 	}
 	$("#cvtx_navi a").click(function() {
 		var target = $(this).attr("href").replace("#","");

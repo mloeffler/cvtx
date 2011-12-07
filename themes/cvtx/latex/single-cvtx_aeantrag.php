@@ -34,7 +34,7 @@
     \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}     \\
 %    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}    &   \textbf{\large <?php cvtx_top_titel($post); ?>}                              \\
                                                 &                                                                           \\
-    AntragstellerInnen:                         &   <?php cvtx_antragsteller($post); ?>                                          \\
+    AntragstellerInnen:                         &   <?php cvtx_antragsteller_kurz($post); ?>                                          \\
                                                 &                                                                           \\
     Gegenstand:                                 &   <?php cvtx_antrag($post); ?> (<?php cvtx_top($post); ?>)                          \\
                                                 &                                                                           \\
@@ -50,8 +50,10 @@
 <?php cvtx_antragstext($post); ?>
 \end{linenumbers}
 
-%\textbf{Begründung:}\\
 \subsection*{Begründung}
 <?php cvtx_begruendung($post); ?>
+
+\subsection*{AntragstellerInnen}
+<?php cvtx_antragsteller($post); ?>
 
 \end{document}
