@@ -978,10 +978,57 @@ function cvtx_get_latex($out) {
 }
 
 
+/**
+ * Returns a well-sanitized copy of string $str
+ */
 function cvtx_sanitize_file_name($str) {
     $str = str_replace(array('ä',  'ö',  'ü',  'ß',  'Ä',  'Ö',  'Ü'),
                        array('ae', 'oe', 'ue', 'ss', 'Ae', 'Oe', 'Ue'), $str);
     return sanitize_key(sanitize_file_name($str));
+}
+
+
+if (is_admin()) add_action('admin_init', 'cvtx_manage_media_buttons');
+/**
+ * Hide media buttons above the rich text editor
+ */
+function cvtx_manage_media_buttons() {
+    global $post;
+    if ((isset($_REQUEST['post_type']) && $_REQUEST['post_type'] == 'cvtx_antrag') || (isset($post) && isset($post->post_type) && $post->post_type == 'cvtx_antrag')) {
+        remove_all_actions('media_buttons');
+    }
+}
+
+
+if (is_admin()) add_filter('mce_buttons', 'cvtx_manage_mce_buttons');
+/**
+ * Restrict first button row of the rich text editor
+ *
+ * @todo include 'formatselect'
+ *
+ * @param array $buttons rich edit buttons that are enabled
+ */
+function cvtx_manage_mce_buttons($buttons) {
+    global $post;
+    if ((isset($_REQUEST['post_type']) && $_REQUEST['post_type'] == 'cvtx_antrag') || (isset($post) && isset($post->post_type) && $post->post_type == 'cvtx_antrag')) {
+        return array('bold', 'italic', '|', 'bullist', 'numlist', '|', 'undo', 'redo');
+    } else {
+        return $buttons;
+    }
+}
+
+
+if (is_admin()) add_filter('mce_buttons_2', 'cvtx_manage_mce_buttons_2');
+/**
+ * Restrict second button row of the rich text editor
+ */
+function cvtx_manage_mce_buttons_2($buttons) {
+    global $post;
+    if ((isset($_REQUEST['post_type']) && $_REQUEST['post_type'] == 'cvtx_antrag') || (isset($post) && isset($post->post_type) && $post->post_type == 'cvtx_antrag')) {
+        return array();
+    } else {
+        return $buttons;
+    }
 }
 
 
@@ -1316,6 +1363,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
 	
 	return $output;
 }
+
 
 /************************************************************************************
  * LaTeX Functions
