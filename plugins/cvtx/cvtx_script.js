@@ -3,7 +3,9 @@ jQuery(document).ready(function($){
 	if(target1 != ''){
 		showTarget(target1);
 	}
-	
+	else{
+		showTarget('cvtx_aeantraege');
+	}
 	$("#cvtx_navi a").click(function() {
 		var target = $(this).attr("href").replace("#","");
 		if(target == '') {
