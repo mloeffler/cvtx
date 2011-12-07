@@ -521,8 +521,75 @@ function cvtx_conf() {
         update_option('cvtx_anon_user', (isset($_POST['cvtx_anon_user']) ? $_POST['cvtx_anon_user'] : 1));
     }
 
-    // load config page
-    require('cvtx_conf.php');
+
+    // print config page
+    $aeformat  = get_option('cvtx_aeantrag_format');
+    $aepdf     = get_option('cvtx_aeantrag_pdf');
+    $pdflatex  = get_option('cvtx_pdflatex_cmd');
+    $texfile   = get_option('cvtx_drop_texfile');
+    $logfile   = get_option('cvtx_drop_logfile');
+    $anon_user = get_option('cvtx_anon_user');
+
+    echo('<h2>cvtx Konfiguration</h2>');
+
+    if (isset($ms) && count($ms) > 0) {
+        echo('<ul>');
+        foreach ($ms as $msg) {
+            if ($msg == 'no_cvtx_pdflatex_cmd') {
+                echo('<li>Kein Pfad angegeben. LaTeX kann so nicht funktionieren, Mensch.</li>');
+            }
+        }
+        echo('</ul>');    
+    }
+
+    echo('<div class="narrow">');
+    echo('<form action="" method="post" id="akismet-conf" style="margin: auto; width: 400px;">');
+ 
+    echo('<h3>Einstellungen Änderungsanträge</h3>');
+    echo('<p>');
+    echo('<label for="cvtx_aeantrag_format">Kurzbezeichnung für Änderungsanträge:</label> (%antrag%, %zeile%)<br />');
+    echo('<input id="cvtx_aeantrag_format" name="cvtx_aeantrag_format" type="text" value="'.($aeformat ? $aeformat : '%antrag%-%zeile%').'" />');
+    echo('<br />');
+    echo('<input id="cvtx_aeantrag_pdf" name="cvtx_aeantrag_pdf" type="checkbox" '.($aepdf ? 'checked="checked"' : '').'" />');
+    echo('<label for="cvtx_aeantrag_pdf">PDF-Versionen für Änderungsanträge erzeugen</label>');
+    echo('</p>');
+
+    echo('<h3>LaTeX-Einstellungen</h3>');
+    echo('<p>');
+    echo('<label for="cvtx_pdflatex_cmd">Pfad:</label><br />');
+    echo('<input id="cvtx_pdflatex_cmd" name="cvtx_pdflatex_cmd" type="text" value="'.$pdflatex.'" />');
+    echo('</p>');
+    echo('<p>');
+    echo('<label>Sollen die erzeugten tex-Files gelöscht werden?</label><br />');
+    echo('<input id="cvtx_drop_texfile_yes" name="cvtx_drop_texfile" type="radio" value="1" '.($texfile == 1 ? 'checked="checked"' : '').'" /> ');
+    echo('<label for="cvtx_drop_texfile_yes">immer</label> ');
+    echo('<input id="cvtx_drop_texfile_if" name="cvtx_drop_texfile" type="radio" value="2" '.($texfile != 1 && $texfile != 3 ? 'checked="checked"' : '').'" /> ');
+    echo('<label for="cvtx_drop_texfile_if">nur wenn fehlerfrei</label> ');
+    echo('<input id="cvtx_drop_texfile_no" name="cvtx_drop_texfile" type="radio" value="3" '.($texfile == 3 ? 'checked="checked"' : '').'" /> ');
+    echo('<label for="cvtx_drop_texfile_no">nie</label>');
+    echo('<br />');
+    echo('<label>Sollen die erzeugten log-Files gelöscht werden?</label><br />');
+    echo('<input id="cvtx_drop_logfile_yes" name="cvtx_drop_logfile" type="radio" value="1" '.($logfile == 1 ? 'checked="checked"' : '').'" /> ');
+    echo('<label for="cvtx_drop_logfile_yes">immer</label> ');
+    echo('<input id="cvtx_drop_logfile_if" name="cvtx_drop_logfile" type="radio" value="2" '.($logfile != 1 && $logfile != 3 ? 'checked="checked"' : '').'" /> ');
+    echo('<label for="cvtx_drop_logfile_if">nur wenn fehlerfrei</label> ');
+    echo('<input id="cvtx_drop_logfile_no" name="cvtx_drop_logfile" type="radio" value="3" '.($logfile == 3 ? 'checked="checked"' : '').'" /> ');
+    echo('<label for="cvtx_drop_logfile_no" value="">nie</label>');
+    echo('</p>');
+  
+    echo('<h3>Wordpress-Einstellungen</h3>');
+    echo('<p>');
+    echo('<label for="cvtx_anon_user">Wordpress-Nutzer, dem alle anonym eingetragenen Anträge und Änderungsanträge zugeordnet werden.</label><br />');
+    echo('<select name="cvtx_anon_user">');
+    foreach (get_users() as $user) {
+        echo('<option'.($user->ID == $anon_user ? ' selected="selected" ' : '').' value="'.$user->ID.'">'.$user->user_login.'</option>');
+    }
+    echo('</select>');
+    echo('</p>');
+
+    echo('<p class="submit"><input type="submit" name="submit" value="Einstellungen speichern" /></p>');
+    echo('</form>');
+    echo('</div>');
 }
 
 
