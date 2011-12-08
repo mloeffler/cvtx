@@ -581,8 +581,8 @@ function cvtx_create_pdf($post_id, $post = null) {
         // create pdf if template found
         if (isset($tpl) && !empty($tpl) && isset($file) && !empty($file)) {
             // drop old files by name/id and ending
-            $filelist = array($file);
-            if ($post->post_status == 'publish') $filelist[] = $out_dir['basedir'].'/'.$post->ID;
+            $filelist = array($out_dir['basedir'].'/'.$post->ID);
+            if ($post->post_status == 'publish') $filelist[] = $file;
             foreach ($filelist as $oldfile) {
                 foreach (array('pdf', 'log', 'tex') as $ending) {
                     if (is_file($oldfile.'.'.$ending)) unlink($oldfile.'.'.$ending);
