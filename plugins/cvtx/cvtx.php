@@ -1193,13 +1193,14 @@ function cvtx_sanitize_file_name($str) {
 }
 
 
-if (is_admin()) add_action('admin_init', 'cvtx_manage_media_buttons');
+if (is_admin()) add_action('admin_head', 'cvtx_manage_media_buttons');
 /**
  * Hide media buttons above the rich text editor
  */
 function cvtx_manage_media_buttons() {
     global $post;
-    if ((isset($_REQUEST['post_type']) && $_REQUEST['post_type'] == 'cvtx_antrag') || (isset($post) && isset($post->post_type) && $post->post_type == 'cvtx_antrag')) {
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
         remove_all_actions('media_buttons');
     }
 }
@@ -1215,7 +1216,8 @@ if (is_admin()) add_filter('mce_buttons', 'cvtx_manage_mce_buttons');
  */
 function cvtx_manage_mce_buttons($buttons) {
     global $post;
-    if ((isset($_REQUEST['post_type']) && $_REQUEST['post_type'] == 'cvtx_antrag') || (isset($post) && isset($post->post_type) && $post->post_type == 'cvtx_antrag')) {
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
         return array('bold', 'italic', '|', 'bullist', 'numlist', '|', 'undo', 'redo');
     } else {
         return $buttons;
@@ -1229,7 +1231,8 @@ if (is_admin()) add_filter('mce_buttons_2', 'cvtx_manage_mce_buttons_2');
  */
 function cvtx_manage_mce_buttons_2($buttons) {
     global $post;
-    if ((isset($_REQUEST['post_type']) && $_REQUEST['post_type'] == 'cvtx_antrag') || (isset($post) && isset($post->post_type) && $post->post_type == 'cvtx_antrag')) {
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
         return array();
     } else {
         return $buttons;
