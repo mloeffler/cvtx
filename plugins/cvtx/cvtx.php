@@ -382,7 +382,7 @@ function cvtx_format_lists($column) {
         case "cvtx_aeantrag_status":
             echo(($post->post_status == 'publish' ? '+ ' : ''));
             $dir = wp_upload_dir();
-            if (get_option('cvtx_aeantrag_pdf') && is_file($dir['basedir'].'/'.sanitize_title(get_the_title($post->ID)).'.pdf')) {
+            if (get_option('cvtx_aeantrag_pdf') && $file = cvtx_get_file($post, 'pdf', 'url')) {
                 echo('<a href="'.$dir['baseurl'].'/'.sanitize_title(get_the_title($post->ID)).'.pdf">Download (pdf)</a>');
             }
             break;
@@ -543,7 +543,7 @@ function cvtx_create_pdf($post_id, $post = null) {
         if ($post->post_type == 'cvtx_antrag') {
             // file
             $file = $out_dir['basedir'].'/';
-            if ($short = cvtx_get_short($post)) {
+            if ($post->post_status == 'publish' && $short = cvtx_get_short($post)) {
                 $file .= cvtx_sanitize_file_name($short.'_'.$post->post_title);
             } else {
                 $file .= $post->ID;
@@ -562,7 +562,7 @@ function cvtx_create_pdf($post_id, $post = null) {
         else if ($post->post_type == 'cvtx_aeantrag' && get_option('cvtx_aeantrag_pdf')) {
             // file
             $file = $out_dir['basedir'].'/';
-            if ($short = cvtx_get_short($post)) {
+            if ($post->post_status == 'publish' && $short = cvtx_get_short($post)) {
                 $file .= cvtx_sanitize_file_name($short);
             } else {
                 $file .= $post->ID;
@@ -581,7 +581,9 @@ function cvtx_create_pdf($post_id, $post = null) {
         // create pdf if template found
         if (isset($tpl) && !empty($tpl) && isset($file) && !empty($file)) {
             // drop old files by name/id and ending
-            foreach (array($file, $out_dir['basedir'].'/'.$post->ID) as $oldfile) {
+            $filelist = array($file);
+            if ($post->post_status == 'publish') $filelist[] = $out_dir['basedir'].'/'.$post->ID;
+            foreach ($filelist as $oldfile) {
                 foreach (array('pdf', 'log', 'tex') as $ending) {
                     if (is_file($oldfile.'.'.$ending)) unlink($oldfile.'.'.$ending);
                 }
@@ -1099,7 +1101,7 @@ function cvtx_get_file($post, $ending = 'pdf', $base = 'url') {
     $base = 'base'.($base == 'dir' ? $base : 'url');
 
     // specify filename
-    if ($short = cvtx_get_short($post)) {
+    if ($post->post_status == 'publish' && $short = cvtx_get_short($post)) {
         if ($post->post_type == 'cvtx_antrag') {
             $file = cvtx_sanitize_file_name($short.'_'.$post->post_title);
         } else if ($post->post_type == 'cvtx_aeantrag') {
@@ -1468,10 +1470,12 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
 	$cvtx_aeantrag_text    = (!empty($_POST['cvtx_aeantrag_text'])    ? trim($_POST['cvtx_aeantrag_text'])    : '');
 	$cvtx_aeantrag_grund   = (!empty($_POST['cvtx_aeantrag_grund'])   ? trim($_POST['cvtx_aeantrag_grund'])   : '');
 	
-	if (isset($_POST['cvtx_form_create_aeantrag_submitted']) && wp_verify_nonce($_POST['cvtx_form_create_aeantrag_submitted'], 'cvtx_form_create_aeantrag') && $cvtx_aeantrag_antrag != 0) {
+	if (isset($_POST['cvtx_form_create_aeantrag_submitted']) && $cvtx_aeantrag_antrag != 0
+	&& wp_verify_nonce($_POST['cvtx_form_create_aeantrag_submitted'], 'cvtx_form_create_aeantrag')) {
 		
 		// check whethter the required fields have been set
-		if (!empty($cvtx_aeantrag_zeile) && !empty($cvtx_aeantrag_text) && !empty($cvtx_aeantrag_steller) && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email) && !empty($cvtx_aeantrag_phone)) {
+		if (!empty($cvtx_aeantrag_zeile) && !empty($cvtx_aeantrag_text) && !empty($cvtx_aeantrag_steller)
+         && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email) && !empty($cvtx_aeantrag_phone)) {
 			$aeantrag_data = array(
 				'cvtx_aeantrag_steller' => $cvtx_aeantrag_steller,
 				'cvtx_aeantrag_antrag'  => $cvtx_aeantrag_antrag,
@@ -1490,7 +1494,8 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
 				$erstellt = true;
 			}
 			else {
-				echo '<p id="message" class="error">Der Änderungsantrag wurde nicht gespeichert. Bitte tanzen Sie um den Tisch und probieren sie es dann mit einer anderen Computer-Stellung noch einmal.</p>';
+				echo '<p id="message" class="error">Der Änderungsantrag wurde nicht gespeichert. '
+                    .'Bitte tanzen Sie um den Tisch und probieren sie es dann mit einer anderen Computer-Stellung noch einmal.</p>';
 			}
 		}
 		else {
