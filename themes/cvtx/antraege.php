@@ -44,7 +44,7 @@ Template Name: Antrags&uuml;bersicht
                                                                     'compare' => '='))));
 			while ($loop2->have_posts() ) : $loop2->the_post();?>
 				<li class="antrag"><h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
-				<span class="steller"><strong>AntragstellerInnen:</strong> <?php print get_post_meta($post->ID,'cvtx_antrag_steller',true);?></strong></span>
+				<span class="steller"><strong>AntragstellerInnen:</strong> <?php print get_post_meta($post->ID,'cvtx_antrag_steller_short',true);?></strong></span>
 				<ul class="options">
 					<li><?php if ($file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
 					<li><a href="<?php the_permalink(); ?>&add_aeantrag=1#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
@@ -65,7 +65,7 @@ Template Name: Antrags&uuml;bersicht
 					<h4>&Auml;nderungsantr&auml;ge</h4>
 				<?php
 					while($loop3->have_posts()):$loop3->the_post();?>
-						<li><span><?php the_title(); ?></span> (AntragstellerInnen: <em><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller',true);?></em>)</li>
+						<li><span><?php the_title(); ?></span> (AntragstellerInnen: <em><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true);?></em>)</li>
 					<?php endwhile;?>
 				</ul>
 				<?php endif;?>

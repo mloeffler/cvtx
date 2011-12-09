@@ -10,7 +10,7 @@
 				<h2><?php the_title(); ?></h2>
 				<div class="entry">
 					<?php
-					$antragsteller = get_post_meta($post->ID,'cvtx_antrag_steller',true);
+					$antragsteller = get_post_meta($post->ID,'cvtx_antrag_steller_short',true);
 					if(!empty($antragsteller)){
 						printf(__('<strong>AntragstellerInnen:</strong> %1$s'),$antragsteller);
 					}
