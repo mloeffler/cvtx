@@ -950,7 +950,7 @@ function cvtx_conf() {
 			    	echo('<textarea cols="60" rows="10" id="cvtx_send_create_antrag_admin_body" name="cvtx_send_create_antrag_admin_body">'
         	 			.($sendantragadmin_body ? $sendantragadmin_body : "Hej,\n\n"
                                                                          ."es wurde ein neuer Antrag zu %top% eingereicht. Bitte prüfen und veröffentlichen!\n\n"
-                                                                         .home_url()."/wp-admin/\n\n"
+                                                                         .home_url('/wp-admin')."\n\n"
                                                                          ."%top%\n\n"
                                                                          ."%titel%\n\n"
                                                                          ."%antragstext%\n\n"
@@ -1036,7 +1036,7 @@ function cvtx_conf() {
 			    	echo('<textarea cols="60" rows="10" id="cvtx_send_create_aeantrag_admin_body" name="cvtx_send_create_aeantrag_admin_body">'
     	    			 .($sendaeantragadmin_body ? $sendaeantragadmin_body : "Hej,\n\n"
                                                                               ."es wurde ein neuer Änderungsantrag zum Antrag %antrag% eingereicht. Bitte prüfen und veröffentlichen!\n\n"
-                                                                              .home_url()."/wp-admin/\n\n"
+                                                                              .home_url('/wp-admin')."\n\n"
                                                                               ."Antrag:\n%antrag%\n\n"
                                                                               ."Zeile:\n%zeile%\n\n"
                                                                               ."%antragstext%\n\n"
