@@ -490,6 +490,8 @@ function cvtx_insert_post($post_id, $post = null) {
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
+                        $content = str_replace('%top_kuerzel%', 'TOP '.get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true), $content);
+                        $content = str_replace('%top%', get_the_title($_POST['cvtx_antrag_top']), $content);
                         $content = str_replace('%titel%', $post->post_title, $content);
                         $content = str_replace('%antragsteller%', $_POST['cvtx_antrag_steller'], $content);
                         $content = str_replace('%antragsteller_kurz%', $_POST['cvtx_antrag_steller_short'], $content);
@@ -508,9 +510,17 @@ function cvtx_insert_post($post_id, $post = null) {
                 $mails['owner'] = array('subject' => get_option('cvtx_send_create_aeantrag_owner_subject'), 'body' => get_option('cvtx_send_create_aeantrag_owner_body'));
                 $mails['admin'] = array('subject' => get_option('cvtx_send_create_aeantrag_admin_subject'), 'body' => get_option('cvtx_send_create_aeantrag_admin_body'));
                 
+                $top_id = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
+                
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
+                        $content = str_replace('%top_kuerzel%', 'TOP '.get_post_meta($top_id, 'cvtx_top_ord', true), $content);
+                        $content = str_replace('%top%', get_the_title($top_id), $content);
+                        $content = str_replace('%antrag_kuerzel%', get_post_meta($top_id, 'cvtx_top_short', true)
+                                                                  .'-'.get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true), $content);
+                        $content = str_replace('%antrag%', get_the_title($_POST['cvtx_aeantrag_antrag']), $content);
+                        $content = str_replace('%zeile%', $_POST['cvtx_aeantrag_zeile'], $content);
                         $content = str_replace('%antragsteller%', $_POST['cvtx_aeantrag_steller'], $content);
                         $content = str_replace('%antragsteller_kurz%', $_POST['cvtx_aeantrag_steller_short'], $content);
                         $content = str_replace('%antragstext%', $post->post_content, $content);
@@ -866,7 +876,7 @@ function cvtx_conf() {
 		echo('</table>');
 			
 		echo('<h4>Neuer Antrag erstellt</h4>');
-    	echo('<span class="description">Mögliche Felder: %titel%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.</span>');
+    	echo('<span class="description">Mögliche Felder: %top%, %top_kuerzel%, %titel%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.</span>');
     	
     	echo('<table class="form-table">');	
 			echo('<tr valign="top">');
@@ -897,11 +907,12 @@ function cvtx_conf() {
 				echo('<td>');
 			    	echo('<textarea cols="60" rows="10" id="cvtx_send_create_antrag_owner_body" name="cvtx_send_create_antrag_owner_body">'
 						.($sendantragowner_body ? $sendantragowner_body : "Hej,\n\n"
-                                                                         ."dein Antrag „%titel%“ wurde erfolgreich eingereicht. "
+                                                                         ."dein Antrag „%titel%“ zum %top% wurde erfolgreich eingereicht. "
                                                                          ."Bevor er auf der Website zu sehen sein wird, muss er "
                                                                          ."erst noch eine Antragsnummer bekommen und dann "
                                                                          ."freigeschaltet werden.\n\n"
                                                                          ."Zur Bestätigung hier nochmal deine Angaben:\n\n"
+                                                                         ."%top%\n\n"
                                                                          ."%titel%\n\n"
                                                                          ."%antragstext%\n\n"
                                                                          ."Begründung:\n%begruendung%\n\n"
@@ -938,8 +949,9 @@ function cvtx_conf() {
 				echo('<td>');
 			    	echo('<textarea cols="60" rows="10" id="cvtx_send_create_antrag_admin_body" name="cvtx_send_create_antrag_admin_body">'
         	 			.($sendantragadmin_body ? $sendantragadmin_body : "Hej,\n\n"
-                                                                         ."es wurde ein neuer Antrag eingereicht. Bitte prüfen und veröffentlichen!\n\n"
-                                                                         .home_url()."\n\n"
+                                                                         ."es wurde ein neuer Antrag zu %top% eingereicht. Bitte prüfen und veröffentlichen!\n\n"
+                                                                         .home_url()."/wp-admin/\n\n"
+                                                                         ."%top%\n\n"
                                                                          ."%titel%\n\n"
                                                                          ."%antragstext%\n\n"
                                                                          ."Begründung:\n%begruendung%\n\n"
@@ -950,7 +962,7 @@ function cvtx_conf() {
 		echo('</table>');
          	
 	    echo('<h4>Neuer Änderungsantrag erstellt</h4>');
-    	echo('<span class="description">Mögliche Felder: %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.</span>');
+    	echo('<span class="description">Mögliche Felder: %top%, %top_kuerzel%, %antrag%, %antrag_kuerzel%, %zeile%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.</span>');
 	    	
 	    echo('<table class="form-table">');
         	echo('<tr valign="top">');
@@ -969,7 +981,7 @@ function cvtx_conf() {
     			echo('</th>');
     			echo('<td>');
 			    	echo('<input id="cvtx_send_create_aeantrag_owner_subject" name="cvtx_send_create_aeantrag_owner_subject" size="58" type="text" value="'
-    	     			 .($sendaeantragowner_subject ? $sendaeantragowner_subject : 'Änderungsantrag eingereicht')
+    	     			 .($sendaeantragowner_subject ? $sendaeantragowner_subject : 'Änderungsantrag zu %antrag_kuerzel% (Zeile %zeile%) eingereicht')
     	     			 .'" />');
     	    	echo('</td>');
     	    echo('</tr>');
@@ -981,11 +993,13 @@ function cvtx_conf() {
 				echo('<td>');
 				echo('<textarea cols="60" rows="10" id="cvtx_send_create_aeantrag_owner_body" name="cvtx_send_create_aeantrag_owner_body">'
         	 		 .($sendaeantragowner_body ? $sendaeantragowner_body : "Hej,\n\n"
-                                                                          ."dein Änderungsantrag wurde erfolgreich eingereicht. "
+                                                                          ."dein Änderungsantrag zum Antrag %antrag% wurde erfolgreich eingereicht. "
                                                                           ."Bevor er auf der Website zu sehen sein wird, muss er "
                                                                           ."erst noch eine Antragsnummer bekommen und dann "
                                                                           ."freigeschaltet werden.\n\n"
                                                                           ."Zur Bestätigung hier nochmal deine Angaben:\n\n"
+                                                                          ."Antrag:\n%antrag%\n\n"
+                                                                          ."Zeile:\n%zeile%\n\n"
                                                                           ."%antragstext%\n\n"
                                                                           ."Begründung:\n%begruendung%\n\n"
                                                                           ."AntragstellerInnen:\n%antragsteller%\n")
@@ -1009,7 +1023,7 @@ function cvtx_conf() {
    				echo('</th>');
    				echo('<td>');
 					echo('<input id="cvtx_send_create_aeantrag_admin_subject" name="cvtx_send_create_aeantrag_admin_subject" size="58" type="text" value="'
-        	 			 .($sendaeantragadmin_subject ? $sendaeantragadmin_subject : 'Neuer Änderungsantrag erstellt')
+        	 			 .($sendaeantragadmin_subject ? $sendaeantragadmin_subject : 'Neuer Änderungsantrag zu %antrag_kuerzel% (Zeile %zeile%) erstellt')
         	 			 .'" />');
     			echo('</td>');
     		echo('</tr>');
@@ -1021,8 +1035,10 @@ function cvtx_conf() {
     			echo('<td>');
 			    	echo('<textarea cols="60" rows="10" id="cvtx_send_create_aeantrag_admin_body" name="cvtx_send_create_aeantrag_admin_body">'
     	    			 .($sendaeantragadmin_body ? $sendaeantragadmin_body : "Hej,\n\n"
-                                                                              ."es wurde ein neuer Änderungsantrag eingereicht. Bitte prüfen und veröffentlichen!\n\n"
-                                                                              .home_url()."\n\n"
+                                                                              ."es wurde ein neuer Änderungsantrag zum Antrag %antrag% eingereicht. Bitte prüfen und veröffentlichen!\n\n"
+                                                                              .home_url()."/wp-admin/\n\n"
+                                                                              ."Antrag:\n%antrag%\n\n"
+                                                                              ."Zeile:\n%zeile%\n\n"
                                                                               ."%antragstext%\n\n"
                                                                               ."Begründung:\n%begruendung%\n\n"
                                                                               ."AntragstellerInnen:\n%antragsteller%\n")
