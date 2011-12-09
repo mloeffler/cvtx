@@ -16,6 +16,43 @@ jQuery(document).ready(function($){
 			showTarget(target);
 		}
 	});
+	
+    $("#cvtx_antrag_top_select").change(function() {
+        $.post("/conventix_wp/wp-admin/admin-ajax.php",
+               {"action": "get_short",
+                "cookie": encodeURIComponent(document.cookie),
+                "top_id": $("#cvtx_antrag_top option:selected").val()},
+               function (str) { $("#cvtx_top_kuerzel").text(str); }
+              );
+        check_unique_antrag_ord();
+    });
+	
+    $("#cvtx_antrag_ord_field").keyup(check_unique_antrag_ord);
+    
+    function check_unique_antrag_ord() {
+        $.post("/conventix_wp/wp-admin/admin-ajax.php",
+               {"action": "check_unique",
+                "cookie": encodeURIComponent(document.cookie),
+                "post_id": $("#post_ID").val(),
+                "post_type": "cvtx_antrag",
+                "top_id": $("#cvtx_antrag_top option:selected").val(),
+                "antrag_ord": $("#cvtx_antrag_ord_field").val()},
+               function (str) {
+                   if (str == "+OK") {
+                       $("#cvtx_antrag_ord_field").css("background-color", "lightgreen");
+                       $("#save-post").attr("disabled", false);
+                       $("#save").attr("disabled", false);
+                       $("#publish").attr("disabled", false);
+                       $("#preview-action").show();
+                   } else {
+                       $("#cvtx_antrag_ord_field").css("background-color", "red");
+                       $("#save-post").attr("disabled", true);
+                       $("#save").attr("disabled", true);
+                       $("#publish").attr("disabled", true);
+                       $("#preview-action").hide();
+                   }
+               });
+    }
 });
 
 function showTarget(target) {

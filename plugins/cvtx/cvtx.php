@@ -13,11 +13,12 @@ Author URI: http://alexander-fecke.de
 License: GPLv2 or later
 */
 
-/*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+/* 
+Copyright 2011 - Alexander Fecke & Max Löffler
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License, version 2, as 
+published by the Free Software Foundation.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,7 +27,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 define('CVTX_VERSION', '0.1');
@@ -109,8 +110,8 @@ function cvtx_top_short() {
 function cvtx_antrag_ord() {
     global $post;
     $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);
-    echo('<label for="cvtx_antag_ord">'.get_post_meta($top_id, 'cvtx_top_short', true).'-</label>');
-    echo('<input name="cvtx_antrag_ord" id="cvtx_antag_ord" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
+    echo('<label id="cvtx_top_kuerzel" for="cvtx_antrag_ord_field">'.get_post_meta($top_id, 'cvtx_top_short', true).'</label>-');
+    echo('<input name="cvtx_antrag_ord" id="cvtx_antrag_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
 }
 
 // Tagesordnungspunkt
@@ -152,8 +153,8 @@ function cvtx_aeantrag_zeile() {
     global $post;
     $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
     $top_id    = get_post_meta($antrag_id, 'cvtx_antrag_top', true);
-    echo('<label for="cvtx_aeantrag_zeile">'.get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true).'-</label>');
-    echo('<input name="cvtx_aeantrag_zeile" id="cvtx_aeantrag_zeile" type="text" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'" />');
+    echo('<label id="cvtx_antrag_kuerzel" for="cvtx_aeantrag_zeile_field">'.get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true).'</label>-');
+    echo('<input name="cvtx_aeantrag_zeile" id="cvtx_aeantrag_zeile_field" type="text" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'" />');
 }
 
 // Antrag
@@ -625,18 +626,6 @@ function cvtx_create_pdf($post_id, $post = null) {
     }
 }
 
-
-/**
- * Hide the quickedit function in admin area
- */
-if (is_admin()) add_filter('post_row_actions', 'cvtx_hide_quick_edit', 10, 2);
-function cvtx_hide_quick_edit($actions) {
-    global $post, $cvtx_types;
-    if(in_array($post->post_type, array_keys($cvtx_types))) {
-        unset($actions['inline hide-if-no-js']);
-    }
-    return $actions;
-}
 
 // replaces filter "the title" in order to generate custom titles for post-types "top", "antrag" and "aeantrag"
 add_filter('the_title', 'cvtx_the_title', 1, 2);
@@ -1211,6 +1200,56 @@ function cvtx_sanitize_file_name($str) {
 }
 
 
+add_action('wp_ajax_get_short', 'cvtx_ajax_get_short');
+/**
+ * 
+ */
+function cvtx_ajax_get_short() {
+    echo get_post_meta($_REQUEST['top_id'], 'cvtx_top_short', true);
+    exit();
+}
+
+
+add_action('wp_ajax_check_unique', 'cvtx_ajax_check_unique');
+/**
+ * 
+ */
+function cvtx_ajax_check_unique() {
+    if ($_REQUEST['post_type'] == 'cvtx_antrag') {
+        $param = array('post_type'    => 'cvtx_antrag',
+                       'post__not_in' => array($_REQUEST['post_id']),
+                       'meta_query'   => array(array('key'     => 'cvtx_antrag_top',
+                                                     'value'   => $_REQUEST['top_id'],
+                                                     'compare' => '='),
+                                               array('key'     => 'cvtx_antrag_ord',
+                                                     'value'   => $_REQUEST['antrag_ord'],
+                                            '         compare' => '=')));
+    }
+    
+    $aquery = new WP_Query($param);
+    if ($aquery->have_posts()) {
+        echo "-ERR";
+    } else {
+        echo "+OK";
+    }
+
+    exit();
+}
+
+
+if (is_admin()) add_filter('post_row_actions', 'cvtx_hide_quick_edit', 10, 2);
+/**
+ * Hide the quickedit function in admin area
+ */
+function cvtx_hide_quick_edit($actions) {
+    global $post, $cvtx_types;
+    if(in_array($post->post_type, array_keys($cvtx_types))) {
+        unset($actions['inline hide-if-no-js']);
+    }
+    return $actions;
+}
+
+
 if (is_admin()) add_action('admin_head', 'cvtx_manage_media_buttons');
 /**
  * Hide media buttons above the rich text editor
@@ -1271,7 +1310,7 @@ function cvtx_dropdown_tops($selected = null, $message = '') {
 
     $tquery = new WP_Query(array('post_type' => 'cvtx_top', 'orderby' => 'meta_value_num', 'meta_key' => 'cvtx_top_ord', 'order' => 'ASC'));
     if ($tquery->have_posts()) {
-        $output .= '<select name="cvtx_antrag_top" id="cvtx_antrag_top">';
+        $output .= '<select name="cvtx_antrag_top" id="cvtx_antrag_top_select">';
         while ($tquery->have_posts()) {
             $tquery->the_post();
             $output .= '<option value="'.get_the_ID().'"'.(get_the_ID() == $selected ? ' selected="selected"' : '').'>';
