@@ -31,12 +31,17 @@
 		var i = 0;
 		$("#message").remove();
 		$(".cvtx_antrag_form .required").each(function() {
-			if(!$(this).val()) {
+			var id = $(this).attr("id");
+			if(!$(this).val() || 
+			   id == 'cvtx_antrag_email' && !check_mail($(this).val()) ||
+			   id == 'cvtx_antrag_phone' && !check_phone($(this).val())) {
 				$(this).addClass("error");
 				if(i==0)
 					$(".cvtx_antrag_form").prepend('<p id="message" class="error">Bitte f&uuml;lle alle Felder aus die mit einem '+
 					 						'<span class="form-required">*</span> gekennzeichnet sind!</p>');
 				ret = false;
+				if(id == 'cvtx_antrag_email' && $(this).val()) $("#message").append('<ul><li>Bitte gib eine g&uuml;ltige E-Mail-Adresse an!</li></ul>');
+				if(id == 'cvtx_antrag_phone' && $(this).val()) $("#message").append('<ul><li>Bitte gib eine g&uuml;ltige Telefonnummer an!</li></ul>');
 			}
 			else {
 				$(this).removeClass("error");
@@ -71,6 +76,17 @@ function create_Overlay() {
 	jQuery("#ae_window").append(navi);
 	jQuery("#ae_window").append(result);
 	jQuery(".ae_antraege_overlay").fadeIn();
+}
+
+function check_mail(text) {
+	if(text.search('@') <= 0) return false;
+	else return true;
+}
+
+function check_phone(text) {
+	for(i=0; i<text.length; i++)
+		if(!(parseInt(text[i]) || text[i] == '/' || text[i] == ' ')) return false;
+	return true;
 }
 
 // getPageScroll()

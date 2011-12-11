@@ -465,6 +465,11 @@ p#message.success {
 	border-color: #be7;
 }
 
+p#message ul {
+	margin-top: 0.8em;
+	margin-bottom:0px;
+}
+
 form.cvtx_antrag_form .error {
 	border-color: red;
 }
