@@ -628,10 +628,11 @@ function cvtx_create_pdf($post_id, $post = null) {
 
 
 // replaces filter "the title" in order to generate custom titles for post-types "top", "antrag" and "aeantrag"
-add_filter('the_title', 'cvtx_the_title', 1, 2);
-function cvtx_the_title($before='', $title='') {
-    if(is_numeric($title)) $post = &get_post($title);
-    
+add_filter('the_title', 'cvtx_the_title', 1, 3);
+function cvtx_the_title($before='', $after='', $echo = true) {
+
+	if(is_numeric($after)) $post = &get_post($after);
+		    
     if(isset($post)) {
         $title = $post->post_title;
         
@@ -647,8 +648,10 @@ function cvtx_the_title($before='', $title='') {
         else if($post->post_type == 'cvtx_top') {
             $title = cvtx_get_short($post).': '.$post->post_title;
         }
-    }
-    
+        else {
+        	return $before;
+        }
+    }    
     return $title;
 }
 

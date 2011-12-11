@@ -1,10 +1,6 @@
 <div id="sidebar">
 	<nav>
-		<ul>
-			<li><a href="#">Antrag stellen</a></li>
-			<li><a href="#">Archiv</a></li>
-			<li><a href="#">Meine LDK</a></li>
-		</ul>
+		<?php wp_nav_menu(array('theme_location' => 'cvtx-menu', 'fallback_cb' => false)); ?>
 	</nav><div class="filler"></div>
 	<ul class="side">
 		<li id="first">

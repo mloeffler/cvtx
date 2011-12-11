@@ -6,7 +6,8 @@ if ( function_exists('register_sidebar') )
 add_action( 'init', 'register_my_menus' );
 function register_my_menus() {
   register_nav_menus(
-    array('header-menu' => __( 'Header Menu' ) )
+    array('header-menu' => __( 'Header Menu' ),
+    	  'cvtx-menu' => __( 'Cvtx Menu') )
   );
 }
 
