@@ -25,3 +25,7 @@
 
 #cvtx_options label {
 }
+
+.cvtx_unique_error, .cvtx_empty_error {
+    display: none;
+}

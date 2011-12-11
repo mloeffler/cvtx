@@ -16,42 +16,96 @@ jQuery(document).ready(function($){
 			showTarget(target);
 		}
 	});
-	
-    $("#cvtx_antrag_top_select").change(function() {
-        $.post("/conventix_wp/wp-admin/admin-ajax.php",
-               {"action": "get_short",
-                "cookie": encodeURIComponent(document.cookie),
-                "top_id": $("#cvtx_antrag_top option:selected").val()},
-               function (str) { $("#cvtx_top_kuerzel").text(str); }
-              );
-        check_unique_antrag_ord();
-    });
-	
-    $("#cvtx_antrag_ord_field").keyup(check_unique_antrag_ord);
+
+    // TOP bearbeiten
+    $("#cvtx_top_ord_field").keyup(function() { check_unique("cvtx_top_ord"); });
+    $("#cvtx_top_short_field").keyup(function() { check_unique("cvtx_top_short"); });
     
-    function check_unique_antrag_ord() {
-        $.post("/conventix_wp/wp-admin/admin-ajax.php",
-               {"action": "check_unique",
-                "cookie": encodeURIComponent(document.cookie),
-                "post_id": $("#post_ID").val(),
-                "post_type": "cvtx_antrag",
-                "top_id": $("#cvtx_antrag_top option:selected").val(),
-                "antrag_ord": $("#cvtx_antrag_ord_field").val()},
-               function (str) {
-                   if (str == "+OK") {
-                       $("#cvtx_antrag_ord_field").css("background-color", "lightgreen");
-                       $("#save-post").attr("disabled", false);
-                       $("#save").attr("disabled", false);
-                       $("#publish").attr("disabled", false);
-                       $("#preview-action").show();
-                   } else {
-                       $("#cvtx_antrag_ord_field").css("background-color", "red");
-                       $("#save-post").attr("disabled", true);
-                       $("#save").attr("disabled", true);
-                       $("#publish").attr("disabled", true);
-                       $("#preview-action").hide();
-                   }
-               });
+    // Antrag bearbeiten
+    $("#cvtx_antrag_top_select").change(function() { get_short("cvtx_antrag"); check_unique("cvtx_antrag_ord"); });
+    $("#cvtx_antrag_ord_field").keyup(function() { check_unique("cvtx_antrag_ord"); });
+
+    // Änderungsantrag bearbeiten
+    $("#cvtx_aeantrag_antrag_select").change(function() { get_short("cvtx_aeantrag"); check_unique("cvtx_aeantrag_zeile"); });
+    $("#cvtx_aeantrag_zeile_field").keyup(function() { check_unique("cvtx_aeantrag_zeile"); });
+    
+    function get_short(type) {
+        if (type == "cvtx_antrag") {
+            $.post("/conventix_wp/wp-admin/admin-ajax.php",
+                   {"action" : "get_short",
+                    "cookie" : encodeURIComponent(document.cookie),
+                    "post_id": $("#cvtx_antrag_top_select option:selected").val()},
+                   function (str) { $("#cvtx_top_kuerzel").text(str); }
+                  );
+        } else if (type == "cvtx_aeantrag") {
+            $.post("/conventix_wp/wp-admin/admin-ajax.php",
+                   {"action" : "get_short",
+                    "cookie" : encodeURIComponent(document.cookie),
+                    "post_id": $("#cvtx_aeantrag_antrag_select option:selected").val()},
+                   function (str) { $("#cvtx_antrag_kuerzel").text(str); }
+                  );
+        }
+    }
+    
+    function check_unique(type) {
+        query = null;
+        if (type == "cvtx_antrag_ord") {
+            query = {"post_type"       : "cvtx_antrag",
+                     "post_id[0]"      : $("#post_ID").val(),
+                     "args[0][key]"    : "cvtx_antrag_top",
+                     "args[0][value]"  : $("#cvtx_antrag_top_select option:selected").val(),
+                     "args[0][compare]": "=",
+                     "args[1][key]"    : "cvtx_antrag_ord",
+                     "args[1][value]"  : $("#cvtx_antrag_ord_field").val(),
+                     "args[1][compare]": "="};
+        } else if (type == "cvtx_aeantrag_zeile") {
+            query = {"post_type"       : "cvtx_aeantrag",
+                     "post_id[0]"      : $("#post_ID").val(),
+                     "args[0][key]"    : "cvtx_aeantrag_antrag",
+                     "args[0][value]"  : $("#cvtx_aeantrag_antrag_select option:selected").val(),
+                     "args[0][compare]": "=",
+                     "args[1][key]"    : "cvtx_aeantrag_zeile",
+                     "args[1][value]"  : $("#cvtx_aeantrag_zeile_field").val(),
+                     "args[1][compare]": "="};
+        } else if (type == "cvtx_top_ord") {
+            query = {"post_type"       : "cvtx_top",
+                     "post_id[0]"      : $("#post_ID").val(),
+                     "args[0][key]"    : "cvtx_top_ord",
+                     "args[0][value]"  : $("#cvtx_top_ord_field").val(),
+                     "args[0][compare]": "="};
+        } else if (type == "cvtx_top_short") {
+            query = {"post_type"       : "cvtx_top",
+                     "post_id[0]"      : $("#post_ID").val(),
+                     "args[0][key]"    : "cvtx_top_short",
+                     "args[0][value]"  : $("#cvtx_top_short_field").val(),
+                     "args[0][compare]": "="};
+        }
+        
+        if (query != null) {
+            query.action = "check_unique";
+            query.cookie = encodeURIComponent(document.cookie);
+            $.post("/conventix_wp/wp-admin/admin-ajax.php", query, function (str) { toggle_buttons((str == "+OK"), type); });
+        }
+    }
+    
+    function toggle_buttons(show, type) {
+        $("#save-post").attr("disabled", !show);
+        $("#save").attr("disabled", !show);
+        $("#publish").attr("disabled", !show || $("#" + type + "_field").val().length == 0);
+        if (show) {
+            $("#" + type + "_field").css("background-color", "lightgreen");
+            $("#preview-action").show();
+            $("#unique_error_" + type).css("display", "none");
+        } else {
+            $("#" + type + "_field").css("background-color", "red");
+            $("#preview-action").hide();
+            $("#unique_error_" + type).css("display", "block");
+        }
+        if ($("#" + type + "_field").val().length == 0) {
+            $("#empty_error_" + type).css("display", "block");
+        } else {
+            $("#empty_error_" + type).css("display", "none");
+        }
     }
 });
 

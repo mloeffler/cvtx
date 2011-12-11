@@ -65,7 +65,7 @@ if (is_admin()) add_action('add_meta_boxes', 'cvtx_add_meta_boxes');
 function cvtx_add_meta_boxes() {
     // Tagesordnungspunkte
     add_meta_box('cvtx_top_ord', 'Nummer', 'cvtx_top_ord', 'cvtx_top', 'side', 'high');
-    add_meta_box('cvtx_top_short', 'Kürzel', 'cvtx_top_short', 'cvtx_top', 'normal', 'high');
+    add_meta_box('cvtx_top_short', 'Kürzel', 'cvtx_top_short', 'cvtx_top', 'side', 'high');
     
     // Anträge
     add_meta_box('cvtx_antrag_ord', 'Antragsnummer', 'cvtx_antrag_ord', 'cvtx_antrag', 'side', 'high');
@@ -94,13 +94,17 @@ function cvtx_add_meta_boxes() {
 // TOP-Nummer
 function cvtx_top_ord() {
     global $post;
-    echo('<label>Nummer:</label> <input name="cvtx_top_ord" type="text" maxlength="4" value="'.get_post_meta($post->ID, 'cvtx_top_ord', true).'" />');
+    echo('<input name="cvtx_top_ord" id="cvtx_top_ord_field" type="text" maxlength="4" value="'.get_post_meta($post->ID, 'cvtx_top_ord', true).'" />');
+    echo('<div id="unique_error_cvtx_top_ord" class="cvtx_unique_error">Es existiert bereits ein TOP mit dieser Nummer.</div>');
+    echo('<div id="empty_error_cvtx_top_ord" class="cvtx_empty_error">Bitte TOP-Nummer vergeben.</div>');
 }
 
 // Kürzel
 function cvtx_top_short() {
     global $post;
-    echo('<label>Kürzel:</label> <input name="cvtx_top_short" type="text" value="'.get_post_meta($post->ID, 'cvtx_top_short', true).'" />');
+    echo('<input name="cvtx_top_short" id="cvtx_top_short_field" type="text" value="'.get_post_meta($post->ID, 'cvtx_top_short', true).'" />');
+    echo('<div id="unique_error_cvtx_top_short" class="cvtx_unique_error">Es existiert bereits ein TOP mit diesem Kürzel.</div>');
+    echo('<div id="empty_error_cvtx_top_short" class="cvtx_empty_error">Bitte Kürzel für den TOP vergeben.</div>');
 }
 
 
@@ -112,6 +116,8 @@ function cvtx_antrag_ord() {
     $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);
     echo('<label id="cvtx_top_kuerzel" for="cvtx_antrag_ord_field">'.get_post_meta($top_id, 'cvtx_top_short', true).'</label>-');
     echo('<input name="cvtx_antrag_ord" id="cvtx_antrag_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
+    echo('<div id="unique_error_cvtx_antrag_ord" class="cvtx_unique_error">Es liegt bereits ein Antrag mit identischer Antragsnummer vor.</div>');
+    echo('<div id="empty_error_cvtx_antrag_ord" class="cvtx_empty_error">Bitte Antragsnummer vergeben.</div>');
 }
 
 // Tagesordnungspunkt
@@ -153,8 +159,16 @@ function cvtx_aeantrag_zeile() {
     global $post;
     $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
     $top_id    = get_post_meta($antrag_id, 'cvtx_antrag_top', true);
-    echo('<label id="cvtx_antrag_kuerzel" for="cvtx_aeantrag_zeile_field">'.get_post_meta($top_id, 'cvtx_top_short', true).'-'.get_post_meta($antrag_id, 'cvtx_antrag_ord', true).'</label>-');
-    echo('<input name="cvtx_aeantrag_zeile" id="cvtx_aeantrag_zeile_field" type="text" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'" />');
+
+    $format = get_option('cvtx_aeantrag_format');
+    $format = str_replace('%antrag%', '<label id="cvtx_antrag_kuerzel" for="cvtx_aeantrag_zeile_field">'
+                                      .get_post_meta($top_id, 'cvtx_top_short', true).'-'
+                                      .get_post_meta($antrag_id, 'cvtx_antrag_ord', true).'</label>', $format);
+    $format = str_replace('%zeile%', '<input name="cvtx_aeantrag_zeile" id="cvtx_aeantrag_zeile_field" type="text" value="'
+                                      .get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'" />', $format);
+    echo($format);
+    echo('<div id="unique_error_cvtx_aeantrag_zeile" class="cvtx_unique_error">Es liegt bereits ein Änderungsantrag mit identischer Zeilenangabe vor.</div>');
+    echo('<div id="empty_error_cvtx_aeantrag_zeile" class="cvtx_empty_error">Bitte Zeile für den Änderungsantrag angeben.</div>');
 }
 
 // Antrag
@@ -636,17 +650,19 @@ function cvtx_the_title($before='', $after='', $echo = true) {
     if(isset($post)) {
         $title = $post->post_title;
         
-        // Antrag
-        if($post->post_type == 'cvtx_antrag') {
-            $title = cvtx_get_short($post).' '.$post->post_title;
-        }
-        // Änderungsantrag
-        else if($post->post_type == 'cvtx_aeantrag') {
-            $title = cvtx_get_short($post);
-        }
-        // Tagesordnungspunkt
-        else if($post->post_type == 'cvtx_top') {
-            $title = cvtx_get_short($post).': '.$post->post_title;
+        if ($short = cvtx_get_short($post)) {
+            // Antrag
+            if($post->post_type == 'cvtx_antrag') {
+                $title = $short.' '.$post->post_title;
+            }
+            // Änderungsantrag
+            else if($post->post_type == 'cvtx_aeantrag') {
+                $title = $short;
+            }
+            // Tagesordnungspunkt
+            else if($post->post_type == 'cvtx_top') {
+                $title = $short.': '.$title;
+            }
         }
         else {
         	return $before;
@@ -1208,7 +1224,8 @@ add_action('wp_ajax_get_short', 'cvtx_ajax_get_short');
  * 
  */
 function cvtx_ajax_get_short() {
-    echo get_post_meta($_REQUEST['top_id'], 'cvtx_top_short', true);
+    $post = get_post($_REQUEST['post_id']);
+    echo cvtx_get_short($post);
     exit();
 }
 
@@ -1218,22 +1235,21 @@ add_action('wp_ajax_check_unique', 'cvtx_ajax_check_unique');
  * 
  */
 function cvtx_ajax_check_unique() {
-    if ($_REQUEST['post_type'] == 'cvtx_antrag') {
-        $param = array('post_type'    => 'cvtx_antrag',
-                       'post__not_in' => array($_REQUEST['post_id']),
-                       'meta_query'   => array(array('key'     => 'cvtx_antrag_top',
-                                                     'value'   => $_REQUEST['top_id'],
-                                                     'compare' => '='),
-                                               array('key'     => 'cvtx_antrag_ord',
-                                                     'value'   => $_REQUEST['antrag_ord'],
-                                            '         compare' => '=')));
-    }
-    
-    $aquery = new WP_Query($param);
-    if ($aquery->have_posts()) {
-        echo "-ERR";
-    } else {
-        echo "+OK";
+    global $cvtx_types;
+
+    if (isset($_REQUEST['post_type']) && in_array($_REQUEST['post_type'], array_keys($cvtx_types))
+     && isset($_REQUEST['args'])      && is_array($_REQUEST['args'])     && count($_REQUEST['args']) > 0
+     && isset($_REQUEST['post_id'])   && is_array($_REQUEST['post_id'])) {
+        $param = array('post_type'    => $_REQUEST['post_type'],
+                       'post__not_in' => $_REQUEST['post_id'],
+                       'meta_query'   => $_REQUEST['args']);
+        
+        $aquery = new WP_Query($param);
+        if ($aquery->have_posts()) {
+            echo "-ERR";
+        } else {
+            echo "+OK";
+        }
     }
 
     exit();
@@ -1351,7 +1367,7 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
                                  'meta_key'  => 'cvtx_top_ord',
                                  'order'     => 'ASC'));
     if ($tquery->have_posts()) {
-        $output .= '<select name="cvtx_aeantrag_antrag" id="cvtx_aeantrag_antrag">';
+        $output .= '<select name="cvtx_aeantrag_antrag" id="cvtx_aeantrag_antrag_select">';
         while ($tquery->have_posts()) {
             $tquery->the_post();
             // optgroup for top
