@@ -26,6 +26,21 @@
 #cvtx_options label {
 }
 
-.cvtx_unique_error, .cvtx_empty_error {
+p#message, .cvtx_unique_error, .cvtx_empty_error {
     display: none;
+}
+
+form#post .error {
+    color: red;
+	border-color: red;
+}
+
+p#message {
+	margin-top: 0.8em;
+    background: #fafafa;
+    padding:1em;
+    border-radius: 4px;
+    border: 1px solid #333;
+    background: #fef5f1;
+    border-color: #ed541d;
 }
