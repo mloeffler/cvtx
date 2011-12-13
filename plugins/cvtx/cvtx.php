@@ -765,8 +765,9 @@ function cvtx_conf() {
 
     echo('<h2 class="nav-tab-wrapper" id="cvtx_navi">');
     	echo('<a class="nav-tab cvtx_tool" href="#cvtx_tool">Antragstool</a>');
-    	echo('<a class="nav-tab cvtx_latex" href="#cvtx_latex">LaTeX</a>');
     	echo('<a class="nav-tab cvtx_mail" href="#cvtx_mail">Benachrichtigungen</a>');
+    	echo('<a class="nav-tab cvtx_recaptcha" href="#cvtx_recaptcha">Spam-Schutz</a>');
+    	echo('<a class="nav-tab cvtx_latex" href="#cvtx_latex">LaTeX</a>');
     echo('</h2>');
     
     echo('<form action="" method="post" id="cvtx-conf">');
@@ -787,7 +788,7 @@ function cvtx_conf() {
 
 			echo('<tr valign="top">');
     			echo('<th scope="row">');
-    				echo('<label for="cvtx_aeantrag_pdf">PDF</label>');
+    				echo('<label for="cvtx_aeantrag_pdf">PDF-Erstellung</label>');
     			echo('</th>');
     			echo('<td>');
 			    	echo('<input id="cvtx_aeantrag_pdf" name="cvtx_aeantrag_pdf" type="checkbox" '.($aentrag_pdf ? 'checked="checked"' : '').'" /> ');
@@ -810,89 +811,7 @@ function cvtx_conf() {
     		echo('</tr>');
     	echo('</table>');
     	
-    	echo('<h3>reCaptcha</h3>');
-    	
-    	echo('<table class="form-table">');
-    		echo('<tr valign="top">');
-    			echo('<th scope="row"');
-    				echo('<label for="cvtx_use_recaptcha">reCaptcha benutzen</label>');
-    			echo('</th>');
-   				echo('<td>');
-    				echo('<input id="cvtx_use_recaptcha" name="cvtx_use_recaptcha" type="checkbox" '.($use_recpatcha ? 'checked="checked"' : ''). '" /> ');
-			    	echo('<span class="description">Um die Eingabe von Änderungsanträgen und Anträgen Spam-sicher zu machen, wird der Einsatz von reCaptcha empfohlen.</span>');
-    			echo('</td>');
-    		echo('</tr>');
-    		
-   			echo('<tr valign="top">');
-   				echo('<th scope="row">');
-   					echo('<label for="cvtx_recaptcha_publickey">Öffentlicher reCaptcha-Schlüssel</label>');
-   				echo('</th>');
-   				echo('<td>');
-   					echo('<input id="cvtx_recpatcha_publickey" name="cvtx_recaptcha_publickey" type="text" value="'.$recaptcha_publickey.'" /> ');
-   					echo('<span class="description">Ein Schlüsselpaar erhältst du <a href="http://www.google.com/recaptcha/whyrecaptcha">hier</a>.</span>');
-   				echo('</td>');
-   			echo('</tr>');
-
-   			echo('<tr valign="top">');
-   				echo('<th scope="row">');
-   					echo('<label for="cvtx_recaptcha_privatekey">Privater reCaptcha-Schlüssel</label>');
-   				echo('</th>');
-   				echo('<td>');
-   					echo('<input id="cvtx_recpatcha_privatekey" name="cvtx_recaptcha_privatekey" type="text" value="'.$recaptcha_privatekey.'" /> ');
-   				echo('</td>');
-   			echo('</tr>');
-
-    	echo('</table>');
-    	
 	echo('</li>');
-	
-	echo('<li id="cvtx_latex">');
-
-    	echo('<table class="form-table">');
-			echo('<tr valign="top">');
-    			echo('<th scope="row">');
-				    echo('<label for="cvtx_pdflatex_cmd">LaTeX-Pfad</label>');
-				echo('</th>');
-				echo('<td>');
-				    echo('<input id="cvtx_pdflatex_cmd" name="cvtx_pdflatex_cmd" type="text" value="'.$pdflatex_cmd.'" /> ');
-				    echo('<span class="description">Systempfad zur pdflatex-Anwendung</span>');
-				echo('</td>');
-			echo('</tr>');
-
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label>Erzeugte Tex-Files löschen</label>');
-				echo('</th>');
-				echo('<td>');
-					echo('<fieldset>');
-				   		echo('<input id="cvtx_drop_texfile_yes" name="cvtx_drop_texfile" type="radio" value="1" '.($drop_texfile == 1 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_texfile_yes">immer</label> ');
-    					echo('<input id="cvtx_drop_texfile_if" name="cvtx_drop_texfile" type="radio" value="2" '.($drop_texfile != 1 && $drop_texfile != 3 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_texfile_if">nur wenn fehlerfrei</label> ');
-    					echo('<input id="cvtx_drop_texfile_no" name="cvtx_drop_texfile" type="radio" value="3" '.($drop_texfile == 3 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_texfile_no">nie</label>');
-    				echo('</fieldset>');
-    			echo('</td>');
-    		echo('</tr>');
-    		
-    		echo('<tr valign=top">');
-    			echo('<th scope="row">');
-    				echo('<label>Erzeugte log-Files löschen</label>');
-				echo('</th>');
-				echo('<td>');
-					echo('<fieldset>');
-				    	echo('<input id="cvtx_drop_logfile_yes" name="cvtx_drop_logfile" type="radio" value="1" '.($drop_logfile == 1 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_logfile_yes">immer</label> ');
-    					echo('<input id="cvtx_drop_logfile_if" name="cvtx_drop_logfile" type="radio" value="2" '.($drop_logfile != 1 && $drop_logfile != 3 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_logfile_if">nur wenn fehlerfrei</label> ');
-    					echo('<input id="cvtx_drop_logfile_no" name="cvtx_drop_logfile" type="radio" value="3" '.($drop_logfile == 3 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_logfile_no" value="">nie</label>');
-    				echo('</fieldset>');
-    			echo('</td>');
-    		echo('</tr>');
-    	echo('</table>');
-    	
-  	echo('</li>');
  
  	echo('<li id="cvtx_mail">');
 
@@ -1090,6 +1009,89 @@ function cvtx_conf() {
     	echo('</table>');
     	
     echo('</li>');
+	
+	echo('<li id="cvtx_recaptcha">');
+    	
+    	echo('<table class="form-table">');
+    		echo('<tr valign="top">');
+    			echo('<th scope="row">');
+    				echo('<label for="cvtx_use_recaptcha">Spam-Schutz aktivieren</label>');
+    			echo('</th>');
+   				echo('<td>');
+    				echo('<input id="cvtx_use_recaptcha" name="cvtx_use_recaptcha" type="checkbox" '.($use_recpatcha ? 'checked="checked"' : ''). '" /> ');
+			    	echo('<span class="description">Um die Eingabe von Anträgen und Änderungsanträgen Spam-sicher zu machen, wird der Einsatz von reCaptcha empfohlen.</span>');
+    			echo('</td>');
+    		echo('</tr>');
+    		
+   			echo('<tr valign="top">');
+   				echo('<th scope="row">');
+   					echo('<label for="cvtx_recaptcha_publickey">Öffentlicher reCaptcha-Schlüssel</label>');
+   				echo('</th>');
+   				echo('<td>');
+   					echo('<input id="cvtx_recaptcha_publickey" name="cvtx_recaptcha_publickey" type="text" value="'.$recaptcha_publickey.'" /> ');
+   					echo('<span class="description">Schlüsselpaare können <a href="http://www.google.com/recaptcha/whyrecaptcha">hier</a> erzeugt werden.</span>');
+   				echo('</td>');
+   			echo('</tr>');
+
+   			echo('<tr valign="top">');
+   				echo('<th scope="row">');
+   					echo('<label for="cvtx_recaptcha_privatekey">Privater reCaptcha-Schlüssel</label>');
+   				echo('</th>');
+   				echo('<td>');
+   					echo('<input id="cvtx_recaptcha_privatekey" name="cvtx_recaptcha_privatekey" type="text" value="'.$recaptcha_privatekey.'" /> ');
+   				echo('</td>');
+   			echo('</tr>');
+    	echo('</table>');
+    	
+	echo('</li>');
+	
+	echo('<li id="cvtx_latex">');
+
+    	echo('<table class="form-table">');
+			echo('<tr valign="top">');
+    			echo('<th scope="row">');
+				    echo('<label for="cvtx_pdflatex_cmd">LaTeX-Pfad</label>');
+				echo('</th>');
+				echo('<td>');
+				    echo('<input id="cvtx_pdflatex_cmd" name="cvtx_pdflatex_cmd" type="text" value="'.$pdflatex_cmd.'" /> ');
+				    echo('<span class="description">Systempfad zur pdflatex-Anwendung</span>');
+				echo('</td>');
+			echo('</tr>');
+
+			echo('<tr valign="top">');
+				echo('<th scope="row">');
+					echo('<label>Erzeugte Tex-Files löschen</label>');
+				echo('</th>');
+				echo('<td>');
+					echo('<fieldset>');
+				   		echo('<input id="cvtx_drop_texfile_yes" name="cvtx_drop_texfile" type="radio" value="1" '.($drop_texfile == 1 ? 'checked="checked"' : '').'" /> ');
+    					echo('<label for="cvtx_drop_texfile_yes">immer</label> ');
+    					echo('<input id="cvtx_drop_texfile_if" name="cvtx_drop_texfile" type="radio" value="2" '.($drop_texfile != 1 && $drop_texfile != 3 ? 'checked="checked"' : '').'" /> ');
+    					echo('<label for="cvtx_drop_texfile_if">nur wenn fehlerfrei</label> ');
+    					echo('<input id="cvtx_drop_texfile_no" name="cvtx_drop_texfile" type="radio" value="3" '.($drop_texfile == 3 ? 'checked="checked"' : '').'" /> ');
+    					echo('<label for="cvtx_drop_texfile_no">nie</label>');
+    				echo('</fieldset>');
+    			echo('</td>');
+    		echo('</tr>');
+    		
+    		echo('<tr valign=top">');
+    			echo('<th scope="row">');
+    				echo('<label>Erzeugte log-Files löschen</label>');
+				echo('</th>');
+				echo('<td>');
+					echo('<fieldset>');
+				    	echo('<input id="cvtx_drop_logfile_yes" name="cvtx_drop_logfile" type="radio" value="1" '.($drop_logfile == 1 ? 'checked="checked"' : '').'" /> ');
+    					echo('<label for="cvtx_drop_logfile_yes">immer</label> ');
+    					echo('<input id="cvtx_drop_logfile_if" name="cvtx_drop_logfile" type="radio" value="2" '.($drop_logfile != 1 && $drop_logfile != 3 ? 'checked="checked"' : '').'" /> ');
+    					echo('<label for="cvtx_drop_logfile_if">nur wenn fehlerfrei</label> ');
+    					echo('<input id="cvtx_drop_logfile_no" name="cvtx_drop_logfile" type="radio" value="3" '.($drop_logfile == 3 ? 'checked="checked"' : '').'" /> ');
+    					echo('<label for="cvtx_drop_logfile_no" value="">nie</label>');
+    				echo('</fieldset>');
+    			echo('</td>');
+    		echo('</tr>');
+    	echo('</table>');
+    	
+  	echo('</li>');
     echo('</ul>');
 
     echo('<p class="submit"><input type="submit" name="submit" value="Einstellungen speichern" /></p>');
