@@ -96,7 +96,7 @@ function cvtx_top_meta() {
     echo('<br />');
     echo('<label for="cvtx_top_short_field">Kürzel:</label><br />');
     echo('<input name="cvtx_top_short" id="cvtx_top_short_field" type="text" value="'.get_post_meta($post->ID, 'cvtx_top_short', true).'" />');
-    echo('<p id="message" class="error">');
+    echo('<p id="admin_message" class="error">');
     echo('<span id="unique_error_cvtx_top_ord" class="cvtx_unique_error">Es existiert bereits ein TOP mit dieser Nummer.</span> ');
     echo('<span id="unique_error_cvtx_top_short" class="cvtx_unique_error">Es existiert bereits ein TOP mit diesem Kürzel.</span> ');
     echo('<span id="empty_error_cvtx_top_ord" class="cvtx_empty_error">Bitte TOP-Nummer vergeben.</span> ');
@@ -118,7 +118,7 @@ function cvtx_antrag_meta() {
     echo('<label for="cvtx_antrag_ord_field">Antragsnummer:</label><br />');
     echo('<label id="cvtx_top_kuerzel">'.get_post_meta($top_id, 'cvtx_top_short', true).'</label>-');
     echo('<input name="cvtx_antrag_ord" id="cvtx_antrag_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
-    echo('<p id="message" class="error">');
+    echo('<p id="admin_message" class="error">');
     echo('<span id="unique_error_cvtx_antrag_ord" class="cvtx_unique_error">Es liegt bereits ein Antrag mit identischer Antragsnummer vor.</span> ');
     echo('<span id="empty_error_cvtx_antrag_ord" class="cvtx_empty_error">Bitte Antragsnummer vergeben.</span> ');
     echo('</p>');
@@ -161,7 +161,7 @@ function cvtx_aeantrag_meta() {
     echo('<br />');
     echo('<label for="cvtx_aeantrag_zeile_field">Zeile:</label><br />');
     echo('<input name="cvtx_aeantrag_zeile" id="cvtx_aeantrag_zeile_field" type="text" value="'.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'" />');
-    echo('<p id="message" class="error">');
+    echo('<p id="admin_message" class="error">');
     echo('<span id="unique_error_cvtx_aeantrag_zeile" class="cvtx_unique_error">Es liegt bereits ein Änderungsantrag mit identischer Zeilenangabe vor.</span> ');
     echo('<span id="empty_error_cvtx_aeantrag_zeile" class="cvtx_empty_error">Bitte Zeile für den Änderungsantrag angeben.</span> ');
     echo('</p>');

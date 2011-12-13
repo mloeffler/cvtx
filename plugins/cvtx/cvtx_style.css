@@ -35,7 +35,7 @@ form#post .error {
 	border-color: red;
 }
 
-p#message {
+p#admin_message {
 	margin-top: 0.8em;
     background: #fafafa;
     padding:1em;

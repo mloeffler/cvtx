@@ -26,30 +26,33 @@
 		$("#ae_window .result").load(target+' #ae_antraege');
 		return false;
 	});
-	$(".cvtx_antrag_form .submit").click(function() {
-		var ret = true;
-		var i = 0;
-		$("#message").remove();
-		$(".cvtx_antrag_form .required").each(function() {
-			var id = $(this).attr("id");
-			if(!$(this).val() || 
-			   id == 'cvtx_antrag_email' && !check_mail($(this).val()) ||
-			   id == 'cvtx_antrag_phone' && !check_phone($(this).val())) {
-				$(this).addClass("error");
-				if(i==0)
-					$(".cvtx_antrag_form").prepend('<p id="message" class="error">Bitte f&uuml;lle alle Felder aus die mit einem '+
-					 						'<span class="form-required">*</span> gekennzeichnet sind!</p>');
-				ret = false;
-				if(id == 'cvtx_antrag_email' && $(this).val()) $("#message").append('<ul><li>Bitte gib eine g&uuml;ltige E-Mail-Adresse an!</li></ul>');
-				if(id == 'cvtx_antrag_phone' && $(this).val()) $("#message").append('<ul><li>Bitte gib eine g&uuml;ltige Telefonnummer an!</li></ul>');
-			}
-			else {
-				$(this).removeClass("error");
-			}
-			i++;
-		})
-		return ret;
-	});
+    $(".cvtx_antrag_form .submit").click(function() {
+        var ret = true;
+        $("#message").remove();
+        
+        $(".cvtx_antrag_form .required").each(function() {
+            var id = $(this).attr("id");
+            
+            if (!$(this).val() || ((id == 'cvtx_antrag_email' || id == 'cvtx_aeantrag_email') && !check_mail($(this).val()))
+             || ((id == 'cvtx_antrag_phone' || id == 'cvtx_aeantrag_phone') && !check_phone($(this).val()))) {
+                $(this).addClass("error");
+                
+                if (ret) {
+                    ret = false;
+                    $(".cvtx_antrag_form").prepend('<p id="message" class="error">Bitte f&uuml;lle alle Felder aus die mit einem '
+                                                   + '<span class="form-required">*</span> gekennzeichnet sind!</p>');
+                }
+                
+                if ($(this).val() && (id == 'cvtx_antrag_email' || id == 'cvtx_aeantrag_email'))
+                    $("#message").append('<ul><li>Bitte g&uuml;ltige E-Mail-Adresse angeben!</li></ul>');
+                if ($(this).val() && (id == 'cvtx_antrag_phone' || id == 'cvtx_aeantrag_phone'))
+                    $("#message").append('<ul><li>Bitte g&uuml;ltige Telefonnummer angeben!</li></ul>');
+            } else {
+                $(this).removeClass("error");
+            }
+        })
+        return ret;
+    });
 /*	$('a.add_ae_antraeg').click(function() {
 		var target = $(this).attr("href");
 		create_Overlay();
@@ -84,9 +87,9 @@ function check_mail(text) {
 }
 
 function check_phone(text) {
-	for(i=0; i<text.length; i++)
-		if(!(parseInt(text[i]) || text[i] == '/' || text[i] == ' ')) return false;
-	return true;
+    var matched = text.match(/^[0-9\s\-\+\(\)\/]*$/);
+    if (matched) return true;
+    else         return false;
 }
 
 // getPageScroll()

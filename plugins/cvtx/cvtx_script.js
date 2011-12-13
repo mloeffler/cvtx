@@ -135,10 +135,10 @@ jQuery(document).ready(function($){
         $("#save").attr("disabled", notunique > 0);
         if (notunique > 0 || empty > 0) {
             $("#publish").attr("disabled", true);
-            $("#message").fadeIn();
+            $("#admin_message").fadeIn();
         } else {
             $("#publish").attr("disabled", false);
-            $("#message").fadeOut();
+            $("#admin_message").fadeOut();
         }
     }
 });
