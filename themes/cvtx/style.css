@@ -176,7 +176,8 @@ span.replace {
 /**
  * Header
  */
-header {
+header,
+#header {
 	background-color: #6ab141;
 	padding:0px;
 	height:200px;
@@ -199,18 +200,21 @@ header {
 	margin-top:70px;
 }
 
-header h1 a{
+header h1 a,
+#header h1 a {
 	color: #ffe500;
 	text-transform: uppercase;
 	text-decoration: none;
 	font-size:1.2em;
 }
 
-header h1 {
+header h1,
+#header h1 {
 	margin-top:0px;
 }
 
-header .description {
+header .description,
+#header .description {
 	color: white;
 	text-transform: uppercase;
 	font-weight: bold;

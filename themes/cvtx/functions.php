@@ -11,5 +11,8 @@ function register_my_menus() {
   );
 }
 
-wp_enqueue_script("jquery");
+function cvtxtheme_script() {
+	wp_enqueue_script("jquery");
+}
+add_action('wp_enqueue_scripts', 'cvtxtheme_script');
 ?>
