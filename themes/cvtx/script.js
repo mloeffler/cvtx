@@ -47,6 +47,8 @@
                     $("#message").append('<ul><li>Bitte g&uuml;ltige E-Mail-Adresse angeben!</li></ul>');
                 if ($(this).val() && (id == 'cvtx_antrag_phone' || id == 'cvtx_aeantrag_phone'))
                     $("#message").append('<ul><li>Bitte g&uuml;ltige Telefonnummer angeben!</li></ul>');
+                    var message_offset = $("#message").offset().top;
+                    $('html,body').animate({scrollTop: message_offset}, 100);
             } else {
                 $(this).removeClass("error");
             }
