@@ -91,16 +91,20 @@ function cvtx_add_meta_boxes() {
 // Metainformationen (TOP-Nummer und Kürzel)
 function cvtx_top_meta() {
     global $post;
+
     echo('<label for="cvtx_top_ord_field">TOP-Nummer:</label><br />');
     echo('<input name="cvtx_top_ord" id="cvtx_top_ord_field" type="text" maxlength="4" value="'.get_post_meta($post->ID, 'cvtx_top_ord', true).'" />');
+
     echo('<br />');
+
     echo('<label for="cvtx_top_short_field">Kürzel:</label><br />');
     echo('<input name="cvtx_top_short" id="cvtx_top_short_field" type="text" value="'.get_post_meta($post->ID, 'cvtx_top_short', true).'" />');
+
     echo('<p id="admin_message" class="error">');
-    echo('<span id="unique_error_cvtx_top_ord" class="cvtx_unique_error">Es existiert bereits ein TOP mit dieser Nummer.</span> ');
-    echo('<span id="unique_error_cvtx_top_short" class="cvtx_unique_error">Es existiert bereits ein TOP mit diesem Kürzel.</span> ');
-    echo('<span id="empty_error_cvtx_top_ord" class="cvtx_empty_error">Bitte TOP-Nummer vergeben.</span> ');
-    echo('<span id="empty_error_cvtx_top_short" class="cvtx_empty_error">Bitte Kürzel für den TOP vergeben.</span> ');
+    echo(' <span id="unique_error_cvtx_top_ord" class="cvtx_unique_error">Diese Nummer ist bereits vergeben.</span> ');
+    echo(' <span id="unique_error_cvtx_top_short" class="cvtx_unique_error">Dieses Kürzel ist bereits vergeben.</span> ');
+    echo(' <span id="empty_error_cvtx_top_ord" class="cvtx_empty_error">Bitte TOP-Nummer vergeben.</span> ');
+    echo(' <span id="empty_error_cvtx_top_short" class="cvtx_empty_error">Bitte Kürzel für den TOP vergeben.</span> ');
     echo('</p>');
 }
 
@@ -421,6 +425,12 @@ function cvtx_order_lists($vars) {
 }
 
 
+function cvtx_get_num($top, $antrag, $zeile=0, $vari=null) {
+    $pre = $top * 1000 * 100000 + min($antrag * 100000, 99999999) + min($zeile, 99999);
+    if ($vari) $pre .= '.'.sprintf('%1$05d', min($vari, 99999));
+    return $pre;
+}
+
 
 add_action('wp_insert_post', 'cvtx_insert_post', 10, 2);
 function cvtx_insert_post($post_id, $post = null) {
@@ -429,14 +439,19 @@ function cvtx_insert_post($post_id, $post = null) {
     if (in_array($post->post_type, array_keys($cvtx_types))) {
         // Add sortable antrag_num-field
         if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
-            $_POST['cvtx_antrag_num'] = get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true) * 100000
-                                      + (isset($_POST['cvtx_antrag_ord']) ? $_POST['cvtx_antrag_ord'] : 0);
+            $top_ord    = get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true);
+            $antrag_ord = (isset($_POST['cvtx_antrag_ord']) ? $_POST['cvtx_antrag_ord'] : 0);
+
+            $_POST['cvtx_antrag_num'] = cvtx_get_num($top_ord, $antrag_ord);
         } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
-            preg_match('/([0-9]+)(.*)/', $_POST['cvtx_aeantrag_zeile'], $match);
-            $top_id = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
-            $_POST['cvtx_aeantrag_num'] = get_post_meta($top_id, 'cvtx_top_ord', true) * 100000
-                                        + get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true)
-                                        + $match[1]/1000000;
+            $top_id         = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
+            $top_ord        = get_post_meta($top_id, 'cvtx_top_ord', true);
+            $antrag_ord     = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true);
+            $aeantrag_zeile = 0;
+            $aeantrag_vari  = 0;
+            if (preg_match('/^([0-9]+)/', $_POST['cvtx_aeantrag_zeile'], $match1)) $aeantrag_zeile = $match1[1];
+            if (preg_match('/([0-9]+)$/', $_POST['cvtx_aeantrag_zeile'], $match2) && strlen($match2[1]) < strlen($_POST['cvtx_aeantrag_zeile'])) $aeantrag_vari = $match2[1];
+            $_POST['cvtx_aeantrag_num']  = cvtx_get_num($top_ord, $antrag_ord, $aeantrag_zeile, $aeantrag_vari);
         }
         
         // Generate short antragsteller if field is empty
