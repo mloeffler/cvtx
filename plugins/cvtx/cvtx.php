@@ -555,8 +555,33 @@ function cvtx_get_latex($out) {
  * Returns a well-sanitized copy of string $str
  */
 function cvtx_sanitize_file_name($str) {
-    $str = str_replace(array('ä',  'ö',  'ü',  'ß',  'Ä',  'Ö',  'Ü'),
-                       array('ae', 'oe', 'ue', 'ss', 'Ae', 'Oe', 'Ue'), $str);
+    $replacements = array('Ä' => 'Ae', 'ä' => 'ae',
+                          'Á' => 'A',  'á' => 'a',
+                          'À' => 'A',  'à' => 'a',
+                          'Â' => 'A',  'â' => 'a',
+                          'Æ' => 'Ae', 'æ' => 'ae',
+                          'Ã' => 'A',  'ã' => 'a',
+                          'Å' => 'Aa', 'å' => 'aa',
+                          'Ć' => 'C',  'ć' => 'c',
+                          'Ç' => 'C',  'ç' => 'c',
+                          'É' => 'E',  'é' => 'e',
+                          'È' => 'E',  'è' => 'e',
+                          'Ê' => 'E',  'ê' => 'e',
+                          'Ë' => 'E',  'ë' => 'e',
+                          'Ñ' => 'N',  'ñ' => 'n',
+                          'Ó' => 'O',  'ó' => 'o',
+                          'Ò' => 'O',  'ò' => 'o',
+                          'Ô' => 'O',  'ô' => 'o',
+                          'Õ' => 'O',  'õ' => 'o',
+                          'Ø' => 'O',  'ø' => 'o',
+                          'Ö' => 'Oe', 'ö' => 'oe',
+                          'Œ' => 'Oe', 'œ' => 'oe',
+                          'ß' => 'ss',                          
+                          'Ú' => 'U',  'ú' => 'u',
+                          'Ù' => 'U',  'ù' => 'u',
+                          'Û' => 'U',  'û' => 'u',
+                          'Ü' => 'Ue', 'ü' => 'ue');
+    $str = strtr($str, $replacements);
     return sanitize_key(sanitize_file_name($str));
 }
 
