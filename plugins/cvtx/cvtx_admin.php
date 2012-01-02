@@ -241,8 +241,8 @@ function cvtx_format_lists($column) {
         case 'cvtx_antrag_ord':
             echo(cvtx_get_short($post));
             break;
-        case 'cvtx_antrag_num':
-            echo(get_post_meta($post->ID, 'cvtx_antrag_num', true));
+        case 'cvtx_antrag_sort':
+            echo(get_post_meta($post->ID, 'cvtx_antrag_sort', true));
             break;
         case 'cvtx_antrag_steller':
             echo(get_post_meta($post->ID, 'cvtx_antrag_steller_short', true));
@@ -262,8 +262,8 @@ function cvtx_format_lists($column) {
         case 'cvtx_aeantrag_ord':
             echo(cvtx_get_short($post));
             break;
-        case 'cvtx_aeantrag_num':
-            echo(get_post_meta($post->ID, 'cvtx_aeantrag_num', true));
+        case 'cvtx_aeantrag_sort':
+            echo(get_post_meta($post->ID, 'cvtx_aeantrag_sort', true));
             break;
         case 'cvtx_aeantrag_steller':
             echo(get_post_meta($post->ID, 'cvtx_aeantrag_steller_short', true));
@@ -291,13 +291,13 @@ function cvtx_order_lists($vars) {
     if (isset($vars['orderby'])) {
         // Anträge
         if ($vars['orderby'] == 'cvtx_antrag_ord' || ($post_type == 'cvtx_antrag' && $vars['orderby'] == 'title')) {
-            $vars = array_merge($vars, array('meta_key' => 'cvtx_antrag_num', 'orderby' => 'meta_value_num'));
+            $vars = array_merge($vars, array('meta_key' => 'cvtx_antrag_sort', 'orderby' => 'meta_value'));
         } else if ($vars['orderby'] == 'cvtx_antrag_steller') {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_antrag_steller_short', 'orderby' => 'meta_value'));
         }
         // Änderungsanträge
         else if ($vars['orderby'] == 'cvtx_aeantrag_ord' || ($post_type == 'cvtx_aeantrag' && $vars['orderby'] == 'title')) {
-            $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_num', 'orderby' => 'meta_value_num'));
+            $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_sort', 'orderby' => 'meta_value'));
         } else if ($vars['orderby'] == 'cvtx_aeantrag_steller') {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_steller_short', 'orderby' => 'meta_value'));
         } else if ($vars['orderby'] == 'cvtx_aeantrag_verfahren') {
@@ -305,7 +305,7 @@ function cvtx_order_lists($vars) {
         }
         // TOPs
         else if ($vars['orderby'] == 'cvtx_top_ord' ||  ($post_type == 'cvtx_top' && $vars['orderby'] == 'title')) {
-            $vars = array_merge($vars, array('meta_key' => 'cvtx_top_ord', 'orderby' => 'meta_value_num'));
+            $vars = array_merge($vars, array('meta_key' => 'cvtx_top_sort', 'orderby' => 'meta_value'));
         }
     }
 

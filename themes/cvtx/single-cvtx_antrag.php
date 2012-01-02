@@ -47,8 +47,8 @@
 				
 				<?php $antrag_id = $post->ID; ?>
 				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
-												  'meta_key'   => 'cvtx_aeantrag_num',
-												  'orderby'    => 'meta_value_num',
+												  'meta_key'   => 'cvtx_aeantrag_sort',
+												  'orderby'    => 'meta_value',
 												  'order'      => 'ASC',
                                                   'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
                                                                               'value'   => $antrag_id,

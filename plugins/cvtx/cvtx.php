@@ -38,9 +38,10 @@ require_once('cvtx_admin.php');
 
 // define post types
 $cvtx_types = array('cvtx_top'      => array('cvtx_top_ord',
+                                             'cvtx_top_sort',
                                              'cvtx_top_short'),
                     'cvtx_antrag'   => array('cvtx_antrag_ord',
-                                             'cvtx_antrag_num',
+                                             'cvtx_antrag_sort',
                                              'cvtx_antrag_top',
                                              'cvtx_antrag_steller',
                                              'cvtx_antrag_steller_short',
@@ -49,7 +50,7 @@ $cvtx_types = array('cvtx_top'      => array('cvtx_top_ord',
                                              'cvtx_antrag_grund',
                                              'cvtx_antrag_info'),
                     'cvtx_aeantrag' => array('cvtx_aeantrag_zeile',
-                                             'cvtx_aeantrag_num',
+                                             'cvtx_aeantrag_sort',
                                              'cvtx_aeantrag_antrag',
                                              'cvtx_aeantrag_steller',
                                              'cvtx_aeantrag_steller_short',
@@ -132,19 +133,21 @@ function cvtx_delete_post($post_id) {
 
 
 /**
- * Returns a sortable numeric value for specific posts
- *
- * @todo Not yet sortable globally.
+ * Returns a globally sortable string
  */
-function cvtx_get_num($post_type, $top, $antrag, $zeile=0, $vari=null) {
-    if ($post_type == 'cvtx_top') {
-        return $top;
-    } else if ($post_type == 'cvtx_antrag') {
-        return $top * 100000 + min($antrag, 99999);
-    } else if ($post_type == 'cvtx_aeantrag') {
-        return $antrag * 100000 + min($zeile, 99999) + (min($vari, 99999) / 100000);
+function cvtx_get_sort($post_type, $top, $antrag=0, $zeile=0, $vari=0) {
+    $sorts = array('top'    => sprintf('%1$05d', $top),
+                   'antrag' => sprintf('%1$05d', $antrag),
+                   'zeile'  => sprintf('%1$06d', $zeile),
+                   'vari'   => sprintf('%1$06d', $vari));
+    foreach ($sorts as $key => $value) {
+        $code = '';
+        for ($i = 0; $i < strlen($value); $i++) {
+            $code .= chr(intval(substr($value, $i, 1)) + 65);
+        }
+        $sorts[$key] = $code;
     }
-    return 0;
+    return implode($sorts);
 }
 
 
@@ -153,12 +156,14 @@ function cvtx_insert_post($post_id, $post = null) {
     global $cvtx_types;
 
     if (in_array($post->post_type, array_keys($cvtx_types))) {
-        // Add sortable antrag_num-field
-        if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
+        // Add globally sortable field
+        if ($post->post_type == 'cvtx_top') {
+            $_POST['cvtx_top_sort'] = cvtx_get_sort('cvtx_top', get_post_meta($post_id, 'cvtx_top_ord', true));
+        } else if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
             $top_ord    = get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true);
             $antrag_ord = (isset($_POST['cvtx_antrag_ord']) ? $_POST['cvtx_antrag_ord'] : 0);
 
-            $_POST['cvtx_antrag_num'] = cvtx_get_num('cvtx_antrag', $top_ord, $antrag_ord);
+            $_POST['cvtx_antrag_sort'] = cvtx_get_sort('cvtx_antrag', $top_ord, $antrag_ord);
         } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
             $top_id         = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
             $top_ord        = get_post_meta($top_id, 'cvtx_top_ord', true);
@@ -167,9 +172,9 @@ function cvtx_insert_post($post_id, $post = null) {
             $aeantrag_vari  = 0;
             if (preg_match('/^([0-9]+)/', $_POST['cvtx_aeantrag_zeile'], $match1)) $aeantrag_zeile = $match1[1];
             if (preg_match('/([0-9]+)$/', $_POST['cvtx_aeantrag_zeile'], $match2) && strlen($match2[1]) < strlen($_POST['cvtx_aeantrag_zeile'])) $aeantrag_vari = $match2[1];
-            $_POST['cvtx_aeantrag_num']  = cvtx_get_num('cvtx_aeantrag', $top_ord, $antrag_ord, $aeantrag_zeile, $aeantrag_vari);
+            $_POST['cvtx_aeantrag_sort'] = cvtx_get_sort('cvtx_aeantrag', $top_ord, $antrag_ord, $aeantrag_zeile, $aeantrag_vari);
         }
-        
+                
         // Generate short antragsteller if field is empty
         if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_steller']) && !empty($_POST['cvtx_antrag_steller'])
          && (!isset($_POST['cvtx_antrag_steller_short']) || empty($_POST['cvtx_antrag_steller_short']))) {
@@ -603,7 +608,7 @@ function cvtx_dropdown_tops($selected = null, $message = '') {
     $post_bak = $post;
 	$output = '';
 
-    $tquery = new WP_Query(array('post_type' => 'cvtx_top', 'orderby' => 'meta_value_num', 'meta_key' => 'cvtx_top_ord', 'order' => 'ASC'));
+    $tquery = new WP_Query(array('post_type' => 'cvtx_top', 'orderby' => 'meta_value', 'meta_key' => 'cvtx_top_sort', 'order' => 'ASC'));
     if ($tquery->have_posts()) {
         $output .= '<select name="cvtx_antrag_top" id="cvtx_antrag_top_select">';
         while ($tquery->have_posts()) {
@@ -639,8 +644,8 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
 
     // Tagesordnungspunkte auflisten
     $tquery = new WP_Query(array('post_type' => 'cvtx_top',
-                                 'orderby'   => 'meta_value_num',
-                                 'meta_key'  => 'cvtx_top_ord',
+                                 'orderby'   => 'meta_value',
+                                 'meta_key'  => 'cvtx_top_sort',
                                  'order'     => 'ASC'));
     if ($tquery->have_posts()) {
         $output .= '<select name="cvtx_aeantrag_antrag" id="cvtx_aeantrag_antrag_select">';
@@ -651,8 +656,8 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
             
             // list anträge in top
             $aquery = new WP_Query(array('post_type'  => 'cvtx_antrag',
-                                         'orderby'    => 'meta_value_num',
-                                         'meta_key'   => 'cvtx_antrag_ord',
+                                         'orderby'    => 'meta_value',
+                                         'meta_key'   => 'cvtx_antrag_sort',
                                          'order'      => 'ASC',
                                          'meta_query' => array(array('key'     => 'cvtx_antrag_top',
                                                                      'value'   => get_the_ID(),

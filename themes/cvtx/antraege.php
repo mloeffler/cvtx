@@ -18,8 +18,8 @@ Template Name: Antrags&uuml;bersicht
 		<?php
 		// TOP-Query
 		$loop = new WP_Query(array('post_type' => 'cvtx_top',
-                                   'orderby'   => 'meta_value_num',
-                                   'meta_key'  => 'cvtx_top_ord',
+                                   'orderby'   => 'meta_value',
+                                   'meta_key'  => 'cvtx_top_sort',
 								   'order'     => 'ASC'));
 		if($loop->have_posts()):?>
 			<ul id="antraege">
@@ -36,8 +36,8 @@ Template Name: Antrags&uuml;bersicht
 			<li class="top" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>"><h3><?php the_title(); ?></h3><ul>
 			<?php
 			$loop2 = new WP_Query(array('post_type'  => 'cvtx_antrag',
-										'meta_key'   => 'cvtx_antrag_ord',
-										'orderby'    => 'meta_value_num',
+										'meta_key'   => 'cvtx_antrag_sort',
+										'orderby'    => 'meta_value',
 										'order'      => 'ASC',
                                         'meta_query' => array(array('key'     => 'cvtx_antrag_top',
                                                                     'value'   => $top_id,
@@ -50,8 +50,8 @@ Template Name: Antrags&uuml;bersicht
 					<li><a href="<?php the_permalink(); ?>&add_aeantrag=1#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
 				<?php $antrag_id = $post->ID; ?>
 				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
-												  'meta_key'   => 'cvtx_aeantrag_num',
-												  'orderby'    => 'meta_value_num',
+												  'meta_key'   => 'cvtx_aeantrag_sort',
+												  'orderby'    => 'meta_value',
                                                   'order'      => 'ASC',
                                                   'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
                                                                               'value'   => $antrag_id,
