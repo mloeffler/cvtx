@@ -788,7 +788,7 @@ function cvtx_manage_media_buttons() {
 }
 
 
-if (is_admin()) add_filter('mce_buttons', 'cvtx_manage_mce_buttons');
+if (is_admin()) add_filter('mce_buttons', 'cvtx_mce_manage_buttons');
 /**
  * Restrict first button row of the rich text editor
  *
@@ -796,22 +796,22 @@ if (is_admin()) add_filter('mce_buttons', 'cvtx_manage_mce_buttons');
  *
  * @param array $buttons rich edit buttons that are enabled
  */
-function cvtx_manage_mce_buttons($buttons) {
+function cvtx_mce_manage_buttons($buttons) {
     global $post;
     if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
      || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
-        return array('bold', 'italic', '|', 'bullist', 'numlist', '|', 'undo', 'redo');
+        return array('bold', 'italic', '|', 'bullist', 'numlist', '|', 'undo', 'redo', '|', 'formatselect');
     } else {
         return $buttons;
     }
 }
 
 
-if (is_admin()) add_filter('mce_buttons_2', 'cvtx_manage_mce_buttons_2');
+if (is_admin()) add_filter('mce_buttons_2', 'cvtx_mce_manage_buttons_2');
 /**
  * Restrict second button row of the rich text editor
  */
-function cvtx_manage_mce_buttons_2($buttons) {
+function cvtx_mce_manage_buttons_2($buttons) {
     global $post;
     if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
      || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
@@ -819,6 +819,22 @@ function cvtx_manage_mce_buttons_2($buttons) {
     } else {
         return $buttons;
     }
+}
+
+
+if (is_admin()) add_filter('tiny_mce_before_init', 'cvtx_mce_before_init');
+/**
+ * Restrict blockformats of the rich text editor
+ */
+function cvtx_mce_before_init($settings) {
+    global $post;
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
+        $settings['theme_advanced_blockformats'] = 'Zwischenüberschrift=h3; Unterüberschrift=h4';
+    }
+    print_r($_REQUEST);
+    print_r($post);
+    return $settings;
 }
 
 ?>
