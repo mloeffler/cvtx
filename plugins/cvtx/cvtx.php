@@ -129,6 +129,53 @@ function cvtx_delete_post($post_id) {
     if (is_object($post) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag')) {
         cvtx_remove_files($post);
     }
+    
+    if (is_object($post) && $post->post_type == 'cvtx_top') {
+        $query = new WP_Query(array('post_type'  => 'cvtx_antrag',
+                                    'meta_query' => array(array('key'     => 'cvtx_antrag_top',
+                                                                'value'   => $post->ID,
+                                                                'compare' => '='))));
+    } else if (is_object($post) && $post->post_type == 'cvtx_antrag') {
+        $query = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
+                                    'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                                'value'   => $post->ID,
+                                                                'compare' => '='))));
+    }
+    
+    if (isset($query) && $query != null && $query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            wp_delete_post(get_the_ID(), true);
+        }
+    }
+}
+
+
+if (is_admin()) add_action('wp_trash_post', 'cvtx_trash_post');
+/**
+ * Moves all child data to the trash.
+ */
+function cvtx_trash_post($post_id) {
+    global $post;
+
+    if ($post->post_type == 'cvtx_top') {
+        $query = new WP_Query(array('post_type'  => 'cvtx_antrag',
+                                    'meta_query' => array(array('key'     => 'cvtx_antrag_top',
+                                                                'value'   => $post->ID,
+                                                                'compare' => '='))));
+    } else if ($post->post_type == 'cvtx_antrag') {
+        $query = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
+                                    'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                                'value'   => $post->ID,
+                                                                'compare' => '='))));
+    }
+    
+    if (isset($query) && $query != null && $query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            wp_trash_post(get_the_ID());
+        }
+    }
 }
 
 
@@ -136,14 +183,18 @@ function cvtx_delete_post($post_id) {
  * Returns a globally sortable string
  */
 function cvtx_get_sort($post_type, $top, $antrag=0, $zeile=0, $vari=0) {
-    $sorts = array('top'    => sprintf('%1$05d', $top),
-                   'antrag' => sprintf('%1$05d', $antrag),
-                   'zeile'  => sprintf('%1$06d', $zeile),
-                   'vari'   => sprintf('%1$06d', $vari));
+    $sorts = array('top'    => ($top    ? sprintf('%1$05d', $top)    : 'ZZZZZ'),
+                   'antrag' => ($antrag ? sprintf('%1$05d', $antrag) : 'ZZZZZ'),
+                   'zeile'  => ($zeile  ? sprintf('%1$06d', $zeile)  : 'ZZZZZZ'),
+                   'vari'   => ($vari   ? sprintf('%1$06d', $vari)   : 'ZZZZZZ'));
     foreach ($sorts as $key => $value) {
-        $code = '';
-        for ($i = 0; $i < strlen($value); $i++) {
-            $code .= chr(intval(substr($value, $i, 1)) + 65);
+        if (intval($value) > 0) {
+            $code = '';
+            for ($i = 0; $i < strlen($value); $i++) {
+                $code .= chr(intval(substr($value, $i, 1)) + 65);
+            }
+        } else {
+            $code = $value;
         }
         $sorts[$key] = $code;
     }

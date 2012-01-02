@@ -832,8 +832,6 @@ function cvtx_mce_before_init($settings) {
      || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
         $settings['theme_advanced_blockformats'] = 'Zwischenüberschrift=h3; Unterüberschrift=h4';
     }
-    print_r($_REQUEST);
-    print_r($post);
     return $settings;
 }
 
