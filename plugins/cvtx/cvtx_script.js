@@ -47,7 +47,7 @@ jQuery(document).ready(function($){
      * requests the shortcut for antraege and tops
      */
     function cvtx_get_top_short() {
-        $.post("/conventix_wp/wp-admin/admin-ajax.php",
+        $.post(ajaxurl,
                {"action"   : "cvtx_get_top_short",
                 "cookie"   : encodeURIComponent(document.cookie),
                 "post_id"  : $("#cvtx_antrag_top_select").val()},
