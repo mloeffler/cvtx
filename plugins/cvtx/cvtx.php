@@ -188,7 +188,6 @@ if (is_admin()) add_action('wp_trash_post', 'cvtx_trash_post');
 function cvtx_trash_post($post_id) {
     global $post;
 
-<<<<<<< .mine
     if (is_object($post)) {
         if ($post->post_type == 'cvtx_top') {
             $query = new WP_Query(array('post_type'  => 'cvtx_antrag',
@@ -202,24 +201,6 @@ function cvtx_trash_post($post_id) {
                                         'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
                                                                     'value'   => $post->ID,
                                                                     'compare' => '='))));
-=======
-    if (is_object($post) && $post->post_type == 'cvtx_top') {
-        $query = new WP_Query(array('post_type'  => 'cvtx_antrag',
-                                    'meta_query' => array(array('key'     => 'cvtx_antrag_top',
-                                                                'value'   => $post->ID,
-                                                                'compare' => '='))));
-    } else if (is_object($post) && $post->post_type == 'cvtx_antrag') {
-        $query = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
-                                    'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
-                                                                'value'   => $post->ID,
-                                                                'compare' => '='))));
-    }
-    
-    if (isset($query) && $query != null && $query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            wp_trash_post(get_the_ID());
->>>>>>> .r78
         }
         
         if (isset($query) && $query != null && $query->have_posts()) {
@@ -241,12 +222,7 @@ function cvtx_get_sort($post_type, $top=false, $antrag=false, $zeile=false, $var
     $sorts['antrag'] = ($antrag !== false ? (intval($antrag) ? sprintf('%1$05d', $antrag) : 'ZZZZZ' ) : 'AAAAA' );
     $sorts['zeile']  = ($zeile  !== false ? (intval($zeile)  ? sprintf('%1$06d', $zeile)  : 'ZZZZZZ') : 'AAAAAA');
     $sorts['vari']   = ($vari   !== false ? (intval($vari)   ? sprintf('%1$06d', $vari)   : 'ZZZZZZ') : 'AAAAAA');
-/*
-    $sorts = array('top'    => ($top !== false    ? sprintf('%1$05d', $top)    : 'ZZZZZ'),
-                   'antrag' => ($antrag !== false ? sprintf('%1$05d', $antrag) : 'ZZZZZ'),
-                   'zeile'  => ($zeile !== false  ? sprintf('%1$06d', $zeile)  : 'ZZZZZZ'),
-                   'vari'   => ($vari !== false   ? sprintf('%1$06d', $vari)   : 'ZZZZZZ'));
-*/
+
     foreach ($sorts as $key => $value) {
         if (intval($value) > 0) {
             $code = '';
@@ -258,6 +234,7 @@ function cvtx_get_sort($post_type, $top=false, $antrag=false, $zeile=false, $var
         }
         $sorts[$key] = $code;
     }
+    
     return implode($sorts);
 }
 
