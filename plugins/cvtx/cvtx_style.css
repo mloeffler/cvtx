@@ -68,3 +68,11 @@ div label.cvtx_reader_unpublished {
 div.cvtx_reader_toc_aeantrag {
     margin-left: 1.5em;
 }
+
+ul.zeichen li {
+	list-style: disc;
+}
+
+ul.zeichen {
+	padding: 0 1em;
+}

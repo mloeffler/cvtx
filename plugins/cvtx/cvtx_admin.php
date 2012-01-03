@@ -288,7 +288,7 @@ function cvtx_metabox_reader() {
     if (count($items) > 0) {
         echo($post->post_type == 'cvtx_antrag' ? 'Der Antrag erscheint in den folgenden Readern:'
                                                : 'Der Änderungsantrag erscheint in den folgenden Readern:');
-        echo('<ul>');
+        echo('<ul class="zeichen">');
         foreach ($items as $item) {
             echo('<li>'.$item.'</li>');
         }
