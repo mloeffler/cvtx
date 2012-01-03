@@ -1,0 +1,91 @@
+body {
+	font-family: "Trebuchet MS";
+	font-size: 0.9em;
+	padding: 0;
+	margin: 0;
+}
+
+#header {
+	background-color: #6ab141;
+	margin-bottom: 1em;
+	-webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.4);
+	-moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.4);
+	box-shadow: 0px 0px 5px rgba(0,0,0,0.4);
+}
+
+#verlauf {
+	background: url(images/verlauf.png) top right no-repeat;
+	padding: 0.1em 1.4em;
+}
+
+#header a {
+	color: white;
+	text-shadow: 0px 0px 3px rgba(255,255,255,0.3);
+	text-decoration: none;
+}
+
+#header span.right {
+	float: right;
+	font-weight: bold;
+	color: #ffe500;
+}
+
+table {
+	border:1px solid black;
+	border-collapse: collapse;
+	display: table;
+}
+
+#result {
+	margin: 1em;
+}
+
+tbody {
+	display: table-row-group;
+	vertical-align: middle;
+}
+
+td,th {
+	border: 1px solid black;
+	padding: 5px 10px;
+}
+
+td.Abstimmung {
+	background: red;
+	color: white;
+}
+
+td.†bernahme {
+	background: green;
+	color: white;
+}
+
+form select {
+	margin-bottom:1em;
+}
+
+div#liste {
+	padding: 0;
+	border: 1px solid rgba(0,0,0,0.3);
+	border-radius: 7px;
+	background: #fafafa;
+	margin: 0em 1em;
+}
+
+#liste form {
+	padding:1em;
+}
+
+div.toggler {
+	height: 1em;
+	padding: 1em;
+	margin: 0em 0em 1em 0em;
+	background: #333;
+	border-radius: 5px;
+	text-align: right;
+}
+
+div.toggler a {
+	color: white;
+	text-decoration: none;
+}
