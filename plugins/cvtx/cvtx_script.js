@@ -92,7 +92,7 @@ jQuery(document).ready(function($){
                                  "compare" : "="});
             }
             // fetch info
-            $.post("/wp-admin/admin-ajax.php", query,
+            $.post("http://"+window.location.hostname+"/wp-admin/admin-ajax.php", query,
                    function (str) {
                        for (var i = 0; i < cvtx_fields.length; i++) {
                            if (cvtx_fields[i].key == meta_key) cvtx_fields[i].unique = (str == "+OK");
