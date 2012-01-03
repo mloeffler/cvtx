@@ -45,6 +45,14 @@ p#admin_message {
     border-color: #ed541d;
 }
 
+div.cvtx_reader_toc_top {
+	margin: 2.5em 0em;
+}
+
+div.cvtx_reader_toc_top label.cvtx_top {
+    font-size: 1.5em;
+}
+
 div.cvtx_reader_toc_antrag {
 	margin: 1em;
 }
@@ -53,7 +61,7 @@ div.cvtx_reader_toc_antrag label.cvtx_antrag {
 	font-weight: bold;
 }
 
-div.cvtx_reader_toc_antrag label.unpublished {
+div label.cvtx_reader_unpublished {
 	color: grey;
 }
 

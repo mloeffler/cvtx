@@ -55,7 +55,7 @@ function cvtx_reader_contents() {
     }
 
     // list all contents
-    $output = '';
+    $output = '<div class="cvtx_reader_toc">';
     $query  = new WP_Query(array('post_type' => array('cvtx_top', 'cvtx_antrag', 'cvtx_aeantrag'),
                                  'orderby'   => 'meta_value',
                                  'meta_key'  => 'cvtx_sort',
@@ -69,14 +69,21 @@ function cvtx_reader_contents() {
             $title = get_the_title();
             if (empty($title)) $title = __('(no title)');
             $checked = (in_array($post->ID, $items) ? 'checked="checked"' : '');
-            $unpublished = ($post->post_status != 'publish' ? 'unpublished' : '');
+            $unpublished = ($post->post_status != 'publish' ? 'cvtx_reader_unpublished' : '');
             
             if ($post->post_type == 'cvtx_top') {
-                if ($open_top) { $output .= '</div>'; $open_top = false; }
+                if ($open_top) {
+                    if ($open_antrag) {
+                        $output     .= '</div>';
+                        $open_antrag = false;
+                    }
+                    $output  .= '</div>';
+                    $open_top = false;
+                }
                 $open_top = true;
                 
                 $output .= '<div class="cvtx_reader_toc_top">';
-                $output .= ' <h3 '.$unpublished.'>'.$title.'</h3>';
+                $output .= ' <label class="cvtx_top '.$unpublished.'">'.$title.'</label>';
             } else if ($post->post_type == 'cvtx_antrag') {
                 if ($open_antrag) { $output .= '</div>'; $open_antrag = false; }
                 $open_antrag = true;
@@ -94,6 +101,7 @@ function cvtx_reader_contents() {
         if ($open_antrag) { $output .= '</div>'; $open_antrag = false; }
         if ($open_top)    { $output .= '</div>'; $open_top    = false; }
     }
+    $output .= '</div>';
     echo($output);
     
     // reset data
@@ -263,22 +271,32 @@ function cvtx_metabox_reader() {
     }
     
     // get reader objects
-    $output = '';
-    $query  = new WP_Query(array('post_type' => 'cvtx_reader',
-                                 'order'     => 'ASC',
-                                 'nopaging'  => true));
+    $items = array();
+    $query = new WP_Query(array('post_type' => 'cvtx_reader',
+                                'order'     => 'ASC',
+                                'nopaging'  => true));
     if ($query->have_posts()) {
-        $output .= ($post->post_type == 'cvtx_antrag' ? 'Der Antrag erscheint in den folgenden Readern:'
-                                                      : 'Der Änderungsantrag erscheint in den folgenden Readern:').'<br />';
         while ($query->have_posts()) {
             $query->the_post();
-            $checked = (in_array('cvtx_reader_'.$post->ID, $tax_items) ? 'checked="checked"' : '');
-            $output .= '<input type="checkbox" disabled="disabled" '.$checked.' /> '.get_the_title().'<br />';
+            if (in_array('cvtx_reader_'.$post->ID, $tax_items)) {
+                $items[] = get_the_title();
+            }
         }
-    } else {
-        $output .= 'Bisher keine Reader erstellt.';
     }
-    echo($output);
+    
+    // any term+reader-combination?
+    if (count($items) > 0) {
+        echo($post->post_type == 'cvtx_antrag' ? 'Der Antrag erscheint in den folgenden Readern:'
+                                               : 'Der Änderungsantrag erscheint in den folgenden Readern:');
+        echo('<ul>');
+        foreach ($items as $item) {
+            echo('<li>'.$item.'</li>');
+        }
+        echo('</ul>');
+    } else {
+        echo($post->post_type == 'cvtx_antrag' ? 'Der Antrag ist bisher keinem Reader zugeordnet.'
+                                               : 'Der Änderungsantrag ist bisher keinem Reader zugeordnet.');
+    }
     
     // reset data
     wp_reset_postdata();

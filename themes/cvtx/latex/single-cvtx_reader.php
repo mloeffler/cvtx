@@ -34,12 +34,13 @@
 <?php
 $top    = 0;
 $antrag = 0;
-$query  = new WP_Query(array('taxonomy' => 'cvtx_tax_reader',
-                             'term'     => 'cvtx_reader_'.intval($post->ID),
-                             'orderby'  => 'meta_value',
-                             'meta_key' => 'cvtx_sort',
-                             'order'    => 'ASC',
-                             'nopaging' => true));
+$query  = new WP_Query(array('taxonomy'    => 'cvtx_tax_reader',
+                             'term'        => 'cvtx_reader_'.intval($post->ID),
+                             'orderby'     => 'meta_value',
+                             'meta_key'    => 'cvtx_sort',
+                             'order'       => 'ASC',
+                             'nopaging'    => true,
+                             'post_status' =>'publish'));
 while ($query->have_posts()) {
     $query->the_post();
     $item = get_post(get_the_ID());

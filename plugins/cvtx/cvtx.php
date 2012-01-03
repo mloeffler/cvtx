@@ -825,7 +825,7 @@ function cvtx_ajax_validate() {
 function cvtx_get_reader() {
     // get terms
     $terms = array();
-    foreach (get_terms('cvtx_tax_reader') as $term) {
+    foreach (get_terms('cvtx_tax_reader', array('hide_empty' => false)) as $term) {
         $terms[substr($term->name, 12)] = $term->name;
     }
 
