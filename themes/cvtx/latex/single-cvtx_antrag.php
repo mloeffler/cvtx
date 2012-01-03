@@ -4,10 +4,8 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage{fixltx2e}
-%\usepackage[onehalfspacing]{setspace}
 \usepackage{lineno}
 \usepackage{tabularx}
-%\usepackage{calc}
 \usepackage{scrpage2}
 
 \sloppy
@@ -27,26 +25,23 @@
  <?php cvtx_beschreibung($post); ?>
 \end{flushright}
 
-%\newcommand*\adjust{\setlength\hsize{\textwidth-2\tabcolsep}}
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                &                                                                           \\
-%    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>} \textbf{\large <?php cvtx_top_titel($post); ?>}}     \\
-    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}    &   \textbf{\large <?php cvtx_top_titel($post); ?>}                              \\
-                                                &                                                                           \\
-    AntragstellerInnen:                         &   <?php cvtx_antragsteller_kurz($post); ?>                                          \\
-                                                &                                                                           \\
-    Gegenstand:                                 &   <?php cvtx_top_titel($post); ?> (<?php cvtx_top_kuerzel($post); ?>)               \\
-                                                &                                                                           \\
-    Anmerkungen:                                &   <?php cvtx_info($post); ?>                                                   \\
-                                                &                                                                           \\
+                                                    &                                                                           \\
+    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}   &   \textbf{\large <?php cvtx_top_titel($post); ?>}                         \\
+                                                    &                                                                           \\
+    AntragstellerInnen:                             &   <?php cvtx_antragsteller_kurz($post); ?>                                \\
+                                                    &                                                                           \\
+    Gegenstand:                                     &   <?php cvtx_top_titel($post); ?> (<?php cvtx_top_kuerzel($post); ?>)     \\
+                                                    &                                                                           \\
+    Anmerkungen:                                    &   <?php cvtx_info($post); ?>                                              \\
+                                                    &                                                                           \\
     \hline
 \end{tabularx}
 
 \section*{<?php cvtx_titel($post); ?>}
 
 \begin{linenumbers}
-%\modulolinenumbers[5]
 <?php cvtx_antragstext($post); ?>
 \end{linenumbers}
 

@@ -19,7 +19,8 @@ Template Name: Antrags&uuml;bersicht
 		// TOP-Query
 		$loop = new WP_Query(array('post_type' => 'cvtx_top',
                                    'orderby'   => 'meta_value',
-                                   'meta_key'  => 'cvtx_top_sort',
+                                   'meta_key'  => 'cvtx_sort',
+                                   'nopaging'  => true,
 								   'order'     => 'ASC'));
 		if($loop->have_posts()):?>
 			<ul id="antraege">
@@ -36,8 +37,9 @@ Template Name: Antrags&uuml;bersicht
 			<li class="top" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>"><h3><?php the_title(); ?></h3><ul>
 			<?php
 			$loop2 = new WP_Query(array('post_type'  => 'cvtx_antrag',
-										'meta_key'   => 'cvtx_antrag_sort',
+										'meta_key'   => 'cvtx_sort',
 										'orderby'    => 'meta_value',
+                                        'nopaging'   => true,
 										'order'      => 'ASC',
                                         'meta_query' => array(array('key'     => 'cvtx_antrag_top',
                                                                     'value'   => $top_id,
@@ -50,9 +52,10 @@ Template Name: Antrags&uuml;bersicht
 					<li><a href="<?php the_permalink(); ?>&add_aeantrag=1#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
 				<?php $antrag_id = $post->ID; ?>
 				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
-												  'meta_key'   => 'cvtx_aeantrag_sort',
+												  'meta_key'   => 'cvtx_sort',
 												  'orderby'    => 'meta_value',
                                                   'order'      => 'ASC',
+                                                  'nopaging'   => true,
                                                   'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
                                                                               'value'   => $antrag_id,
                                                                               'compare' => '=')))); ?>

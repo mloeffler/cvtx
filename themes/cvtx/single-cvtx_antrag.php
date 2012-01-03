@@ -50,6 +50,7 @@
 												  'meta_key'   => 'cvtx_aeantrag_sort',
 												  'orderby'    => 'meta_value',
 												  'order'      => 'ASC',
+                                                  'nopaging'   => true,
                                                   'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
                                                                               'value'   => $antrag_id,
                                                                               'compare' => '='))));

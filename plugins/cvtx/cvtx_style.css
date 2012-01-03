@@ -44,3 +44,19 @@ p#admin_message {
     background: #fef5f1;
     border-color: #ed541d;
 }
+
+div.cvtx_reader_toc_antrag {
+	margin: 1em;
+}
+
+div.cvtx_reader_toc_antrag label.cvtx_antrag {
+	font-weight: bold;
+}
+
+div.cvtx_reader_toc_antrag label.unpublished {
+	color: grey;
+}
+
+div.cvtx_reader_toc_aeantrag {
+    margin-left: 1.5em;
+}

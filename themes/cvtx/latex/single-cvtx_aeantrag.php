@@ -4,7 +4,6 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage{fixltx2e}
-%\usepackage[onehalfspacing]{setspace}
 \usepackage{lineno}
 \usepackage{tabularx}
 \usepackage{calc}
@@ -30,23 +29,21 @@
 \newcommand*\adjust{\setlength\hsize{\textwidth-2\tabcolsep}}
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                &                                                                           \\
-    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}     \\
-%    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}    &   \textbf{\large <?php cvtx_top_titel($post); ?>}                              \\
-                                                &                                                                           \\
-    AntragstellerInnen:                         &   <?php cvtx_antragsteller_kurz($post); ?>                                          \\
-                                                &                                                                           \\
-    Gegenstand:                                 &   <?php cvtx_antrag($post); ?> (<?php cvtx_top($post); ?>)                          \\
-                                                &                                                                           \\
-    Anmerkungen:                                &   <?php cvtx_info($post); ?>                                                   \\
-                                                &                                                                           \\
+                                                &                                                               \\
+    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}                               \\
+                                                &                                                               \\
+    AntragstellerInnen:                         &   <?php cvtx_antragsteller_kurz($post); ?>                    \\
+                                                &                                                               \\
+    Gegenstand:                                 &   <?php cvtx_antrag($post); ?> (<?php cvtx_top($post); ?>)    \\
+                                                &                                                               \\
+    Anmerkungen:                                &   <?php cvtx_info($post); ?>                                  \\
+                                                &                                                               \\
     \hline
 \end{tabularx}
 
 \section*{Änderungsantrag <?php cvtx_kuerzel($post); ?>}
 
 \begin{linenumbers}
-%\modulolinenumbers[5]
 <?php cvtx_antragstext($post); ?>
 \end{linenumbers}
 
