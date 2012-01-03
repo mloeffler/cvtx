@@ -91,9 +91,8 @@ jQuery(document).ready(function($){
                                  "value"   : $("#cvtx_aeantrag_antrag_select").val(),
                                  "compare" : "="});
             }
-            
             // fetch info
-            $.post("/conventix_wp/wp-admin/admin-ajax.php", query,
+            $.post("/wp-admin/admin-ajax.php", query,
                    function (str) {
                        for (var i = 0; i < cvtx_fields.length; i++) {
                            if (cvtx_fields[i].key == meta_key) cvtx_fields[i].unique = (str == "+OK");
@@ -146,15 +145,16 @@ jQuery(document).ready(function($){
             $("#admin_message").fadeOut();
         }
     }
+
+	function showTarget(target) {
+		$("h2.nav-tab-wrapper a").each(function() {
+			$(this).removeClass("nav-tab-active");
+		});
+		$("ul#cvtx_options li.active").hide();
+		$("#cvtx_navi a."+target).addClass("nav-tab-active");
+		$("#"+target).fadeIn();
+		$("#"+target).addClass("active");
+		$('html,body').animate({scrollTop: 0}, 1);
+	}
 });
 
-function showTarget(target) {
-	jQuery("h2.nav-tab-wrapper a").each(function() {
-		jQuery(this).removeClass("nav-tab-active");
-	});
-	jQuery("ul#cvtx_options li.active").hide();
-	jQuery("#cvtx_navi a."+target).addClass("nav-tab-active");
-	jQuery("#"+target).fadeIn();
-	jQuery("#"+target).addClass("active");
-	jQuery('html,body').animate({scrollTop: 0}, 1);
-}

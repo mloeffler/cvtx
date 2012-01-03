@@ -9,11 +9,8 @@
 				Test
 			</div>
 		</li>
-	<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar() ) : ?>
-		<li id="about">
-	  	<h2></h2>
-	  	<p>This is my blog.</p>
-		</li>
-	<?php endif; ?>
+		<?php if(function_exists('dynamic_sidebar')) {
+			dynamic_sidebar('cvtx');
+		}?>
 	</ul>
 </div>

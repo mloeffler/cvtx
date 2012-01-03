@@ -1,6 +1,7 @@
 <?php
 if ( function_exists('register_sidebar') )
-    register_sidebar(array('after_title' => '</h2><div class="inner">',
+    register_sidebar(array('id' => 'cvtx',
+    					   'after_title' => '</h2><div class="inner">',
     				 	   'after_widget' => '</div></li>'));
 
 add_action( 'init', 'register_my_menus' );

@@ -158,12 +158,12 @@ if (is_admin()) add_action('wp_trash_post', 'cvtx_trash_post');
 function cvtx_trash_post($post_id) {
     global $post;
 
-    if ($post->post_type == 'cvtx_top') {
+    if (is_object($post) && $post->post_type == 'cvtx_top') {
         $query = new WP_Query(array('post_type'  => 'cvtx_antrag',
                                     'meta_query' => array(array('key'     => 'cvtx_antrag_top',
                                                                 'value'   => $post->ID,
                                                                 'compare' => '='))));
-    } else if ($post->post_type == 'cvtx_antrag') {
+    } else if (is_object($post) && $post->post_type == 'cvtx_antrag') {
         $query = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
                                     'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
                                                                 'value'   => $post->ID,
