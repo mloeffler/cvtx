@@ -7,8 +7,7 @@ jQuery(document).ready(function($){
     }
     
     // hide preview button
-    if ($("#post_type").val() == "cvtx_reader" || $("#post_type").val() == "cvtx_top"
-     || $("#post_type").val() == "cvtx_antrag" || $("#post_type").val() == "cvtx_aeantrag") {
+    if ($("#post_type").val() == "cvtx_reader" || $("#post_type").val() == "cvtx_top") {
         $("#preview-action").hide();
     }
     
@@ -144,6 +143,7 @@ jQuery(document).ready(function($){
         // update buttons
         $("#save-post").attr("disabled", notunique > 0);
         $("#save").attr("disabled", notunique > 0);
+        $("#preview-action").attr("disabled", notunique > 0);
         if (notunique > 0 || empty > 0) {
             $("#publish").attr("disabled", true);
             cvtx_toggle_errorbox();
