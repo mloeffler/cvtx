@@ -4,7 +4,7 @@ Template Name: &Auml;nderungsantrags&uuml;bersicht
 */
 ?>
 <!DOCTYPE html>
-<html dir="ltr" lang="de-DE">
+<html lang="<?php bloginfo('language'); ?>">
 
   <head>
     <meta charset="<?php bloginfo('charset'); ?>" />
@@ -24,12 +24,13 @@ Template Name: &Auml;nderungsantrags&uuml;bersicht
     </div>
 
     <?php
-    $antraege           = (isset($_POST['antraege']) ? $_POST['antraege'] : false);
-    $show_empty         = (isset($_POST['show_empty'])         && $_POST['show_empty']         ? true : false);
-    $show_verfahren     = (isset($_POST['show_verfahren'])     && $_POST['show_verfahren']     ? true : false);
-    $show_steller_short = (isset($_POST['show_steller_short']) && $_POST['show_steller_short'] ? true : false);
+
+    $antraege       = (isset($_POST['antraege']) ? $_POST['antraege'] : false);
+    $show_empty     = (isset($_POST['show_empty'])     && $_POST['show_empty']     ? true : false);
+    $show_verfahren = (isset($_POST['show_verfahren']) && $_POST['show_verfahren'] ? true : false);
+    $show_steller   = (isset($_POST['show_steller'])   && $_POST['show_steller']   ? true : false);
     
-    if (is_array($antraege) || $show_empty || $show_verfahren || !$show_steller_short) $hide = true;
+    if (is_array($antraege) || $show_empty || $show_verfahren || $show_steller) $hide = true;
     else $hide = false;
 
     // TOP-Query
@@ -69,8 +70,8 @@ Template Name: &Auml;nderungsantrags&uuml;bersicht
             <label for="show_empty">Nur Antr&auml;ge mit &Auml;nderungsantr&auml;gen anzeigen</label>
             <input id="show_verfahren" name="show_verfahren" type="checkbox" <?php if($show_verfahren) print 'checked="true"'; ?> />
             <label for="show_verfahren">Verfahren anzeigen</label>
-            <input id="show_steller_short" name="show_steller_short" type="checkbox" <?php if($show_steller_short) print 'checked="true"'; ?> />
-            <label for="show_steller_short">Nur Kurzfassung der Antragsteller anzeigen</label>
+            <input id="show_steller" name="show_steller" type="checkbox" <?php if($show_steller) print 'checked="true"'; ?> />
+            <label for="show_steller">Vollst&auml;ndige Antragsteller anzeigen</label>
           </p>
           <input type="submit" value="Liste anzeigen" />
         </form>
@@ -102,16 +103,18 @@ Template Name: &Auml;nderungsantrags&uuml;bersicht
               <tbody>
               <?php while ($loop3->have_posts()): $loop3->the_post();?>
                 <tr>
-                  <td><?php print get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true); ?></td>
+                  <td><p><?php print get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true); ?></p></td>
                   <td>
-                    <?php if ($show_steller_short): print get_post_meta($post->ID, 'cvtx_aeantrag_show_steller_short', true); ?>
-                    <?php else: print get_post_meta($post->ID, 'cvtx_aeantrag_steller', true); ?>
-                    <?php endif; ?>
+                    <p>
+                      <?php if ($show_steller): print get_post_meta($post->ID, 'cvtx_aeantrag_steller', true); ?>
+                      <?php else: print get_post_meta($post->ID, 'cvtx_aeantrag_steller_short', true); ?>
+                      <?php endif; ?>
+                    </p>
                   </td>
                   <td><?php the_content(); ?></td>
                   <?php if($show_verfahren):?>
-                    <td class="<?php print get_post_meta($post->ID, 'cvtx_aeantrag_show_verfahren', true); ?>">
-                      <p class="show_verfahren"><?php print get_post_meta($post->ID, 'cvtx_aeantrag_show_verfahren', true); ?></p>
+                    <td class="<?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?>">
+                      <p class="verfahren"><?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?></p>
                       <?php print get_post_meta($post->ID, 'cvtx_aeantrag_detail', true); ?>
                     </td>
                   <?php endif; ?>
