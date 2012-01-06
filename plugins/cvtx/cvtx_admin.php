@@ -313,13 +313,23 @@ function cvtx_metabox_reader() {
 
 /* Update lists */
 
+if (is_admin()) add_filter('manage_edit-cvtx_reader_columns', 'cvtx_reader_columns');
+function cvtx_reader_columns($columns) {
+    $columns = array('cb'                 => '<input type="checkbox" />',
+                     'title'              => 'Reader',
+                     'cvtx_reader_status' => '',
+                     'date'               => __('Date'));
+	return $columns;
+}
+
 if (is_admin()) add_filter('manage_edit-cvtx_top_columns', 'cvtx_top_columns');
 function cvtx_top_columns($columns) {
-	$columns = array('cb'              => '<input type="checkbox" />',
+    $columns = array('cb'              => '<input type="checkbox" />',
                      'title'           => 'Tagesordnungspunkt',
                      'cvtx_top_short'  => 'Kürzel',
-                     'cvtx_top_status' => '');
-	return $columns;
+                     'cvtx_top_status' => '',
+                     'date'            => __('Date'));
+    return $columns;
 }
 
 if (is_admin()) add_filter('manage_edit-cvtx_antrag_columns', 'cvtx_antrag_columns');
@@ -328,7 +338,8 @@ function cvtx_antrag_columns($columns) {
                      'title'               => 'Antragstitel',
                      'cvtx_antrag_steller' => 'AntragstellerIn(nen)',
                      'cvtx_antrag_top'     => 'Tagesordnungspunkt',
-                     'cvtx_antrag_status'  => '');
+                     'cvtx_antrag_status'  => '',
+                     'date'                => __('Date'));
 	return $columns;
 }
 
@@ -346,7 +357,8 @@ function cvtx_aeantrag_columns($columns) {
                      'cvtx_aeantrag_steller'   => 'AntragstellerIn(nen)',
                      'cvtx_aeantrag_verfahren' => 'Verfahren',
                      'cvtx_aeantrag_antrag'    => 'Antrag',
-                     'cvtx_aeantrag_status'    => '');
+                     'cvtx_aeantrag_status'    => '',
+                     'date'                    => __('Date'));
 	return $columns;
 }
 
@@ -362,6 +374,14 @@ if (is_admin()) add_action('manage_posts_custom_column', 'cvtx_format_lists');
 function cvtx_format_lists($column) {
     global $post;
     switch ($column) {
+        // Reader
+        case 'cvtx_reader_status':
+            echo(($post->post_status == 'publish' ? '+ ' : ''));
+            if ($file = cvtx_get_file($post, 'pdf', 'url')) {
+                echo('<a href="'.$file.'">Download (pdf)</a>');
+            }
+            break;
+            
         // TOPs
         case 'cvtx_top_ord':
             echo(cvtx_get_short($post));
