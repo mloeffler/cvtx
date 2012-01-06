@@ -55,7 +55,7 @@ function cvtx_reader_contents() {
     }
 
     // list all contents
-    $output = '<div class="cvtx_reader_toc">';
+    $output = '<div class="cvtx_reader_toc" id="cvtx_reader_toc">';
     $query  = new WP_Query(array('post_type' => array('cvtx_top', 'cvtx_antrag', 'cvtx_aeantrag'),
                                  'orderby'   => 'meta_value',
                                  'meta_key'  => 'cvtx_sort',
@@ -82,19 +82,26 @@ function cvtx_reader_contents() {
                 }
                 $open_top = true;
                 
+                $output .= '<a name="cvtx_'.get_the_ID().'"></a>';
                 $output .= '<div class="cvtx_reader_toc_top">';
                 $output .= ' <label class="cvtx_top '.$unpublished.'">'.$title.'</label>';
+                $output .= ' (<a href="#cvtx_'.get_the_ID().'" class="select_all">alle</a>/';
+                $output .=   '<a href="#cvtx_'.get_the_ID().'" class="select_none">keine</a>)';
             } else if ($post->post_type == 'cvtx_antrag') {
                 if ($open_antrag) { $output .= '</div>'; $open_antrag = false; }
                 $open_antrag = true;
                 
+                $output .= '<a name="cvtx_'.get_the_ID().'"></a>';
                 $output .= '<div class="cvtx_reader_toc_antrag">';
                 $output .= ' <input type="checkbox" id="cvtx_antrag_'.get_the_ID().'" name="cvtx_post_ids['.get_the_ID().']" '.$checked.' /> ';
-                $output .= ' <label class="cvtx_antrag '.$unpublished.'" for="cvtx_antrag_'.get_the_ID().'">'.$title.'</label><br />';
+                $output .= ' <label class="cvtx_antrag '.$unpublished.'" for="cvtx_antrag_'.get_the_ID().'">'.$title.'</label>';
+                $output .= ' (<a href="#cvtx_'.get_the_ID().'" class="select_all">alle</a>/';
+                $output .=   '<a href="#cvtx_'.get_the_ID().'" class="select_none">keine</a>)';
+                $output .= ' <br />';
             } else if ($post->post_type == 'cvtx_aeantrag') {
                 $output .= '<div class="cvtx_reader_toc_aeantrag">';
                 $output .= ' <input type="checkbox" id="cvtx_aeantrag_'.get_the_ID().'" name="cvtx_post_ids['.get_the_ID().']" '.$checked.' /> ';
-                $output .= ' <label class="cvtx_aeantrag '.$unpublished.'" for="cvtx_aeantrag_'.get_the_ID().'">'.$title.'</label><br />';
+                $output .= ' <label class="cvtx_aeantrag '.$unpublished.'" for="cvtx_aeantrag_'.get_the_ID().'">'.$title.'</label>';
                 $output .= '</div>';
             }
         }

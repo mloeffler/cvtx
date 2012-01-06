@@ -1,21 +1,10 @@
 jQuery(document).ready(function($){
-	var target1 = window.location.hash.replace("#","");
-	if(target1 != ''){
-		showTarget(target1);
-	}
-	else{
-		showTarget('cvtx_tool');
-	}
-	$("#cvtx_navi a").click(function() {
-		var target = $(this).attr("href").replace("#","");
-		if(target == '') {
-			$("li#cvtx_aeantraege").show();
-			$("h2.nav-tab-wrapper a.first").addClass("nav-tab-active");
-		}
-		else {
-			showTarget(target);
-		}
-	});
+    var target1 = window.location.hash.replace("#", "");
+    if (target1 != ''){
+        showTarget(target1);
+    } else{
+        showTarget('cvtx_tool');
+    }
     
     // hide preview button
     if ($("#post_type").val() == "cvtx_reader" || $("#post_type").val() == "cvtx_top"
@@ -47,6 +36,36 @@ jQuery(document).ready(function($){
         cvtx_validate("cvtx_aeantrag_zeile");
         $("#cvtx_aeantrag_antrag_select").change(function() { cvtx_validate("cvtx_aeantrag_zeile"); });
         $("#cvtx_aeantrag_zeile_field").keyup(function() { cvtx_validate("cvtx_aeantrag_zeile"); });
+    }
+    
+    $("#cvtx_reader_toc a.select_all").click(function() {
+        $(this).parent().find(":checkbox").attr("checked", true);
+    });
+    
+    $("#cvtx_reader_toc a.select_none").click(function() {
+        $(this).parent().find(":checkbox").attr("checked", false);
+    });
+    
+    $("#cvtx_navi a").click(function() {
+        var target = $(this).attr("href").replace("#", "");
+        if(target == '') {
+            $("li#cvtx_tool").show();
+            $("h2.nav-tab-wrapper a.first").addClass("nav-tab-active");
+        }
+        else {
+            showTarget(target);
+        }
+    });
+
+    function showTarget(target) {
+        $("h2.nav-tab-wrapper a").each(function() {
+            $(this).removeClass("nav-tab-active");
+        });
+        $("ul#cvtx_options li.active").hide();
+        $("#cvtx_navi a."+target).addClass("nav-tab-active");
+        $("#"+target).fadeIn();
+        $("#"+target).addClass("active");
+        $('html,body').animate({scrollTop: 0}, 1);
     }
     
     /**
@@ -157,16 +176,5 @@ jQuery(document).ready(function($){
             }
         }
     }
-
-	function showTarget(target) {
-		$("h2.nav-tab-wrapper a").each(function() {
-			$(this).removeClass("nav-tab-active");
-		});
-		$("ul#cvtx_options li.active").hide();
-		$("#cvtx_navi a."+target).addClass("nav-tab-active");
-		$("#"+target).fadeIn();
-		$("#"+target).addClass("active");
-		$('html,body').animate({scrollTop: 0}, 1);
-	}
 });
 

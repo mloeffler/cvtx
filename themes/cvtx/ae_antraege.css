@@ -13,17 +13,17 @@ nav,
 .inner h2,
 .postmetadata,
 #add_aeantrag {
-	display:none;
+	display: none;
 }
 
 .wrapper {
-	width:auto;
+	width: auto;
 }
 
 #content {
-	border:none;
+	border: none;
 	box-shadow: none;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
-	width:auto;
+	width: auto;
 }

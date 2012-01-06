@@ -45,14 +45,10 @@ tbody {
 	vertical-align: middle;
 }
 
-td,th {
+td, th {
 	border: 1px solid black;
 	padding: 5px 10px;
-}
-
-td.Abstimmung {
-	background: red;
-	color: white;
+    vertical-align: top;
 }
 
 td.†bernahme {
@@ -88,4 +84,8 @@ div.toggler {
 div.toggler a {
 	color: white;
 	text-decoration: none;
+}
+
+p.verfahren {
+	font-weight: bold;
 }

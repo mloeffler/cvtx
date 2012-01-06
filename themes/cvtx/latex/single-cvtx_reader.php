@@ -8,6 +8,7 @@
 \usepackage{tabularx}
 \usepackage{scrpage2}
 \usepackage{calc}
+\usepackage{hyperref}
 
 \sloppy
 
@@ -60,9 +61,11 @@ while ($query->have_posts()) {
 <?php
         }
 ?>
+
 \pagestyle{scrheadings}
 \ohead{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 \thispagestyle{empty}
+\addcontentsline{toc}{section}{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
 \begin{flushright}
  \textbf{\large <?php cvtx_name(); ?>}\\
@@ -84,7 +87,6 @@ while ($query->have_posts()) {
 \end{tabularx}
 
 \section*{<?php cvtx_titel($item); ?>}
-\addcontentsline{toc}{section}{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
 \begin{linenumbers}
 \setcounter{linenumber}{1}
@@ -119,12 +121,15 @@ while ($query->have_posts()) {
             $antrag = $this_antrag;
 ?>
 \addcontentsline{toc}{section}{<?php cvtx_antrag($item); ?>}
+TOC_LINE: <?php cvtx_antrag($item); ?>
 <?php
         }
 ?>
+
 \pagestyle{scrheadings}
 \ohead{Änderungsantrag <?php cvtx_kuerzel($item); ?>}
 \thispagestyle{empty}
+\addcontentsline{toc}{subsection}{<?php cvtx_kuerzel($item); ?>}
 
 \begin{flushright}
  \textbf{\large <?php cvtx_name(); ?>}\\
@@ -146,7 +151,6 @@ while ($query->have_posts()) {
 \end{tabularx}
 
 \section*{Änderungsantrag <?php cvtx_kuerzel($item); ?>}
-\addcontentsline{toc}{subsection}{<?php cvtx_kuerzel($item); ?>}
 
 \begin{linenumbers}
 \setcounter{linenumber}{1}
