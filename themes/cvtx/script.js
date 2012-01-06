@@ -12,6 +12,7 @@
 			}
 		}
 	});
+	$('a.extern').attr('target','_blank');
 	$('body').delegate('a.close','click', function() {
 		$(".ae_antraege_overlay").fadeOut().remove();
 		return false;
@@ -55,12 +56,6 @@
         })
         return ret;
     });
-/*	$('a.add_ae_antraeg').click(function() {
-		var target = $(this).attr("href");
-		create_Overlay();
-		$("#ae_window .result").load(target+' #add_aeantrag');
-		return false;
-	});*/
  })(jQuery);
  
 function create_Overlay() {

@@ -288,7 +288,7 @@ header .description,
 }
 
 #sidebar ul.side li div.inner {
-	padding:15px;
+	padding: 15px 15px 0px 15px;
 }
 
 #sidebar ul.side li h2 {
@@ -300,6 +300,10 @@ header .description,
 	margin-top:0px;
 	border-top-left-radius:3px;
 	border-top-right-radius:3px;
+}
+
+#sidebar ul.side li.widget ul li {
+	list-style: disc;
 }
 
 /**

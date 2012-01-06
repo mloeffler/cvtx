@@ -62,7 +62,7 @@ form select {
 
 div#liste {
 	padding: 0;
-	border: 1px solid rgba(0,0,0,0.3);
+	border: 1px solid rgba(0,0,0,0.5);
 	border-radius: 7px;
 	background: #fafafa;
 	margin: 0em 1em;
@@ -76,14 +76,26 @@ div.toggler {
 	height: 1em;
 	padding: 1em;
 	margin: 0em 0em 1em 0em;
-	background: #333;
-	border-radius: 5px;
+	background: url(images/verlauf2.png) repeat-x bottom rgba(0,0,0,0.6);
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
 	text-align: right;
+	font-size:0.8em;
 }
 
 div.toggler a {
 	color: white;
 	text-decoration: none;
+}
+
+input {
+	border: 1px solid #333;
+	background: rgba(255,255,255,0.7);
+	background: url(images/verlauf2.png) repeat-x bottom rgba(0,0,0,0.8);
+	border-radius: 7px;
+	padding: 5px 10px;
+	color: white;
+	font-weight: bold;
 }
 
 p.verfahren {

@@ -47,14 +47,14 @@
 				
 				<?php $antrag_id = $post->ID; ?>
 				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
-												  'meta_key'   => 'cvtx_aeantrag_sort',
+												  'meta_key'   => 'cvtx_sort',
 												  'orderby'    => 'meta_value',
-												  'order'      => 'ASC',
+                                                  'order'      => 'ASC',
                                                   'nopaging'   => true,
                                                   'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
                                                                               'value'   => $antrag_id,
-                                                                              'compare' => '='))));
-				if($loop3->have_posts()):?>
+                                                                              'compare' => '=')))); ?>
+				<?php if($loop3->have_posts()):?>
 				<div id="ae_antraege">
 					<h3>&Auml;nderungsantr&auml;ge<?php
 						if(isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) { 
