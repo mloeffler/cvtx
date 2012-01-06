@@ -37,12 +37,13 @@ require_once('cvtx_admin.php');
 
 
 // define post types
-$cvtx_types = array('cvtx_reader'   => array(),
+$cvtx_types = array('cvtx_reader'   => array('cvtx_file'),
                     'cvtx_top'      => array('cvtx_top_ord',
                                              'cvtx_sort',
                                              'cvtx_top_short'),
                     'cvtx_antrag'   => array('cvtx_antrag_ord',
                                              'cvtx_sort',
+                                             'cvtx_file',
                                              'cvtx_antrag_top',
                                              'cvtx_antrag_steller',
                                              'cvtx_antrag_steller_short',
@@ -52,6 +53,7 @@ $cvtx_types = array('cvtx_reader'   => array(),
                                              'cvtx_antrag_info'),
                     'cvtx_aeantrag' => array('cvtx_aeantrag_zeile',
                                              'cvtx_sort',
+                                             'cvtx_file',
                                              'cvtx_aeantrag_antrag',
                                              'cvtx_aeantrag_steller',
                                              'cvtx_aeantrag_steller_short',
@@ -320,7 +322,11 @@ function cvtx_insert_post($post_id, $post = null) {
             }
             
             // update object terms
-            foreach ($old as $item) if (!in_array($item, $new)) wp_set_object_terms($item, $terms["$item"], 'cvtx_tax_reader');
+            foreach ($old as $item) {
+                if (!in_array($item, $new)) {
+                    wp_set_object_terms($item, $terms["$item"], 'cvtx_tax_reader');
+                }
+            }
             
             // add this reader to terms list and update object terms
             foreach ($new as $item) {
@@ -382,60 +388,83 @@ function cvtx_insert_post($post_id, $post = null) {
         if (is_admin()) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
-            $mails   = array('owner' => array('subject' => '', 'body' => ''),
-                             'admin' => array('subject' => '', 'body' => ''));
-            $headers = $headers = 'From: '.get_option('cvtx_send_from_email')."\r\n";
+            $headers = 'From: '.get_option('cvtx_send_from_email')."\r\n";
             
             // post type antrag created
             if ($post->post_type == 'cvtx_antrag') {
-                $mails['owner'] = array('subject' => get_option('cvtx_send_create_antrag_owner_subject'), 'body' => get_option('cvtx_send_create_antrag_owner_body'));
-                $mails['admin'] = array('subject' => get_option('cvtx_send_create_antrag_admin_subject'), 'body' => get_option('cvtx_send_create_antrag_admin_body'));
+                $mails['owner'] = array('subject' => get_option('cvtx_send_create_antrag_owner_subject'),
+                                        'body'    => get_option('cvtx_send_create_antrag_owner_body'));
+                $mails['admin'] = array('subject' => get_option('cvtx_send_create_antrag_admin_subject'),
+                                        'body'    => get_option('cvtx_send_create_antrag_admin_body'));
+                
+                $fields = array('%top_kuerzel%'        => 'TOP '.get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true),
+                                '%top%'                => get_the_title($_POST['cvtx_antrag_top']),
+                                '%titel%'              => $post->post_title,
+                                '%antragsteller%'      => $_POST['cvtx_antrag_steller'],
+                                '%antragsteller_kurz%' => $_POST['cvtx_antrag_steller_short'],
+                                '%antragstext%'        => $post->post_content,
+                                '%begruendung%'        => $_POST['cvtx_antrag_grund']);
                 
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
-                        $content = str_replace('%top_kuerzel%', 'TOP '.get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true), $content);
-                        $content = str_replace('%top%', get_the_title($_POST['cvtx_antrag_top']), $content);
-                        $content = str_replace('%titel%', $post->post_title, $content);
-                        $content = str_replace('%antragsteller%', $_POST['cvtx_antrag_steller'], $content);
-                        $content = str_replace('%antragsteller_kurz%', $_POST['cvtx_antrag_steller_short'], $content);
-                        $content = str_replace('%antragstext%', $post->post_content, $content);
-                        $content = str_replace('%begruendung%', $_POST['cvtx_antrag_grund'], $content);
-                        $mails[$rcpt][$part] = $content;
+                        $mails[$rcpt][$part] = strtr($content, $fields);
                     }
                 }
                 
                 // send mail(s) if option enabled
-                if (get_option('cvtx_send_create_antrag_owner')) wp_mail($_POST['cvtx_antrag_email'], $mails['owner']['subject'], $mails['owner']['body'], $headers);
-                if (get_option('cvtx_send_create_antrag_admin')) wp_mail(get_option('cvtx_send_rcpt_email'), $mails['admin']['subject'], $mails['admin']['body'], $headers);
+                if (get_option('cvtx_send_create_antrag_owner')) {
+                    wp_mail($_POST['cvtx_antrag_email'],
+                            $mails['owner']['subject'],
+                            $mails['owner']['body'],
+                            $headers);
+                }
+                if (get_option('cvtx_send_create_antrag_admin')) {
+                    wp_mail(get_option('cvtx_send_rcpt_email'),
+                            $mails['admin']['subject'],
+                            $mails['admin']['body'],
+                            $headers);
+                }
             }
             // post type aeantrag created
             else if ($post->post_type == 'cvtx_aeantrag') {
-                $mails['owner'] = array('subject' => get_option('cvtx_send_create_aeantrag_owner_subject'), 'body' => get_option('cvtx_send_create_aeantrag_owner_body'));
-                $mails['admin'] = array('subject' => get_option('cvtx_send_create_aeantrag_admin_subject'), 'body' => get_option('cvtx_send_create_aeantrag_admin_body'));
+                $mails['owner'] = array('subject' => get_option('cvtx_send_create_aeantrag_owner_subject'),
+                                        'body'    => get_option('cvtx_send_create_aeantrag_owner_body'));
+                $mails['admin'] = array('subject' => get_option('cvtx_send_create_aeantrag_admin_subject'),
+                                        'body'    => get_option('cvtx_send_create_aeantrag_admin_body'));
                 
                 $top_id = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
+                $fields = array('%top_kuerzel%'        => 'TOP '.get_post_meta($top_id, 'cvtx_top_ord', true),
+                                '%top%'                => get_the_title($top_id),
+                                '%antrag_kuerzel%'     => get_post_meta($top_id, 'cvtx_top_short', true).'-'
+                                                         .get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true),
+                                '%antrag%'             => get_the_title($_POST['cvtx_aeantrag_antrag']),
+                                '%zeile%'              => $_POST['cvtx_aeantrag_zeile'],
+                                '%antragsteller%'      => $_POST['cvtx_aeantrag_steller'],
+                                '%antragsteller_kurz%' => $_POST['cvtx_aeantrag_steller_short'],
+                                '%antragstext%'        => $post->post_content,
+                                '%begruendung%'        => $_POST['cvtx_aeantrag_grund']);
                 
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
-                        $content = str_replace('%top_kuerzel%', 'TOP '.get_post_meta($top_id, 'cvtx_top_ord', true), $content);
-                        $content = str_replace('%top%', get_the_title($top_id), $content);
-                        $content = str_replace('%antrag_kuerzel%', get_post_meta($top_id, 'cvtx_top_short', true)
-                                                                  .'-'.get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true), $content);
-                        $content = str_replace('%antrag%', get_the_title($_POST['cvtx_aeantrag_antrag']), $content);
-                        $content = str_replace('%zeile%', $_POST['cvtx_aeantrag_zeile'], $content);
-                        $content = str_replace('%antragsteller%', $_POST['cvtx_aeantrag_steller'], $content);
-                        $content = str_replace('%antragsteller_kurz%', $_POST['cvtx_aeantrag_steller_short'], $content);
-                        $content = str_replace('%antragstext%', $post->post_content, $content);
-                        $content = str_replace('%begruendung%', $_POST['cvtx_aeantrag_grund'], $content);
-                        $mails[$rcpt][$part] = $content;
+                        $mails[$rcpt][$part] = strtr($content, $fields);
                     }
                 }
                 
                 // send mail(s) if option enabled
-                if (get_option('cvtx_send_create_aeantrag_owner')) wp_mail($_POST['cvtx_aeantrag_email'], $mails['owner']['subject'], $mails['owner']['body'], $headers);
-                if (get_option('cvtx_send_create_aeantrag_admin')) wp_mail(get_option('cvtx_send_rcpt_email'), $mails['admin']['subject'], $mails['admin']['body'], $headers);
+                if (get_option('cvtx_send_create_aeantrag_owner')) {
+                    wp_mail($_POST['cvtx_aeantrag_email'],
+                            $mails['owner']['subject'],
+                            $mails['owner']['body'],
+                            $headers);
+                }
+                if (get_option('cvtx_send_create_aeantrag_admin')) {
+                    wp_mail(get_option('cvtx_send_rcpt_email'),
+                            $mails['admin']['subject'],
+                            $mails['admin']['body'],
+                            $headers);
+                }
             }
         }
         
@@ -535,21 +564,26 @@ function cvtx_create_pdf($post_id, $post = null) {
 
             // save output to latex file. success?
             if (file_put_contents($file.'.tex', $out) !== false) {
+                $cmd = $pdflatex.' -interaction=nonstopmode -output-directory='
+                      .$out_dir['basedir'].' '.$file.'.tex';
+                
                 // run pdflatex
-                exec($pdflatex.' -interaction=nonstopmode -output-directory='.$out_dir['basedir'].' '.$file.'.tex');
+                exec($cmd);
                 // if reader is generated: run it twice to build toc etc.
                 if ($post->post_type == 'cvtx_reader') {
-                    exec($pdflatex.' -interaction=nonstopmode -output-directory='.$out_dir['basedir'].' '.$file.'.tex');
+                    exec($cmd);
                 }
                 
                 // remove .aux-file
                 $endings = array('aux', 'toc', 'bbl', 'blg', 'synctex.gz');
                 // remove .log-file
-                if (get_option('cvtx_drop_logfile') == 1 || (get_option('cvtx_drop_logfile') == 2 && is_file($file.'.pdf'))) {
+                if ((get_option('cvtx_drop_logfile') == 2 && is_file($file.'.pdf'))
+                  || get_option('cvtx_drop_logfile') == 1) {
                     $endings[] = 'log';
                 }
                 // remove .tex-file
-                if (get_option('cvtx_drop_texfile') == 1 || (get_option('cvtx_drop_texfile') == 2 && is_file($file.'.pdf'))) {
+                if ((get_option('cvtx_drop_texfile') == 2 && is_file($file.'.pdf'))
+                  || get_option('cvtx_drop_texfile') == 1) {
                     $endings[] = 'tex';
                 }
                 // remove files (if they exist)
@@ -563,9 +597,8 @@ function cvtx_create_pdf($post_id, $post = null) {
 // replaces filter "the title" in order to generate custom titles for post-types "top", "antrag" and "aeantrag"
 add_filter('the_title', 'cvtx_the_title', 1, 3);
 function cvtx_the_title($before='', $after='', $echo = true) {
-
-	if(is_numeric($after)) $post = &get_post($after);
-		    
+    if(is_numeric($after)) $post = &get_post($after);
+            
     if(isset($post)) {
         $title = $post->post_title;
         
@@ -584,7 +617,7 @@ function cvtx_the_title($before='', $after='', $echo = true) {
             }
         }
         else {
-        	return $before;
+            return $before;
         }
     }    
     return $title;
@@ -673,7 +706,8 @@ function cvtx_get_file($post, $ending = 'pdf', $base = 'url') {
  */
 function cvtx_remove_files($post, $endings = array('*')) {
     if (in_array('*', $endings)) {
-        $endings = array('pdf', 'log', 'tex', 'aux', 'toc', 'bbl', 'blg', 'synctex.gz');
+        $endings = array('pdf', 'log', 'tex', 'aux', 'toc',
+                         'bbl', 'blg', 'synctex.gz');
     }
 
     foreach ($endings as $ending) {
@@ -684,8 +718,6 @@ function cvtx_remove_files($post, $endings = array('*')) {
 
 /**
  * Returns latex formatted output
- *
- * @todo - how to handle '\' -> '{\\textbackslash}' ??
  *
  * @param $out input
  * @return formatted output
@@ -800,7 +832,7 @@ function cvtx_ajax_validate() {
     global $cvtx_types;
 
     if (isset($_REQUEST['post_type']) && in_array($_REQUEST['post_type'], array_keys($cvtx_types))
-     && isset($_REQUEST['args'])      && is_array($_REQUEST['args'])     && count($_REQUEST['args']) > 0
+     && isset($_REQUEST['args'])      && is_array($_REQUEST['args']) && count($_REQUEST['args']) > 0
      && isset($_REQUEST['post_id'])   && is_array($_REQUEST['post_id'])) {
         $param = array('post_type'    => $_REQUEST['post_type'],
                        'post__not_in' => $_REQUEST['post_id'],
@@ -831,7 +863,8 @@ function cvtx_get_reader() {
 
     $reader = array();
     // get reader
-    $query = new WP_Query(array('post_type' => 'cvtx_reader', 'nopaging' => true));
+    $query = new WP_Query(array('post_type' => 'cvtx_reader',
+                                'nopaging'  => true));
     while ($query->have_posts()) {
         $query->the_post();
         if (isset($terms[get_the_ID()]) && !empty($terms[get_the_ID()])) {
@@ -853,7 +886,7 @@ function cvtx_get_reader() {
 function cvtx_dropdown_tops($selected = null, $message = '') {
     global $post;
     $post_bak = $post;
-	$output = '';
+    $output = '';
 
     $tquery = new WP_Query(array('post_type' => 'cvtx_top',
                                  'orderby'   => 'meta_value',
@@ -891,7 +924,7 @@ function cvtx_dropdown_tops($selected = null, $message = '') {
 function cvtx_dropdown_antraege($selected = null, $message = '') {
     global $post;
     $post_bak = $post;
-	$output = '';
+    $output = '';
 
     // Tagesordnungspunkte auflisten
     $tquery = new WP_Query(array('post_type' => 'cvtx_top',
@@ -944,7 +977,7 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
  * Method which evaluates input of antrags-creation form and saves it to the wordpress database
  */
 function cvtx_submit_antrag() {
-	// Request Variables, if already submitted, set corresponding variables to '' else
+    // Request Variables, if already submitted, set corresponding variables to '' else
     $cvtx_antrag_title   = (!empty($_POST['cvtx_antrag_title'])   ? trim($_POST['cvtx_antrag_title'])   : '');
     $cvtx_antrag_steller = (!empty($_POST['cvtx_antrag_steller']) ? trim($_POST['cvtx_antrag_steller']) : '');
     $cvtx_antrag_email   = (!empty($_POST['cvtx_antrag_email'])   ? trim($_POST['cvtx_antrag_email'])   : '');
@@ -953,58 +986,58 @@ function cvtx_submit_antrag() {
     $cvtx_antrag_text    = (!empty($_POST['cvtx_antrag_text'])    ? trim($_POST['cvtx_antrag_text'])    : '');
     $cvtx_antrag_grund   = (!empty($_POST['cvtx_antrag_grund'])   ? trim($_POST['cvtx_antrag_grund'])   : '');
 
-	// Check whether the form has been submitted and the wp_nonce for security reasons
-	if (isset($_POST['cvtx_form_create_antrag_submitted'] ) && wp_verify_nonce($_POST['cvtx_form_create_antrag_submitted'], 'cvtx_form_create_antrag') ){
-  		
-  		$recaptcha = get_option('cvtx_use_recaptcha');
-		$privatekey = get_option('cvtx_recaptcha_privatekey');
-  		
-  		if($recaptcha && !empty($privatekey)) {
-			require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
-			$resp = recaptcha_check_answer ($privatekey,
-	    		                            $_SERVER["REMOTE_ADDR"],
-	        		                        $_POST["recaptcha_challenge_field"],
-    	        		                    $_POST["recaptcha_response_field"]);
-			if (!$resp->is_valid) {
-	    		// What happens when the CAPTCHA was entered incorrectly
-	    		echo('<p id="message" class="error">Der Captcha wurde falsch eingegeben. Bitte versuche es erneut.</p>');
-    	    }
-    	}
-		if(!$recaptcha || $resp->is_valid) {
-    		// check whether the required fields have been submitted
- 			if(!empty($cvtx_antrag_title) && !empty($cvtx_antrag_text) && !empty($cvtx_antrag_steller) && !empty($cvtx_antrag_email) && !empty($cvtx_antrag_phone)) {
- 				// create an array which holds all data about the antrag
-				$antrag_data = array(
-					'post_title'          => $cvtx_antrag_title,
-					'post_content'        => $cvtx_antrag_text,
-					'cvtx_antrag_steller' => $cvtx_antrag_steller,
-					'cvtx_antrag_email'   => $cvtx_antrag_email,
-					'cvtx_antrag_phone'   => $cvtx_antrag_phone,
-					'cvtx_antrag_top'     => $cvtx_antrag_top,
-					'cvtx_antrag_grund'   => $cvtx_antrag_grund,
-					'post_status'         => 'pending',
-					'post_author'         => get_option('cvtx_anon_user'),
-					'post_type'           => 'cvtx_antrag');
-				// submit the post
-				if($antrag_id = wp_insert_post($antrag_data)) {
-					echo '<p id="message" class="success">Der Antrag wurde erstellt und muss noch freigeschaltet werden.</p>';
-					$erstellt = true;
-				}
-				else {
-					echo '<p id="message" class="error">Antrag wurde NICHT gespeichert. Warum auch immer.</p>';
-				}
-			}
-			// return error-message because some required fields have not been submitted
-			else {
-				echo '<p id="message" class="error">Der Antrag konnte nicht gespeichert werden, weil einige benötigte Felder '. 
-					 '(mit einem <span class="form-required" title="Dieses Feld wird benötigt">*<'.
-					 '/span> bezeichnet) nicht ausgefüllt wurden.</p>';
-			}
-		}
-	}
-	
-	// nothing has been submitted yet -> include creation form
-	if(!isset($erstellt))
+    // Check whether the form has been submitted and the wp_nonce for security reasons
+    if (isset($_POST['cvtx_form_create_antrag_submitted'] ) && wp_verify_nonce($_POST['cvtx_form_create_antrag_submitted'], 'cvtx_form_create_antrag') ){
+          
+          $recaptcha = get_option('cvtx_use_recaptcha');
+        $privatekey = get_option('cvtx_recaptcha_privatekey');
+          
+          if($recaptcha && !empty($privatekey)) {
+            require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
+            $resp = recaptcha_check_answer ($privatekey,
+                                            $_SERVER["REMOTE_ADDR"],
+                                            $_POST["recaptcha_challenge_field"],
+                                            $_POST["recaptcha_response_field"]);
+            if (!$resp->is_valid) {
+                // What happens when the CAPTCHA was entered incorrectly
+                echo('<p id="message" class="error">Der Captcha wurde falsch eingegeben. Bitte versuche es erneut.</p>');
+            }
+        }
+        if(!$recaptcha || $resp->is_valid) {
+            // check whether the required fields have been submitted
+             if(!empty($cvtx_antrag_title) && !empty($cvtx_antrag_text) && !empty($cvtx_antrag_steller) && !empty($cvtx_antrag_email) && !empty($cvtx_antrag_phone)) {
+                 // create an array which holds all data about the antrag
+                $antrag_data = array(
+                    'post_title'          => $cvtx_antrag_title,
+                    'post_content'        => $cvtx_antrag_text,
+                    'cvtx_antrag_steller' => $cvtx_antrag_steller,
+                    'cvtx_antrag_email'   => $cvtx_antrag_email,
+                    'cvtx_antrag_phone'   => $cvtx_antrag_phone,
+                    'cvtx_antrag_top'     => $cvtx_antrag_top,
+                    'cvtx_antrag_grund'   => $cvtx_antrag_grund,
+                    'post_status'         => 'pending',
+                    'post_author'         => get_option('cvtx_anon_user'),
+                    'post_type'           => 'cvtx_antrag');
+                // submit the post
+                if($antrag_id = wp_insert_post($antrag_data)) {
+                    echo '<p id="message" class="success">Der Antrag wurde erstellt und muss noch freigeschaltet werden.</p>';
+                    $erstellt = true;
+                }
+                else {
+                    echo '<p id="message" class="error">Antrag wurde NICHT gespeichert. Warum auch immer.</p>';
+                }
+            }
+            // return error-message because some required fields have not been submitted
+            else {
+                echo '<p id="message" class="error">Der Antrag konnte nicht gespeichert werden, weil einige benötigte Felder '. 
+                     '(mit einem <span class="form-required" title="Dieses Feld wird benötigt">*<'.
+                     '/span> bezeichnet) nicht ausgefüllt wurden.</p>';
+            }
+        }
+    }
+    
+    // nothing has been submitted yet -> include creation form
+    if(!isset($erstellt))
         echo cvtx_create_antrag_form($cvtx_antrag_top, $cvtx_antrag_title, $cvtx_antrag_text, $cvtx_antrag_steller,
                                      $cvtx_antrag_email, $cvtx_antrag_phone, $cvtx_antrag_grund);
 }
@@ -1022,141 +1055,141 @@ function cvtx_submit_antrag() {
  */
 function cvtx_create_antrag_form($cvtx_antrag_top = 0, $cvtx_antrag_title = '', $cvtx_antrag_text = '', $cvtx_antrag_steller = '',
                                  $cvtx_antrag_email = '', $cvtx_antrag_phone = '', $cvtx_antrag_grund = '') {
-	$output  = '';
-	
-	// specify form
-	$output .= '<form id="create_antrag_form" class="cvtx_antrag_form" method="post" action="">';
-	
-	// Wp-nonce for security reasons
-	$output .= wp_nonce_field('cvtx_form_create_antrag','cvtx_form_create_antrag_submitted');
-	
-	// Antragstitel
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_antrag_title">Antragstitel: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<input type="text" id="cvtx_antrag_title" name="cvtx_antrag_title" class="required" value="'.$cvtx_antrag_title.'" size="80" /><br>';
-	$output .= '</div>';
-	
-	// TOP
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_antrag_top">TOP: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= cvtx_dropdown_tops($cvtx_antrag_top, 'Keine Tagesordnungspunkte angelegt').'<br/>';
-	$output .= '</div>';
-	
-	// Antragsteller
-	$output .= '<div class="form-group">';
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_antrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
+    $output  = '';
+    
+    // specify form
+    $output .= '<form id="create_antrag_form" class="cvtx_antrag_form" method="post" action="">';
+    
+    // Wp-nonce for security reasons
+    $output .= wp_nonce_field('cvtx_form_create_antrag','cvtx_form_create_antrag_submitted');
+    
+    // Antragstitel
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_antrag_title">Antragstitel: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
+    $output .= '<input type="text" id="cvtx_antrag_title" name="cvtx_antrag_title" class="required" value="'.$cvtx_antrag_title.'" size="80" /><br>';
+    $output .= '</div>';
+    
+    // TOP
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_antrag_top">TOP: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
+    $output .= cvtx_dropdown_tops($cvtx_antrag_top, 'Keine Tagesordnungspunkte angelegt').'<br/>';
+    $output .= '</div>';
+    
+    // Antragsteller
+    $output .= '<div class="form-group">';
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_antrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
     $output .= '<textarea id="cvtx_antrag_steller" name="cvtx_antrag_steller" class="required" size="100%" cols="60" rows="5" />'.$cvtx_antrag_steller.'</textarea><br/>';
-	$output .= '</div>';
-	
-	// Kontakt (E-Mail)
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_antrag_email">E-Mail-Adresse: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
-	$output .= '<input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" class="required" value="'.$cvtx_antrag_email.'" size="70" /><br/>';
-	$output .= '</div>';
-	
-	// Kontakt (Telefon)
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_antrag_phone">Telefonnummer: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
-	$output .= '<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" class="required" value="'.$cvtx_antrag_phone.'" size="70" /><br/>';
-	$output .= '</div>';
-	$output .= '</div>';
-		
-	// Antragstext
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_antrag_text">Antragstext: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<textarea id="cvtx_antrag_text" name="cvtx_antrag_text" class="required" size="100%" cols="60" rows="20" />'.$cvtx_antrag_text.'</textarea><br/>';
-	$output .= '</div>';
+    $output .= '</div>';
+    
+    // Kontakt (E-Mail)
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_antrag_email">E-Mail-Adresse: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
+    $output .= '<input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" class="required" value="'.$cvtx_antrag_email.'" size="70" /><br/>';
+    $output .= '</div>';
+    
+    // Kontakt (Telefon)
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_antrag_phone">Telefonnummer: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
+    $output .= '<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" class="required" value="'.$cvtx_antrag_phone.'" size="70" /><br/>';
+    $output .= '</div>';
+    $output .= '</div>';
+        
+    // Antragstext
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_antrag_text">Antragstext: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
+    $output .= '<textarea id="cvtx_antrag_text" name="cvtx_antrag_text" class="required" size="100%" cols="60" rows="20" />'.$cvtx_antrag_text.'</textarea><br/>';
+    $output .= '</div>';
 
-	// Antragsgrund
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_antrag_grund">Antragsbegründung:</label><br/>';
-	$output .= '<textarea id="cvtx_antrag_grund" name="cvtx_antrag_grund" size="100%" cols="60" rows="10" />'.$cvtx_antrag_grund.'</textarea><br/>';
-	$output .= '</div>';
+    // Antragsgrund
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_antrag_grund">Antragsbegründung:</label><br/>';
+    $output .= '<textarea id="cvtx_antrag_grund" name="cvtx_antrag_grund" size="100%" cols="60" rows="10" />'.$cvtx_antrag_grund.'</textarea><br/>';
+    $output .= '</div>';
 
-	// Check if reCaptcha is used
-	$recaptcha = get_option('cvtx_use_recaptcha');
-   	$publickey = get_option('cvtx_recaptcha_publickey');
-	
-	// embed reCaptcha
-	if($recaptcha && !empty($publickey)) {
-		require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
-		$output .= '<div class="form-item">';
-    	$output .= recaptcha_get_html($publickey);
-    	$output .= '</div>';
-	}
-	
-	// Submit-Button
-	$output .= '<div class="form-item">';
-	$output .= '<input type="submit" id="cvtx_antrag_submit" class="submit" value="Antrag erstellen">';
-	$output .= '</div>';
-	$output .= '</form>';
-	
-	return $output;
+    // Check if reCaptcha is used
+    $recaptcha = get_option('cvtx_use_recaptcha');
+       $publickey = get_option('cvtx_recaptcha_publickey');
+    
+    // embed reCaptcha
+    if($recaptcha && !empty($publickey)) {
+        require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
+        $output .= '<div class="form-item">';
+        $output .= recaptcha_get_html($publickey);
+        $output .= '</div>';
+    }
+    
+    // Submit-Button
+    $output .= '<div class="form-item">';
+    $output .= '<input type="submit" id="cvtx_antrag_submit" class="submit" value="Antrag erstellen">';
+    $output .= '</div>';
+    $output .= '</form>';
+    
+    return $output;
 }
 
 /**
  * Method which evaluates the input of an ae_antrags_creation-form and saves it to the wordpress database
  */
 function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
-	$cvtx_aeantrag_zeile   = (!empty($_POST['cvtx_aeantrag_zeile'])   ? trim($_POST['cvtx_aeantrag_zeile'])   : '');
-	$cvtx_aeantrag_steller = (!empty($_POST['cvtx_aeantrag_steller']) ? trim($_POST['cvtx_aeantrag_steller']) : '');
-	$cvtx_aeantrag_email   = (!empty($_POST['cvtx_aeantrag_email'])   ? trim($_POST['cvtx_aeantrag_email'])   : '');
-	$cvtx_aeantrag_phone   = (!empty($_POST['cvtx_aeantrag_phone'])   ? trim($_POST['cvtx_aeantrag_phone'])   : '');
-	$cvtx_aeantrag_text    = (!empty($_POST['cvtx_aeantrag_text'])    ? trim($_POST['cvtx_aeantrag_text'])    : '');
-	$cvtx_aeantrag_grund   = (!empty($_POST['cvtx_aeantrag_grund'])   ? trim($_POST['cvtx_aeantrag_grund'])   : '');
-	
-	if (isset($_POST['cvtx_form_create_aeantrag_submitted']) && $cvtx_aeantrag_antrag != 0
-	&& wp_verify_nonce($_POST['cvtx_form_create_aeantrag_submitted'], 'cvtx_form_create_aeantrag')) {
+    $cvtx_aeantrag_zeile   = (!empty($_POST['cvtx_aeantrag_zeile'])   ? trim($_POST['cvtx_aeantrag_zeile'])   : '');
+    $cvtx_aeantrag_steller = (!empty($_POST['cvtx_aeantrag_steller']) ? trim($_POST['cvtx_aeantrag_steller']) : '');
+    $cvtx_aeantrag_email   = (!empty($_POST['cvtx_aeantrag_email'])   ? trim($_POST['cvtx_aeantrag_email'])   : '');
+    $cvtx_aeantrag_phone   = (!empty($_POST['cvtx_aeantrag_phone'])   ? trim($_POST['cvtx_aeantrag_phone'])   : '');
+    $cvtx_aeantrag_text    = (!empty($_POST['cvtx_aeantrag_text'])    ? trim($_POST['cvtx_aeantrag_text'])    : '');
+    $cvtx_aeantrag_grund   = (!empty($_POST['cvtx_aeantrag_grund'])   ? trim($_POST['cvtx_aeantrag_grund'])   : '');
+    
+    if (isset($_POST['cvtx_form_create_aeantrag_submitted']) && $cvtx_aeantrag_antrag != 0
+    && wp_verify_nonce($_POST['cvtx_form_create_aeantrag_submitted'], 'cvtx_form_create_aeantrag')) {
 
-  		$recaptcha = get_option('cvtx_use_recaptcha');
-		$privatekey = get_option('cvtx_recaptcha_privatekey');
-  		
-  		if($recaptcha && !empty($privatekey)) {
-			require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
-			$resp = recaptcha_check_answer ($privatekey,
-	    		                            $_SERVER["REMOTE_ADDR"],
-	        		                        $_POST["recaptcha_challenge_field"],
-    	        		                    $_POST["recaptcha_response_field"]);
-			if (!$resp->is_valid) {
-	    		// What happens when the CAPTCHA was entered incorrectly
-	    		echo('<p id="message" class="error">Der Captcha wurde falsch eingegeben. Bitte versuche es erneut.</p>');
-    	    }
-    	}
-		if(!$recaptcha || $resp->is_valid) {
-			// check whethter the required fields have been set
-			if (!empty($cvtx_aeantrag_zeile) && !empty($cvtx_aeantrag_text) && !empty($cvtx_aeantrag_steller)
-        	 && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email) && !empty($cvtx_aeantrag_phone)) {
-				$aeantrag_data = array(
-					'cvtx_aeantrag_steller' => $cvtx_aeantrag_steller,
-					'cvtx_aeantrag_antrag'  => $cvtx_aeantrag_antrag,
-					'cvtx_aeantrag_grund'   => $cvtx_aeantrag_grund,
-					'cvtx_aeantrag_zeile'   => $cvtx_aeantrag_zeile,
-					'cvtx_aeantrag_email'   => $cvtx_aeantrag_email,
-					'cvtx_aeantrag_phone'   => $cvtx_aeantrag_phone,
-					'post_status'           => 'pending',
-					'post_author'           => get_option('cvtx_anon_user'),
-					'post_content'          => $cvtx_aeantrag_text,
-					'post_type'             => 'cvtx_aeantrag',
-				);
-				// submit the post!
-				if($antrag_id = wp_insert_post($aeantrag_data)) {
-					echo '<p id="message" class="success">Der Änderungsantrag wurde erstellt und muss noch freigeschaltet werden.</p>';
-					$erstellt = true;
-				}
-				else {
-					echo '<p id="message" class="error">Der Änderungsantrag wurde nicht gespeichert. '
-            	        .'Bitte tanzen Sie um den Tisch und probieren sie es dann mit einer anderen Computer-Stellung noch einmal.</p>';
-				}
-			}
-			else {
-				echo '<p id="message" class="error">Der Änderungsantrag konnte nicht gespeichert werden, weil einige benötigte Felder '.
-					 ' (mit einem <span class="form-required" title="Dieses Feld wird benötigt">*</span> be'.
-					 'zeichnet) nicht ausgefüllt wurden.</p>';
-			}
-		}
-	}
-	if(!isset($erstellt))
+          $recaptcha = get_option('cvtx_use_recaptcha');
+        $privatekey = get_option('cvtx_recaptcha_privatekey');
+          
+          if($recaptcha && !empty($privatekey)) {
+            require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
+            $resp = recaptcha_check_answer ($privatekey,
+                                            $_SERVER["REMOTE_ADDR"],
+                                            $_POST["recaptcha_challenge_field"],
+                                            $_POST["recaptcha_response_field"]);
+            if (!$resp->is_valid) {
+                // What happens when the CAPTCHA was entered incorrectly
+                echo('<p id="message" class="error">Der Captcha wurde falsch eingegeben. Bitte versuche es erneut.</p>');
+            }
+        }
+        if(!$recaptcha || $resp->is_valid) {
+            // check whethter the required fields have been set
+            if (!empty($cvtx_aeantrag_zeile) && !empty($cvtx_aeantrag_text) && !empty($cvtx_aeantrag_steller)
+             && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email) && !empty($cvtx_aeantrag_phone)) {
+                $aeantrag_data = array(
+                    'cvtx_aeantrag_steller' => $cvtx_aeantrag_steller,
+                    'cvtx_aeantrag_antrag'  => $cvtx_aeantrag_antrag,
+                    'cvtx_aeantrag_grund'   => $cvtx_aeantrag_grund,
+                    'cvtx_aeantrag_zeile'   => $cvtx_aeantrag_zeile,
+                    'cvtx_aeantrag_email'   => $cvtx_aeantrag_email,
+                    'cvtx_aeantrag_phone'   => $cvtx_aeantrag_phone,
+                    'post_status'           => 'pending',
+                    'post_author'           => get_option('cvtx_anon_user'),
+                    'post_content'          => $cvtx_aeantrag_text,
+                    'post_type'             => 'cvtx_aeantrag',
+                );
+                // submit the post!
+                if($antrag_id = wp_insert_post($aeantrag_data)) {
+                    echo '<p id="message" class="success">Der Änderungsantrag wurde erstellt und muss noch freigeschaltet werden.</p>';
+                    $erstellt = true;
+                }
+                else {
+                    echo '<p id="message" class="error">Der Änderungsantrag wurde nicht gespeichert. '
+                        .'Bitte tanzen Sie um den Tisch und probieren sie es dann mit einer anderen Computer-Stellung noch einmal.</p>';
+                }
+            }
+            else {
+                echo '<p id="message" class="error">Der Änderungsantrag konnte nicht gespeichert werden, weil einige benötigte Felder '.
+                     ' (mit einem <span class="form-required" title="Dieses Feld wird benötigt">*</span> be'.
+                     'zeichnet) nicht ausgefüllt wurden.</p>';
+            }
+        }
+    }
+    if(!isset($erstellt))
         echo cvtx_create_aeantrag_form($cvtx_aeantrag_antrag, $cvtx_aeantrag_zeile, $cvtx_aeantrag_text, $cvtx_aeantrag_steller,
                                        $cvtx_aeantrag_email, $cvtx_aeantrag_phone, $cvtx_aeantrag_grund);
 }
@@ -1175,145 +1208,146 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
  */
 function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zeile = '', $cvtx_aeantrag_text = '', $cvtx_aeantrag_steller = '',
                                    $cvtx_aeantrag_email = '', $cvtx_aeantrag_phone = '', $cvtx_aeantrag_grund = '') {
-	$output  = '';
-	
-	// specify form
-	$output .= '<form id="create_aeantrag_form" class="cvtx_antrag_form" method="post" action="">';
-	
-	// Wp-nonce for security reasons
-	$output .= wp_nonce_field('cvtx_form_create_aeantrag','cvtx_form_create_aeantrag_submitted');
-	
-	// Antragszeile
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_aeantrag_zeile">Zeile: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<input type="text" id="cvtx_aeantrag_zeile" name="cvtx_aeantrag_zeile" class="required" value="'.$cvtx_aeantrag_zeile.'" size="4" /><br>';
-	$output .= '</div>';
-		
-	// Antragsteller
-	$output .= '<div class="form-group">';
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_aeantrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<textarea id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" class="required" size="100%" cols="60" rows="5" />'.$cvtx_aeantrag_steller.'</textarea><br/>';
-	$output .= '</div>';
-	
-	// E-Mail-Adresse
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_aeantrag_email">E-Mail-Adresse: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
-	$output .= '<input type="text" id="cvtx_aeantrag_email" name="cvtx_aeantrag_email" class="required" value="'.$cvtx_aeantrag_email.'" size="80" /><br/>';
-	$output .= '</div>';
-	
-	// Telefonnummer
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_aeantrag_phone">Telefonnummer: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
-	$output .= '<input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" class="required" value="'.$cvtx_aeantrag_phone.'" size="80" /><br/>';
-	$output .= '</div>';
-	$output .= '</div>';
-	
-	// Antrag
-	$output .= '<input type="hidden" id="cvtx_aeantrag_antrag" name="cvtx_aeantrag_antrag" value="'.$cvtx_aeantrag_antrag.'"/>';
-	
-	// Antragstext
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_aeantrag_text">Antragstext: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
-	$output .= '<textarea id="cvtx_aeantrag_text" name="cvtx_aeantrag_text" class="required" size="100%" cols="60" rows="10" />'.$cvtx_aeantrag_text.'</textarea><br/>';
-	$output .= '</div>';
+    $output  = '';
+    
+    // specify form
+    $output .= '<form id="create_aeantrag_form" class="cvtx_antrag_form" method="post" action="">';
+    
+    // Wp-nonce for security reasons
+    $output .= wp_nonce_field('cvtx_form_create_aeantrag','cvtx_form_create_aeantrag_submitted');
+    
+    // Antragszeile
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_aeantrag_zeile">Zeile: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
+    $output .= '<input type="text" id="cvtx_aeantrag_zeile" name="cvtx_aeantrag_zeile" class="required" value="'.$cvtx_aeantrag_zeile.'" size="4" /><br>';
+    $output .= '</div>';
+        
+    // Antragsteller
+    $output .= '<div class="form-group">';
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_aeantrag_steller">AntragstellerInnen: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
+    $output .= '<textarea id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" class="required" size="100%" cols="60" rows="5" />'.$cvtx_aeantrag_steller.'</textarea><br/>';
+    $output .= '</div>';
+    
+    // E-Mail-Adresse
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_aeantrag_email">E-Mail-Adresse: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
+    $output .= '<input type="text" id="cvtx_aeantrag_email" name="cvtx_aeantrag_email" class="required" value="'.$cvtx_aeantrag_email.'" size="80" /><br/>';
+    $output .= '</div>';
+    
+    // Telefonnummer
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_aeantrag_phone">Telefonnummer: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label> (wird nicht veröffentlicht)<br/>';
+    $output .= '<input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" class="required" value="'.$cvtx_aeantrag_phone.'" size="80" /><br/>';
+    $output .= '</div>';
+    $output .= '</div>';
+    
+    // Antrag
+    $output .= '<input type="hidden" id="cvtx_aeantrag_antrag" name="cvtx_aeantrag_antrag" value="'.$cvtx_aeantrag_antrag.'"/>';
+    
+    // Antragstext
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_aeantrag_text">Antragstext: <span class="form-required" title="Dieses Feld wird benötigt">*</span></label><br/>';
+    $output .= '<textarea id="cvtx_aeantrag_text" name="cvtx_aeantrag_text" class="required" size="100%" cols="60" rows="10" />'.$cvtx_aeantrag_text.'</textarea><br/>';
+    $output .= '</div>';
 
-	// Antragsgrund
-	$output .= '<div class="form-item">';
-	$output .= '<label for="cvtx_aeantrag_grund">Antragsbegründung:</label><br/>';
-	$output .= '<textarea id="cvtx_aeantrag_grund" name="cvtx_aeantrag_grund" size="100%" cols="60" rows="5" />'.$cvtx_aeantrag_grund.'</textarea><br/>';
-	$output .= '</div>';
+    // Antragsgrund
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_aeantrag_grund">Antragsbegründung:</label><br/>';
+    $output .= '<textarea id="cvtx_aeantrag_grund" name="cvtx_aeantrag_grund" size="100%" cols="60" rows="5" />'.$cvtx_aeantrag_grund.'</textarea><br/>';
+    $output .= '</div>';
 
-	// Check if reCaptcha is used
-	$recaptcha = get_option('cvtx_use_recaptcha');
-   	$publickey = get_option('cvtx_recaptcha_publickey');
-	
-	// embed reCaptcha
-	if($recaptcha && !empty($publickey)) {
-		require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
-		$output .= '<div class="form-item">';
-    	$output .= recaptcha_get_html($publickey);
-    	$output .= '</div>';
-	}
-	
-	// Submit-Button
-	$output .= '<div class="form-item">';
-	$output .= '<input type="submit" id="cvtx_aeantrag_submit" class="submit" value="Änderungsantrag erstellen">';
-	$output .= '</div>';
-	$output .= '</form>';
-	
-	return $output;
+    // Check if reCaptcha is used
+    $recaptcha = get_option('cvtx_use_recaptcha');
+       $publickey = get_option('cvtx_recaptcha_publickey');
+    
+    // embed reCaptcha
+    if($recaptcha && !empty($publickey)) {
+        require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
+        $output .= '<div class="form-item">';
+        $output .= recaptcha_get_html($publickey);
+        $output .= '</div>';
+    }
+    
+    // Submit-Button
+    $output .= '<div class="form-item">';
+    $output .= '<input type="submit" id="cvtx_aeantrag_submit" class="submit" value="Änderungsantrag erstellen">';
+    $output .= '</div>';
+    $output .= '</form>';
+    
+    return $output;
 }
 
 /**
  * Reader-Widget
  */
 class ReaderWidget extends WP_Widget {
-	/** constructor */
-	function __construct() {
-		parent::WP_Widget( /* Base ID */'ReaderWidget', /* Name */'Reader Widget', array( 'description' => 'Veröffentlichte Reader anzeigen' ) );
-	}
-
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
-		global $post;
-		$loop = new WP_Query(array('post_type' => 'cvtx_reader',
-                                   'nopaging'  => true,
-								   'order'     => 'ASC'));
-		if($loop->have_posts()){
-			extract( $args );
-			$title = apply_filters( 'widget_title', $instance['title'] );
-			echo $before_widget;
-			if ( $title )
-				echo $before_title . $title . $after_title;
-			if(isset($instance['description']))
-				echo $instance['description'].'<p/>';
-			echo '<ul>';
-			while($loop->have_posts()): $loop->the_post();
-				echo the_title('<li><a href="'.cvtx_get_file($post, 'pdf').'" title="PDF ansehen" class="extern">','</a></li>');
-			endwhile;
-			echo '</ul>';
-			echo $after_widget;
-		}
-	}
-
-	/** @see WP_Widget::update */
-	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['description'] = strip_tags($new_instance['description']);
-		return $instance;
-	}
-
-	/** @see WP_Widget::form */
-	function form( $instance ) {
-		if ( $instance ) {
-			$title = esc_attr( $instance[ 'title' ] );
-			if(isset($instance['description']))
-				$description = esc_attr( $instance[ 'description' ]);
-			else
-				$description = '';
-		}
-		else {
-			$title = __( 'New title', 'text_domain' );
-			$description = __('New Description', 'text_domain' );
-		}
-		?>
-		<p>
-		<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
-		</p>
-		<p>
-		<label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:'); ?></label>
-		<textarea class="widefat" id="<?php echo $this->get_field_id('description'); ?>" name="<?php echo $this->get_field_name('description'); ?>"><?php echo $description; ?></textarea>
-		</p>
-		<?php 
-	}
+    /** constructor */
+    function __construct() {
+        parent::WP_Widget('ReaderWidget', 'Reader-Übersicht', array('description' => 'Veröffentlichte Reader anzeigen'));
+    }
+    
+    /** @see WP_Widget::widget */
+    function widget($args, $instance) {
+        global $post;
+        $loop = new WP_Query(array('post_type' => 'cvtx_reader',
+                                   'order'     => 'ASC',
+                                   'nopaging'  => true));
+        if ($loop->have_posts()) {
+            extract($args);
+            $title = apply_filters('widget_title', $instance['title']);
+            echo $before_widget;
+            if ($title) {
+                echo $before_title.$title.$after_title;
+            }
+            if (isset($instance['description']))
+                echo $instance['description'].'<p/>';
+            echo '<ul>';
+            while ($loop->have_posts()) {
+                $loop->the_post();
+                echo the_title('<li><a href="'.cvtx_get_file($post, 'pdf').'" title="PDF ansehen" class="extern">', '</a></li>');
+            }
+            echo '</ul>';
+            echo $after_widget;
+        }
+    }
+    
+    /** @see WP_Widget::update */
+    function update($new_instance, $old_instance) {
+        $instance = $old_instance;
+        $instance['title'] = strip_tags($new_instance['title']);
+        $instance['description'] = strip_tags($new_instance['description']);
+        return $instance;
+    }
+    
+    /** @see WP_Widget::form */
+    function form($instance) {
+        if ($instance) {
+            $title = esc_attr($instance['title']);
+            if(isset($instance['description']))
+                $description = esc_attr($instance['description']);
+            else
+                $description = '';
+        } else {
+            $title = __('New title', 'text_domain');
+            $description = __('New Description', 'text_domain');
+        }
+        ?>
+        <p>
+        <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> 
+        <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+        </p>
+        <p>
+        <label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:'); ?></label>
+        <textarea class="widefat" id="<?php echo $this->get_field_id('description'); ?>" name="<?php echo $this->get_field_name('description'); ?>"><?php echo $description; ?></textarea>
+        </p>
+        <?php 
+    }
 
 } // class ReaderWidget
 
 // register Foo_Widget widget
-add_action( 'widgets_init', create_function( '', 'register_widget("ReaderWidget");' ) );
+add_action('widgets_init', create_function('', 'register_widget("ReaderWidget");'));
 
 
 /************************************************************************************
