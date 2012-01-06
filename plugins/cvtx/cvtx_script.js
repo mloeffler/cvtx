@@ -17,6 +17,12 @@ jQuery(document).ready(function($){
 		}
 	});
     
+    // hide preview button
+    if ($("#post_type").val() == "cvtx_reader" || $("#post_type").val() == "cvtx_top"
+     || $("#post_type").val() == "cvtx_antrag" || $("#post_type").val() == "cvtx_aeantrag") {
+        $("#preview-action").hide();
+    }
+    
     // edit top
     if ($("#post_type").val() == "cvtx_top") {
         cvtx_fields = Array({"key": "cvtx_top_ord", "empty": false, "unique": true},
@@ -92,13 +98,12 @@ jQuery(document).ready(function($){
                                  "compare" : "="});
             }
             // fetch info
-            $.post("http://"+window.location.hostname+"/wp-admin/admin-ajax.php", query,
-                   function (str) {
-                       for (var i = 0; i < cvtx_fields.length; i++) {
-                           if (cvtx_fields[i].key == meta_key) cvtx_fields[i].unique = (str == "+OK");
-                       }
-                       cvtx_toggle_buttons();
-                   });
+            $.post(ajaxurl, query, function (str) {
+                                       for (var i = 0; i < cvtx_fields.length; i++) {
+                                           if (cvtx_fields[i].key == meta_key) cvtx_fields[i].unique = (str == "+OK");
+                                       }
+                                       cvtx_toggle_buttons();
+                                   });
         }
         
         // update buttons
@@ -106,32 +111,15 @@ jQuery(document).ready(function($){
     }
     
     /**
-     * updates error messages and save/publish buttons
+     * show/hide save and publish buttons and errorbox
      */
     function cvtx_toggle_buttons() {
         empty = 0; notunique = 0;
         
-        // fetch status and show/hide errors
+        // fetch status
         for (var i = 0; i < cvtx_fields.length; i++) {
-            // field empty?
-            if (cvtx_fields[i].empty) {
-                empty++;
-                $("#empty_error_" + cvtx_fields[i].key).css("display", "block");
-            } else {
-                $("#empty_error_" + cvtx_fields[i].key).css("display", "none");
-            }
-            
-            // input unique?
-            if (!cvtx_fields[i].unique) {
-                notunique++;
-                $("#" + cvtx_fields[i].key + "_field").addClass("error");
-                $("#preview-action").hide();
-                $("#unique_error_" + cvtx_fields[i].key).css("display", "block");
-            } else {
-                $("#" + cvtx_fields[i].key + "_field").removeClass("error");
-                $("#preview-action").show();
-                $("#unique_error_" + cvtx_fields[i].key).css("display", "none");
-            }
+            if (cvtx_fields[i].empty)   empty++;
+            if (!cvtx_fields[i].unique) notunique++;
         }
         
         // update buttons
@@ -139,10 +127,34 @@ jQuery(document).ready(function($){
         $("#save").attr("disabled", notunique > 0);
         if (notunique > 0 || empty > 0) {
             $("#publish").attr("disabled", true);
+            cvtx_toggle_errorbox();
             $("#admin_message").fadeIn();
         } else {
             $("#publish").attr("disabled", false);
-            $("#admin_message").fadeOut();
+            $("#admin_message").fadeOut("normal", cvtx_toggle_errorbox);
+        }
+    }
+    
+    /**
+     * updates error messages
+     */
+    function cvtx_toggle_errorbox() {
+        for (var i = 0; i < cvtx_fields.length; i++) {
+            // field empty?
+            if (cvtx_fields[i].empty) {
+                $("#empty_error_" + cvtx_fields[i].key).css("display", "block");
+            } else {
+                $("#empty_error_" + cvtx_fields[i].key).css("display", "none");
+            }
+            
+            // input unique?
+            if (!cvtx_fields[i].unique) {
+                $("#" + cvtx_fields[i].key + "_field").addClass("error");
+                $("#unique_error_" + cvtx_fields[i].key).css("display", "block");
+            } else {
+                $("#" + cvtx_fields[i].key + "_field").removeClass("error");
+                $("#unique_error_" + cvtx_fields[i].key).css("display", "none");
+            }
         }
     }
 
