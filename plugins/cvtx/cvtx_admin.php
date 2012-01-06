@@ -929,12 +929,12 @@ function cvtx_conf() {
 
 
 /**
- * Add Cvtx-Script and Styles to Admin Pages...
+ * Add Cvtx-Script and Styles to Admin Pages
  */
-add_action('admin_enqueue_scripts','cvtx_admin_script');
+if (is_admin()) add_action('admin_enqueue_scripts', 'cvtx_admin_script');
 function cvtx_admin_script() {
-	wp_enqueue_style('cvtx_style', plugins_url('/cvtx_style.css', __FILE__));
-	wp_enqueue_script('cvtx_script', plugins_url('/cvtx_script.js', __FILE__));
+    wp_enqueue_style('cvtx_style', plugins_url('/cvtx_style.css', __FILE__));
+    wp_enqueue_script('cvtx_script', plugins_url('/cvtx_script.js', __FILE__));
 }
 
 
