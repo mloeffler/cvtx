@@ -15,23 +15,6 @@ Template Name: Antrags&uuml;bersicht
     <?php endwhile; endif; ?>
   
     <?php
-    // Reader-Query
-    $loop = new WP_Query(array('post_type' => 'cvtx_reader',
-                               'nopaging'  => true));
-    if ($loop->have_posts()): ?>
-      <h3>Reader</h3>
-      <ul id="reader">
-        <?php while ($loop->have_posts()): $loop->the_post(); ?>
-          <?php if ($file = cvtx_get_file($post, 'pdf')): ?>
-            <li class="reader"><a href="<?php print $file; ?>"><?php the_title(); ?></a></li>
-          <?php endif; ?>
-        <?php endwhile; ?>
-      </ul>
-    <?php else: ?>
-      Keine Reader angelegt.
-    <?php endif; ?>
-        
-    <?php
     // TOP-Query
     $loop = new WP_Query(array('post_type' => 'cvtx_top',
                                'orderby'   => 'meta_value',
