@@ -121,11 +121,12 @@ function cvtx_create_post_types() {
     // Änderungsanträge
     register_post_type('cvtx_aeantrag',
         array('labels'        => array(
-              'name'          => __('Ä-Anträge'),
-              'singular_name' => __('Ä-Antrag'),
+              'name'          => __('Änderungsanträge'),
+              'singular_name' => __('Änderungsantrag'),
               'add_new_item'  => __('Änderungsantrag erstellen'),
               'edit_item'     => __('Änderungsantrag bearbeiten'),
-              'view_item'     => __('Änderungsantrag ansehen')),
+              'view_item'     => __('Änderungsantrag ansehen'),
+              'menu_name'     => __('Ä-Anträge')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
@@ -595,17 +596,17 @@ function cvtx_create_pdf($post_id, $post = null) {
 
 
 // replaces filter "the title" in order to generate custom titles for post-types "top", "antrag" and "aeantrag"
-add_filter('the_title', 'cvtx_the_title', 1, 3);
-function cvtx_the_title($before='', $after='', $echo = true) {
+add_filter('the_title', 'cvtx_the_title', 1, 2);
+function cvtx_the_title($before='', $after='') {
     if(is_numeric($after)) $post = &get_post($after);
-            
+    
     if(isset($post)) {
-        $title = $post->post_title;
+        $title = (!empty($post->post_title) ? $post->post_title : __('(no title)'));
         
         if ($short = cvtx_get_short($post)) {
             // Antrag
             if($post->post_type == 'cvtx_antrag') {
-                $title = $short.' '.$post->post_title;
+                $title = $short.' '.$title;
             }
             // Änderungsantrag
             else if($post->post_type == 'cvtx_aeantrag') {
@@ -617,7 +618,7 @@ function cvtx_the_title($before='', $after='', $echo = true) {
             }
         }
         else {
-            return $before;
+            return (!empty($before) ? $before : __('(no title)'));
         }
     }    
     return $title;

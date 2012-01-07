@@ -108,7 +108,8 @@ function cvtx_reader_contents() {
         if ($open_antrag) { $output .= '</div>'; $open_antrag = false; }
         if ($open_top)    { $output .= '</div>'; $open_top    = false; }
     }
-    $output .= '</div>';
+    $output .= '</div> ';
+    $output .= '<span class="description">Grau hinterlegte Einträge sind bisher nicht freigeschaltet und werden deshalb nicht im Reader angezeigt.</span>';
     echo($output);
     
     // reset data

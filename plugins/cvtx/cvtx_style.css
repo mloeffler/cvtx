@@ -1,26 +1,30 @@
+select#cvtx_aeantrag_antrag_select, select#cvtx_antrag_top_select {
+    width: 100%;
+}
+
 #cvtx_options {
-	margin:0px;
-	padding:0px;
+    margin:0px;
+    padding:0px;
 }
 
 #cvtx_options li {
-	display: none;
+    display: none;
 }
 
 #cvtx_options li {
-	clear:both;
+    clear:both;
 }
 
 #cvtx_navi li {
-	float: left;
-	margin-right:1em;
-	padding:1em;
-	border: 1px solid #eee;
-	border-radius: 4px;
+    float: left;
+    margin-right:1em;
+    padding:1em;
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
 
 #cvtx_options .form-item {
-	margin:1em 0;
+    margin:1em 0;
 }
 
 #cvtx_options label {
@@ -32,11 +36,11 @@ p#admin_message, .cvtx_unique_error, .cvtx_empty_error {
 
 form#post .error {
     color: red;
-	border-color: red;
+    border-color: red;
 }
 
 p#admin_message {
-	margin-top: 0.8em;
+    margin-top: 0.8em;
     background: #fafafa;
     padding: 1em;
     border-radius: 4px;
@@ -46,7 +50,7 @@ p#admin_message {
 }
 
 div.cvtx_reader_toc_top {
-	margin: 2.5em 0em;
+    margin: 2.5em 0em;
 }
 
 div.cvtx_reader_toc_top label.cvtx_top {
@@ -54,15 +58,15 @@ div.cvtx_reader_toc_top label.cvtx_top {
 }
 
 div.cvtx_reader_toc_antrag {
-	margin: 1em;
+    margin: 1em;
 }
 
 div.cvtx_reader_toc_antrag label.cvtx_antrag {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 div label.cvtx_reader_unpublished {
-	color: grey;
+    color: grey;
 }
 
 div.cvtx_reader_toc_aeantrag {
@@ -70,28 +74,28 @@ div.cvtx_reader_toc_aeantrag {
 }
 
 ul.zeichen li {
-	list-style: disc;
+    list-style: disc;
 }
 
 ul.zeichen {
-	padding: 0 1em;
+    padding: 0 1em;
 }
 
 #cvtx_dashboard_widget .left {
-	border-top: 1px solid #ececec;
-	float: left;
-	width: 45%;
+    border-top: 1px solid #ececec;
+    float: left;
+    width: 45%;
 }
 
 #cvtx_dashboard_widget .right {
-	border-top: 1px solid #ececec;
-	float: right;
-	width: 45%;
+    border-top: 1px solid #ececec;
+    float: right;
+    width: 45%;
 }
 
 #cvtx_dashboard_widget .more {
-	border-top: 1px solid #ececec;
-	clear: both;
+    border-top: 1px solid #ececec;
+    clear: both;
 }
 
 #cvtx_dashboard_widget p.sub {
@@ -107,15 +111,15 @@ ul.zeichen {
 }
 
 #cvtx_dashboard_widget .pending {
-	color: red;
+    color: red;
 }
 
 #cvtx_dashboard_widget table {
-	margin-top:6px;
-	margin-bottom: 10px;
+    margin-top:6px;
+    margin-bottom: 10px;
 }
 
 #cvtx_dashboard_widget td.b a {
-	font-size: 18px;
-	font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;
+    font-size: 18px;
+    font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;
 }

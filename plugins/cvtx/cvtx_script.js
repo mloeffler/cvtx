@@ -6,7 +6,7 @@ jQuery(document).ready(function($){
         showTarget('cvtx_tool');
     }
     
-    // hide preview button
+    // hide preview button for post_types reader and top
     if ($("#post_type").val() == "cvtx_reader" || $("#post_type").val() == "cvtx_top") {
         $("#preview-action").hide();
     }
@@ -37,10 +37,12 @@ jQuery(document).ready(function($){
         $("#cvtx_aeantrag_zeile_field").keyup(function() { cvtx_validate("cvtx_aeantrag_zeile"); });
     }
     
+    // check all child-checkboxes
     $("#cvtx_reader_toc a.select_all").click(function() {
         $(this).parent().find(":checkbox").attr("checked", true);
     });
     
+    // uncheck all child-checkboxes
     $("#cvtx_reader_toc a.select_none").click(function() {
         $(this).parent().find(":checkbox").attr("checked", false);
     });
@@ -143,12 +145,13 @@ jQuery(document).ready(function($){
         // update buttons
         $("#save-post").attr("disabled", notunique > 0);
         $("#save").attr("disabled", notunique > 0);
-        $("#preview-action").attr("disabled", notunique > 0);
         if (notunique > 0 || empty > 0) {
+            $("#preview-action").hide();
             $("#publish").attr("disabled", true);
             cvtx_toggle_errorbox();
             $("#admin_message").fadeIn();
         } else {
+            $("#preview-action").show();
             $("#publish").attr("disabled", false);
             $("#admin_message").fadeOut("normal", cvtx_toggle_errorbox);
         }
