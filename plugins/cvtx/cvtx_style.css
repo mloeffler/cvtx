@@ -76,3 +76,46 @@ ul.zeichen li {
 ul.zeichen {
 	padding: 0 1em;
 }
+
+#cvtx_dashboard_widget .left {
+	border-top: 1px solid #ececec;
+	float: left;
+	width: 45%;
+}
+
+#cvtx_dashboard_widget .right {
+	border-top: 1px solid #ececec;
+	float: right;
+	width: 45%;
+}
+
+#cvtx_dashboard_widget .more {
+	border-top: 1px solid #ececec;
+	clear: both;
+}
+
+#cvtx_dashboard_widget p.sub {
+    color: #8F8F8F;
+    font-size: 14px;
+    padding: 5px 0px 15px;
+    position: absolute;
+    top: -22px;
+}
+
+#cvtx_dashboard_widget .inside {
+    padding-top: 20px;
+}
+
+#cvtx_dashboard_widget .pending {
+	color: red;
+}
+
+#cvtx_dashboard_widget table {
+	margin-top:6px;
+	margin-bottom: 10px;
+}
+
+#cvtx_dashboard_widget td.b a {
+	font-size: 18px;
+	font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;
+}

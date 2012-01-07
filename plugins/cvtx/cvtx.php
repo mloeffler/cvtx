@@ -1346,9 +1346,53 @@ class ReaderWidget extends WP_Widget {
 
 } // class ReaderWidget
 
-// register Foo_Widget widget
+// register ReaderWidget
 add_action('widgets_init', create_function('', 'register_widget("ReaderWidget");'));
 
+/*
+ * Cvtx dashboard widget
+ */
+function cvtx_dashboard_widget_function() {
+    // show tops
+    echo '<div class="table left">';
+    echo '<p class="sub">Inhalt</p>';
+    echo '<table><tbody>';
+    dashboard_widget_helper('publish');
+	echo '</tbody></table>';
+	echo '</div>';
+    echo '<div class="table right">';
+    echo '<p class="sub">Noch nicht freigeschaltet</p>';
+    echo '<table><tbody>';
+    dashboard_widget_helper('draft');
+	echo '</tbody></table>';
+	echo '</div>';
+	echo '<div class="more"><p><a href="plugins.php?page=cvtx-config">Konfiguration</a></p><p>Fragen? Hier gibt\'s <a href="http://cvtx.de">Antworten</a>!</p></div>';
+} 
+
+// Create the function use in the action hook
+function cvtx_add_dashboard_widgets() {
+	wp_add_dashboard_widget('cvtx_dashboard_widget', 'Kongressverwaltung', 'cvtx_dashboard_widget_function');	
+} 
+
+// Hook into the 'wp_dashboard_setup' action to register our other functions
+add_action('wp_dashboard_setup', 'cvtx_add_dashboard_widgets' );
+
+function dashboard_widget_helper($perm) {
+    global $cvtx_types;
+    foreach($cvtx_types as $type => $value) {
+    	$count = wp_count_posts($type)->$perm;
+    	switch($type) {
+    		case 'cvtx_top': if($count == 1) $name = "TOP"; else $name = "TOPs"; break;
+    		case 'cvtx_reader': $name = "Reader"; break;
+    		case 'cvtx_antrag': if($count == 1) $name = "Antrag"; else $name = "Antr&auml;ge"; break;
+    		case 'cvtx_aeantrag': if($count == 1) $name = "&Auml;nderungsantrag"; else $name = "&Auml;nderungsantr&auml;ge"; break;
+    		default: $name = "";
+    	}
+	    echo '<tr><td class="first b b-'.$type.'"><a href="edit.php?post_type='.$type.'">'.$count.'</a></td>';
+	    echo '<td class="t '.$type.'"><a href="edit.php?post_type='.$type.'"'.($perm=='draft' && $count > 0 ? 'class="pending"' : '').'>'.$name.'</a></td>';
+	    echo '</tr>';
+	}
+}
 
 /************************************************************************************
  * LaTeX Functions
