@@ -34,6 +34,8 @@ define('CVTX_VERSION', '0.1');
 define('CVTX_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 
 require_once('cvtx_admin.php');
+require_once('cvtx_latex.php');
+require_once('cvtx_widgets.php');
 
 
 // define post types
