@@ -241,10 +241,10 @@ function cvtx_trash_post($post_id) {
  */
 function cvtx_get_sort($post_type, $top=false, $antrag=false, $zeile=false, $vari=false) {
     $sorts           = array();
-    $sorts['top']    = ($top    !== false ? (intval($top)    ? sprintf('%1$05d', $top)    : 'ZZZZZ' ) : 'AAAAA' );
-    $sorts['antrag'] = ($antrag !== false ? (intval($antrag) ? sprintf('%1$05d', $antrag) : 'ZZZZZ' ) : 'AAAAA' );
-    $sorts['zeile']  = ($zeile  !== false ? (intval($zeile)  ? sprintf('%1$06d', $zeile)  : 'ZZZZZZ') : 'AAAAAA');
-    $sorts['vari']   = ($vari   !== false ? (intval($vari)   ? sprintf('%1$06d', $vari)   : 'ZZZZZZ') : 'AAAAAA');
+    $sorts['top']    = ($top    !== false ? (intval($top)    ? sprintf('%1$05d', intval($top))    : 'ZZZZZ' ) : 'AAAAA' );
+    $sorts['antrag'] = ($antrag !== false ? (intval($antrag) ? sprintf('%1$05d', intval($antrag)) : 'ZZZZZ' ) : 'AAAAA' );
+    $sorts['zeile']  = ($zeile  !== false ? (intval($zeile)  ? sprintf('%1$06d', intval($zeile))  : 'ZZZZZZ') : 'AAAAAA');
+    $sorts['vari']   = ($vari   !== false ? (intval($vari)   ? sprintf('%1$06d', intval($vari))   : 'ZZZZZZ') : 'AAAAAA');
 
     foreach ($sorts as $key => $value) {
         if (intval($value) > 0) {

@@ -481,3 +481,11 @@ p#message ul {
 form.cvtx_antrag_form .error {
 	border-color: red;
 }
+
+ul.reader_list li h4 {
+	margin:0em;
+}
+
+ul.reader_list li {
+	padding-top: 7px;
+}
