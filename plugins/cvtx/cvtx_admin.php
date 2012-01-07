@@ -292,6 +292,10 @@ function cvtx_metabox_reader() {
         }
     }
     
+    // reset data
+    wp_reset_postdata();
+    $post = $post_bak;
+    
     // any term+reader-combination?
     if (count($items) > 0) {
         echo($post->post_type == 'cvtx_antrag' ? 'Der Antrag erscheint in den folgenden Readern:'
@@ -305,10 +309,6 @@ function cvtx_metabox_reader() {
         echo($post->post_type == 'cvtx_antrag' ? 'Der Antrag ist bisher keinem Reader zugeordnet.'
                                                : 'Der Änderungsantrag ist bisher keinem Reader zugeordnet.');
     }
-    
-    // reset data
-    wp_reset_postdata();
-    $post = $post_bak;
 }
 
 
