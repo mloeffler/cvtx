@@ -123,3 +123,19 @@ ul.zeichen {
     font-size: 18px;
     font-family: Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;
 }
+
+#icon-edit.icon32-posts-cvtx_reader {
+	background: transparent url(images/cvtx_reader.png);
+}
+
+#icon-edit.icon32-posts-cvtx_top {
+	background: transparent url(images/cvtx_top.png);
+}
+
+#icon-edit.icon32-posts-cvtx_antrag {
+	background: transparent url(images/cvtx_antrag.png);
+}
+
+#icon-edit.icon32-posts-cvtx_aeantrag {
+	background: transparent url(images/cvtx_aeantrag.png);
+}

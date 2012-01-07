@@ -85,7 +85,7 @@ function cvtx_create_post_types() {
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
-        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_reader.png',
+        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_reader_small.png',
         'rewrite'     => array('slug' => 'reader'),
         'supports'    => array('title'),
         )
@@ -106,7 +106,7 @@ function cvtx_create_post_types() {
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
-        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_top.png',
+        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_top_small.png',
         'rewrite'     => array('slug' => 'top'),
         'supports'    => array('title'),
         )
@@ -127,7 +127,7 @@ function cvtx_create_post_types() {
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
-        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_antrag.png',
+        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_antrag_small.png',
         'rewrite'     => array('slug' => 'antrag'),
         'supports'    => array('title', 'editor'),
         )
@@ -149,7 +149,7 @@ function cvtx_create_post_types() {
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
-        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_aeantrag.png',
+        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_aeantrag_small.png',
         'rewrite'     => array('slug' => 'aeantrag'),
         'supports'    => array('editor'),
         )
