@@ -72,15 +72,20 @@ add_action('init', 'cvtx_create_post_types');
 function cvtx_create_post_types() {
     // Reader
     register_post_type('cvtx_reader',
-        array('labels'        => array(
-              'name'          => __('Reader'),
-              'singular_name' => __('Reader'),
-              'add_new_item'  => __('Reader erstellen'),
-              'edit_item'     => __('Reader bearbeiten'),
-              'view_item'     => __('Reader ansehen')),
+        array('labels'             => array(
+              'name'               => __('Reader'),
+              'singular_name'      => __('Reader'),
+              'add_new_item'       => __('Reader erstellen'),
+              'new_item'           => __('Neuer Reader'),
+              'edit_item'          => __('Reader bearbeiten'),
+              'view_item'          => __('Reader ansehen'),
+              'search_items'       => __('Reader suchen'),
+              'not_found'          => __('Keine Reader gefunden'),
+              'not_found_in_trash' => __('Keine Reader im Papierkorb gefunden')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
+        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_reader.png',
         'rewrite'     => array('slug' => 'reader'),
         'supports'    => array('title'),
         )
@@ -88,15 +93,20 @@ function cvtx_create_post_types() {
 
     // Tagesordnungspunkte
     register_post_type('cvtx_top',
-        array('labels'        => array(
-              'name'          => __('TOPs'),
-              'singular_name' => __('TOP'),
-              'add_new_item'  => __('TOP erstellen'),
-              'edit_item'     => __('TOP bearbeiten'),
-              'view_item'     => __('TOP ansehen')),
+        array('labels'             => array(
+              'name'               => __('TOPs'),
+              'singular_name'      => __('TOP'),
+              'add_new_item'       => __('TOP erstellen'),
+              'edit_item'          => __('TOP bearbeiten'),
+              'view_item'          => __('TOP ansehen'),
+              'new_item'           => __('Neuer TOP'),
+              'search_items'       => __('TOPs suchen'),
+              'not_found'          => __('Keine TOPs gefunden'),
+              'not_found_in_trash' => __('Keine TOPs im Papierkorb gefunden')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
+        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_top.png',
         'rewrite'     => array('slug' => 'top'),
         'supports'    => array('title'),
         )
@@ -104,15 +114,20 @@ function cvtx_create_post_types() {
 
     // Anträge
     register_post_type('cvtx_antrag',
-        array('labels'        => array(
-              'name'          => __('Anträge'),
-              'singular_name' => __('Antrag'),
-              'add_new_item'  => __('Antrag erstellen'),
-              'edit_item'     => __('Antrag bearbeiten'),
-              'view_item'     => __('Antrag ansehen')),
+        array('labels'             => array(
+              'name'               => __('Anträge'),
+              'singular_name'      => __('Antrag'),
+              'add_new_item'       => __('Antrag erstellen'),
+              'edit_item'          => __('Antrag bearbeiten'),
+              'view_item'          => __('Antrag ansehen'),
+              'new_item'           => __('Neuer Antrag'),
+              'search_items'       => __('Anträge suchen'),
+              'not_found'          => __('Keine Anträge gefunden'),
+              'not_found_in_trash' => __('Keine Anträge im Papierkorb gefunden')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
+        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_antrag.png',
         'rewrite'     => array('slug' => 'antrag'),
         'supports'    => array('title', 'editor'),
         )
@@ -120,16 +135,21 @@ function cvtx_create_post_types() {
 
     // Änderungsanträge
     register_post_type('cvtx_aeantrag',
-        array('labels'        => array(
-              'name'          => __('Änderungsanträge'),
-              'singular_name' => __('Änderungsantrag'),
-              'add_new_item'  => __('Änderungsantrag erstellen'),
-              'edit_item'     => __('Änderungsantrag bearbeiten'),
-              'view_item'     => __('Änderungsantrag ansehen'),
-              'menu_name'     => __('Ä-Anträge')),
+        array('labels'             => array(
+              'name'               => __('Änderungsanträge'),
+              'singular_name'      => __('Änderungsantrag'),
+              'add_new_item'       => __('Änderungsantrag erstellen'),
+              'edit_item'          => __('Änderungsantrag bearbeiten'),
+              'view_item'          => __('Änderungsantrag ansehen'),
+              'menu_name'          => __('Ä-Anträge'),
+              'new_item'           => __('Neuer Änderungsantrag'),
+              'search_items'       => __('Änderungsanträge suchen'),
+              'not_found'          => __('Keine Änderungsanträge gefunden'),
+              'not_found_in_trash' => __('Keine Änderungsanträge im Papierkorb gefunden')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
+        'menu_icon'   => plugin_dir_url( __FILE__ ).'images/cvtx_aeantrag.png',
         'rewrite'     => array('slug' => 'aeantrag'),
         'supports'    => array('editor'),
         )
