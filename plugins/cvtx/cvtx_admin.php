@@ -510,6 +510,7 @@ function cvtx_conf() {
         update_option('cvtx_recaptcha_privatekey', $_POST['cvtx_recaptcha_privatekey']);
         
         // mail settings
+        update_option('cvtx_send_html_mail', $_POST['cvtx_send_html_mail']);
         update_option('cvtx_send_from_email', stripslashes($_POST['cvtx_send_from_email']));
         update_option('cvtx_send_rcpt_email', stripslashes($_POST['cvtx_send_rcpt_email']));
         update_option('cvtx_send_create_antrag_owner', isset($_POST['cvtx_send_create_antrag_owner']) && $_POST['cvtx_send_create_antrag_owner']);
@@ -539,12 +540,13 @@ function cvtx_conf() {
     $drop_logfile      = get_option('cvtx_drop_logfile');
     $anon_user         = get_option('cvtx_anon_user');
     // mail settings
-    $send_from_email   = get_option('cvtx_send_from_email');
-    $send_rcpt_email   = get_option('cvtx_send_rcpt_email');
-    $sendantragowner   = get_option('cvtx_send_create_antrag_owner');
-    $sendantragadmin   = get_option('cvtx_send_create_antrag_admin');
-    $sendaeantragowner = get_option('cvtx_send_create_aeantrag_owner');
-    $sendaeantragadmin = get_option('cvtx_send_create_aeantrag_admin');
+    $send_from_email       = get_option('cvtx_send_from_email');
+    $cvtx_send_html_mail   = get_option('cvtx_send_html_mail');
+    $send_rcpt_email       = get_option('cvtx_send_rcpt_email');
+    $sendantragowner       = get_option('cvtx_send_create_antrag_owner');
+    $sendantragadmin       = get_option('cvtx_send_create_antrag_admin');
+    $sendaeantragowner     = get_option('cvtx_send_create_aeantrag_owner');
+    $sendaeantragadmin     = get_option('cvtx_send_create_aeantrag_admin');
     // mail design
     $sendantragowner_subject   = get_option('cvtx_send_create_antrag_owner_subject');
     $sendantragowner_body      = get_option('cvtx_send_create_antrag_owner_body');
@@ -672,6 +674,16 @@ function cvtx_conf() {
  	echo('<li id="cvtx_mail">');
 
 		echo('<table class="form-table">');
+			echo('<tr valign="top">');
+				echo('<th scope="row">');
+				    echo('<label for="cvtx_send_html_mail">HTML-Mail</label>');
+				echo('</th>');
+				echo('<td>');
+				    echo('<input id="cvtx_send_html_mail"
+				          name="cvtx_send_html_mail" type="checkbox" '.($cvtx_send_html_mail ? 'checked ="checked"' :'').'" /> ');
+				    echo('<span class="description">E-Mail als HTML-Mail versenden</span>');
+				echo('</td>');
+			echo('</tr>');
 			echo('<tr valign="top">');
 				echo('<th scope="row">');
 					echo('<label for="cvtx_send_from_email">Absender-Adresse</label>');

@@ -241,10 +241,10 @@ function cvtx_trash_post($post_id) {
  */
 function cvtx_get_sort($post_type, $top=false, $antrag=false, $zeile=false, $vari=false) {
     $sorts           = array();
-    $sorts['top']    = ($top    !== false ? (intval($top)    ? sprintf('%1$05d', intval($top))    : 'ZZZZZ' ) : 'AAAAA' );
-    $sorts['antrag'] = ($antrag !== false ? (intval($antrag) ? sprintf('%1$05d', intval($antrag)) : 'ZZZZZ' ) : 'AAAAA' );
-    $sorts['zeile']  = ($zeile  !== false ? (intval($zeile)  ? sprintf('%1$06d', intval($zeile))  : 'ZZZZZZ') : 'AAAAAA');
-    $sorts['vari']   = ($vari   !== false ? (intval($vari)   ? sprintf('%1$06d', intval($vari))   : 'ZZZZZZ') : 'AAAAAA');
+    $sorts['top']    = ($top    !== false ? (intval($top)    ? sprintf('%1$05d', $top)    : 'ZZZZZ' ) : 'AAAAA' );
+    $sorts['antrag'] = ($antrag !== false ? (intval($antrag) ? sprintf('%1$05d', $antrag) : 'ZZZZZ' ) : 'AAAAA' );
+    $sorts['zeile']  = ($zeile  !== false ? (intval($zeile)  ? sprintf('%1$06d', $zeile)  : 'ZZZZZZ') : 'AAAAAA');
+    $sorts['vari']   = ($vari   !== false ? (intval($vari)   ? sprintf('%1$06d', $vari)   : 'ZZZZZZ') : 'AAAAAA');
 
     foreach ($sorts as $key => $value) {
         if (intval($value) > 0) {
@@ -409,7 +409,7 @@ function cvtx_insert_post($post_id, $post = null) {
         if (is_admin()) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
-            $headers = 'From: '.get_option('cvtx_send_from_email')."\r\n";
+            $headers = array('From: '.get_option('cvtx_send_from_email')."\r\n", (get_option('cvtx_send_html_mail',true) == true ? 'Content-Type: text/html' : ''));
             
             // post type antrag created
             if ($post->post_type == 'cvtx_antrag') {
@@ -429,7 +429,20 @@ function cvtx_insert_post($post_id, $post = null) {
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
-                        $mails[$rcpt][$part] = strtr($content, $fields);
+                        if($part=='body' && get_option('cvtx_send_html_mail',true) == true) {
+                            $tpl = get_template_directory().'/mail.php';
+                            if(is_file($tpl)) {
+                                $content = nl2br(strtr($content, $fields));
+                                ob_start();
+                                require($tpl);
+                                $out = ob_get_contents();
+                                ob_end_clean();
+	                            $mails[$rcpt][$part] = $out;
+                            }
+                            else $mails[$rcpt][$part] = strtr($content, $fields);
+                        }
+                        else
+                            $mails[$rcpt][$part] = strtr($content, $fields);
                     }
                 }
                 
@@ -438,13 +451,13 @@ function cvtx_insert_post($post_id, $post = null) {
                     wp_mail($_POST['cvtx_antrag_email'],
                             $mails['owner']['subject'],
                             $mails['owner']['body'],
-                            $headers);
+                            implode("\r\n",$headers) . "\r\n");
                 }
                 if (get_option('cvtx_send_create_antrag_admin')) {
                     wp_mail(get_option('cvtx_send_rcpt_email'),
                             $mails['admin']['subject'],
                             $mails['admin']['body'],
-                            $headers);
+                            implode("\r\n",$headers));
                 }
             }
             // post type aeantrag created
