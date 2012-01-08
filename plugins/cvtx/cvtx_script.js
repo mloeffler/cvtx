@@ -6,8 +6,8 @@ jQuery(document).ready(function($){
         showTarget('cvtx_tool');
     }
     
-    // hide preview button for post_types reader and top
-    if ($("#post_type").val() == "cvtx_reader" || $("#post_type").val() == "cvtx_top") {
+    // hide preview button for post_type top
+    if ($("#post_type").val() == "cvtx_top") {
         $("#preview-action").hide();
     }
     

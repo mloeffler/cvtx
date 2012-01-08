@@ -1051,20 +1051,20 @@ function cvtx_mce_before_init($settings) {
     return $settings;
 }
 
-add_filter('add_menu_classes','show_pending_number');
+if (is_admin()) add_filter('add_menu_classes','show_pending_number');
 /**
  * Add a count of pending antrage/aeatraege in the admin-sidebar
  */
 function show_pending_number($menu) {
-    foreach($menu as $key => $sub) {
+    foreach ($menu as $key => $sub) {
         $type = false;
-        if(isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_antrag')
+        if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_antrag')
             $type = 'cvtx_antrag';
-        elseif(isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_aeantrag')
+        else if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_aeantrag')
             $type = 'cvtx_aeantrag';
-        if($type) {
+        if ($type) {
             $counter = wp_count_posts($type);
-            $count = $counter->pending + $counter->draft;
+            $count   = $counter->pending + $counter->draft;
             $menu[$key][0] .= '<span class="awaiting-mod count-'.$count.'"><span class="pending-count">'.$count.'</span></span>';
         }
     }

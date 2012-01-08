@@ -31,11 +31,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 define('CVTX_VERSION', '0.1');
+define('CVTX_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CVTX_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 
-require_once('cvtx_admin.php');
-require_once('cvtx_latex.php');
-require_once('cvtx_widgets.php');
+require_once(CVTX_PLUGIN_DIR.'/cvtx_admin.php');
+require_once(CVTX_PLUGIN_DIR.'/cvtx_latex.php');
+require_once(CVTX_PLUGIN_DIR.'/cvtx_widgets.php');
 
 
 // define post types
@@ -409,7 +410,8 @@ function cvtx_insert_post($post_id, $post = null) {
         if (is_admin()) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
-            $headers = array('From: '.get_option('cvtx_send_from_email')."\r\n", (get_option('cvtx_send_html_mail',true) == true ? 'Content-Type: text/html' : ''));
+            $headers = array('From: '.get_option('cvtx_send_from_email')."\r\n",
+                             (get_option('cvtx_send_html_mail', true) == true ? "Content-Type: text/html\r\n" : ''));
             
             // post type antrag created
             if ($post->post_type == 'cvtx_antrag') {
@@ -508,6 +510,9 @@ function cvtx_insert_post($post_id, $post = null) {
 
 /**
  * Erstellt ein PDF aus gespeicherten Anträgen
+ *
+ * @param int $post_id Post-ID
+ * @param object $post the post
  */
 function cvtx_create_pdf($post_id, $post = null) {
     $pdflatex = get_option('cvtx_pdflatex_cmd');
@@ -526,13 +531,17 @@ function cvtx_create_pdf($post_id, $post = null) {
                 $file .= $post->ID;
             }
             
-            // use special template for id=x if exists
+            // use special theme template for id=x if exists
             if (is_file($tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php')) {
                 $tpl = $tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php';
             }
-            // use default template
+            // use theme template
             else if(is_file($tpl_dir.'/single-cvtx_antrag.php')) {
                 $tpl = $tpl_dir.'/single-cvtx_antrag.php';
+            }
+            // use default template
+            else if(is_file(CVTX_PLUGIN_DIR.'/latex/single-cvtx_antrag.php')) {
+                $tpl = CVTX_PLUGIN_DIR.'/latex/single-cvtx_antrag.php';
             }
         }
         // prepare Ä-Antrag if pdf-option enabled
@@ -544,14 +553,18 @@ function cvtx_create_pdf($post_id, $post = null) {
             } else {
                 $file .= $post->ID;
             }
-            
-            // use special template for id=x if exists
+
+            // use special theme template for id=x if exists
             if (is_file($tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php')) {
                 $tpl = $tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php';
             }
-            // use default template
+            // use theme template
             else if(is_file($tpl_dir.'/single-cvtx_aeantrag.php')) {
                 $tpl = $tpl_dir.'/single-cvtx_aeantrag.php';
+            }
+            // use default template
+            else if(is_file(CVTX_PLUGIN_DIR.'/latex/single-cvtx_aeantrag.php')) {
+                $tpl = CVTX_PLUGIN_DIR.'/latex/single-cvtx_aeantrag.php';
             }
         }
         // prepare Reader
@@ -564,16 +577,20 @@ function cvtx_create_pdf($post_id, $post = null) {
                 $file .= $post->ID;
             }
             
-            // use special template for id=x if exists
+            // use special theme template for id=x if exists
             if (is_file($tpl_dir.'/single-cvtx_reader-'.$post_id.'.php')) {
                 $tpl = $tpl_dir.'/single-cvtx_reader-'.$post_id.'.php';
             }
-            // use default template
+            // use theme template
             else if(is_file($tpl_dir.'/single-cvtx_reader.php')) {
                 $tpl = $tpl_dir.'/single-cvtx_reader.php';
             }
+            // use default template
+            else if(is_file(CVTX_PLUGIN_DIR.'/latex/single-cvtx_reader.php')) {
+                $tpl = CVTX_PLUGIN_DIR.'/latex/single-cvtx_reader.php';
+            }
         }
-        
+
         // create pdf if template found
         if (isset($tpl) && !empty($tpl) && isset($file) && !empty($file)) {
             // drop old files by name/id and ending
