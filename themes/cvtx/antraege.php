@@ -54,7 +54,7 @@ Template Name: Antrags&uuml;bersicht
         </span>
         <ul class="options">
           <li><?php if ($file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
-          <li><a href="<?php the_permalink(); ?>&add_aeantrag=1#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
+          <li><a href="<?php the_permalink(); ?>#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
           <?php $antrag_id = $post->ID; ?>
           <?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
                                             'meta_key'   => 'cvtx_sort',
@@ -65,7 +65,7 @@ Template Name: Antrags&uuml;bersicht
                                                                         'value'   => $antrag_id,
                                                                         'compare' => '=')))); ?>
           <?php if($loop3->have_posts()): ?>
-            <li><a href="<?php the_permalink(); ?>&ae_antraege=1" rel="extern" class="ae_antraege_overview" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrags&uuml;bersicht</a></li>
+            <li><a href="<?php the_permalink(); ?>" rel="extern" class="ae_antraege_overview" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrags&uuml;bersicht</a></li>
           <?php endif;?>
         </ul><div id="result-<?php print $post->ID; ?>" class="ae_antraege_result"></div>
         <?php if($loop3->have_posts()): ?>
