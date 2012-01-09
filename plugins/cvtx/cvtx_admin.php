@@ -320,7 +320,7 @@ function cvtx_reader_columns($columns) {
                      'title'              => 'Reader',
                      'cvtx_reader_status' => '',
                      'date'               => __('Date'));
-	return $columns;
+    return $columns;
 }
 
 if (is_admin()) add_filter('manage_edit-cvtx_top_columns', 'cvtx_top_columns');
@@ -341,7 +341,7 @@ function cvtx_antrag_columns($columns) {
                      'cvtx_antrag_top'     => 'Tagesordnungspunkt',
                      'cvtx_antrag_status'  => '',
                      'date'                => __('Date'));
-	return $columns;
+    return $columns;
 }
 
 // Register the column as sortable
@@ -353,14 +353,14 @@ function cvtx_register_sortable_antrag($columns) {
 
 if (is_admin()) add_filter('manage_edit-cvtx_aeantrag_columns', 'cvtx_aeantrag_columns');
 function cvtx_aeantrag_columns($columns) {
-	$columns = array('cb'                      => '<input type="checkbox" />',
+    $columns = array('cb'                      => '<input type="checkbox" />',
                      'title'                   => 'Änderungsantrag',
                      'cvtx_aeantrag_steller'   => 'AntragstellerIn(nen)',
                      'cvtx_aeantrag_verfahren' => 'Verfahren',
                      'cvtx_aeantrag_antrag'    => 'Antrag',
                      'cvtx_aeantrag_status'    => '',
                      'date'                    => __('Date'));
-	return $columns;
+    return $columns;
 }
 
 // Register the column as sortable
@@ -480,156 +480,252 @@ function cvtx_conf() {
             die(__('Cheatin&#8217; uh?'));
         }
         
-        // Formatierung des Änderungsantagskürzels
-        if (empty($_POST['cvtx_aeantrag_format'])) {
+        // Formatierung des Antragskürzels
+        if (!isset($_POST['cvtx_antrag_format']) || empty($_POST['cvtx_antrag_format'])) {
+            update_option('cvtx_antrag_format', '%top%-%antrag%');
+        } else {
+            update_option('cvtx_antrag_format', $_POST['cvtx_antrag_format']);
+        }
+        
+        // Formatierung des Änderungsantragskürzels
+        if (!isset($_POST['cvtx_aeantrag_format']) || empty($_POST['cvtx_aeantrag_format'])) {
             update_option('cvtx_aeantrag_format', '%antrag%-%zeile%');
         } else {
             update_option('cvtx_aeantrag_format', $_POST['cvtx_aeantrag_format']);
         }
         
         // PDF-Versionen für Änderungsanträge erzeugen?
-        update_option('cvtx_aeantrag_pdf', isset($_POST['cvtx_aeantrag_pdf']) && $_POST['cvtx_aeantrag_pdf']);
+        $aeantrag_pdf = isset($_POST['cvtx_aeantrag_pdf']) && $_POST['cvtx_aeantrag_pdf'];
+        update_option('cvtx_aeantrag_pdf', $aeantrag_pdf);
         
         // LaTeX-Pfad
-        if (empty($_POST['cvtx_pdflatex_cmd'])) {
-            $ms[] = 'no_cvtx_pdflatex_cmd';
-        } else {
+        if (isset($_POST['cvtx_pdflatex_cmd'])) {
             update_option('cvtx_pdflatex_cmd', $_POST['cvtx_pdflatex_cmd']);
         }
         
+        // Pfad zu den LaTeX-Templates im Theme
+        if (isset($_POST['cvtx_latex_tpldir'])) {
+            update_option('cvtx_latex_tpldir', $_POST['cvtx_latex_tpldir']);
+        }
+        
         // remove tex and/or log files?
-        update_option('cvtx_drop_texfile', (isset($_POST['cvtx_drop_texfile']) ? intval($_POST['cvtx_drop_texfile']) : 2));
-        update_option('cvtx_drop_logfile', (isset($_POST['cvtx_drop_logfile']) ? intval($_POST['cvtx_drop_logfile']) : 2));
+        if (isset($_POST['cvtx_drop_texfile'])) {
+            update_option('cvtx_drop_texfile', intval($_POST['cvtx_drop_texfile']));
+        }
+        if (isset($_POST['cvtx_drop_logfile'])) {
+            update_option('cvtx_drop_logfile', intval($_POST['cvtx_drop_logfile']));
+        }
         
         // wordpress anonymous user
-        update_option('cvtx_anon_user', (isset($_POST['cvtx_anon_user']) ? $_POST['cvtx_anon_user'] : 1));
+        if (isset($_POST['cvtx_anon_user'])) {
+            update_option('cvtx_anon_user', intval($_POST['cvtx_anon_user']));
+        }
         
         // recpatcha settings
-        update_option('cvtx_use_recaptcha', isset($_POST['cvtx_use_recaptcha']) && $_POST['cvtx_use_recaptcha']);
-        update_option('cvtx_recaptcha_publickey', $_POST['cvtx_recaptcha_publickey']);
+        $use_recaptcha = isset($_POST['cvtx_use_recaptcha']) && $_POST['cvtx_use_recaptcha'];
+        update_option('cvtx_use_recaptcha',        $use_recaptcha);
+        update_option('cvtx_recaptcha_publickey',  $_POST['cvtx_recaptcha_publickey']);
         update_option('cvtx_recaptcha_privatekey', $_POST['cvtx_recaptcha_privatekey']);
         
         // mail settings
-        update_option('cvtx_send_html_mail', $_POST['cvtx_send_html_mail']);
-        update_option('cvtx_send_from_email', stripslashes($_POST['cvtx_send_from_email']));
-        update_option('cvtx_send_rcpt_email', stripslashes($_POST['cvtx_send_rcpt_email']));
-        update_option('cvtx_send_create_antrag_owner', isset($_POST['cvtx_send_create_antrag_owner']) && $_POST['cvtx_send_create_antrag_owner']);
-        update_option('cvtx_send_create_antrag_admin', isset($_POST['cvtx_send_create_antrag_admin']) && $_POST['cvtx_send_create_antrag_admin']);
-        update_option('cvtx_send_create_aeantrag_owner', isset($_POST['cvtx_send_create_aeantrag_owner']) && $_POST['cvtx_send_create_aeantrag_owner']);
-        update_option('cvtx_send_create_aeantrag_admin', isset($_POST['cvtx_send_create_aeantrag_admin']) && $_POST['cvtx_send_create_aeantrag_admin']);
+        $send_html_mail             = isset($_POST['cvtx_send_html_mail'])
+                                         && $_POST['cvtx_send_html_mail'];
+        $send_create_antrag_owner   = isset($_POST['cvtx_send_create_antrag_owner'])
+                                         && $_POST['cvtx_send_create_antrag_owner'];
+        $send_create_antrag_admin   = isset($_POST['cvtx_send_create_antrag_admin'])
+                                         && $_POST['cvtx_send_create_antrag_admin'];
+        $send_create_aeantrag_owner = isset($_POST['cvtx_send_create_aeantrag_owner'])
+                                         && $_POST['cvtx_send_create_aeantrag_owner'];
+        $send_create_aeantrag_admin = isset($_POST['cvtx_send_create_aeantrag_admin'])
+                                         && $_POST['cvtx_send_create_aeantrag_admin'];
+        update_option('cvtx_send_html_mail',             $send_html_mail);
+        update_option('cvtx_send_from_email',            stripslashes($_POST['cvtx_send_from_email']));
+        update_option('cvtx_send_rcpt_email',            stripslashes($_POST['cvtx_send_rcpt_email']));
+        update_option('cvtx_send_create_antrag_owner',   $send_create_antrag_owner);
+        update_option('cvtx_send_create_antrag_admin',   $send_create_antrag_admin);
+        update_option('cvtx_send_create_aeantrag_owner', $send_create_aeantrag_owner);
+        update_option('cvtx_send_create_aeantrag_admin', $send_create_aeantrag_admin);
         update_option('cvtx_send_create_antrag_owner_subject', $_POST['cvtx_send_create_antrag_owner_subject']);
-        update_option('cvtx_send_create_antrag_owner_body', $_POST['cvtx_send_create_antrag_owner_body']);
+        update_option('cvtx_send_create_antrag_owner_body',    $_POST['cvtx_send_create_antrag_owner_body']);
         update_option('cvtx_send_create_antrag_admin_subject', $_POST['cvtx_send_create_antrag_admin_subject']);
-        update_option('cvtx_send_create_antrag_admin_body', $_POST['cvtx_send_create_antrag_admin_body']);
+        update_option('cvtx_send_create_antrag_admin_body',    $_POST['cvtx_send_create_antrag_admin_body']);
         update_option('cvtx_send_create_aeantrag_owner_subject', $_POST['cvtx_send_create_aeantrag_owner_subject']);
-        update_option('cvtx_send_create_aeantrag_owner_body', $_POST['cvtx_send_create_aeantrag_owner_body']);
+        update_option('cvtx_send_create_aeantrag_owner_body',    $_POST['cvtx_send_create_aeantrag_owner_body']);
         update_option('cvtx_send_create_aeantrag_admin_subject', $_POST['cvtx_send_create_aeantrag_admin_subject']);
-        update_option('cvtx_send_create_aeantrag_admin_body', $_POST['cvtx_send_create_aeantrag_admin_body']);
+        update_option('cvtx_send_create_aeantrag_admin_body',    $_POST['cvtx_send_create_aeantrag_admin_body']);
         
         // default reader settings
-        update_option('cvtx_default_reader_antrag', implode(', ', $_POST['cvtx_default_reader_antrag']));
-        update_option('cvtx_default_reader_aeantrag', implode(', ', $_POST['cvtx_default_reader_aeantrag']));
+        if (isset($_POST['cvtx_default_reader_antrag']) && is_array($_POST['cvtx_default_reader_antrag'])) {
+            update_option('cvtx_default_reader_antrag', implode(', ', $_POST['cvtx_default_reader_antrag']));
+        }
+        if (isset($_POST['cvtx_default_reader_aeantrag']) && is_array($_POST['cvtx_default_reader_aeantrag'])) {
+            update_option('cvtx_default_reader_aeantrag', implode(', ', $_POST['cvtx_default_reader_aeantrag']));
+        }
     }
+
+
+    /* get settings */
+    
+    // cvtx settings
+    $antrag_format           = get_option('cvtx_antrag_format');
+    if (!$antrag_format)       $antrag_format   = '%top%-%antrag%';
+    $aeantrag_format         = get_option('cvtx_aeantrag_format');
+    if (!$aeantrag_format)     $aeantrag_format = '%antrag%-%zeile%';
+    $aeantrag_pdf            = get_option('cvtx_aeantrag_pdf');
+    $anon_user               = get_option('cvtx_anon_user');
+    if (!$anon_user)           $anon_user = 1;
+    $default_reader_antrag   = get_option('cvtx_default_reader_antrag');
+    $default_reader_aeantrag = get_option('cvtx_default_reader_aeantrag');
+    $reader = cvtx_get_reader();
+
+    // mail settings
+    $cvtx_send_html_mail = get_option('cvtx_send_html_mail');
+    $send_from_email     = get_option('cvtx_send_from_email');
+    if (!$send_from_email) $send_from_email = get_bloginfo('admin_email');
+    $send_from_email     = stripslashes(htmlspecialchars($send_from_email));
+    $send_rcpt_email     = get_option('cvtx_send_rcpt_email');
+    if (!$send_rcpt_email) $send_rcpt_email = get_bloginfo('admin_email');
+    $send_rcpt_email     = stripslashes(htmlspecialchars($send_rcpt_email));
+    $sendantragowner     = get_option('cvtx_send_create_antrag_owner');
+    $sendantragadmin     = get_option('cvtx_send_create_antrag_admin');
+    $sendaeantragowner   = get_option('cvtx_send_create_aeantrag_owner');
+    $sendaeantragadmin   = get_option('cvtx_send_create_aeantrag_admin');
+    // mail design
+    $sendantragowner_subject       = get_option('cvtx_send_create_antrag_owner_subject');
+    if (!$sendantragowner_subject)   $sendantragowner_subject   = 'Antrag eingereicht „%titel%“';
+    $sendantragowner_body          = get_option('cvtx_send_create_antrag_owner_body');
+    if (!$sendantragowner_body)      $sendantragowner_body      = "Hej,\n\n"
+                                                                 ."dein Antrag „%titel%“ zum %top% wurde erfolgreich eingereicht. "
+                                                                 ."Bevor er auf der Website zu sehen sein wird, muss er "
+                                                                 ."erst noch eine Antragsnummer bekommen und dann "
+                                                                 ."freigeschaltet werden.\n\n"
+                                                                 ."Zur Bestätigung hier nochmal deine Angaben:\n\n"
+                                                                 ."%top%\n\n"
+                                                                 ."%titel%\n\n"
+                                                                 ."%antragstext%\n\n"
+                                                                 ."Begründung:\n%begruendung%\n\n"
+                                                                 ."AntragstellerInnen:\n%antragsteller%\n";
+    $sendantragadmin_subject       = get_option('cvtx_send_create_antrag_admin_subject');
+    if (!$sendantragadmin_subject)   $sendantragadmin_subject   = 'Neuer Antrag eingereicht (%titel%)';
+    $sendantragadmin_body          = get_option('cvtx_send_create_antrag_admin_body');
+    if (!$sendantragadmin_body)      $sendantragadmin_body      = "Hej,\n\n"
+                                                                 ."es wurde ein neuer Antrag zu %top% eingereicht. "
+                                                                 ."Bitte prüfen und veröffentlichen!\n\n"
+                                                                 .home_url('/wp-admin')."\n\n"
+                                                                 ."%top%\n\n"
+                                                                 ."%titel%\n\n"
+                                                                 ."%antragstext%\n\n"
+                                                                 ."Begründung:\n%begruendung%\n\n"
+                                                                 ."AntragstellerInnen:\n%antragsteller%\n";
+    $sendaeantragowner_subject     = get_option('cvtx_send_create_aeantrag_owner_subject');
+    if (!$sendaeantragowner_subject) $sendaeantragowner_subject = 'Änderungsantrag zu %antrag_kuerzel% (Zeile %zeile%) eingereicht';
+    $sendaeantragowner_body        = get_option('cvtx_send_create_aeantrag_owner_body');
+    if (!$sendaeantragowner_body)    $sendaeantragowner_body    = "Hej,\n\n"
+                                                                 ."dein Änderungsantrag zum Antrag %antrag% wurde erfolgreich eingereicht. "
+                                                                 ."Bevor er auf der Website zu sehen sein wird, muss er "
+                                                                 ."erst noch eine Antragsnummer bekommen und dann "
+                                                                 ."freigeschaltet werden.\n\n"
+                                                                 ."Zur Bestätigung hier nochmal deine Angaben:\n\n"
+                                                                 ."Antrag:\n%antrag%\n\n"
+                                                                 ."Zeile:\n%zeile%\n\n"
+                                                                 ."%antragstext%\n\n"
+                                                                 ."Begründung:\n%begruendung%\n\n"
+                                                                 ."AntragstellerInnen:\n%antragsteller%\n";
+    $sendaeantragadmin_subject     = get_option('cvtx_send_create_aeantrag_admin_subject');
+    if (!$sendaeantragadmin_subject) $sendaeantragadmin_subject = 'Neuer Änderungsantrag zu %antrag_kuerzel% (Zeile %zeile%) erstellt';
+    $sendaeantragadmin_body        = get_option('cvtx_send_create_aeantrag_admin_body');
+    if (!$sendaeantragadmin_body)    $sendaeantragadmin_body    = "Hej,\n\n"
+                                                                 ."es wurde ein neuer Änderungsantrag zum Antrag %antrag% eingereicht. "
+                                                                 ."Bitte prüfen und veröffentlichen!\n\n"
+                                                                 .home_url('/wp-admin')."\n\n"
+                                                                 ."Antrag:\n%antrag%\n\n"
+                                                                 ."Zeile:\n%zeile%\n\n"
+                                                                 ."%antragstext%\n\n"
+                                                                 ."Begründung:\n%begruendung%\n\n"
+                                                                 ."AntragstellerInnen:\n%antragsteller%\n";
+    
+    // reCaptcha settings
+    $use_recpatcha        = get_option('cvtx_use_recaptcha');
+    $recaptcha_publickey  = get_option('cvtx_recaptcha_publickey');
+    $recaptcha_privatekey = get_option('cvtx_recaptcha_privatekey');
+    
+    // latex settings
+    $pdflatex_cmd     = get_option('cvtx_pdflatex_cmd');
+    $drop_texfile     = get_option('cvtx_drop_texfile');
+    if (!$drop_texfile) $drop_texfile = 2;
+    $drop_logfile     = get_option('cvtx_drop_logfile');
+    if (!$drop_logfile) $drop_logfile = 2;
+    $latex_tpldir     = get_option('cvtx_latex_tpldir');
 
 
     // print config page
-    $aentrag_format    = get_option('cvtx_aeantrag_format');
-    $aentrag_pdf       = get_option('cvtx_aeantrag_pdf');
-    $pdflatex_cmd      = get_option('cvtx_pdflatex_cmd');
-    $drop_texfile      = get_option('cvtx_drop_texfile');
-    $drop_logfile      = get_option('cvtx_drop_logfile');
-    $anon_user         = get_option('cvtx_anon_user');
-    // mail settings
-    $send_from_email       = get_option('cvtx_send_from_email');
-    $cvtx_send_html_mail   = get_option('cvtx_send_html_mail');
-    $send_rcpt_email       = get_option('cvtx_send_rcpt_email');
-    $sendantragowner       = get_option('cvtx_send_create_antrag_owner');
-    $sendantragadmin       = get_option('cvtx_send_create_antrag_admin');
-    $sendaeantragowner     = get_option('cvtx_send_create_aeantrag_owner');
-    $sendaeantragadmin     = get_option('cvtx_send_create_aeantrag_admin');
-    // mail design
-    $sendantragowner_subject   = get_option('cvtx_send_create_antrag_owner_subject');
-    $sendantragowner_body      = get_option('cvtx_send_create_antrag_owner_body');
-    $sendantragadmin_subject   = get_option('cvtx_send_create_antrag_admin_subject');
-    $sendantragadmin_body      = get_option('cvtx_send_create_antrag_admin_body');
-    $sendaeantragowner_subject = get_option('cvtx_send_create_aeantrag_owner_subject');
-    $sendaeantragowner_body    = get_option('cvtx_send_create_aeantrag_owner_body');
-    $sendaeantragadmin_subject = get_option('cvtx_send_create_aeantrag_admin_subject');
-    $sendaeantragadmin_body    = get_option('cvtx_send_create_aeantrag_admin_body');
-	// reCaptcha settings
-	$use_recpatcha 			= get_option('cvtx_use_recaptcha');
-	$recaptcha_publickey 	= get_option('cvtx_recaptcha_publickey');
-	$recaptcha_privatekey   = get_option('cvtx_recaptcha_privatekey');
-	// default reader settings
-	$default_reader_antrag   = get_option('cvtx_default_reader_antrag');
-	$default_reader_aeantrag = get_option('cvtx_default_reader_aeantrag');
-
-    if (isset($ms) && count($ms) > 0) {
-        echo('<ul>');
-        foreach ($ms as $msg) {
-            if ($msg == 'no_cvtx_pdflatex_cmd') {
-                echo('<li>Kein Pfad angegeben. LaTeX kann so nicht funktionieren, Mensch.</li>');
-            }
-        }
-        echo('</ul>');    
-    }
-
     echo('<div class="wrap">');
     echo('<div id="icon-options-general" class="icon32"><br /></div>');
     echo('<h2>cvtx Konfiguration</h2>');
 
     echo('<h2 class="nav-tab-wrapper" id="cvtx_navi">');
-    	echo('<a class="nav-tab cvtx_tool" href="#cvtx_tool">Antragstool</a>');
-    	echo('<a class="nav-tab cvtx_mail" href="#cvtx_mail">Benachrichtigungen</a>');
-    	echo('<a class="nav-tab cvtx_recaptcha" href="#cvtx_recaptcha">Spam-Schutz</a>');
-    	echo('<a class="nav-tab cvtx_latex" href="#cvtx_latex">LaTeX</a>');
+        echo('<a class="nav-tab cvtx_tool" href="#cvtx_tool">Antragstool</a>');
+        echo('<a class="nav-tab cvtx_mail" href="#cvtx_mail">Benachrichtigungen</a>');
+        echo('<a class="nav-tab cvtx_recaptcha" href="#cvtx_recaptcha">Spam-Schutz</a>');
+        echo('<a class="nav-tab cvtx_latex" href="#cvtx_latex">LaTeX</a>');
     echo('</h2>');
     
     echo('<form action="" method="post" id="cvtx-conf">');
 
-	echo('<ul id="cvtx_options">');
-	echo('<li id="cvtx_tool" class="active">'); 
-    	
-    	echo('<table class="form-table">');
-			echo('<tr valign="top">');
-    			echo('<th scope="row">');
-		    		echo('<label for="cvtx_aeantrag_format">Kurzbezeichnung für Änderungsanträge</label>');
-		    	echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_aeantrag_format" name="cvtx_aeantrag_format" type="text" value="'.($aentrag_format ? $aentrag_format : '%antrag%-%zeile%').'" /> ');
-			    	echo('<span class="description">(%antrag%, %zeile%)</span>');
-			    echo('</td>');
-    		echo('</tr>');
+    echo('<ul id="cvtx_options">');
+    echo('<li id="cvtx_tool" class="active">'); 
+        
+        echo('<table class="form-table">');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_antrag_format">Kurzbezeichnung für Anträge</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_antrag_format" name="cvtx_antrag_format" type="text" value="'.$antrag_format.'" /> ');
+                    echo('<span class="description">(%top%, %antrag%)</span>');
+                echo('</td>');
+            echo('</tr>');
 
-			echo('<tr valign="top">');
-    			echo('<th scope="row">');
-    				echo('<label for="cvtx_aeantrag_pdf">PDF-Erstellung</label>');
-    			echo('</th>');
-    			echo('<td>');
-			    	echo('<input id="cvtx_aeantrag_pdf" name="cvtx_aeantrag_pdf" type="checkbox" '.($aentrag_pdf ? 'checked="checked"' : '').'" /> ');
-    				echo('<label for="cvtx_aeantrag_pdf">PDF-Versionen für Änderungsanträge erzeugen</label>');
-    			echo('</td>');
-    		echo('</tr>');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_aeantrag_format">Kurzbezeichnung für Änderungsanträge</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_aeantrag_format" name="cvtx_aeantrag_format" type="text" value="'.$aeantrag_format.'" /> ');
+                    echo('<span class="description">(%antrag%, %zeile%)</span>');
+                echo('</td>');
+            echo('</tr>');
 
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_anon_user">Anonymous Nutzer</label>');
-				echo('</th>');
-				echo('<td>');
-				    echo('<select name="cvtx_anon_user" id="cvtx_anon_user">');
-				    foreach (get_users() as $user) {
-	        			echo('<option'.($user->ID == $anon_user ? ' selected="selected" ' : '').' value="'.$user->ID.'">'.$user->user_login.'</option>');
-	    			}
-		    		echo('</select>');
-		    		echo(' <span class="description">Wordpress-Nutzer, dem alle anonym eingetragenen Anträge und Änderungsanträge zugeordnet werden.</span>');
-    			echo('</td>');
-    		echo('</tr>');
-    	echo('</table>');
-			
-		echo('<h4>Readerzuordnung</h4>');
-        $reader = cvtx_get_reader();
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_aeantrag_pdf">PDF-Erstellung</label>');
+                echo('</th>');
+                echo('<td>');
+                echo('<input id="cvtx_aeantrag_pdf" name="cvtx_aeantrag_pdf" type="checkbox" '
+                          .($aeantrag_pdf ? 'checked="checked"' : '').'" /> ');
+                    echo('<label for="cvtx_aeantrag_pdf">PDF-Versionen für Änderungsanträge erzeugen</label>');
+                echo('</td>');
+            echo('</tr>');
 
-        echo('<table class="form-table">');	
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_anon_user">Anonymous Nutzer</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<select name="cvtx_anon_user" id="cvtx_anon_user">');
+                    foreach (get_users() as $user) {
+                        echo('<option'.($user->ID == $anon_user ? ' selected="selected" ' : '')
+                             .' value="'.$user->ID.'">'.$user->user_login.'</option>');
+                    }
+                    echo('</select>');
+                    echo(' <span class="description">Wordpress-Nutzer, dem alle anonym eingetragenen Anträge und Änderungsanträge zugeordnet werden.</span>');
+                echo('</td>');
+            echo('</tr>');
+        echo('</table>');
+            
+        echo('<h4>Readerzuordnung</h4>');
+        
+        echo('<table class="form-table">');    
             echo('<tr valign="top">');
                 echo('<th scope="row">');
                     echo('<label for="cvtx_default_reader_antrag">Neue Anträge den folgenden Readern zuordnen</label>');
@@ -668,298 +764,282 @@ function cvtx_conf() {
                 echo('</td>');
             echo('</tr>');
         echo('</table>');
-    	
-	echo('</li>');
- 
- 	echo('<li id="cvtx_mail">');
-
-		echo('<table class="form-table">');
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-				    echo('<label for="cvtx_send_html_mail">HTML-Mail</label>');
-				echo('</th>');
-				echo('<td>');
-				    echo('<input id="cvtx_send_html_mail"
-				          name="cvtx_send_html_mail" type="checkbox" '.($cvtx_send_html_mail ? 'checked ="checked"' :'').'" /> ');
-				    echo('<span class="description">E-Mail als HTML-Mail versenden</span>');
-				echo('</td>');
-			echo('</tr>');
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_from_email">Absender-Adresse</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_send_from_email" name="cvtx_send_from_email" type="text" value="'.stripslashes(htmlspecialchars($send_from_email ? $send_from_email : get_bloginfo('admin_email'))).'" />');
-			    	echo(' <span class="description">E-Mail-Adresse, die als Absender für Benachrichtigungen verwendet werden soll</span>');
-			    echo('</td>');
-			echo('</tr>');
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_rcpt_email">E-Mail-Adresse</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_send_rcpt_email" name="cvtx_send_rcpt_email" type="text" value="'.stripslashes(htmlspecialchars($send_rcpt_email ? $send_rcpt_email : get_bloginfo('admin_email'))).'" />');
-			    	echo(' <span class="description">E-Mail-Adresse, an welche Benachrichtigungen über neu erstellte Anträge gesendet werden</span>');
-			    echo('</td>');
-			echo('</tr>');
-		echo('</table>');
-			
-		echo('<h4>Neuer Antrag erstellt</h4>');
-    	echo('<span class="description">Mögliche Felder: %top%, %top_kuerzel%, %titel%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.</span>');
-    	
-    	echo('<table class="form-table">');	
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_antrag_owner">E-Mail-Bestätigung</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_send_create_antrag_owner" name="cvtx_send_create_antrag_owner" type="checkbox" '.($sendantragowner ? 'checked="checked"' : '').'" /> ');
-    				echo('<span class="description">Dem Antragsteller wird eine E-Mail zur Bestätigung geschickt</label>');
-    			echo('</td>');
-    		echo('</tr>');
-    		
-    		echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_antrag_owner_subject">Betreff</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_send_create_antrag_owner_subject" name="cvtx_send_create_antrag_owner_subject" size="58" type="text" value="'
-			             .($sendantragowner_subject ? $sendantragowner_subject : 'Antrag eingereicht „%titel%“')
-         				 .'" />');
-				echo('</td>');
-			echo('</tr>');
-			
-			echo('<tr valign=top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_antrag_owner_body">Nachricht</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<textarea cols="60" rows="10" id="cvtx_send_create_antrag_owner_body" name="cvtx_send_create_antrag_owner_body">'
-						.($sendantragowner_body ? $sendantragowner_body : "Hej,\n\n"
-                                                                         ."dein Antrag „%titel%“ zum %top% wurde erfolgreich eingereicht. "
-                                                                         ."Bevor er auf der Website zu sehen sein wird, muss er "
-                                                                         ."erst noch eine Antragsnummer bekommen und dann "
-                                                                         ."freigeschaltet werden.\n\n"
-                                                                         ."Zur Bestätigung hier nochmal deine Angaben:\n\n"
-                                                                         ."%top%\n\n"
-                                                                         ."%titel%\n\n"
-                                                                         ."%antragstext%\n\n"
-                                                                         ."Begründung:\n%begruendung%\n\n"
-                                                                         ."AntragstellerInnen:\n%antragsteller%\n")
-         				.'</textarea>');
-         		echo('</td>');
-			echo('</tr>');
-			
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_antrag_admin">Admin-Information</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_send_create_antrag_admin" name="cvtx_send_create_antrag_admin" type="checkbox" '.($sendantragadmin ? 'checked="checked"' : '').'" /> ');
-    				echo('<label for="cvtx_send_create_antrag_admin">Administrator eine E-Mail zur Information schicken</label>');
-    			echo('</td>');
-    		echo('</tr>');
-    		
-    		echo('<tr valign="top">');
-    			echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_antrag_admin_subject">Betreff</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_send_create_antrag_admin_subject" name="cvtx_send_create_antrag_admin_subject" size="58" type="text" value="'
-    	    			 .($sendantragadmin_subject ? $sendantragadmin_subject : 'Neuer Antrag eingereicht (%titel%)')
-        	 			 .'" />');
-        	 	echo('</td>');
-        	 echo('</tr>');
- 	       	 
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_antrag_admin_body">Nachricht</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<textarea cols="60" rows="10" id="cvtx_send_create_antrag_admin_body" name="cvtx_send_create_antrag_admin_body">'
-        	 			.($sendantragadmin_body ? $sendantragadmin_body : "Hej,\n\n"
-                                                                         ."es wurde ein neuer Antrag zu %top% eingereicht. Bitte prüfen und veröffentlichen!\n\n"
-                                                                         .home_url('/wp-admin')."\n\n"
-                                                                         ."%top%\n\n"
-                                                                         ."%titel%\n\n"
-                                                                         ."%antragstext%\n\n"
-                                                                         ."Begründung:\n%begruendung%\n\n"
-                                                                         ."AntragstellerInnen:\n%antragsteller%\n")
-         				 .'</textarea>');
-         		echo('</td>');
-         	echo('</tr>');
-		echo('</table>');
-         	
-	    echo('<h4>Neuer Änderungsantrag erstellt</h4>');
-    	echo('<span class="description">Mögliche Felder: %top%, %top_kuerzel%, %antrag%, %antrag_kuerzel%, %zeile%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.</span>');
-	    	
-	    echo('<table class="form-table">');
-        	echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_aeantrag_owner">Antragsteller-Mail</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_send_create_aeantrag_owner" name="cvtx_send_create_aeantrag_owner" type="checkbox" '.($sendaeantragowner ? 'checked="checked"' : '').'" /> ');
-    				echo('<label for="cvtx_send_create_aeantrag_owner">Antragsteller eine E-Mail zur Bestätigung schicken</label>');
-    			echo('</td>');
-    		echo('</tr>');
-    	
-    		echo('<tr valign="top">');
-    			echo('<th scope="row">');
-    				echo('<label for="cvtx_send_create_aeantrag_owner_subject">Betreff</label>');
-    			echo('</th>');
-    			echo('<td>');
-			    	echo('<input id="cvtx_send_create_aeantrag_owner_subject" name="cvtx_send_create_aeantrag_owner_subject" size="58" type="text" value="'
-    	     			 .($sendaeantragowner_subject ? $sendaeantragowner_subject : 'Änderungsantrag zu %antrag_kuerzel% (Zeile %zeile%) eingereicht')
-    	     			 .'" />');
-    	    	echo('</td>');
-    	    echo('</tr>');
-    	     
-    	    echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_aeantrag_owner_body">Nachricht</label>');
-				echo('</th>');
-				echo('<td>');
-				echo('<textarea cols="60" rows="10" id="cvtx_send_create_aeantrag_owner_body" name="cvtx_send_create_aeantrag_owner_body">'
-        	 		 .($sendaeantragowner_body ? $sendaeantragowner_body : "Hej,\n\n"
-                                                                          ."dein Änderungsantrag zum Antrag %antrag% wurde erfolgreich eingereicht. "
-                                                                          ."Bevor er auf der Website zu sehen sein wird, muss er "
-                                                                          ."erst noch eine Antragsnummer bekommen und dann "
-                                                                          ."freigeschaltet werden.\n\n"
-                                                                          ."Zur Bestätigung hier nochmal deine Angaben:\n\n"
-                                                                          ."Antrag:\n%antrag%\n\n"
-                                                                          ."Zeile:\n%zeile%\n\n"
-                                                                          ."%antragstext%\n\n"
-                                                                          ."Begründung:\n%begruendung%\n\n"
-                                                                          ."AntragstellerInnen:\n%antragsteller%\n")
-        	 		 .'</textarea>');
-        		echo('</td>');
-        	echo('</tr>');
-
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label for="cvtx_send_create_aeantrag_admin">Admin-Information</label>');
-				echo('</th>');
-				echo('<td>');
-			    	echo('<input id="cvtx_send_create_aeantrag_admin" name="cvtx_send_create_aeantrag_admin" type="checkbox" '.($sendaeantragadmin ? 'checked="checked"' : '').'" /> ');
-   					echo('<label for="cvtx_send_create_aeantrag_admin">Administrator eine E-Mail zur Information schicken</label>');
-   				echo('</td>');
-   			echo('</tr>');
-   			
-   			echo('<tr valign="top">');
-   				echo('<th scope="row">');
-   					echo('<label for="cvtx_send_create_aeantrag_admin_subject">Betreff</label>');
-   				echo('</th>');
-   				echo('<td>');
-					echo('<input id="cvtx_send_create_aeantrag_admin_subject" name="cvtx_send_create_aeantrag_admin_subject" size="58" type="text" value="'
-        	 			 .($sendaeantragadmin_subject ? $sendaeantragadmin_subject : 'Neuer Änderungsantrag zu %antrag_kuerzel% (Zeile %zeile%) erstellt')
-        	 			 .'" />');
-    			echo('</td>');
-    		echo('</tr>');
-    		
-    		echo('<tr valign="top">');
-    			echo('<th scope="row">');
-    				echo('<label for="cvtx_send_create_aeantrag_admin_body">Nachricht</label>');
-    			echo('</th>');
-    			echo('<td>');
-			    	echo('<textarea cols="60" rows="10" id="cvtx_send_create_aeantrag_admin_body" name="cvtx_send_create_aeantrag_admin_body">'
-    	    			 .($sendaeantragadmin_body ? $sendaeantragadmin_body : "Hej,\n\n"
-                                                                              ."es wurde ein neuer Änderungsantrag zum Antrag %antrag% eingereicht. Bitte prüfen und veröffentlichen!\n\n"
-                                                                              .home_url('/wp-admin')."\n\n"
-                                                                              ."Antrag:\n%antrag%\n\n"
-                                                                              ."Zeile:\n%zeile%\n\n"
-                                                                              ."%antragstext%\n\n"
-                                                                              ."Begründung:\n%begruendung%\n\n"
-                                                                              ."AntragstellerInnen:\n%antragsteller%\n")
-    	    			 .'</textarea>');
-    	    	echo('</td>');
-    	    echo('</tr>');
-    	echo('</table>');
-    	
+        
     echo('</li>');
-	
-	echo('<li id="cvtx_recaptcha">');
-    	
-    	echo('<table class="form-table">');
-    		echo('<tr valign="top">');
-    			echo('<th scope="row">');
-    				echo('<label for="cvtx_use_recaptcha">Spam-Schutz aktivieren</label>');
-    			echo('</th>');
-   				echo('<td>');
-    				echo('<input id="cvtx_use_recaptcha" name="cvtx_use_recaptcha" type="checkbox" '.($use_recpatcha ? 'checked="checked"' : ''). '" /> ');
-			    	echo('<span class="description">Um die Eingabe von Anträgen und Änderungsanträgen Spam-sicher zu machen, wird der Einsatz von reCaptcha empfohlen.</span>');
-    			echo('</td>');
-    		echo('</tr>');
-    		
-   			echo('<tr valign="top">');
-   				echo('<th scope="row">');
-   					echo('<label for="cvtx_recaptcha_publickey">Öffentlicher reCaptcha-Schlüssel</label>');
-   				echo('</th>');
-   				echo('<td>');
-   					echo('<input id="cvtx_recaptcha_publickey" name="cvtx_recaptcha_publickey" type="text" value="'.$recaptcha_publickey.'" /> ');
-   					echo('<span class="description">Schlüsselpaare können <a href="http://www.google.com/recaptcha/whyrecaptcha">hier</a> erzeugt werden.</span>');
-   				echo('</td>');
-   			echo('</tr>');
+ 
+     echo('<li id="cvtx_mail">');
 
-   			echo('<tr valign="top">');
-   				echo('<th scope="row">');
-   					echo('<label for="cvtx_recaptcha_privatekey">Privater reCaptcha-Schlüssel</label>');
-   				echo('</th>');
-   				echo('<td>');
-   					echo('<input id="cvtx_recaptcha_privatekey" name="cvtx_recaptcha_privatekey" type="text" value="'.$recaptcha_privatekey.'" /> ');
-   				echo('</td>');
-   			echo('</tr>');
-    	echo('</table>');
-    	
-	echo('</li>');
-	
-	echo('<li id="cvtx_latex">');
+        echo('<table class="form-table">');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_html_mail">HTML-Mail</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_html_mail"
+                          name="cvtx_send_html_mail" type="checkbox" '.($cvtx_send_html_mail ? 'checked ="checked"' :'').'" /> ');
+                    echo('<span class="description">E-Mail als HTML-Mail versenden</span>');
+                echo('</td>');
+            echo('</tr>');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_from_email">Absender-Adresse</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_from_email" name="cvtx_send_from_email" type="text" value="'.$send_from_email.'" />');
+                    echo(' <span class="description">E-Mail-Adresse, die als Absender für Benachrichtigungen verwendet werden soll</span>');
+                echo('</td>');
+            echo('</tr>');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_rcpt_email">E-Mail-Adresse</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_rcpt_email" name="cvtx_send_rcpt_email" type="text" value="'.$send_rcpt_email.'" />');
+                    echo(' <span class="description">E-Mail-Adresse, an welche Benachrichtigungen über neu erstellte Anträge gesendet werden</span>');
+                echo('</td>');
+            echo('</tr>');
+        echo('</table>');
+            
+        echo('<h4>Neuer Antrag erstellt</h4>');
+        echo('<span class="description">Mögliche Felder: %top%, %top_kuerzel%, %titel%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.</span>');
+        
+        echo('<table class="form-table">');    
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_antrag_owner">E-Mail-Bestätigung</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_create_antrag_owner"'
+                        .' name="cvtx_send_create_antrag_owner" type="checkbox"'
+                        .($sendantragowner ? 'checked="checked"' : '').'" /> ');
+                    echo('<span class="description">Dem Antragsteller wird eine E-Mail zur Bestätigung geschickt</label>');
+                echo('</td>');
+            echo('</tr>');
+            
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_antrag_owner_subject">Betreff</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_create_antrag_owner_subject" size="58"'
+                        .' name="cvtx_send_create_antrag_owner_subject" type="text"'
+                        .' value="'.$sendantragowner_subject.'" />');
+                echo('</td>');
+            echo('</tr>');
+            
+            echo('<tr valign=top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_antrag_owner_body">Nachricht</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<textarea cols="60" rows="10" id="cvtx_send_create_antrag_owner_body"'
+                        .' name="cvtx_send_create_antrag_owner_body">'.$sendantragowner_body.'</textarea>');
+                 echo('</td>');
+            echo('</tr>');
+            
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_antrag_admin">Admin-Information</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_create_antrag_admin" name="cvtx_send_create_antrag_admin"'
+                        .' type="checkbox" '.($sendantragadmin ? 'checked="checked"' : '').'" /> ');
+                    echo('<label for="cvtx_send_create_antrag_admin">Administrator eine E-Mail zur Information schicken</label>');
+                echo('</td>');
+            echo('</tr>');
+            
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_antrag_admin_subject">Betreff</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_create_antrag_admin_subject" size="58"'
+                        .' name="cvtx_send_create_antrag_admin_subject" type="text"'
+                        .' value="'.$sendantragadmin_subject.'" />');
+                 echo('</td>');
+             echo('</tr>');
+                 
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_antrag_admin_body">Nachricht</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<textarea cols="60" rows="10" id="cvtx_send_create_antrag_admin_body" name="cvtx_send_create_antrag_admin_body">'
+                         .$sendantragadmin_body.'</textarea>');
+                 echo('</td>');
+             echo('</tr>');
+        echo('</table>');
+             
+        echo('<h4>Neuer Änderungsantrag erstellt</h4>');
+        echo('<span class="description">Mögliche Felder: %top%, %top_kuerzel%, %antrag%, %antrag_kuerzel%, %zeile%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.</span>');
+            
+        echo('<table class="form-table">');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_aeantrag_owner">Antragsteller-Mail</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_create_aeantrag_owner" name="cvtx_send_create_aeantrag_owner"'
+                        .' type="checkbox" '.($sendaeantragowner ? 'checked="checked"' : '').'" /> ');
+                    echo('<label for="cvtx_send_create_aeantrag_owner">Antragsteller eine E-Mail zur Bestätigung schicken</label>');
+                echo('</td>');
+            echo('</tr>');
+        
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_aeantrag_owner_subject">Betreff</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_create_aeantrag_owner_subject"'
+                        .' name="cvtx_send_create_aeantrag_owner_subject" size="58" type="text"'
+                        .' value="'.$sendaeantragowner_subject.'" />');
+                echo('</td>');
+            echo('</tr>');
+             
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_aeantrag_owner_body">Nachricht</label>');
+                echo('</th>');
+                echo('<td>');
+                echo('<textarea cols="60" rows="10" id="cvtx_send_create_aeantrag_owner_body"'
+                    .' name="cvtx_send_create_aeantrag_owner_body">'.$sendaeantragowner_body.'</textarea>');
+                echo('</td>');
+            echo('</tr>');
 
-    	echo('<table class="form-table">');
-			echo('<tr valign="top">');
-    			echo('<th scope="row">');
-				    echo('<label for="cvtx_pdflatex_cmd">LaTeX-Pfad</label>');
-				echo('</th>');
-				echo('<td>');
-				    echo('<input id="cvtx_pdflatex_cmd" name="cvtx_pdflatex_cmd" type="text" value="'.$pdflatex_cmd.'" /> ');
-				    echo('<span class="description">Systempfad zur pdflatex-Anwendung</span>');
-				echo('</td>');
-			echo('</tr>');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_aeantrag_admin">Admin-Information</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_send_create_aeantrag_admin" name="cvtx_send_create_aeantrag_admin"'
+                        .' type="checkbox" '.($sendaeantragadmin ? 'checked="checked"' : '').'" /> ');
+                       echo('<label for="cvtx_send_create_aeantrag_admin">Administrator eine E-Mail zur Information schicken</label>');
+                   echo('</td>');
+               echo('</tr>');
+               
+               echo('<tr valign="top">');
+                   echo('<th scope="row">');
+                       echo('<label for="cvtx_send_create_aeantrag_admin_subject">Betreff</label>');
+                   echo('</th>');
+                   echo('<td>');
+                    echo('<input id="cvtx_send_create_aeantrag_admin_subject"'
+                        .' name="cvtx_send_create_aeantrag_admin_subject" size="58" type="text"'
+                        .' value="'.$sendaeantragadmin_subject.'" />');
+                echo('</td>');
+            echo('</tr>');
+            
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_send_create_aeantrag_admin_body">Nachricht</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<textarea cols="60" rows="10" id="cvtx_send_create_aeantrag_admin_body"'
+                        .' name="cvtx_send_create_aeantrag_admin_body">'.$sendaeantragadmin_body.'</textarea>');
+                echo('</td>');
+            echo('</tr>');
+        echo('</table>');
+        
+    echo('</li>');
+    
+    echo('<li id="cvtx_recaptcha">');
+        
+        echo('<table class="form-table">');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_use_recaptcha">Spam-Schutz aktivieren</label>');
+                echo('</th>');
+                   echo('<td>');
+                    echo('<input id="cvtx_use_recaptcha" name="cvtx_use_recaptcha"'
+                        .' type="checkbox" '.($use_recpatcha ? 'checked="checked"' : ''). '" /> ');
+                    echo('<span class="description">Um die Eingabe von Anträgen und Änderungsanträgen Spam-sicher zu machen, wird der Einsatz von reCaptcha empfohlen.</span>');
+                echo('</td>');
+            echo('</tr>');
+            
+               echo('<tr valign="top">');
+                   echo('<th scope="row">');
+                       echo('<label for="cvtx_recaptcha_publickey">Öffentlicher reCaptcha-Schlüssel</label>');
+                   echo('</th>');
+                   echo('<td>');
+                       echo('<input id="cvtx_recaptcha_publickey" name="cvtx_recaptcha_publickey" type="text" value="'.$recaptcha_publickey.'" /> ');
+                       echo('<span class="description">Schlüsselpaare können <a href="http://www.google.com/recaptcha/whyrecaptcha">hier</a> erzeugt werden.</span>');
+                   echo('</td>');
+               echo('</tr>');
 
-			echo('<tr valign="top">');
-				echo('<th scope="row">');
-					echo('<label>Erzeugte Tex-Files löschen</label>');
-				echo('</th>');
-				echo('<td>');
-					echo('<fieldset>');
-				   		echo('<input id="cvtx_drop_texfile_yes" name="cvtx_drop_texfile" type="radio" value="1" '.($drop_texfile == 1 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_texfile_yes">immer</label> ');
-    					echo('<input id="cvtx_drop_texfile_if" name="cvtx_drop_texfile" type="radio" value="2" '.($drop_texfile != 1 && $drop_texfile != 3 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_texfile_if">nur wenn fehlerfrei</label> ');
-    					echo('<input id="cvtx_drop_texfile_no" name="cvtx_drop_texfile" type="radio" value="3" '.($drop_texfile == 3 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_texfile_no">nie</label>');
-    				echo('</fieldset>');
-    			echo('</td>');
-    		echo('</tr>');
-    		
-    		echo('<tr valign=top">');
-    			echo('<th scope="row">');
-    				echo('<label>Erzeugte log-Files löschen</label>');
-				echo('</th>');
-				echo('<td>');
-					echo('<fieldset>');
-				    	echo('<input id="cvtx_drop_logfile_yes" name="cvtx_drop_logfile" type="radio" value="1" '.($drop_logfile == 1 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_logfile_yes">immer</label> ');
-    					echo('<input id="cvtx_drop_logfile_if" name="cvtx_drop_logfile" type="radio" value="2" '.($drop_logfile != 1 && $drop_logfile != 3 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_logfile_if">nur wenn fehlerfrei</label> ');
-    					echo('<input id="cvtx_drop_logfile_no" name="cvtx_drop_logfile" type="radio" value="3" '.($drop_logfile == 3 ? 'checked="checked"' : '').'" /> ');
-    					echo('<label for="cvtx_drop_logfile_no" value="">nie</label>');
-    				echo('</fieldset>');
-    			echo('</td>');
-    		echo('</tr>');
-    	echo('</table>');
-    	
-  	echo('</li>');
+               echo('<tr valign="top">');
+                   echo('<th scope="row">');
+                       echo('<label for="cvtx_recaptcha_privatekey">Privater reCaptcha-Schlüssel</label>');
+                   echo('</th>');
+                   echo('<td>');
+                       echo('<input id="cvtx_recaptcha_privatekey" name="cvtx_recaptcha_privatekey" type="text" value="'.$recaptcha_privatekey.'" /> ');
+                   echo('</td>');
+               echo('</tr>');
+        echo('</table>');
+        
+    echo('</li>');
+    
+    echo('<li id="cvtx_latex">');
+
+        echo('<table class="form-table">');
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_pdflatex_cmd">LaTeX-Pfad</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_pdflatex_cmd" name="cvtx_pdflatex_cmd" type="text" value="'.$pdflatex_cmd.'" /> ');
+                    echo('<span class="description">Systempfad zur pdflatex-Anwendung</span>');
+                echo('</td>');
+            echo('</tr>');
+
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label>Erzeugte Tex-Files löschen</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<fieldset>');
+                        echo('<input id="cvtx_drop_texfile_yes" name="cvtx_drop_texfile" type="radio"'
+                            .' value="1" '.($drop_texfile == 1 ? 'checked="checked"' : '').'" /> ');
+                        echo('<label for="cvtx_drop_texfile_yes">immer</label> ');
+                        echo('<input id="cvtx_drop_texfile_if" name="cvtx_drop_texfile" type="radio"'
+                            .' value="2" '.($drop_texfile == 2 ? 'checked="checked"' : '').'" /> ');
+                        echo('<label for="cvtx_drop_texfile_if">nur wenn fehlerfrei</label> ');
+                        echo('<input id="cvtx_drop_texfile_no" name="cvtx_drop_texfile" type="radio"'
+                            .' value="3" '.($drop_texfile == 3 ? 'checked="checked"' : '').'" /> ');
+                        echo('<label for="cvtx_drop_texfile_no">nie</label>');
+                    echo('</fieldset>');
+                echo('</td>');
+            echo('</tr>');
+            
+            echo('<tr valign=top">');
+                echo('<th scope="row">');
+                    echo('<label>Erzeugte log-Files löschen</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<fieldset>');
+                        echo('<input id="cvtx_drop_logfile_yes" name="cvtx_drop_logfile" type="radio"'
+                            .' value="1" '.($drop_logfile == 1 ? 'checked="checked"' : '').'" /> ');
+                        echo('<label for="cvtx_drop_logfile_yes">immer</label> ');
+                        echo('<input id="cvtx_drop_logfile_if" name="cvtx_drop_logfile" type="radio"'
+                            .' value="2" '.($drop_logfile == 2 ? 'checked="checked"' : '').'" /> ');
+                        echo('<label for="cvtx_drop_logfile_if">nur wenn fehlerfrei</label> ');
+                        echo('<input id="cvtx_drop_logfile_no" name="cvtx_drop_logfile" type="radio"'
+                            .' value="3" '.($drop_logfile == 3 ? 'checked="checked"' : '').'" /> ');
+                        echo('<label for="cvtx_drop_logfile_no" value="">nie</label>');
+                    echo('</fieldset>');
+                echo('</td>');
+            echo('</tr>');
+
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_latex_tpldir">Eigene Templates</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_latex_tpldir" name=cvtx_latex_tpldir" type="text" value="'.$latex_tpldir.'" /> ');
+                    echo('<span class="description">Unterverzeichnis des aktivierten Themes, in dem spezielle LaTeX-Templates liegen</span>');
+                echo('</td>');
+            echo('</tr>');
+        echo('</table>');
+        
+      echo('</li>');
     echo('</ul>');
 
     echo('<p class="submit"><input type="submit" name="submit" value="Einstellungen speichern" /></p>');
@@ -984,8 +1064,15 @@ if (is_admin()) add_filter('post_row_actions', 'cvtx_hide_quick_edit', 10, 2);
  */
 function cvtx_hide_quick_edit($actions) {
     global $post, $cvtx_types;
+
+    // hide quickedit only if cvtx post_type
     if(in_array($post->post_type, array_keys($cvtx_types))) {
         unset($actions['inline hide-if-no-js']);
+
+        // hide preview if post type top
+        if($post->post_type == 'cvtx_top') {
+            unset($actions['view']);
+        }
     }
     return $actions;
 }
@@ -1068,7 +1155,7 @@ function show_pending_number($menu) {
             $menu[$key][0] .= '<span class="awaiting-mod count-'.$count.'"><span class="pending-count">'.$count.'</span></span>';
         }
     }
-	return $menu;
+    return $menu;
 }
 
 ?>

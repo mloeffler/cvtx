@@ -242,10 +242,10 @@ function cvtx_trash_post($post_id) {
  */
 function cvtx_get_sort($post_type, $top=false, $antrag=false, $zeile=false, $vari=false) {
     $sorts           = array();
-    $sorts['top']    = ($top    !== false ? (intval($top)    ? sprintf('%1$05d', $top)    : 'ZZZZZ' ) : 'AAAAA' );
-    $sorts['antrag'] = ($antrag !== false ? (intval($antrag) ? sprintf('%1$05d', $antrag) : 'ZZZZZ' ) : 'AAAAA' );
-    $sorts['zeile']  = ($zeile  !== false ? (intval($zeile)  ? sprintf('%1$06d', $zeile)  : 'ZZZZZZ') : 'AAAAAA');
-    $sorts['vari']   = ($vari   !== false ? (intval($vari)   ? sprintf('%1$06d', $vari)   : 'ZZZZZZ') : 'AAAAAA');
+    $sorts['top']    = ($top    !== false ? (intval($top)    ? sprintf('%1$05d', intval($top))    : 'ZZZZZ' ) : 'AAAAA' );
+    $sorts['antrag'] = ($antrag !== false ? (intval($antrag) ? sprintf('%1$05d', intval($antrag)) : 'ZZZZZ' ) : 'AAAAA' );
+    $sorts['zeile']  = ($zeile  !== false ? (intval($zeile)  ? sprintf('%1$06d', intval($zeile))  : 'ZZZZZZ') : 'AAAAAA');
+    $sorts['vari']   = ($vari   !== false ? (intval($vari)   ? sprintf('%1$06d', intval($vari))   : 'ZZZZZZ') : 'AAAAAA');
 
     foreach ($sorts as $key => $value) {
         if (intval($value) > 0) {
@@ -519,7 +519,7 @@ function cvtx_create_pdf($post_id, $post = null) {
     
     if (isset($post) && is_object($post) && !empty($pdflatex)) {
         $out_dir = wp_upload_dir();
-        $tpl_dir = get_template_directory().'/latex';
+        $tpl_dir = get_template_directory().'/'.get_option('cvtx_latex_tpldir');
     
         // prepare antrag
         if ($post->post_type == 'cvtx_antrag') {
@@ -615,8 +615,7 @@ function cvtx_create_pdf($post_id, $post = null) {
 
             // save output to latex file. success?
             if (file_put_contents($file.'.tex', $out) !== false) {
-                $cmd = $pdflatex.' -interaction=nonstopmode -output-directory='
-                      .$out_dir['basedir'].' '.$file.'.tex';
+                $cmd = $pdflatex.' -interaction=nonstopmode -output-directory='.$out_dir['basedir'].' '.$file.'.tex';
                 
                 // run pdflatex
                 exec($cmd);
@@ -645,8 +644,10 @@ function cvtx_create_pdf($post_id, $post = null) {
 }
 
 
-// replaces filter "the title" in order to generate custom titles for post-types "top", "antrag" and "aeantrag"
 add_filter('the_title', 'cvtx_the_title', 1, 2);
+/**
+ * replaces filter "the title" in order to generate custom titles for post-types "top", "antrag" and "aeantrag"
+ */
 function cvtx_the_title($before='', $after='') {
     if(is_numeric($after)) $post = &get_post($after);
     
@@ -693,22 +694,24 @@ function cvtx_get_short($post) {
         $top    = get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_short', true);
         $antrag = get_post_meta($post->ID, 'cvtx_antrag_ord', true);
 
-        if (!empty($top) && !empty($antrag)) return $top.'-'.$antrag;
+        // format and return aeantrag_short
+        $format = strtr(get_option('cvtx_antrag_format'), array('%top%' => $top, '%antrag%' => $antrag));
+
+        if (!empty($top) && !empty($antrag)) return $format;
     }
     // post type antrag
     else if ($post->post_type == 'cvtx_aeantrag') {
         // fetch antrag_id, antag, top and zeile
         $antrag_id = get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true);
-        $antrag    = get_post_meta($antrag_id, 'cvtx_antrag_ord', true);
-        $top       = get_post_meta(get_post_meta($antrag_id, 'cvtx_antrag_top', true), 'cvtx_top_short', true);
+        $antrag_nr = get_post_meta($antrag_id, 'cvtx_antrag_ord', true);
+        $top_nr    = get_post_meta(get_post_meta($antrag_id, 'cvtx_antrag_top', true), 'cvtx_top_short', true);
         $zeile     = get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true);
         
         // format and return aeantrag_short
-        $format = get_option('cvtx_aeantrag_format');
-        $format = str_replace('%antrag%', $top.'-'.$antrag, $format);
-        $format = str_replace('%zeile%', $zeile, $format);
+        $antrag = strtr(get_option('cvtx_antrag_format'), array('%top%' => $top_nr, '%antrag%' => $antrag_nr));
+        $format = strtr(get_option('cvtx_aeantrag_format'), array('%antrag%' => $antrag, '%zeile%' => $zeile));
         
-        if (!empty($top) && !empty($antrag) && !empty($zeile)) return $format;
+        if (!empty($top_nr) && !empty($antrag_nr) && !empty($zeile)) return $format;
     }
 
     // default
