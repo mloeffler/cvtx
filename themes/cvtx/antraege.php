@@ -36,7 +36,11 @@ Template Name: Antrags&uuml;bersicht
     <?php
     while ($loop->have_posts()): $loop->the_post(); $top_id = $post->ID;
     ?>
-      <li class="top" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>"><h3><?php the_title(); ?></h3><ul>
+      <li class="top" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>"><h3><?php the_title(); ?></h3>
+      <div class="top_info" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>_info">
+       <?php the_content(); ?>
+      </div>
+      <ul>
       <?php
       $loop2 = new WP_Query(array('post_type'  => 'cvtx_antrag',
                                   'meta_key'   => 'cvtx_sort',
