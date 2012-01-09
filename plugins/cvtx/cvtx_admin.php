@@ -504,9 +504,12 @@ function cvtx_conf() {
         }
         
         // Pfad zu den LaTeX-Templates im Theme
-        if (isset($_POST['cvtx_latex_tpldir'])) {
+        if (isset($_POST['cvtx_latex_tpldir']) && !empty($_POST['cvtx_latex_tpldir'])) {
             update_option('cvtx_latex_tpldir', $_POST['cvtx_latex_tpldir']);
+        } else {
+            update_option('cvtx_latex_tpldir', 'latex');
         }
+
         
         // remove tex and/or log files?
         if (isset($_POST['cvtx_drop_texfile'])) {
@@ -656,6 +659,7 @@ function cvtx_conf() {
     $drop_logfile     = get_option('cvtx_drop_logfile');
     if (!$drop_logfile) $drop_logfile = 2;
     $latex_tpldir     = get_option('cvtx_latex_tpldir');
+    if (!$latex_tpldir) $latex_tpldir = 'latex';
 
 
     // print config page

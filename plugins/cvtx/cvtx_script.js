@@ -9,6 +9,7 @@ jQuery(document).ready(function($){
     // hide preview button for post_type top
     if ($("#post_type").val() == "cvtx_top") {
         $("#preview-action").hide();
+        $("#view-post-btn").hide();
     }
     
     // edit top

@@ -6,7 +6,7 @@
 /*
 Plugin Name: cvtx Antragstool
 Plugin URI: http://wordpress.org/extend/plugins/cvtx/
-Description: Dunno.
+Description: “cvtx Antragstool” provides several features to manage proposals and amendments at political congresses or party conventions.
 Author: Alexander Fecke & Max Löffler
 Version: 0.1
 Author URI: http://alexander-fecke.de
