@@ -1273,4 +1273,47 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
     return $output;
 }
 
+remove_all_actions('do_feed_rss2' );
+add_action('do_feed_rss2', 'cvtx_feed_rss2', 10, 1 );
+/**
+ * Change feed-templates for cvtx_antrag and cvtx_aeantrag
+ */
+function cvtx_feed_rss2($for_comments) {
+    $rss_template_antrag   = CVTX_PLUGIN_DIR. '/feeds/feed-cvtx_antrag-rss2.php';
+    $rss_template_aeantrag = CVTX_PLUGIN_DIR. '/feeds/feed-cvtx_aeantrag-rss2.php';
+    if(get_query_var('post_type') == 'cvtx_antrag' and file_exists($rss_template_antrag))
+        load_template($rss_template_antrag);
+    elseif(get_query_var('post_type') == 'cvtx_aeantrag' and file_exists($rss_template_aeantrag)) {
+        load_template($rss_template_aeantrag);
+    }
+    else
+        do_feed_rss2($for_comments); // Call default function
+}
+
+/**
+ * returns meta-informations about antrag/aeantrag
+ */
+function get_cvtx_rss_before_content($post,$type) {
+    $output  = '';
+    if($type == 'cvtx_antrag') {
+        $output .= '<p><strong>'.__('TOP','cvtx').'</strong>: '.get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_ord', true).'</p>';
+        $output .= '<p><strong>'.__('AntragstellerInnen','cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller_short',true).'</p>';
+    }
+    elseif($type == 'cvtx_aeantrag') {
+        $output .= '<p><strong>'.__('Zeile','cvtx').'</strong>: '.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'</p>';
+        $output .= '<p><strong>'.__('AntragstellerInnen','cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller',true).'</p>';
+    }
+    return $output;
+}
+
+/**
+ * returns download-link for antrag/aeantrag
+ */
+function get_cvtx_rss_after_content($post) {
+    $output  = '';
+    if (function_exists('cvtx_get_file')
+        && $file = cvtx_get_file($post, 'pdf'))
+        $output .= '<p><a href="'.$file.'">Download (pdf)</a></p>';
+    return $output;
+}
 ?>

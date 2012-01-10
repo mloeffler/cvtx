@@ -1,5 +1,7 @@
 <?php
 /*
+ * @package WordPress
+ * @subpackage cvtx
 */
 ?>
 <?php get_header(); ?>

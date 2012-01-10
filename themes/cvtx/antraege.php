@@ -15,7 +15,8 @@ Template Name: Antrags&uuml;bersicht
     <?php endwhile; endif; ?>
   
     <?php
-    // TOP-Query
+    $post_bak = $post;
+    // Get all TOPs
     $loop = new WP_Query(array('post_type' => 'cvtx_top',
                                'orderby'   => 'meta_value',
                                'meta_key'  => 'cvtx_sort',
@@ -23,6 +24,7 @@ Template Name: Antrags&uuml;bersicht
                                'order'     => 'ASC'));
     if ($loop->have_posts()): ?>
       <ul id="antraege">
+      	<li class="rss top"><h3>RSS-Feed</h3><?php printf('<p>'.__('Um immer &uuml;ber neue Antr&auml;ge auf dem Laufenden zu bleiben, abonniere doch einfach den %1$s!', 'cvtx').'</p>','<a href="'.get_feed_link('rss2').'&post_type=cvtx_antrag">RSS-Feed</a>'); ?></li>
         <li class="top overview"><h3>&Uuml;bersicht</h3>
           <ul>
             <?php while ($loop->have_posts()): $loop->the_post();?>
@@ -34,7 +36,8 @@ Template Name: Antrags&uuml;bersicht
         </li><div class="tester"></div>
         
     <?php
-    while ($loop->have_posts()): $loop->the_post(); $top_id = $post->ID;
+    // show all tops
+    while($loop->have_posts()): $loop->the_post(); $top_id = $post->ID;
     ?>
       <li class="top" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>"><h3><?php the_title(); ?></h3>
       <div class="top_info" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>_info">
@@ -42,6 +45,7 @@ Template Name: Antrags&uuml;bersicht
       </div>
       <ul>
       <?php
+      // query top-content
       $loop2 = new WP_Query(array('post_type'  => 'cvtx_antrag',
                                   'meta_key'   => 'cvtx_sort',
                                   'orderby'    => 'meta_value',
@@ -87,6 +91,7 @@ Template Name: Antrags&uuml;bersicht
     <?php endwhile;?>
     </ul>
     <?php endif; ?>
+    <?php wp_reset_postdata(); $post = $post_bak; ?>
   </div>
   </div>
   <?php get_sidebar(); ?>

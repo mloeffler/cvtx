@@ -45,7 +45,10 @@
 					?>
 				</div>
 				
-				<?php $antrag_id = $post->ID; ?>
+				<?php 
+				      $antrag_id = $post->ID;
+				      $post_bak  = $post;
+				?>
 				<?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
 												  'meta_key'   => 'cvtx_sort',
 												  'orderby'    => 'meta_value',
@@ -86,6 +89,10 @@
 		<p><?php _e('Sorry, no posts matched your criteria.', 'kubrick'); ?></p>
 
 <?php endif; ?>
+<?php
+   wp_reset_postdata();
+   $post = $post_bak;
+?>
 	</div>
 	</div>
 	<?php get_sidebar(); ?>

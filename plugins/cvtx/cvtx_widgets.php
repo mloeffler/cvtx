@@ -14,6 +14,7 @@ class ReaderWidget extends WP_Widget {
     /** @see WP_Widget::widget */
     function widget($args, $instance) {
         global $post;
+        $post_bak = $post;
         $loop = new WP_Query(array('post_type' => 'cvtx_reader',
                                    'order'     => 'ASC',
                                    'nopaging'  => true));
@@ -34,6 +35,8 @@ class ReaderWidget extends WP_Widget {
             echo '</ul>';
             echo $after_widget;
         }
+        wp_reset_postdata();
+        $post = $post_bak;
     }
     
     /** @see WP_Widget::update */
@@ -87,9 +90,11 @@ class CountWidget extends WP_Widget {
         echo $before_widget;
         if($title)
             echo $before_title.$title.$after_title;
-        echo 'Es sind online:<p/>';
-        echo '<strong>'.wp_count_posts('cvtx_antrag')->publish.'</strong> <em>Anträge</em><br/>';
-        echo '<strong>'.wp_count_posts('cvtx_aeantrag')->publish.'</strong> <em>Änderungsanträge</em>';
+        $count_antraege = wp_count_posts('cvtx_antrag')->publish;
+        $count_aeantrag = wp_count_posts('cvtx_aeantrag')->publish;
+        echo __('Es sind online:','cvtx').'<p/>';
+        echo '<strong>'.$count_antraege.'</strong> <em>'.($count_antraege == 1 ? __('Antrag','cvtx') : __('Anträge','cvtx')).'</em><br/>';
+        echo '<strong>'.$count_aeantrag.'</strong> <em>'.($count_aeantrag == 1 ? __('Änderungsantrag','cvtx') : __('Änderungsanträge','cvtx')).'</em><br/>';
         echo $after_widget;
     }
     
@@ -113,26 +118,72 @@ class CountWidget extends WP_Widget {
     }
 }
 
+// register RSS-Antrags-Widget
+add_action('widgets_init', create_function('', 'register_widget("RSS_aeantrag_Widget");'));
+
+/**
+ * Count-of-posts-Widget
+ */
+class RSS_aeantrag_Widget extends WP_Widget {
+    function __construct() {
+        parent::WP_Widget('RSS_aeantrag_Widget', 'RSS-Feed zu Änderungsanträgen', array('description' => 'Bietet einen Link zum RSS-Feed für neue Änderungsanträge eines spezifischen Antrags an.'));
+    }
+    
+    function widget($args,$instance) {
+        extract($args);
+        $title = apply_filters('widget_title', $instance['title']);
+        global $post;
+        if($post->post_type == 'cvtx_antrag') {
+            echo $before_widget;
+            if($title)
+                echo $before_title.$title.$after_title;
+            $post_title = '<strong>"'.get_the_title($post->ID).'"</strong>';
+            $rss_url    = '<a href="'.get_feed_link('rss2').'&post_type=cvtx_aeantrag&cvtx_aeantrag_antrag='.$post->ID.'">RSS-Feed</a>';
+            printf(__('Immer auf dem Laufenden über %s bleiben?<p/> Abbonier doch einfach diesen %s mit allen Änderungsanträgen!'),$post_title,$rss_url);
+            echo $after_widget;        
+        }
+    }
+    
+    function update($new_instance, $old_instance) {
+        $instance = $old_instance;
+        $instance['title'] = strip_tags($new_instance['title']);
+        return $instance;
+    }
+    
+    function form($instance) {
+        if($instance)
+            $title = esc_attr($instance['title']);
+        else
+            $title = __('RSS-Feed', 'text_domain');
+        ?>
+        <p>
+        <label for="<?php echo $this->get_field_id('title') ?>"><?php _e('Title:'); ?></label>
+        <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type ="text" value="<?php echo $title; ?>" />
+        </p>
+        <?php
+    }
+}
+
 /**
  * Cvtx dashboard widget
  */
 function cvtx_dashboard_widget_function() {
     // show tops
     echo '<div class="table left">';
-    echo '<p class="sub">Veröffentlicht</p>';
+    echo '<p class="sub">'.__('Veröffentlicht','cvtx').'</p>';
     echo '<table><tbody>';
     cvtx_dashboard_widget_helper(array('publish'));
     echo '</tbody></table>';
     echo '</div>';
     echo '<div class="table right">';
-    echo '<p class="sub">Noch nicht freigeschaltet</p>';
+    echo '<p class="sub">'.__('Noch nicht freigeschaltet','cvtx').'</p>';
     echo '<table><tbody>';
     cvtx_dashboard_widget_helper(array('draft', 'pending'));
     echo '</tbody></table>';
     echo '</div>';
     echo '<div class="more">';
-    echo '<p><a href="plugins.php?page=cvtx-config">Konfiguration</a></p>';
-    echo '<p>Fragen? Hier gibt\'s <a href="http://cvtx.de">Antworten</a>!</p>';
+    echo '<p><a href="plugins.php?page=cvtx-config">'.__('Konfiguration','cvtx').'</a></p>';
+    printf('<p>'.__('Fragen? Hier gibt\'s %s','cvtx').'</p>','<a href="http://cvtx.de">'.__('Antworten','cvtx').'</a>');
     echo '</div>';
 } 
 
@@ -159,8 +210,8 @@ function cvtx_dashboard_widget_helper($perms) {
         switch($type) {
             case 'cvtx_top': if($count == 1) $name = "TOP"; else $name = "TOPs"; break;
             case 'cvtx_reader': $name = "Reader"; break;
-            case 'cvtx_antrag': if($count == 1) $name = "Antrag"; else $name = "Antr&auml;ge"; break;
-            case 'cvtx_aeantrag': if($count == 1) $name = "&Auml;nderungsantrag"; else $name = "&Auml;nderungsantr&auml;ge"; break;
+            case 'cvtx_antrag': if($count == 1) $name = __('Antrag','cvtx'); else $name = __('Anträge','cvtx'); break;
+            case 'cvtx_aeantrag': if($count == 1) $name = __('Änderungsantrag','cvtx'); else $name = __('Änderungsanträge','cvtx'); break;
             default: $name = "";
         }
         

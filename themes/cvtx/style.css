@@ -304,12 +304,22 @@ header .description,
     font-size:1.1em;
     padding:7px 13px 7px 13px;
     margin-top:0px;
+    margin-bottom: 0px;
     border-top-left-radius:3px;
     border-top-right-radius:3px;
 }
 
 #sidebar ul.side li.widget ul li {
     list-style: disc;
+}
+
+#sidebar ul.side li.widget_countwidget {
+    background: url(images/statistik.png) no-repeat bottom right white;
+}
+
+#sidebar ul.side li.widget_rss_aeantrag_widget .inner {
+    background: url(images/rss.png) no-repeat top right white;
+    padding-right: 40px;
 }
 
 /**
@@ -340,6 +350,15 @@ ul#antraege li.top {
     border: 1px solid #eee;
     margin-bottom: 1em;
     margin-top: 1em;
+}
+
+ul#antraege li.rss p {
+    font-size: 0.8em;
+    margin: 1em 1em 0 1em;
+}
+
+ul#antraege li.rss h3 {
+    background: url(images/rss.png) right top no-repeat #fafafa;
 }
 
 ul#antraege li.top div.top_info {
