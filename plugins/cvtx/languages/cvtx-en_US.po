@@ -1,0 +1,777 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: cvtx\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-10 02:03+0100\n"
+"PO-Revision-Date: 2012-01-10 02:03+0100\n"
+"Last-Translator: Max Löffler\n"
+"Language-Team: Max Löffler\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: /Users/maxl/Sites/localhost/conventix_wp/wp-content/plugins/cvtx/\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: cvtx.php:80
+#: cvtx.php:81
+#: cvtx_admin.php:319
+#: cvtx_admin.php:1204
+msgid "Reader"
+msgstr ""
+
+#: cvtx.php:82
+msgid "Reader erstellen"
+msgstr ""
+
+#: cvtx.php:83
+msgid "Neuer Reader"
+msgstr ""
+
+#: cvtx.php:84
+msgid "Reader bearbeiten"
+msgstr ""
+
+#: cvtx.php:85
+msgid "Reader ansehen"
+msgstr ""
+
+#: cvtx.php:86
+msgid "Reader suchen"
+msgstr ""
+
+#: cvtx.php:87
+msgid "Keine Reader gefunden"
+msgstr ""
+
+#: cvtx.php:88
+msgid "Keine Reader im Papierkorb gefunden"
+msgstr ""
+
+#: cvtx.php:101
+#: cvtx_admin.php:1196
+msgid "TOPs"
+msgstr ""
+
+#: cvtx.php:102
+msgid "TOP"
+msgstr ""
+
+#: cvtx.php:103
+msgid "TOP erstellen"
+msgstr ""
+
+#: cvtx.php:104
+msgid "TOP bearbeiten"
+msgstr ""
+
+#: cvtx.php:105
+msgid "TOP ansehen"
+msgstr ""
+
+#: cvtx.php:106
+msgid "Neuer TOP"
+msgstr ""
+
+#: cvtx.php:107
+msgid "TOPs suchen"
+msgstr ""
+
+#: cvtx.php:108
+msgid "Keine TOPs gefunden"
+msgstr ""
+
+#: cvtx.php:109
+msgid "Keine TOPs im Papierkorb gefunden"
+msgstr ""
+
+#: cvtx.php:122
+#: cvtx_admin.php:1179
+msgid "Anträge"
+msgstr "Proposals"
+
+#: cvtx.php:123
+#: cvtx_admin.php:194
+#: cvtx_admin.php:359
+msgid "Antrag"
+msgstr "Proposal"
+
+#: cvtx.php:124
+#: cvtx.php:1119
+msgid "Antrag erstellen"
+msgstr "Create proposal"
+
+#: cvtx.php:125
+msgid "Antrag bearbeiten"
+msgstr "Edit proposal"
+
+#: cvtx.php:126
+msgid "Antrag ansehen"
+msgstr "View proposal"
+
+#: cvtx.php:127
+msgid "Neuer Antrag"
+msgstr "New proposal"
+
+#: cvtx.php:128
+msgid "Anträge suchen"
+msgstr "Search proposals"
+
+#: cvtx.php:129
+msgid "Keine Anträge gefunden"
+msgstr "No proposals found"
+
+#: cvtx.php:130
+msgid "Keine Anträge im Papierkorb gefunden"
+msgstr ""
+
+#: cvtx.php:143
+#: cvtx_admin.php:1188
+msgid "Änderungsanträge"
+msgstr "Amendments"
+
+#: cvtx.php:144
+#: cvtx_admin.php:356
+msgid "Änderungsantrag"
+msgstr "Amendment"
+
+#: cvtx.php:145
+#: cvtx.php:1269
+msgid "Änderungsantrag erstellen"
+msgstr "Create amendment"
+
+#: cvtx.php:146
+msgid "Änderungsantrag bearbeiten"
+msgstr "Edit amendment"
+
+#: cvtx.php:147
+msgid "Änderungsantrag ansehen"
+msgstr "View amendment"
+
+#: cvtx.php:148
+msgid "Ä-Anträge"
+msgstr "Amendments"
+
+#: cvtx.php:149
+msgid "Neuer Änderungsantrag"
+msgstr "New amendment"
+
+#: cvtx.php:150
+msgid "Änderungsanträge suchen"
+msgstr ""
+
+#: cvtx.php:151
+msgid "Keine Änderungsanträge gefunden"
+msgstr ""
+
+#: cvtx.php:152
+msgid "Keine Änderungsanträge im Papierkorb gefunden"
+msgstr ""
+
+#: cvtx.php:658
+#: cvtx.php:675
+#: cvtx_admin.php:70
+#: cvtx_latex.php:88
+#: cvtx_latex.php:140
+#: cvtx_latex.php:144
+#: cvtx_latex.php:163
+#: cvtx_latex.php:171
+msgid "(no title)"
+msgstr "(no title)"
+
+#: cvtx.php:997
+#: cvtx.php:1151
+msgid "Der Captcha wurde falsch eingegeben. Bitte versuche es erneut."
+msgstr ""
+
+#: cvtx.php:1017
+msgid "Der Antrag wurde erstellt und muss noch freigeschaltet werden."
+msgstr ""
+
+#: cvtx.php:1021
+msgid "Antrag wurde NICHT gespeichert. Warum auch immer."
+msgstr ""
+
+#: cvtx.php:1027
+#: cvtx.php:1063
+#: cvtx.php:1069
+#: cvtx.php:1076
+#: cvtx.php:1082
+#: cvtx.php:1088
+#: cvtx.php:1095
+#: cvtx.php:1182
+#: cvtx.php:1216
+#: cvtx.php:1223
+#: cvtx.php:1229
+#: cvtx.php:1235
+#: cvtx.php:1245
+msgid "Dieses Feld wird benötigt"
+msgstr ""
+
+#: cvtx.php:1062
+#: cvtx_admin.php:338
+#, fuzzy
+msgid "Antragstitel"
+msgstr "Create proposal"
+
+#: cvtx.php:1070
+#: cvtx_admin.php:152
+#: cvtx_admin.php:195
+msgid "Keine Tagesordnungspunkte angelegt"
+msgstr ""
+
+#: cvtx.php:1076
+#: cvtx.php:1223
+#, fuzzy
+msgid "AntragstellerInnen"
+msgstr "Create proposal"
+
+#: cvtx.php:1082
+#: cvtx.php:1229
+#: cvtx_admin.php:797
+msgid "E-Mail-Adresse"
+msgstr ""
+
+#: cvtx.php:1082
+#: cvtx.php:1088
+msgid "wird nicht veröffentlicht"
+msgstr ""
+
+#: cvtx.php:1088
+#: cvtx.php:1235
+msgid "Telefonnummer"
+msgstr ""
+
+#: cvtx.php:1095
+#: cvtx.php:1245
+#, fuzzy
+msgid "Antragstext"
+msgstr "Proposal"
+
+#: cvtx.php:1101
+#: cvtx.php:1251
+msgid "Antragsbegründung"
+msgstr ""
+
+#: cvtx.php:1172
+msgid "Der Änderungsantrag wurde erstellt und muss noch freigeschaltet werden."
+msgstr ""
+
+#: cvtx.php:1176
+msgid "Der Änderungsantrag wurde nicht gespeichert. Bitte tanzen Sie um den Tisch und probieren sie es dann mit einer anderen Computer-Stellung noch einmal."
+msgstr ""
+
+#: cvtx.php:1216
+#: cvtx_admin.php:197
+msgid "Zeile"
+msgstr ""
+
+#: cvtx_admin.php:8
+msgid "Inhalt"
+msgstr ""
+
+#: cvtx_admin.php:9
+#: cvtx_admin.php:19
+#: cvtx_admin.php:30
+msgid "PDF"
+msgstr ""
+
+#: cvtx_admin.php:12
+#: cvtx_admin.php:15
+#: cvtx_admin.php:23
+msgid "Metainformationen"
+msgstr ""
+
+#: cvtx_admin.php:16
+#: cvtx_admin.php:24
+#: cvtx_admin.php:339
+#: cvtx_admin.php:357
+#, fuzzy
+msgid "AntragstellerIn(nen)"
+msgstr "Create proposal"
+
+#: cvtx_admin.php:17
+#: cvtx_admin.php:25
+msgid "Begründung"
+msgstr ""
+
+#: cvtx_admin.php:18
+#: cvtx_admin.php:27
+msgid "Weitere Informationen"
+msgstr ""
+
+#: cvtx_admin.php:20
+#: cvtx_admin.php:32
+#: cvtx_admin.php:729
+msgid "Readerzuordnung"
+msgstr ""
+
+#: cvtx_admin.php:26
+#: cvtx_admin.php:232
+#: cvtx_admin.php:358
+msgid "Verfahren"
+msgstr ""
+
+#: cvtx_admin.php:88
+#: cvtx_admin.php:98
+msgid "alle"
+msgstr ""
+
+#: cvtx_admin.php:89
+#: cvtx_admin.php:99
+msgid "keine"
+msgstr ""
+
+#: cvtx_admin.php:112
+msgid "Grau hinterlegte Einträge sind bisher nicht freigeschaltet und werden deshalb nicht im Reader angezeigt."
+msgstr ""
+
+#: cvtx_admin.php:127
+msgid "TOP-Nummer"
+msgstr ""
+
+#: cvtx_admin.php:132
+#: cvtx_admin.php:329
+msgid "Kürzel"
+msgstr ""
+
+#: cvtx_admin.php:136
+msgid "Diese Nummer ist bereits vergeben."
+msgstr ""
+
+#: cvtx_admin.php:137
+msgid "Dieses Kürzel ist bereits vergeben."
+msgstr ""
+
+#: cvtx_admin.php:138
+msgid "Bitte TOP-Nummer vergeben."
+msgstr ""
+
+#: cvtx_admin.php:139
+msgid "Bitte Kürzel für den TOP vergeben."
+msgstr ""
+
+#: cvtx_admin.php:151
+#: cvtx_admin.php:328
+#: cvtx_admin.php:340
+msgid "Tagesordnungspunkt"
+msgstr ""
+
+#: cvtx_admin.php:154
+#, fuzzy
+msgid "Antragsnummer"
+msgstr "Proposal"
+
+#: cvtx_admin.php:157
+msgid "Es liegt bereits ein Antrag mit identischer Antragsnummer vor."
+msgstr ""
+
+#: cvtx_admin.php:158
+msgid "Bitte Antragsnummer vergeben."
+msgstr ""
+
+#: cvtx_admin.php:165
+#: cvtx_admin.php:208
+msgid "Kurzfassung"
+msgstr ""
+
+#: cvtx_admin.php:168
+#: cvtx_admin.php:211
+msgid "Kontakt (E-Mail)"
+msgstr ""
+
+#: cvtx_admin.php:170
+#: cvtx_admin.php:213
+msgid "Kontakt (Telefon)"
+msgstr ""
+
+#: cvtx_admin.php:200
+msgid "Es liegt bereits ein Änderungsantrag mit identischer Zeilenangabe vor."
+msgstr ""
+
+#: cvtx_admin.php:201
+#, fuzzy
+msgid "Bitte Zeile für den Änderungsantrag angeben."
+msgstr "View amendment"
+
+#: cvtx_admin.php:233
+msgid "Übernahme"
+msgstr ""
+
+#: cvtx_admin.php:233
+msgid "Modifizierte Übernahme"
+msgstr ""
+
+#: cvtx_admin.php:233
+msgid "Abstimmung"
+msgstr ""
+
+#: cvtx_admin.php:233
+msgid "Zurückgezogen"
+msgstr ""
+
+#: cvtx_admin.php:233
+msgid "Erledigt"
+msgstr ""
+
+#: cvtx_admin.php:238
+msgid "Details"
+msgstr ""
+
+#: cvtx_admin.php:250
+#: cvtx_admin.php:381
+#: cvtx_admin.php:413
+#: cvtx_admin.php:435
+msgid "Download"
+msgstr ""
+
+#: cvtx_admin.php:254
+msgid "Kein PDF erstellt. "
+msgstr ""
+
+#: cvtx_admin.php:300
+msgid "Der Antrag erscheint in den folgenden Readern:"
+msgstr ""
+
+#: cvtx_admin.php:301
+#, fuzzy
+msgid "Der Änderungsantrag erscheint in den folgenden Readern:"
+msgstr "Create amendment"
+
+#: cvtx_admin.php:308
+msgid "Der Antrag ist bisher keinem Reader zugeordnet."
+msgstr ""
+
+#: cvtx_admin.php:309
+msgid "Der Änderungsantrag ist bisher keinem Reader zugeordnet."
+msgstr ""
+
+#: cvtx_admin.php:321
+#: cvtx_admin.php:331
+#: cvtx_admin.php:342
+#: cvtx_admin.php:361
+msgid "Date"
+msgstr ""
+
+#: cvtx_admin.php:472
+#: cvtx_admin.php:667
+msgid "Settings"
+msgstr "Settings"
+
+#: cvtx_admin.php:479
+msgid "Cheatin&#8217; uh?"
+msgstr ""
+
+#: cvtx_admin.php:597
+msgid "Antrag eingereicht „%titel%“"
+msgstr ""
+
+#: cvtx_admin.php:599
+msgid ""
+"Hej,\n"
+"\n"
+"dein Antrag „%titel%“ zum %top% wurde erfolgreich eingereicht. Bevor er auf der Website zu sehen sein wird, muss er erst noch eine Antragsnummer bekommen und dann freigeschaltet werden.\n"
+"\n"
+"Zur Bestätigung hier nochmal deine Angaben:\n"
+"\n"
+"%top%\n"
+"\n"
+"%titel%\n"
+"\n"
+"%antragstext%\n"
+"\n"
+"Begründung:\n"
+"%begruendung%\n"
+"\n"
+"AntragstellerInnen:\n"
+"%antragsteller%\n"
+msgstr ""
+
+#: cvtx_admin.php:611
+msgid "Neuer Antrag eingereicht (%titel%)"
+msgstr ""
+
+#: cvtx_admin.php:613
+msgid ""
+"Hej,\n"
+"\n"
+"es wurde ein neuer Antrag zu %top% eingereicht. Bitte prüfen und veröffentlichen!\n"
+"\n"
+msgstr ""
+
+#: cvtx_admin.php:623
+msgid "Änderungsantrag zu %antrag_kuerzel% (Zeile %zeile%) eingereicht"
+msgstr ""
+
+#: cvtx_admin.php:625
+msgid ""
+"Hej,\n"
+"\n"
+"dein Änderungsantrag zum Antrag %antrag% wurde erfolgreich eingereicht. Bevor er auf der Website zu sehen sein wird, muss er erst noch eine Antragsnummer bekommen und dann freigeschaltet werden.\n"
+"\n"
+"Zur Bestätigung hier nochmal deine Angaben:\n"
+"\n"
+"Antrag:\n"
+"%antrag%\n"
+"\n"
+"Zeile:\n"
+"%zeile%\n"
+"\n"
+"%antragstext%\n"
+"\n"
+"Begründung:\n"
+"%begruendung%\n"
+"\n"
+"AntragstellerInnen:\n"
+"%antragsteller%\n"
+msgstr ""
+
+#: cvtx_admin.php:637
+msgid "Neuer Änderungsantrag zu %antrag_kuerzel% (Zeile %zeile%) erstellt"
+msgstr ""
+
+#: cvtx_admin.php:639
+msgid ""
+"Hej,\n"
+"\n"
+"es wurde ein neuer Änderungsantrag zum Antrag %antrag% eingereicht. Bitte prüfen und veröffentlichen!\n"
+"\n"
+msgstr ""
+
+#: cvtx_admin.php:670
+#, fuzzy
+msgid "Antragstool"
+msgstr "Proposal"
+
+#: cvtx_admin.php:671
+msgid "Benachrichtigungen"
+msgstr ""
+
+#: cvtx_admin.php:672
+msgid "Spam-Schutz"
+msgstr ""
+
+#: cvtx_admin.php:673
+msgid "LaTeX"
+msgstr ""
+
+#: cvtx_admin.php:684
+msgid "Kurzbezeichnung für Anträge"
+msgstr ""
+
+#: cvtx_admin.php:694
+#, fuzzy
+msgid "Kurzbezeichnung für Änderungsanträge"
+msgstr "Amendments"
+
+#: cvtx_admin.php:704
+msgid "PDF-Erstellung"
+msgstr ""
+
+#: cvtx_admin.php:709
+msgid "PDF-Versionen für Änderungsanträge erzeugen"
+msgstr ""
+
+#: cvtx_admin.php:715
+msgid "Anonymer Benutzer"
+msgstr ""
+
+#: cvtx_admin.php:724
+msgid "Wordpress-Nutzer, dem alle anonym eingetragenen Anträge und Änderungsanträge zugeordnet werden."
+msgstr ""
+
+#: cvtx_admin.php:734
+msgid "Neue Anträge den folgenden Readern zuordnen"
+msgstr ""
+
+#: cvtx_admin.php:746
+#: cvtx_admin.php:764
+msgid "Bisher keine Reader erstellt."
+msgstr ""
+
+#: cvtx_admin.php:753
+msgid "Neue Änderungsanträge den folgenden Readern zuordnen"
+msgstr ""
+
+#: cvtx_admin.php:778
+msgid "HTML-Mail"
+msgstr ""
+
+#: cvtx_admin.php:783
+msgid "E-Mail als HTML-Mail versenden"
+msgstr ""
+
+#: cvtx_admin.php:788
+msgid "Absender-Adresse"
+msgstr ""
+
+#: cvtx_admin.php:792
+msgid "E-Mail-Adresse, die als Absender für Benachrichtigungen verwendet werden soll"
+msgstr ""
+
+#: cvtx_admin.php:801
+msgid "E-Mail-Adresse, an welche Benachrichtigungen über neu erstellte Anträge gesendet werden"
+msgstr ""
+
+#: cvtx_admin.php:806
+#, fuzzy
+msgid "Neuer Antrag erstellt"
+msgstr "Create proposal"
+
+#: cvtx_admin.php:807
+msgid "Mögliche Felder: %top%, %top_kuerzel%, %titel%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%."
+msgstr ""
+
+#: cvtx_admin.php:812
+msgid "E-Mail-Bestätigung"
+msgstr ""
+
+#: cvtx_admin.php:818
+msgid "Dem Antragsteller wird eine E-Mail zur Bestätigung geschickt"
+msgstr ""
+
+#: cvtx_admin.php:824
+#: cvtx_admin.php:856
+#: cvtx_admin.php:893
+#: cvtx_admin.php:925
+msgid "Betreff"
+msgstr ""
+
+#: cvtx_admin.php:835
+#: cvtx_admin.php:867
+#: cvtx_admin.php:904
+#: cvtx_admin.php:936
+msgid "Nachricht"
+msgstr ""
+
+#: cvtx_admin.php:845
+#: cvtx_admin.php:914
+msgid "Admin-Information"
+msgstr ""
+
+#: cvtx_admin.php:850
+#: cvtx_admin.php:919
+msgid "Administrator eine E-Mail zur Information schicken"
+msgstr ""
+
+#: cvtx_admin.php:876
+#, fuzzy
+msgid "Neuer Änderungsantrag erstellt"
+msgstr "Create amendment"
+
+#: cvtx_admin.php:877
+msgid "Mögliche Felder: %top%, %top_kuerzel%, %antrag%, %antrag_kuerzel%, %zeile%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%."
+msgstr ""
+
+#: cvtx_admin.php:882
+#, fuzzy
+msgid "Antragsteller-Mail"
+msgstr "Create proposal"
+
+#: cvtx_admin.php:887
+msgid "Antragsteller eine E-Mail zur Bestätigung schicken"
+msgstr ""
+
+#: cvtx_admin.php:952
+msgid "Spam-Schutz aktivieren"
+msgstr ""
+
+#: cvtx_admin.php:957
+msgid "Um die Eingabe von Anträgen und Änderungsanträgen Spam-sicher zu machen, wird der Einsatz von reCaptcha empfohlen."
+msgstr ""
+
+#: cvtx_admin.php:963
+msgid "Öffentlicher reCaptcha-Schlüssel"
+msgstr ""
+
+#: cvtx_admin.php:967
+msgid "Schlüsselpaare können <a href=\"http://www.google.com/recaptcha/whyrecaptcha\">hier</a> erzeugt werden."
+msgstr ""
+
+#: cvtx_admin.php:973
+msgid "Privater reCaptcha-Schlüssel"
+msgstr ""
+
+#: cvtx_admin.php:988
+msgid "LaTeX-Pfad"
+msgstr ""
+
+#: cvtx_admin.php:992
+msgid "Systempfad zur pdflatex-Anwendung"
+msgstr ""
+
+#: cvtx_admin.php:998
+msgid "Erzeugte Tex-Files löschen"
+msgstr ""
+
+#: cvtx_admin.php:1004
+#: cvtx_admin.php:1023
+msgid "immer"
+msgstr ""
+
+#: cvtx_admin.php:1007
+#: cvtx_admin.php:1026
+msgid "nur wenn fehlerfrei"
+msgstr ""
+
+#: cvtx_admin.php:1010
+#: cvtx_admin.php:1029
+msgid "nie"
+msgstr ""
+
+#: cvtx_admin.php:1017
+msgid "Erzeugte log-Files löschen"
+msgstr ""
+
+#: cvtx_admin.php:1036
+msgid "Eigene Templates"
+msgstr ""
+
+#: cvtx_admin.php:1040
+msgid "Unterverzeichnis des aktivierten Themes, in dem spezielle LaTeX-Templates liegen"
+msgstr ""
+
+#: cvtx_admin.php:1048
+msgid "Einstellungen speichern"
+msgstr ""
+
+#: cvtx_admin.php:1139
+msgid "Zwischenüberschrift"
+msgstr ""
+
+#: cvtx_admin.php:1139
+msgid "Unterüberschrift"
+msgstr ""
+
+#: cvtx_admin.php:1171
+msgid "Cvtx"
+msgstr ""
+
+#: cvtx_admin.php:1212
+msgid "Konfiguration"
+msgstr ""
+
+#: cvtx_widgets.php:56
+msgid "Antragsmappen"
+msgstr ""
+
+#: cvtx_widgets.php:57
+msgid "Beschreibung"
+msgstr ""
+
+#: cvtx_widgets.php:61
+#: cvtx_widgets.php:109
+msgid "Title:"
+msgstr "Title:"
+
+#: cvtx_widgets.php:65
+msgid "Description:"
+msgstr "Description:"
+
+#: cvtx_widgets.php:106
+msgid "Statistik"
+msgstr "Statistics"
+

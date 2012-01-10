@@ -85,7 +85,7 @@ function cvtx_kuerzel($post) {
 function cvtx_titel($post) {
     global $cvtx_types;
     if (in_array($post->post_type, array_keys($cvtx_types))) {
-        $title = (empty($post->post_title) ? __('(no title)') : $post->post_title);
+        $title = (empty($post->post_title) ? __('(no title)', 'cvtx') : $post->post_title);
         echo(cvtx_get_latex($title));
     }
 }
@@ -137,11 +137,11 @@ function cvtx_top_titel($post) {
         echo(cvtx_get_latex($post->post_title));
     } else if ($post->post_type == 'cvtx_antrag') {
         $top   = get_post(get_post_meta($post->ID, 'cvtx_antrag_top', true));
-        $title = (empty($top->post_title) ? __('(no title)') : $top->post_title);
+        $title = (empty($top->post_title) ? __('(no title)', 'cvtx') : $top->post_title);
         echo(cvtx_get_latex($title));
     } else if ($post->post_type == 'cvtx_aeantrag') {
         $top   = get_post(get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true));
-        $title = (empty($top->post_title) ? __('(no title)') : $top->post_title);
+        $title = (empty($top->post_title) ? __('(no title)', 'cvtx') : $top->post_title);
         echo(cvtx_get_latex($title));
     }
 }
@@ -160,7 +160,7 @@ function cvtx_top_kuerzel($post) {
 function cvtx_antrag($post) {
     if ($post->post_type == 'cvtx_aeantrag') {
         $title = get_the_title(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true));
-        if (empty($title)) $title = __('(no title)');
+        if (empty($title)) $title = __('(no title)', 'cvtx');
         echo(cvtx_get_latex($title));
     }
 }
@@ -168,7 +168,7 @@ function cvtx_antrag($post) {
 function cvtx_antrag_titel($post) {
     if ($post->post_type == 'cvtx_aeantrag') {
         $antrag = get_post(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true));
-        $title  = (empty($antrag->post_title) ? __('(no title)') : $antrag->post_title);
+        $title  = (empty($antrag->post_title) ? __('(no title)', 'cvtx') : $antrag->post_title);
         echo(cvtx_get_latex($title));
     }
 }

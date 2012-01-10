@@ -26,7 +26,7 @@ jQuery(document).ready(function($){
     if ($("#post_type").val() == "cvtx_antrag") {
         cvtx_fields = Array({"key": "cvtx_antrag_ord", "empty": false, "unique": true});
         cvtx_validate("cvtx_antrag_ord");
-        $("#cvtx_antrag_top_select").change(function() { cvtx_get_top_short(); cvtx_validate("cvtx_antrag_ord"); });
+        $("#cvtx_antrag_top_select").change(function() { cvtx_validate("cvtx_antrag_ord"); });
         $("#cvtx_antrag_ord_field").keyup(function() { cvtx_validate("cvtx_antrag_ord"); });
     }
 
@@ -68,18 +68,6 @@ jQuery(document).ready(function($){
         $("#"+target).fadeIn();
         $("#"+target).addClass("active");
         $('html,body').animate({scrollTop: 0}, 1);
-    }
-    
-    /**
-     * requests the shortcut for antraege and tops
-     */
-    function cvtx_get_top_short() {
-        $.post(ajaxurl,
-               {"action"   : "cvtx_get_top_short",
-                "cookie"   : encodeURIComponent(document.cookie),
-                "post_id"  : $("#cvtx_antrag_top_select").val()},
-               function (str) { $("#cvtx_top_kuerzel").text(str); }
-              );
     }
     
     /**
