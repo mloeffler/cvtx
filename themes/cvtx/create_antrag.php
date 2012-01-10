@@ -11,7 +11,7 @@ Template Name: Antrag erstellen
 			<h2><?php the_title(); ?></h2>
 			<div class="entry">
 				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'kubrick') . '</p>'); ?>
-				<?php cvtx_submit_antrag(); ?>
+				<?php if(function_exists('cvtx_submit_antrag')) cvtx_submit_antrag(); ?>
 			</div>
 		</div>
 	<?php endwhile; else: ?>

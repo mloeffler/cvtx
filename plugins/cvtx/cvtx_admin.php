@@ -1154,12 +1154,75 @@ function show_pending_number($menu) {
         else if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_aeantrag')
             $type = 'cvtx_aeantrag';
         if ($type) {
-            $counter = wp_count_posts($type);
-            $count   = $counter->pending + $counter->draft;
+            $count = cvtx_get_pending($type);
             $menu[$key][0] .= '<span class="awaiting-mod count-'.$count.'"><span class="pending-count">'.$count.'</span></span>';
         }
     }
     return $menu;
 }
 
+/**
+ * Add a cvtx-item to the wp_admin_bar
+ */
+function cvtx_admin_bar_render(){
+    global $wp_admin_bar;
+    // Parent, directs to the cvtx-config-page
+    $wp_admin_bar->add_menu(array(
+        'id'    => 'cvtx',
+        'title' => __('Cvtx'),
+        'href'  => '/wp-admin/plugins.php?page=cvtx-config'
+    ));
+    // link to cvtx_antrag
+    $count = cvtx_get_pending('cvtx_antrag');
+    $wp_admin_bar->add_menu(array(
+        'parent' => 'cvtx',
+        'id'     => 'cvtx_antrag',
+        'title'  => __('Anträge').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
+        'href'   => '/wp-admin/edit.php?post_type=cvtx_antrag',
+        'meta'   => array('class' => 'cvtx')
+    ));
+    // link to cvtx_aeantrag
+    $count = cvtx_get_pending('cvtx_aeantrag');
+    $wp_admin_bar->add_menu(array(
+        'parent' => 'cvtx',
+        'id'     => 'cvtx_aeantrag',
+        'title'  => __('Änderungsanträge').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
+        'href'   => '/wp-admin/edit.php?post_type=cvtx_aeantrag',
+        'meta'   => array('class' => 'cvtx')
+    ));
+    // link to cvtx_top
+    $wp_admin_bar->add_menu(array(
+        'parent' => 'cvtx',
+        'id'     => 'cvtx_tops',
+        'title'  => __('TOPs'),
+        'href'   => '/wp-admin/edit.php?post_type=cvtx_top',
+        'meta'   => array('class' => 'cvtx')
+    ));
+    // link to cvtx_reader
+    $wp_admin_bar->add_menu(array(
+        'parent' => 'cvtx',
+        'id'     => 'cvtx_reader',
+        'title'  => __('Reader'),
+        'href'   => '/wp-admin/edit.php?post_type=cvtx_reader',
+        'meta'   => array('class' => 'cvtx')
+    ));
+    // link to cvtx-config-page
+    $wp_admin_bar->add_menu(array(
+        'parent' => 'cvtx',
+        'id'     => 'cvtx_config',
+        'title'  => __('Konfiguration'),
+        'href'   => '/wp-admin/plugins.php?page=cvtx-config',
+        'meta'   => array('class' => 'cvtx')
+    ));
+}
+add_action('wp_before_admin_bar_render', 'cvtx_admin_bar_render');
+
+/**
+ * Return all posts of a specified type, which are either pending or draft
+ * @param $type
+ */
+function cvtx_get_pending($type) {
+    $count = wp_count_posts($type);
+    return $count->pending + $count->draft;
+}
 ?>

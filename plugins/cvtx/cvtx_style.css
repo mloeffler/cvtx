@@ -139,3 +139,8 @@ ul.zeichen {
 #icon-edit.icon32-posts-cvtx_aeantrag {
 	background: transparent url(images/cvtx_aeantrag.png);
 }
+
+#wp-admin-bar-cvtx-default li span.pending-count {
+    text-shadow: none;
+    color: red;
+}

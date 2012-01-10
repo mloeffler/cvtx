@@ -500,3 +500,8 @@ ul.reader_list li h4 {
 ul.reader_list li {
     padding-top: 7px;
 }
+
+#wp-admin-bar-cvtx-default li span.pending-count {
+    text-shadow: none;
+    color: red;
+}
