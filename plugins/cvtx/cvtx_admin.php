@@ -229,13 +229,16 @@ function cvtx_aeantrag_info() {
 // Verfahren
 function cvtx_aeantrag_verfahren() {
     global $post;
-    echo('<label>'.__('Verfahren', 'cvtx').'</label> <select name="cvtx_aeantrag_verfahren"><option></option>');
+    echo('<label for="cvtx_aeantrag_verfahren">'.__('Verfahren', 'cvtx').'</label> <select name="cvtx_aeantrag_verfahren" id="cvtx_aeantrag_verfahren"><option></option>');
     $verfahren = array(__('Übernahme', 'cvtx'), __('Modifizierte Übernahme', 'cvtx'), __('Abstimmung', 'cvtx'), __('Zurückgezogen', 'cvtx'), __('Erledigt', 'cvtx'));
     foreach ($verfahren as $verf) {
         echo('<option'.($verf == get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true) ? ' selected="selected"' : '').'>'.$verf.'</option>');
     }
-    echo('</select><br />');
-    echo('<label>'.__('Details', 'cvtx').'</label> <textarea style="width: 100%" name="cvtx_aeantrag_detail">'.get_post_meta($post->ID, 'cvtx_aeantrag_detail', true).'</textarea>');
+    echo('</select> ');
+
+    echo('<br />');
+    
+    echo('<textarea style="width: 100%" for="cvtx_aeantrag_detail" name="cvtx_aeantrag_detail">'.get_post_meta($post->ID, 'cvtx_aeantrag_detail', true).'</textarea>');
 }
 
 
@@ -1169,7 +1172,7 @@ function cvtx_admin_bar_render(){
     $wp_admin_bar->add_menu(array(
         'id'    => 'cvtx',
         'title' => __('Cvtx'),
-        'href'  => '/wp-admin/plugins.php?page=cvtx-config'
+        'href'  => home_url('/wp-admin/plugins.php?page=cvtx-config')
     ));
     // link to cvtx_antrag
     $count = cvtx_get_pending('cvtx_antrag');
@@ -1177,7 +1180,7 @@ function cvtx_admin_bar_render(){
         'parent' => 'cvtx',
         'id'     => 'cvtx_antrag',
         'title'  => __('Anträge').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
-        'href'   => '/wp-admin/edit.php?post_type=cvtx_antrag',
+        'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_antrag'),
         'meta'   => array('class' => 'cvtx')
     ));
     // link to cvtx_aeantrag
@@ -1186,7 +1189,7 @@ function cvtx_admin_bar_render(){
         'parent' => 'cvtx',
         'id'     => 'cvtx_aeantrag',
         'title'  => __('Änderungsanträge').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
-        'href'   => '/wp-admin/edit.php?post_type=cvtx_aeantrag',
+        'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_aeantrag'),
         'meta'   => array('class' => 'cvtx')
     ));
     // link to cvtx_top
@@ -1194,7 +1197,7 @@ function cvtx_admin_bar_render(){
         'parent' => 'cvtx',
         'id'     => 'cvtx_tops',
         'title'  => __('TOPs'),
-        'href'   => '/wp-admin/edit.php?post_type=cvtx_top',
+        'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_top'),
         'meta'   => array('class' => 'cvtx')
     ));
     // link to cvtx_reader
@@ -1202,7 +1205,7 @@ function cvtx_admin_bar_render(){
         'parent' => 'cvtx',
         'id'     => 'cvtx_reader',
         'title'  => __('Reader'),
-        'href'   => '/wp-admin/edit.php?post_type=cvtx_reader',
+        'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_reader'),
         'meta'   => array('class' => 'cvtx')
     ));
     // link to cvtx-config-page
@@ -1210,7 +1213,7 @@ function cvtx_admin_bar_render(){
         'parent' => 'cvtx',
         'id'     => 'cvtx_config',
         'title'  => __('Konfiguration'),
-        'href'   => '/wp-admin/plugins.php?page=cvtx-config',
+        'href'   => home_url('/wp-admin/plugins.php?page=cvtx-config'),
         'meta'   => array('class' => 'cvtx')
     ));
 }
