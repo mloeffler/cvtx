@@ -24,7 +24,7 @@ Template Name: Antrags&uuml;bersicht
                                'order'     => 'ASC'));
     if ($loop->have_posts()): ?>
       <ul id="antraege">
-      	<li class="rss top"><h3>RSS-Feed</h3><?php printf('<p>'.__('Um immer &uuml;ber neue Antr&auml;ge auf dem Laufenden zu bleiben, abonniere doch einfach den %1$s!', 'cvtx').'</p>','<a href="'.get_feed_link('rss2').'&post_type=cvtx_antrag">RSS-Feed</a>'); ?></li>
+      	<li class="rss top"><h3>RSS-Feed</h3><?php printf('<p>'.__('Um immer &uuml;ber neue Antr&auml;ge auf dem Laufenden zu bleiben, abonniere doch einfach den %1$s!', 'cvtx').'</p>','<a href="'.get_feed_link('rss2').'?post_type=cvtx_antrag">RSS-Feed</a>'); ?></li>
         <li class="top overview"><h3>&Uuml;bersicht</h3>
           <ul>
             <?php while ($loop->have_posts()): $loop->the_post();?>
