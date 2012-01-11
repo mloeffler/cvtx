@@ -28,13 +28,18 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
                                               'nopaging'   => true,
                                               'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
                                                                           'value'   => $antrag,
-                                                                          'compare' => '='))));  
-}?>
+                                                                          'compare' => '='))));
+   }
+   else { 
+       global $wp_query;
+       $loop = $wp_query;
+   }
+?>
 
 <channel>
-	<title><?php printf(__('&Auml;nderungsantr&auml;ge zu %s','cvtx'),get_the_title($antrag)); ?></title>
-	<atom:link href="<?php echo get_permalink($antrag); ?>" rel="self" type="application/rss+xml" />
-	<link><?php echo get_permalink($antrag); ?></link>
+	<title><?php if(isset($antrag)) printf(__('&Auml;nderungsantr&auml;ge zu %s','cvtx'),get_the_title($antrag)); else bloginfo_rss('name'); wp_title_rss();?></title>
+	<atom:link href="<?php if(isset($antrag)) echo get_permalink($antrag); else self_link(); ?>" rel="self" type="application/rss+xml" />
+	<link><?php if(isset($antrag)) echo get_permalink($antrag); else self_link();  ?></link>
 	<description><?php bloginfo_rss("description") ?></description>
 	<lastBuildDate><?php echo mysql2date('D, d M Y H:i:s +0000', get_lastpostmodified('GMT'), false); ?></lastBuildDate>
 	<language><?php echo get_option('rss_language'); ?></language>
