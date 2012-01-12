@@ -8,7 +8,7 @@ add_action('widgets_init', create_function('', 'register_widget("ReaderWidget");
 class ReaderWidget extends WP_Widget {
     /** constructor */
     function __construct() {
-        parent::WP_Widget('ReaderWidget', 'Reader-Übersicht', array('description' => 'Veröffentlichte Reader anzeigen'));
+        parent::WP_Widget('ReaderWidget', __('Reader-Übersicht', 'cvtx'), array('description' => __('Veröffentlichte Reader anzeigen.', 'cvtx')));
     }
     
     /** @see WP_Widget::widget */
@@ -81,7 +81,7 @@ add_action('widgets_init', create_function('', 'register_widget("CountWidget");'
  */
 class CountWidget extends WP_Widget {
     function __construct() {
-        parent::WP_Widget('CountWidget', 'Antrags-Statistik', array('description' => 'Zeigt an, wieviele Anträge/Änderungsanträge veröffentlicht wurden'));
+        parent::WP_Widget('CountWidget', __('Antrags-Statistik', 'cvtx'), array('description' => __('Zeigt an, wie viele Anträge und Änderungsanträge bisher veröffentlicht wurden.', 'cvtx')));
     }
     
     function widget($args,$instance) {
@@ -126,7 +126,7 @@ add_action('widgets_init', create_function('', 'register_widget("RSS_aeantrag_Wi
  */
 class RSS_aeantrag_Widget extends WP_Widget {
     function __construct() {
-        parent::WP_Widget('RSS_aeantrag_Widget', 'RSS-Feed zu Änderungsanträgen', array('description' => __('Bietet einen Link zum RSS-Feed für neue Änderungsanträge eines spezifischen Antrags an.', 'cvtx')));
+        parent::WP_Widget('RSS_aeantrag_Widget', __('RSS-Feed zu Änderungsanträgen', 'cvtx'), array('description' => __('Bietet einen Link zum RSS-Feed für neue Änderungsanträge eines spezifischen Antrags an.', 'cvtx')));
     }
     
     function widget($args,$instance) {
@@ -182,8 +182,8 @@ function cvtx_dashboard_widget_function() {
     echo '</tbody></table>';
     echo '</div>';
     echo '<div class="more">';
-    echo '<p><a href="plugins.php?page=cvtx-config">'.__('Konfiguration','cvtx').'</a></p>';
-    printf('<p>'.__('Fragen? Hier gibt\'s %s','cvtx').'</p>','<a href="http://cvtx.de">'.__('Antworten','cvtx').'</a>');
+    echo '<p><a href="plugins.php?page=cvtx-config">'.__('Settings').'</a></p>';
+    echo __('<p>Fragen? Hier gibt\'s <a href="http://cvtx-project.org">Antworten</a>!</p>','cvtx');
     echo '</div>';
 } 
 
@@ -193,7 +193,7 @@ add_action('wp_dashboard_setup', 'cvtx_add_dashboard_widgets');
  * Create the function use in the action hook
  */
 function cvtx_add_dashboard_widgets() {
-    wp_add_dashboard_widget('cvtx_dashboard_widget', 'cvtx Antragstool', 'cvtx_dashboard_widget_function');
+    wp_add_dashboard_widget('cvtx_dashboard_widget', __('cvtx Antragstool', 'cvtx'), 'cvtx_dashboard_widget_function');
 }
 
 /**

@@ -1171,7 +1171,7 @@ function cvtx_admin_bar_render(){
     // Parent, directs to the cvtx-config-page
     $wp_admin_bar->add_menu(array(
         'id'    => 'cvtx',
-        'title' => __('Cvtx'),
+        'title' => __('cvtx', 'cvtx'),
         'href'  => home_url('/wp-admin/plugins.php?page=cvtx-config')
     ));
     // link to cvtx_antrag
@@ -1179,7 +1179,7 @@ function cvtx_admin_bar_render(){
     $wp_admin_bar->add_menu(array(
         'parent' => 'cvtx',
         'id'     => 'cvtx_antrag',
-        'title'  => __('Anträge').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
+        'title'  => __('Anträge', 'cvtx').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
         'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_antrag'),
         'meta'   => array('class' => 'cvtx')
     ));
@@ -1188,7 +1188,7 @@ function cvtx_admin_bar_render(){
     $wp_admin_bar->add_menu(array(
         'parent' => 'cvtx',
         'id'     => 'cvtx_aeantrag',
-        'title'  => __('Änderungsanträge').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
+        'title'  => __('Änderungsanträge', 'cvtx').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
         'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_aeantrag'),
         'meta'   => array('class' => 'cvtx')
     ));
@@ -1196,7 +1196,7 @@ function cvtx_admin_bar_render(){
     $wp_admin_bar->add_menu(array(
         'parent' => 'cvtx',
         'id'     => 'cvtx_tops',
-        'title'  => __('TOPs'),
+        'title'  => __('TOPs', 'cvtx'),
         'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_top'),
         'meta'   => array('class' => 'cvtx')
     ));
@@ -1204,7 +1204,7 @@ function cvtx_admin_bar_render(){
     $wp_admin_bar->add_menu(array(
         'parent' => 'cvtx',
         'id'     => 'cvtx_reader',
-        'title'  => __('Reader'),
+        'title'  => __('Reader', 'cvtx'),
         'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_reader'),
         'meta'   => array('class' => 'cvtx')
     ));
@@ -1212,7 +1212,7 @@ function cvtx_admin_bar_render(){
     $wp_admin_bar->add_menu(array(
         'parent' => 'cvtx',
         'id'     => 'cvtx_config',
-        'title'  => __('Konfiguration'),
+        'title'  => __('Settings'),
         'href'   => home_url('/wp-admin/plugins.php?page=cvtx-config'),
         'meta'   => array('class' => 'cvtx')
     ));
