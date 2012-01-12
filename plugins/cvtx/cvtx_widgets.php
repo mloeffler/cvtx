@@ -126,7 +126,7 @@ add_action('widgets_init', create_function('', 'register_widget("RSS_aeantrag_Wi
  */
 class RSS_aeantrag_Widget extends WP_Widget {
     function __construct() {
-        parent::WP_Widget('RSS_aeantrag_Widget', 'RSS-Feed zu Änderungsanträgen', array('description' => 'Bietet einen Link zum RSS-Feed für neue Änderungsanträge eines spezifischen Antrags an.'));
+        parent::WP_Widget('RSS_aeantrag_Widget', 'RSS-Feed zu Änderungsanträgen', array('description' => __('Bietet einen Link zum RSS-Feed für neue Änderungsanträge eines spezifischen Antrags an.', 'cvtx')));
     }
     
     function widget($args,$instance) {
@@ -138,8 +138,8 @@ class RSS_aeantrag_Widget extends WP_Widget {
             if($title)
                 echo $before_title.$title.$after_title;
             $post_title = '<strong>"'.get_the_title($post->ID).'"</strong>';
-            $rss_url    = '<a href="'.get_feed_link('rss2').'&post_type=cvtx_aeantrag&cvtx_aeantrag_antrag='.$post->ID.'">RSS-Feed</a>';
-            printf(__('Immer auf dem Laufenden über %s bleiben?<p/> Abbonier doch einfach diesen %s mit allen Änderungsanträgen!'),$post_title,$rss_url);
+            $rss_url    = '<a href="'.get_feed_link('rss2').'?post_type=cvtx_aeantrag&cvtx_aeantrag_antrag='.$post->ID.'">RSS-Feed</a>';
+            printf(__('Immer auf dem Laufenden über %s bleiben?<p/> Abbonier doch einfach diesen %s mit allen Änderungsanträgen!', 'cvtx'), $post_title,$rss_url);
             echo $after_widget;        
         }
     }
@@ -154,7 +154,7 @@ class RSS_aeantrag_Widget extends WP_Widget {
         if($instance)
             $title = esc_attr($instance['title']);
         else
-            $title = __('RSS-Feed', 'text_domain');
+            $title = __('RSS-Feed');
         ?>
         <p>
         <label for="<?php echo $this->get_field_id('title') ?>"><?php _e('Title:'); ?></label>
