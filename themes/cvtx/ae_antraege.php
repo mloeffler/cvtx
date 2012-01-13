@@ -1,6 +1,9 @@
 <?php
 /*
 Template Name: &Auml;nderungsantrags&uuml;bersicht
+
+Dieses Template stellt eine †bersicht Ÿber alle bereits
+eingerichteten AntrŠge dar.
 */
 ?>
 <!DOCTYPE html>

@@ -24,7 +24,7 @@
 			<?php endwhile; ?>
 	<?php else : ?>
 		<h2 class="center"><?php _e('Not Found', 'kubrick'); ?></h2>
-		<p class="center"><?php _e('Sorry, but you are looking for something that isn&#8217;t here.', 'kubrick'); ?></p>
+		<p><?php _e('Es konnten leider keine EintrŠge gefunden werden!', 'cvtx'); ?></p>
 		<?php get_search_form(); ?>
 	<?php endif; ?>
 	</div>

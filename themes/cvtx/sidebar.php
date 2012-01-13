@@ -6,7 +6,7 @@
 		<li id="first">
 			<div class="filler2"></div>
 			<div class="inner">
-				Test
+				<?php get_search_form(); ?>
 			</div>
 		</li>
 		<?php if(function_exists('dynamic_sidebar')) {

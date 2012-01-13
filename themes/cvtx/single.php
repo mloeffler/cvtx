@@ -9,7 +9,7 @@
 		<div <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 			<h2><?php the_title(); ?></h2>
 			<div class="entry">
-				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'kubrick') . '</p>'); ?>
+				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx') . '</p>'); ?>
 			</div>
 			<p class="postmetadata alt">
 				<small>
@@ -18,7 +18,7 @@
 			</p>
 		</div>
 	<?php endwhile; else: ?>
-	<p><?php _e('Sorry, no posts matched your criteria.', 'kubrick'); ?></p>
+		<p><?php _e('Es konnten leider keine EintrŠge gefunden werden!', 'cvtx'); ?></p>
 	<?php endif; ?>
 		</div>
 	</div>

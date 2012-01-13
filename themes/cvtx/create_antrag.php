@@ -15,7 +15,7 @@ Template Name: Antrag erstellen
 			</div>
 		</div>
 	<?php endwhile; else: ?>
-	<p><?php _e('Sorry, no posts matched your criteria.', 'kubrick'); ?></p>
+	    <p><?php _e('Es konnten leider keine EintrŠge gefunden werden!', 'cvtx'); ?></p>
 	<?php endif; ?>
 		</div>
 	</div>
