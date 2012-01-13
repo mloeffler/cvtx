@@ -1,5 +1,5 @@
 	<div id="footer">
-		<a href="#">cvtx</a> basiert auf <a href="http://www.latex-project.org/">LaTeX</a> und <a href="http://wordpress.org">Wordpress</a>
+		<a href="http://cvtx-project.org/">cvtx</a> basiert auf <a href="http://www.latex-project.org/">LaTeX</a> und <a href="http://wordpress.org">Wordpress</a>.
 	</div>
 </div>
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/script.js"></script>

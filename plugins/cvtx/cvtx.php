@@ -413,7 +413,7 @@ function cvtx_insert_post($post_id, $post = null) {
         if (is_admin()) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
-            $headers = array('From: '.get_option('cvtx_send_from_email')."\r\n",
+            $headers = array('From: '.get_option('cvtx_send_from_email', get_bloginfo('admin_email'))."\r\n",
                              (get_option('cvtx_send_html_mail') ? "Content-Type: text/html\r\n" : ''));
             
             // post type antrag created
@@ -459,7 +459,7 @@ function cvtx_insert_post($post_id, $post = null) {
                             implode("\r\n", $headers) . "\r\n");
                 }
                 if (get_option('cvtx_send_create_antrag_admin')) {
-                    wp_mail(get_option('cvtx_send_rcpt_email'),
+                    wp_mail(get_option('cvtx_send_rcpt_email', get_bloginfo('admin_email')),
                             $mails['admin']['subject'],
                             $mails['admin']['body'],
                             implode("\r\n", $headers));
