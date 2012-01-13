@@ -414,7 +414,7 @@ function cvtx_insert_post($post_id, $post = null) {
         // send mails if antrag created
         else {
             $headers = array('From: '.get_option('cvtx_send_from_email')."\r\n",
-                             (get_option('cvtx_send_html_mail', true) == true ? "Content-Type: text/html\r\n" : ''));
+                             (get_option('cvtx_send_html_mail') ? "Content-Type: text/html\r\n" : ''));
             
             // post type antrag created
             if ($post->post_type == 'cvtx_antrag') {
@@ -456,13 +456,13 @@ function cvtx_insert_post($post_id, $post = null) {
                     wp_mail($_POST['cvtx_antrag_email'],
                             $mails['owner']['subject'],
                             $mails['owner']['body'],
-                            implode("\r\n",$headers) . "\r\n");
+                            implode("\r\n", $headers) . "\r\n");
                 }
                 if (get_option('cvtx_send_create_antrag_admin')) {
                     wp_mail(get_option('cvtx_send_rcpt_email'),
                             $mails['admin']['subject'],
                             $mails['admin']['body'],
-                            implode("\r\n",$headers));
+                            implode("\r\n", $headers));
                 }
             }
             // post type aeantrag created
