@@ -16,6 +16,7 @@
 				<?php printf(__('Dieser %1$s wurde am %2$s um %3$s eingestellt.'),get_post_type_object(get_post_type())->labels->singular_name, get_the_time(__('l, j. F Y')), get_the_time(), get_the_category_list(', ')); ?>
 				</small>
 			</p>
+					<?php comments_template( '', true ); ?>
 		</div>
 	<?php endwhile; else: ?>
 		<p><?php _e('Es konnten leider keine EintrŠge gefunden werden!', 'cvtx'); ?></p>

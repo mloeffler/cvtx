@@ -1,6 +1,6 @@
 <div id="sidebar">
 	<nav>
-		<?php wp_nav_menu(array('theme_location' => 'cvtx-menu', 'fallback_cb' => false)); ?>
+		<?php wp_nav_menu(array('theme_location' => 'cvtx-menu', 'fallback_cb' => false, 'walker' => new cvtx_walker())); ?>
 	</nav><div class="filler"></div>
 	<ul class="side">
 		<li id="first">

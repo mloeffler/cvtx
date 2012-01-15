@@ -1,4 +1,17 @@
 (function($){
+	$('ul.menu li').each(function() {
+	    var width = $(this).width();
+	    var id = '#'+$(this).attr('id');
+	    var width2 = $(id+' ul.sub-menu.depth-0').width();
+	    var width3 = width/2-width2/2;
+	    $(id+' ul.sub-menu.depth-0').css('margin-left',width3+'px');
+	    $(id+' span.arrow').css('margin-left',(width2/2-10)+'px');
+	});
+	$('ul.menu li').hover(function() {
+			$(this).find('ul.depth-0').slideDown('fast');
+		}, function () {
+			$(this).find('ul.depth-0').slideUp('fast');
+	});
 	$('ul#antraege li.overview a').click(function() {
 		var pathname = $(this).attr("href");
 		if (location.pathname.replace(/^\//,") == this.pathname.replace(/^\//,") && location.hostname == this.hostname) {

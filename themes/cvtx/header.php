@@ -8,7 +8,15 @@
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <?php if ( is_singular() && get_option( 'thread_comments' ) ) wp_enqueue_script( 'comment-reply' ); ?>
 <?php wp_head(); ?>
+<noscript>
+<style type="text/css">
+nav ul li:hover ul {
+	display: block;
+}
+</style>
+</noscript>
 </head>
+
 <body>
 <div id="overlay"></div>
 <header>
@@ -25,4 +33,4 @@
 </header>
 <div id="c_wrap" class="wrapper">
 	<div id="content">
-		<nav><?php wp_nav_menu( array( 'theme_location' => 'header-menu' ) ); ?></nav><div class="filler"></div>
+		<nav><?php wp_nav_menu(array('theme_location' => 'header-menu', 'walker' => new cvtx_walker())); ?></nav><div class="filler"></div>
