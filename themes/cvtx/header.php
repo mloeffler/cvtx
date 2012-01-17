@@ -33,4 +33,4 @@ nav ul li:hover ul {
 </header>
 <div id="c_wrap" class="wrapper">
 	<div id="content">
-		<nav><?php wp_nav_menu(array('theme_location' => 'header-menu', 'walker' => new cvtx_walker())); ?></nav><div class="filler"></div>
+		<nav><?php wp_nav_menu(array('theme_location' => 'header-menu', 'walker' => (has_nav_menu('header-menu') ? new cvtx_walker() : ''))); ?></nav><div class="filler"></div>

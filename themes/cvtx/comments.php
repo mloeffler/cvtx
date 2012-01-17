@@ -1,6 +1,6 @@
 			<div id="comments">
 <?php if ( post_password_required() ) : // don't display comments for password-protected posts ?>
-				<p class="nopassword"><?php _e( 'This post is password protected. Enter the password to view any comments.', 'oenology' ); ?></p>
+				<p class="nopassword"><?php _e( 'Dieser Artikel ist passwortgeschützt. Gib das Passwort ein, um ihn sehen zu können.', 'cvtx' ); ?></p>
 			</div><!-- #comments -->
 <?php
 		/* Stop the rest of comments.php from being processed,
@@ -42,17 +42,17 @@
 	}
 ?>
 
-<h3>Comments <?php if ( ! comments_open() ) { ?> <small>(Comments are closed)</small><?php } ?></h3>
+<h3>Kommentare <?php if ( ! comments_open() ) { ?> <small>(Kommentare geschlossen)</small><?php } ?></h3>
 
 	
 
 <?php $i = 0; ?>
-	<span id="comments-responses" style="font-weight:bold;"><?php comments_number('No Responses', 'One Response', '% Responses' );?> to &#8220;<?php the_title(); ?>&#8221;</span>
+	<span id="comments-responses" style="font-weight:bold;"><?php comments_number('Keine Kommentare', 'Ein Kommentar', '% Kommentare' );?> zu &#8220;<?php the_title(); ?>&#8221;</span>
 
 <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // If the paged comments setting is enabled, and enough comments exisst to cause comments to be paged ?>
 			<div class="navigation">
-				<div class="nav-previous"><?php previous_comments_link( '<span class="meta-nav">&larr;</span> Older Comments' ); ?></div>
-				<div class="nav-next"><?php next_comments_link( 'Newer Comments <span class="meta-nav">&rarr;</span>' ); ?></div>
+				<div class="nav-previous"><?php previous_comments_link( '<span class="meta-nav">&larr;</span> Ältere Kommentare' ); ?></div>
+				<div class="nav-next"><?php next_comments_link( 'Neuere Kommentare <span class="meta-nav">&rarr;</span>' ); ?></div>
 			</div> <!-- .navigation -->
 <?php endif; // check for comment navigation 
 		
@@ -64,8 +64,8 @@
 
 		if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 			<div class="navigation">
-				<div class="nav-previous"><?php previous_comments_link( '<span class="meta-nav">&larr;</span> Older Comments' ); ?></div>
-				<div class="nav-next"><?php next_comments_link( 'Newer Comments <span class="meta-nav">&rarr;</span>' ); ?></div>
+				<div class="nav-previous"><?php previous_comments_link( '<span class="meta-nav">&larr;</span> Ältere Kommentare' ); ?></div>
+				<div class="nav-next"><?php next_comments_link( 'Neuere Kommentare <span class="meta-nav">&rarr;</span>' ); ?></div>
 			</div><!-- .navigation -->
 <?php endif; // check for comment navigation ?>
 

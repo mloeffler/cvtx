@@ -53,7 +53,7 @@ body {
 
 
 #footer {
-    width: 590px;
+    width: 624px;
     clear: both;
     box-radius:3px;
     background: white;
@@ -533,18 +533,23 @@ form.cvtx_antrag_form div.form-group {
     font-size:0.8em;
 }
 
-form.cvtx_antrag_form input,
-form.cvtx_antrag_form textarea {
+form input,
+form textarea {
     background: url(images/verlauf2.png) bottom repeat-x;
     border: 1px solid #eee;
     padding: 0.3em;
     border-radius:3px;
 }
 
-form.cvtx_antrag_form input.submit {
+form input.submit {
     font-weight: bold;
     color: #58ab27;
     padding: 1em;
+}
+
+#searchsubmit {
+	color: #58ab27;
+	padding: 0.3em 0.8em;
 }
 
 p#message {
