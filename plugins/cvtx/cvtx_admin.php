@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package cvtx
+ */
+
 
 /* add custom meta boxes */
 

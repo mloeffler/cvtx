@@ -4,31 +4,15 @@
  * @version 0.1
  */
 /*
-Plugin Name: cvtx Antragstool
-Plugin URI: http://wordpress.org/extend/plugins/cvtx/
-Description: “cvtx Antragstool” provides several features to manage proposals and amendments at political congresses or party conventions.
+Plugin Name: cvtx project
+Plugin URI: http://cvtx-project.org
+Description: Das Antragssystem „cvtx“ stellt zahlreiche Hilfsmittel zur Verfügung, um Tagesordnungen, Anträge, Änderungsanträge und Antragsreader auf politischen Kongressen oder Mitgliederversammlungen zu verwalten. Es basiert auf dem Textsatzsystem LaTeX und ist verfügbar als Open Source.
 Author: Alexander Fecke & Max Löffler
 Version: 0.1
 Author URI: http://alexander-fecke.de
 License: GPLv2 or later
 */
 
-/* 
-Copyright 2011 - Alexander Fecke & Max Löffler
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License, version 2, as 
-published by the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
 
 define('CVTX_VERSION', '0.1');
 define('CVTX_PLUGIN_DIR', plugin_dir_path(__FILE__));
