@@ -1,3 +1,10 @@
+/**
+ * Jquery, used for the ae_antraege-Template
+ *
+ * @package WordPress
+ * @subpackage cvtx
+ */
+ 
 (function($){
 	$('div.toggler a').click(function() {
 		$('#filter').slideToggle();

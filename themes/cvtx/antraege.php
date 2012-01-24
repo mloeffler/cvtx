@@ -1,8 +1,15 @@
 <?php
-/*
-Template Name: Antrags&uuml;bersicht
-*/
+/**
+ * Template Name: Antragsübersicht
+ *
+ * Dieses Template stellt eine Übersicht über alle bereits
+ * eingerichteten Anträge, Änderungsanträge und TOPs dar.
+ *
+ * @package WordPress
+ * @subpackage cvtx
+ */
 ?>
+
 <?php get_header(); ?>
   <div class="inner">
     <?php if (have_posts()): while (have_posts()): the_post(); ?>
@@ -24,8 +31,9 @@ Template Name: Antrags&uuml;bersicht
                                'order'     => 'ASC'));
     if ($loop->have_posts()): ?>
       <ul id="antraege">
-      	<li class="rss top"><h3>RSS-Feed</h3><?php printf('<p>'.__('Um immer &uuml;ber neue Antr&auml;ge auf dem Laufenden zu bleiben, abonniere doch einfach den %1$s!', 'cvtx').'</p>','<a href="'.get_feed_link('rss2').'?post_type=cvtx_antrag">RSS-Feed</a>'); ?></li>
-        <li class="top overview"><h3>&Uuml;bersicht</h3>
+      	<?php $rss_url = add_query_arg(array('post_type' => 'cvtx_antrag'),get_feed_link('rss2'));?>
+      	<li class="rss top"><h3>RSS-Feed</h3><?php printf('<p>'.__('Um immer über neue Anträge auf dem Laufenden zu bleiben, abonniere doch einfach den %1$s!', 'cvtx').'</p>','<a href="'.$rss_url.'">RSS-Feed</a>'); ?></li>
+        <li class="top overview"><h3>Übersicht</h3>
           <ul>
             <?php while ($loop->have_posts()): $loop->the_post();?>
               <li class="antrag">
@@ -62,7 +70,7 @@ Template Name: Antrags&uuml;bersicht
         </span>
         <ul class="options">
           <li><?php if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
-          <li><a href="<?php the_permalink(); ?>#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrag hinzuf&uuml;gen</a></li>
+          <li><a href="<?php the_permalink(); ?>#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">Änderungsantrag hinzufügen</a></li>
           <?php $antrag_id = $post->ID; ?>
           <?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
                                             'meta_key'   => 'cvtx_sort',
@@ -73,12 +81,12 @@ Template Name: Antrags&uuml;bersicht
                                                                         'value'   => $antrag_id,
                                                                         'compare' => '=')))); ?>
           <?php if($loop3->have_posts()): ?>
-            <li><a href="<?php the_permalink(); ?>" rel="extern" class="ae_antraege_overview" meta-id="<?php print $post->ID; ?>">&Auml;nderungsantrags&uuml;bersicht</a></li>
+            <li><a href="<?php the_permalink(); ?>" rel="extern" class="ae_antraege_overview" meta-id="<?php print $post->ID; ?>">Änderungsantragsübersicht</a></li>
           <?php endif;?>
         </ul><div id="result-<?php print $post->ID; ?>" class="ae_antraege_result"></div>
         <?php if($loop3->have_posts()): ?>
         <ul class="ae_antraege">
-          <h4>&Auml;nderungsantr&auml;ge</h4>
+          <h4>Änderungsanträge</h4>
         <?php
           while($loop3->have_posts()):$loop3->the_post();?>
             <li><span><?php the_title(); ?></span> (AntragstellerInnen: <em><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true);?></em>)</li>

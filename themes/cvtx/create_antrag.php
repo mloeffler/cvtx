@@ -1,8 +1,15 @@
 <?php
-/*
-Template Name: Antrag erstellen
-*/
+/**
+ * Template Name: Antrag erstellen
+ *
+ * Dieses Template zeigt ein Formular zum Erstellen von Anträgen an.
+ * Dafür muss das Plugin "cvtx" installiert sein.
+ *
+ * @package WordPress
+ * @subpackage cvtx
+ */
 ?>
+
 <?php get_header(); ?>
 	<div class="inner">
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
@@ -15,7 +22,7 @@ Template Name: Antrag erstellen
 			</div>
 		</div>
 	<?php endwhile; else: ?>
-	    <p><?php _e('Es konnten leider keine Eintr�ge gefunden werden!', 'cvtx'); ?></p>
+	    <p><?php _e('Es konnten leider keine Einträge gefunden werden!', 'cvtx'); ?></p>
 	<?php endif; ?>
 		</div>
 	</div>

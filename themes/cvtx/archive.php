@@ -1,6 +1,7 @@
 <?php
 /**
- * Standard-Template
+ * Archiv-Template, stellt Posts aus einem bestimmten 
+ * Zeitraum dar.
  *
  * @package WordPress
  * @subpackage cvtx
@@ -9,6 +10,19 @@
 
 <?php get_header(); ?>
 		<div class="inner">
+			<h1 class="page-title">
+			<?php if ( is_day() ) : ?>
+				<?php printf( __( 'Tägliches Archiv: <span>%s</span>', 'cvtx' ), get_the_date() ); ?>
+			<?php elseif ( is_month() ) : ?>
+				<?php printf( __( 'Monatliches Archiv: <span>%s</span>', 'cvtx' ), get_the_date( _x( 'F Y', 'monthly archives date format', 'twentyten' ) ) ); ?>
+			<?php elseif ( is_year() ) : ?>
+				<?php printf( __( 'Jährliches Archiv: <span>%s</span>', 'cvtx' ), get_the_date( _x( 'Y', 'yearly archives date format', 'twentyten' ) ) ); ?>
+			<?php else : ?>
+				<?php _e( 'Archiv', 'cvtx' ); ?>
+			<?php endif; ?>
+			<?php rewind_posts(); ?>
+			</h1>
+						
 		<?php if (have_posts()) : ?>
 	
 			<?php while (have_posts()) : the_post(); ?>
@@ -27,11 +41,11 @@
 			<?php endwhile; ?>
 
 	<?php /* Display navigation to next/previous pages when applicable */ ?>
-	<?php if (  $wp_query->max_num_pages > 1 ) : ?>
-					<div id="nav-below" class="navigation">
-						<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Ältere Beiträge', 'cvtx' ) ); ?></div>
-						<div class="nav-next"><?php previous_posts_link( __( 'Neuere Beiträge <span class="meta-nav">&rarr;</span>', 'cvtx' ) ); ?></div>
-					</div><!-- #nav-below -->
+	<?php if ($wp_query->max_num_pages > 1) : ?>
+		<div id="nav-below" class="navigation">
+			<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Ältere Beiträge', 'cvtx' ) ); ?></div>
+			<div class="nav-next"><?php previous_posts_link( __( 'Neuere Beiträge <span class="meta-nav">&rarr;</span>', 'cvtx' ) ); ?></div>
+		</div><!-- #nav-below -->
 	<?php endif; ?>
 	
 	<?php else : ?>

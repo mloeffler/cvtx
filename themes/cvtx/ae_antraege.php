@@ -1,11 +1,15 @@
 <?php
-/*
-Template Name: &Auml;nderungsantrags&uuml;bersicht
-
-Dieses Template stellt eine †bersicht Ÿber alle bereits
-eingerichteten AntrŠge dar.
-*/
+/**
+ * Template Name: Ã„nderungsantragsÃ¼bersicht
+ *
+ * Dieses Template stellt eine Ãœbersicht Ã¼ber alle bereits
+ * eingerichteten AntrÃ¤ge dar.
+ *
+ * @package WordPress
+ * @subpackage cvtx
+ */
 ?>
+
 <!DOCTYPE html>
 <html lang="<?php bloginfo('language'); ?>">
 
@@ -14,7 +18,7 @@ eingerichteten AntrŠge dar.
     <title><?php wp_title(); ?> <?php bloginfo('name'); ?></title>
     <link rel="profile" href="http://gmpg.org/xfn/11" />
     <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
-    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/antragsmappe.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/ae_antraege.css" type="text/css" media="screen" />
     <?php wp_head(); ?>
   </head>
 
@@ -46,7 +50,7 @@ eingerichteten AntrŠge dar.
       <div id="liste">
         <div class="toggler"><a href="#">Filter <?php if($hide) print 'anzeigen'; else print 'verbergen'; ?></a></div>
         <form method="post" id="filter" <?php if($hide) print 'style="display:none"'; ?> >
-          <label for="tops">Tagesordnungspunkte und &Auml;nderungsantr&auml;ge</label>
+          <label for="tops">Tagesordnungspunkte und Ã„nderungsantrÃ¤ge</label>
           <select id="tops" style="width: 100%" multiple="multiple" size="20" name="antraege[]">
           <?php
           while ($loop->have_posts()):$loop->the_post(); $top_id = $post->ID;?>
@@ -70,11 +74,11 @@ eingerichteten AntrŠge dar.
           </select>
           <p>
             <input id="show_empty" name="show_empty" type="checkbox" <?php if($show_empty) print 'checked="true"'; ?> />
-            <label for="show_empty">Nur Antr&auml;ge mit &Auml;nderungsantr&auml;gen anzeigen</label>
+            <label for="show_empty">Nur AntrÃ¤ge mit Ã„nderungsantrÃ¤gen anzeigen</label>
             <input id="show_verfahren" name="show_verfahren" type="checkbox" <?php if($show_verfahren) print 'checked="true"'; ?> />
             <label for="show_verfahren">Verfahren anzeigen</label>
             <input id="show_steller" name="show_steller" type="checkbox" <?php if($show_steller) print 'checked="true"'; ?> />
-            <label for="show_steller">Vollst&auml;ndige Antragsteller anzeigen</label>
+            <label for="show_steller">VollstÃ¤ndige Antragsteller anzeigen</label>
           </p>
           <input type="submit" value="Liste anzeigen" />
         </form>
@@ -131,7 +135,7 @@ eingerichteten AntrŠge dar.
       </div>
     <?php endif; ?>
 
-    <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/ae_antraege_script.js"></script>
+    <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/ae_antraege.js"></script>
     <?php wp_footer(); ?>
   
   </body>

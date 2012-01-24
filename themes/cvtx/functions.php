@@ -1,9 +1,48 @@
 <?php
-if ( function_exists('register_sidebar') )
+/**
+ * Functions-file for cvtx_theme
+ *
+ * @package WordPress
+ * @subpackage cvtx
+ */
+
+// Register a cvtx_sidebar
+if (function_exists('register_sidebar')) {
     register_sidebar(array('id' => 'cvtx',
     					   'after_title' => '</h2><div class="inner">',
     				 	   'after_widget' => '</div></li>'));
+}
 
+/**
+ * Register cvtx_themes scripts
+ */
+add_action('wp_enqueue_scripts', 'cvtxtheme_script');
+function cvtxtheme_script() {
+	// include jquery
+	wp_enqueue_script('jquery');
+	// register theme-script
+	wp_register_script('cvtx_script',
+		get_template_directory_uri().'/script.js',
+		array('jquery'),
+		false,
+		true);
+	// include jquery.printElement
+	wp_register_script('print_element',
+		get_template_directory_uri().'/jquery.printElement.min.js',
+		false,
+		false,
+		true);
+    wp_enqueue_script('cvtx_script');
+    wp_enqueue_script('print_element');
+}
+
+/**
+ * Register menu-regions for cvtx_theme
+ *
+ * There are two menu-regions: the main menu (left) and
+ * the cvtx-menu (right). The latter is supposed to hold
+ * items like "new request"
+ */
 add_action( 'init', 'register_my_menus' );
 function register_my_menus() {
   register_nav_menus(
@@ -12,25 +51,11 @@ function register_my_menus() {
   );
 }
 
-function cvtxtheme_script() {
-	wp_enqueue_script("jquery");
-}
-add_action('wp_enqueue_scripts', 'cvtxtheme_script');
-
-add_filter('nav_menu_css_class' , 'cvtx_nav_class' , 10 , 2);
-function cvtx_nav_class($classes, $item){
-     if(is_single() && $item->title == "Antrag erstellen"){ 
-         $classes[] = "special-class";
-     }
-     return $classes;
-}
-
-function add_first_and_last($output) {
-    $output = substr_replace($output, 'class="last-menu-item menu-item', strripos($output, 'class="menu-item'), strlen('class="menu-item'));
-  return $output;
-}
-add_filter('wp_nav_menu', 'add_first_and_last');
-
+/**
+ * cvtx_walker is a Class, which extends the Walker_Nav_Menu-Class
+ * and is instantiated in wp_nav_menu-calls in cvtx_theme. It adds
+ * the actual depth to sub-menus and adds a HTML-element for theming.
+ */
 class cvtx_walker extends Walker_Nav_Menu {
 	function start_lvl(&$output, $depth) {
 		$indent = str_repeat("\t", $depth);

@@ -92,9 +92,10 @@ class CountWidget extends WP_Widget {
             echo $before_title.$title.$after_title;
         $count_antraege = wp_count_posts('cvtx_antrag')->publish;
         $count_aeantrag = wp_count_posts('cvtx_aeantrag')->publish;
-        echo __('Es sind online:','cvtx').'<p/>';
+        echo __('Es sind online:','cvtx').'<p>';
         echo '<strong>'.$count_antraege.'</strong> <em>'.($count_antraege == 1 ? __('Antrag','cvtx') : __('Anträge','cvtx')).'</em><br/>';
         echo '<strong>'.$count_aeantrag.'</strong> <em>'.($count_aeantrag == 1 ? __('Änderungsantrag','cvtx') : __('Änderungsanträge','cvtx')).'</em><br/>';
+        echo ('</p>');
         echo $after_widget;
     }
     
@@ -122,7 +123,7 @@ class CountWidget extends WP_Widget {
 add_action('widgets_init', create_function('', 'register_widget("RSS_aeantrag_Widget");'));
 
 /**
- * Count-of-posts-Widget
+ * RSS-Antrags-Widget
  */
 class RSS_aeantrag_Widget extends WP_Widget {
     function __construct() {
@@ -133,13 +134,16 @@ class RSS_aeantrag_Widget extends WP_Widget {
         extract($args);
         $title = apply_filters('widget_title', $instance['title']);
         global $post;
-        if($post->post_type == 'cvtx_antrag') {
+        if(isset($post) && $post->post_type == 'cvtx_antrag') {
             echo $before_widget;
             if($title)
                 echo $before_title.$title.$after_title;
             $post_title = '<strong>"'.get_the_title($post->ID).'"</strong>';
-            $rss_url    = '<a href="'.get_feed_link('rss2').'?post_type=cvtx_aeantrag&cvtx_aeantrag_antrag='.$post->ID.'">RSS-Feed</a>';
-            printf(__('Immer auf dem Laufenden über %s bleiben?<p/> Abbonier doch einfach diesen %s mit allen Änderungsanträgen!', 'cvtx'), $post_title,$rss_url);
+			$link = add_query_arg(array('post_type' => 'cvtx_aeantrag',
+											'cvtx_aeantrag_antrag' => $post->ID),
+									  get_feed_link('rss2'));
+            $rss_url    = '<a href="'.$link.'">RSS-Feed</a>';
+            printf(__('Immer auf dem Laufenden über %s bleiben? <p>Abbonier doch einfach diesen %s mit allen Änderungsanträgen!</p>', 'cvtx'), $post_title,$rss_url);
             echo $after_widget;        
         }
     }

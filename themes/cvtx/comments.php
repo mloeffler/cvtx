@@ -1,3 +1,13 @@
+<?php
+/**
+ * Kommentar-Template, stellt Kommentare zu einem
+ * Artikel dar.
+ *
+ * @package WordPress
+ * @subpackage cvtx
+ */
+?>
+
 			<div id="comments">
 <?php if ( post_password_required() ) : // don't display comments for password-protected posts ?>
 				<p class="nopassword"><?php _e( 'Dieser Artikel ist passwortgeschützt. Gib das Passwort ein, um ihn sehen zu können.', 'cvtx' ); ?></p>
@@ -15,7 +25,9 @@
 	// You can start editing here -- including this comment!
 ?>
 
+<?php if(comments_open()): ?>
 <h2 class="commentsheader">Feedback</h2>
+<?php endif; ?>
 
 <?php if ( have_comments() ) : ?>
 

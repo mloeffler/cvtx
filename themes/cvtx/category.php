@@ -1,6 +1,7 @@
 <?php
 /**
- * Standard-Template
+ * Kategorie-Template, stellt Posts aus einer bestimmten 
+ * Kategorie dar.
  *
  * @package WordPress
  * @subpackage cvtx
@@ -9,6 +10,14 @@
 
 <?php get_header(); ?>
 		<div class="inner">
+		<h1 class="page-title"><?php
+			printf( __( 'Kategorie: %s', 'cvtx' ), '<span>' . single_cat_title( '', false ) . '</span>' );
+		?></h1>
+		<?php
+			$category_description = category_description();
+			if ( ! empty( $category_description ) )
+				echo '<div class="archive-meta">' . $category_description . '</div>';
+		?>
 		<?php if (have_posts()) : ?>
 	
 			<?php while (have_posts()) : the_post(); ?>

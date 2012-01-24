@@ -1,3 +1,9 @@
+/**
+ * cvtx-Script
+ *
+ * @package WordPress
+ * @subpackage cvtx
+ */
 (function($){
 	$('ul.menu li').each(function() {
 	    var width = $(this).width();
@@ -124,4 +130,4 @@ function getPageScroll() {
 
     arrayPageScroll = [xScroll,yScroll];
     return arrayPageScroll;
-  }
+}
