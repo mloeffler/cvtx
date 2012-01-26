@@ -7,17 +7,18 @@
  *        post_id => Do you want a specific posts antragsteller?
  *        short   => Short or long version? Default to true
  */
-function cvtx_theme_antragsteller($args = array('post_id' => false, 'short' => true)) {
-    if(!isset($post_id) || !$post_id) global $post;
-    else $post = get_post($post_id);
+function cvtx_antragsteller_action($args = array('post_id' => false, 'short' => true)) {
+    if(!isset($args['post_id']) || !$args['post_id']) global $post;
+    else $post = get_post($args['post_id']);
     if(is_object($post)) {
-        $field = $post->post_type.'_steller'.($args['short'] ? '_short' : '');
+        $field = $post->post_type.'_steller'.(isset($args['short']) && $args['short'] ? '_short' : '');
         $antragsteller = get_post_meta($post->ID,$field,true);
         if(!empty($antragsteller)){
             printf(__('<strong>AntragstellerInnen:</strong> %1$s'),$antragsteller);
         }
     }
 }
+add_action('cvtx_theme_antragsteller','cvtx_antragsteller_action',10,1);
 
 /**
  * themed output of cvtx_antrag_grund
@@ -25,7 +26,7 @@ function cvtx_theme_antragsteller($args = array('post_id' => false, 'short' => t
  * @param post_id Do you want a specific posts grund?
  *
  */
-function cvtx_theme_grund($post_id = false) {
+function cvtx_grund_action($post_id = false) {
     if(!isset($post_id) || !$post_id) global $post;
     else $post = get_post($post_id);
     if(is_object($post)) {
@@ -35,6 +36,7 @@ function cvtx_theme_grund($post_id = false) {
         }
     }
 }
+add_action('cvtx_theme_grund','cvtx_grund_action',10,1);
 
 /**
  * themed output of all aenderungsantraege to given post or post_id
@@ -42,7 +44,7 @@ function cvtx_theme_grund($post_id = false) {
  * @param post_id Do you want a specific posts aenderungsantraege?
  *
  */
-function cvtx_theme_aenderungsantraege($post_id = false) {
+function cvtx_aenderungsantraege_action($post_id = false) {
     if(!isset($post_id) || !$post_id) global $post;
     else $post = get_post($post_id);
     // specify wp_query for all aenderungsantraege to given ID
@@ -77,11 +79,12 @@ function cvtx_theme_aenderungsantraege($post_id = false) {
         </div>
    <?php endif; wp_reset_postdata();
 }
+add_action('cvtx_theme_aenderungsantraege','cvtx_aenderungsantraege_action',10,1);
 
 /**
  * themed output for add_aenderungsantraege
  */
-function cvtx_theme_add_aeantrag($post_id = false) {
+function cvtx_add_aeantrag_action($post_id = false) {
     if(!isset($post_id) || !$post_id) global $post;
     else $post = get_post($post_id);
     if(is_object($post)) {
@@ -91,11 +94,12 @@ function cvtx_theme_add_aeantrag($post_id = false) {
         print '</div>';
     }
 }
+add_action('cvtx_theme_add_aeantrag','cvtx_add_aeantrag_action',10,1);
 
 /**
  * themed output for an antrags pdf
  */
-function cvtx_theme_pdf($post_id = false) {
+function cvtx_pdf_action($post_id = false) {
     if(!isset($post_id) || !$post_id) global $post;
     else $post = get_post($post_id);
     if(is_object($post)) {
@@ -105,8 +109,9 @@ function cvtx_theme_pdf($post_id = false) {
         }
     }
 }
+add_action('cvtx_theme_pdf','cvtx_pdf_action',10,1);
 
-function cvtx_theme_zeile($post_id = false) {
+function cvtx_zeile_action($post_id = false) {
    if(!isset($post_id) || !$post_id) global $post;
    else $post = get_post($post_id);
    if(is_object($post)) {
@@ -116,4 +121,6 @@ function cvtx_theme_zeile($post_id = false) {
       }
    }
 }
+add_action('cvtx_theme_zeile','cvtx_zeile_action',10,1);
+
 ?>

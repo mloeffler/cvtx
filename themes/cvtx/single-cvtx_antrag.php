@@ -13,10 +13,10 @@
 			<div <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 				<h2><?php the_title(); ?></h2>
 				<div class="entry">
-					<?php if(function_exists('cvtx_theme_antragsteller')) cvtx_theme_antragsteller(); ?>
+					<?php do_action('cvtx_theme_antragsteller',array('short' => false)); ?>
 					<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx') . '</p>'); ?>
-					<?php if(function_exists('cvtx_theme_grund')) cvtx_theme_grund(); ?>
-					<?php if(function_exists('cvtx_theme')) cvtx_theme_pdf(); ?>					
+					<?php do_action('cvtx_theme_grund'); ?>
+					<?php do_action('cvtx_theme_pdf'); ?>					
 				</div>
 				<p class="postmetadata alt">
 					<small><?php printf(__('Dieser %1$s wurde am %2$s um %3$s eingestellt.'),
@@ -25,8 +25,8 @@
 								     get_the_time()); ?>
 					</small>
 				</p>
-				<?php if(function_exists('cvtx_theme_aenderungsantraege')) cvtx_theme_aenderungsantraege(); ?>
-		        <?php if(function_exists('cvtx_theme_add_aeantrag')) cvtx_theme_add_aeantrag(); ?>
+				<?php do_action('cvtx_theme_aenderungsantraege'); ?>
+		        <?php do_action('cvtx_theme_add_aeantrag'); ?>
 			</div>
 		<?php endwhile; else: ?>
 		<p><?php _e('Es konnten leider keine Einträge gefunden werden!', 'cvtx'); ?></p>

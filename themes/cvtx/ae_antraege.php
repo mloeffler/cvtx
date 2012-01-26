@@ -135,7 +135,7 @@
       </div>
     <?php endif; ?>
 
-    <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/ae_antraege.js"></script>
+    <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/scripts/ae_antraege.js"></script>
     <?php wp_footer(); ?>
   
   </body>

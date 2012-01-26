@@ -22,13 +22,13 @@ function cvtxtheme_script() {
 	wp_enqueue_script('jquery');
 	// register theme-script
 	wp_register_script('cvtx_script',
-		get_template_directory_uri().'/script.js',
+		get_template_directory_uri().'/scripts/script.js',
 		array('jquery'),
 		false,
 		true);
 	// include jquery.printElement
 	wp_register_script('print_element',
-		get_template_directory_uri().'/jquery.printElement.min.js',
+		get_template_directory_uri().'/scripts/jquery.printElement.min.js',
 		false,
 		false,
 		true);
