@@ -1,7 +1,7 @@
 /*
-Theme Name: Cvtx
-Theme URI: http://cvtx-project.org
-Description: Wordpress-Theme for the cvtx-plugin.
+Theme Name: Cvtx-GJ
+Theme URI: http://cvtx-project.org/
+Description: Wordpress-Theme for the cvtx-plugin, GJ-version.
 Author: Max L&ouml;ffler & Alexander Fecke
 Author URI: http://cvtx-project.org
 Version: 0.1
@@ -12,10 +12,10 @@ License URI:
 */
 
 body {
-    font-family: "Trebuchet MS";
-    background: url(images/old_wall.png);
-    margin:0px;
-    padding:0px;
+	background: url(images/bg.png) repeat-x top left;
+	font-family:Trebuchet MS, Verdana, Arial;
+	margin:0;
+	padding:0;
 }
 
 /**
@@ -23,53 +23,102 @@ body {
  */
 
 .wrapper {
-    width: 1024px;
-    margin: 0 auto;
-}
-
-#c_wrap {
-    margin-top:10px;
+	width:873px;
+	margin:-45px auto 0px;
 }
 
 #content {
     background: white;
-    width:644px;
+    width:570px;
     min-height: 100px;
     float:left;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    border-top-right-radius:6px;
-    -webkit-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
-    -moz-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
-    box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
     margin-bottom:1em;
 }
 
 #sidebar {
-    width: 350px;
-    margin-left:654px;
+	margin-left:593px;
+	width:270px;
     min-height:100px;
+    padding-top: 20px;
 }
 
+/*
+ * Footer
+ */
 
 #footer {
-    width: 624px;
     clear: both;
-    background: white;
-    margin-bottom:1em;
-    border-radius:3px;
-    -webkit-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
-    -moz-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
-    box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
-    padding:10px;
-    font-size:0.8em;
-    color: #333;
-    text-align:center;
+	background: url(images/footer.png) repeat-x top center #037f09;
+	margin:0px auto;
+	min-height:278px;
+	overflow-x:hidden;
+	margin-top: -30px;
+	font-size: 0.9em;
+	padding-bottom: 10px;
+}
+
+#footer .content {
+	width: 820px;
+	margin: 60px auto 0px;
+	color: white;
+}
+
+#footer .content a {
+	color: #faa619;
 }
 
 #footer a {
     text-decoration: none;
     font-weight: bold;
+}
+
+#footer .widget-area {
+	float: left;
+	margin-right:20px;
+	width: 370px;
+}
+
+#footer #first {
+}
+
+#footer ul.xoxo {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+#footer h2 {
+	color: white;
+}
+
+#footer div.tb_tweetlist {
+	border: 0px;
+}
+
+#footer div.tb_tweetlist div.tb_tweet {
+	background: white;
+	border-radius: 5px;
+	border: 0px;
+	padding: 8px;
+	margin-bottom: 5px;
+	color: black;
+	font-size:0.9em;
+}
+
+#footer div.tb_tweetlist div.tb_tweet img {
+	padding: 0px;
+	border: 0px;
+	border-radius:3px;
+	width: 32px;
+	height: 32px;
+}
+
+#footer div.tb_tweet a {
+	color: #89bd49;
+}
+
+#footer div.tb_tweet a:hover {
+	color: #faa619;
 }
 
 /**
@@ -86,29 +135,37 @@ nav ul {
 }
 
 nav ul li {
-    float: left;
-    margin-right:5px;
-    padding:4px 10px;
-    list-style:none;
-    background: #ffe500;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+	background: url(images/bg_nav.png) repeat-x top;
+	padding:5px 8px 5px 8px;
+	font-size:0.9em;
+	font-weight: bold;
+	text-transform:uppercase;
+	float:left;
+	display: block;
+	margin-right:4px;
 }
 
 nav ul li a {
-    text-transform: uppercase;
-    color: #58ab27;
-    text-decoration: none;
-    font-weight:bold;
-    font-size:0.8em;
+	display: block;
+	color:#faa619;
+	text-decoration: none;
+}
+
+nav ul li a:hover {
+	color:#89bd49;
+}
+
+nav ul li.first a {
+	background: url(images/home.jpg) no-repeat center;
+	width:20px;
+	text-indent: -1000px;
 }
 
 nav ul li.current_page_item {
-    background: #266209;
 }
 
 nav ul li.current_page_item a {
-    color: #ffe500;
+	color:#89bd49;
 }
 
 nav div.inside {
@@ -237,58 +294,10 @@ span.replace {
  */
 header,
 #header {
-    background-color: #6ab141;
-    padding:0px;
-    height:200px;
-    box-shadow: 0px 0px 15px rgba(0,0,0,0.6);
-    -webkit-box-shadow: 0px 0px 15px rgba(0,0,0,0.6);
-    -moz-box-shadow: 0px 0px 15px rgba(0,0,0,0.6);
-}
-
-#header.mail {
-    box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
-    -webkit-box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
-    -moz-box-shadow: 0px 0px 15px rgba(0,0,0,0.3);    
-}
-
-#headerimg {
-    position: absolute;
-    margin-top:2.5em;
-}
-
-#b90 {
-    width: 147px;
-    height: 78px;
-    background: url(images/b90.png);
-    position: absolute;
-    margin-left:820px;
-    margin-top:70px;
-}
-
-header h1 a,
-#header h1 a {
-    color: #ffe500;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-size:1.2em;
-}
-
-header h1,
-#header h1 {
-    margin-top:0px;
-}
-
-header .description,
-#header .description {
-    color: white;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-#verlauf {
-    background: url(images/verlauf.png) top right no-repeat;
-    height:200px;
-    width:100%;
+	background: url(images/back_kongress.png) no-repeat top center;
+	margin:0px auto;
+	height:289px;
+	overflow-x:hidden;
 }
 
 /**
@@ -296,15 +305,28 @@ header .description,
  */
 
 #content .inner {
-    padding: 0px 15px 15px 15px;
+    padding: 0px 20px 15px 20px;
 }
 
 #content .inner .entry {
     font-size:0.9em;
 }
  
-#content h2, h3, a {
-    color: #58ab27;
+a {
+	color: #037f09;
+	text-decoration:none;
+}
+
+a:hover {
+	color: #89bd49;
+}
+
+h1, h2, h4, h5, h6 {
+	color: #037f09;
+}
+
+h3 {
+	color: #89bd49;
 }
 
 .clear-block {
@@ -327,54 +349,20 @@ header .description,
     margin:0px;
 }
 
+#sidebar h2 {
+	margin-top:0px;
+}
+
 #sidebar ul.side li {
     background: white;
     list-style-type: none;
     padding: 0px 0px 15px 0px;
     font-size:0.9em;
     margin-bottom:10px;
-    border-top-left-radius:4px;
-    border-top-right-radius:4px;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    -webkit-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
-    -moz-box-shadow: 0px 4px 7px rgba(0,0,0,0.1);
-    box-shadow: 0px 4px 7px rgba(0,0,0,0.1)
-}
-
-#sidebar ul.side li ul li {
-    box-shadow: none;
-    -webkit-box-shadow: 0px 0px 0px white;
-    -moz-box-shadow: 0px 0px 0px white;
-}
-
-#sidebar ul.side li#first {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-}
-
-#sidebar ul.side li div.inner {
-    padding: 15px 15px 0px 15px;
-}
-
-#sidebar ul.side li h2 {
-    background: #ffe500;
-    color: #58ab27;
-    text-transform: uppercase;
-    font-size:1.1em;
-    padding:7px 13px 7px 13px;
-    margin-top:0px;
-    margin-bottom: 0px;
-    border-top-left-radius:3px;
-    border-top-right-radius:3px;
 }
 
 #sidebar ul.side li.widget ul li {
     list-style: disc;
-}
-
-#sidebar ul.side li.widget_countwidget {
-    background: url(images/statistik.png) no-repeat bottom right white;
 }
 
 #sidebar ul.side li.widget_rss_aeantrag_widget .inner {
@@ -394,7 +382,7 @@ ul#antraege {
 
 ul#antraege li.top h3 {
     padding:0.5em 0.7em;
-    border-bottom: 1px solid #ffe500;
+    border-bottom: 1px solid #faa619;
     background: #fafafa;
     border-top-left-radius:3px;
     border-top-right-radius:3px;
@@ -503,7 +491,7 @@ ul#antraege li.top ul li.antrag ul.ae_antraege {
 
 #ae_antraege table th {
     text-align:left;
-    border-bottom: 2px solid #ffe500;
+    border-bottom: 2px solid #faa619;
     padding-bottom:5px;
     padding-right:10px;
 }
