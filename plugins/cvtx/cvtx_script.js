@@ -8,8 +8,8 @@ jQuery(document).ready(function($){
     
     // hide preview button for post_type top and application
     if ($("#post_type").val() == "cvtx_top" || $("#post_type").val() == "cvtx_application") {
-        $("#preview-action").hide();
-        $("#view-post-btn").hide();
+        $("#preview-action").remove();
+        $("#view-post-btn").remove();
     }
     
     // edit top

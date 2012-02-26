@@ -25,6 +25,9 @@ require_once(CVTX_PLUGIN_DIR.'/cvtx_latex.php');
 require_once(CVTX_PLUGIN_DIR.'/cvtx_widgets.php');
 require_once(CVTX_PLUGIN_DIR.'/cvtx_theme.php');
 
+// load language files
+load_plugin_textdomain('cvtx', false, CVTX_PLUGIN_DIR.'/languages');
+
 
 // define post types
 $cvtx_types = array('cvtx_reader'   => array(),
@@ -83,7 +86,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_reader_small.png',
-        'rewrite'     => array('slug' => 'reader'),
+        'rewrite'     => array('slug' => __('reader', 'cvtx')),
         'supports'    => array('title'),
         )
     );
@@ -104,7 +107,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_top_small.png',
-        'rewrite'     => array('slug' => 'top'),
+        'rewrite'     => array('slug' => __('tops', 'cvtx')),
         'supports'    => array('title', 'editor'),
         )
     );
@@ -125,7 +128,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_antrag_small.png',
-        'rewrite'     => array('slug' => 'antrag'),
+        'rewrite'     => array('slug' => __('antraege', 'cvtx')),
         'supports'    => array('title', 'editor'),
         )
     );
@@ -147,7 +150,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_aeantrag_small.png',
-        'rewrite'     => array('slug' => 'aeantrag'),
+        'rewrite'     => array('slug' => __('aeantraege', 'cvtx')),
         'supports'    => array('editor'),
         )
     );
@@ -169,7 +172,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
 //        'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_application_small.png',
-        'rewrite'     => array('slug' => __('application', 'cvtx')),
+        'rewrite'     => array('slug' => __('applications', 'cvtx')),
         'supports'    => array('title'),
         )
     );
@@ -806,8 +809,10 @@ function cvtx_get_file($post, $ending = 'pdf', $base = 'url') {
     }
     
     // return filename if file exists
-    if (is_file($dir['basedir'].'/'.get_option('cvtx_latex_outdir').'/'.$file.'.'.$ending)) {
-        return $dir[$base].'/'.get_option('cvtx_latex_outdir').'/'.$file.'.'.$ending;
+    $out_dir = get_option('cvtx_latex_outdir');
+    if (!empty($out_dir)) $out_dir .= '/';
+    if (is_file($dir['basedir'].'/'.$out_dir.'/'.$file.'.'.$ending)) {
+        return $dir[$base].'/'.$out_dir.$file.'.'.$ending;
     }
     
     return false;
