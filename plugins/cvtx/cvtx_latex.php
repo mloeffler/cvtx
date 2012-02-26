@@ -129,6 +129,8 @@ function cvtx_top($post) {
     } else if ($post->post_type == 'cvtx_aeantrag') {
         $top_id = get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true);
         echo(cvtx_get_latex(get_the_title($top_id)));
+    } else if ($post->post_type == 'cvtx_application') {
+        echo(cvtx_get_latex(get_the_title(get_post_meta($post->ID, 'cvtx_application_top', true))));
     }
 }
 
@@ -143,6 +145,10 @@ function cvtx_top_titel($post) {
         $top   = get_post(get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true));
         $title = (empty($top->post_title) ? __('(no title)', 'cvtx') : $top->post_title);
         echo(cvtx_get_latex($title));
+    } else if ($post->post_type == 'cvtx_application') {
+        $top   = get_post(get_post_meta($post->ID, 'cvtx_application_top', true));
+        $title = (empty($top->post_title) ? __('(no title)', 'cvtx') : $top->post_title);
+        echo(cvtx_get_latex($title));
     }
 }
 
@@ -154,6 +160,8 @@ function cvtx_top_kuerzel($post) {
     } else if ($post->post_type == 'cvtx_aeantrag') {
         $top_id = get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true);
         echo('TOP '.cvtx_get_latex(get_post_meta($top_id, 'cvtx_top_ord', true)));
+    } else if ($post->post_type == 'cvtx_application') {
+        echo('TOP '.cvtx_get_latex(get_post_meta(get_post_meta($post->ID, 'cvtx_application_top', true), 'cvtx_top_ord', true)));
     }
 }
 
@@ -185,6 +193,13 @@ function cvtx_info($post) {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_info', true)));
     } else if ($post->post_type == 'cvtx_aeantrag') {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_info', true)));
+    }
+}
+
+function cvtx_application_file($post) {
+    if ($post->post_type == 'cvtx_application') {
+        $appl = get_post(get_post_meta($post->ID, 'cvtx_antrag_info', true));
+        echo(cvtx_get_file($appl, 'pdf', 'dir'));
     }
 }
 

@@ -8,6 +8,7 @@
 \usepackage{tabularx}
 \usepackage{scrpage2}
 \usepackage{calc}
+\usepackage{pdfpages}
 \usepackage{hyperref}
 
 \sloppy
@@ -99,6 +100,29 @@ while ($query->have_posts()) {
 \subsection*{AntragstellerInnen}
 <?php cvtx_antragsteller($item); ?>
 
+
+<?php
+    }
+    /* show application */
+    else if ($item->post_type == 'cvtx_application') {
+?>
+\newpage
+<?php
+        /* update top if changed */
+        $this_top = get_post_meta($item->ID, 'cvtx_application_top', true);
+        if ($top != $this_top) {
+            $top = $this_top;
+?>
+\addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
+<?php
+        }
+?>
+
+\pagestyle{scrheadings}
+\ohead{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+\addcontentsline{toc}{section}{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+
+\includepdf[pages=-, pagecommand={\thispagestyle{scrheadings}}, offset=-1em 2em, width=1.15\textwidth]{<?php cvtx_application_file($item); ?>}
 
 <?php
     }

@@ -6,8 +6,8 @@ jQuery(document).ready(function($){
         showTarget('cvtx_tool');
     }
     
-    // hide preview button for post_type top
-    if ($("#post_type").val() == "cvtx_top") {
+    // hide preview button for post_type top and application
+    if ($("#post_type").val() == "cvtx_top" || $("#post_type").val() == "cvtx_application") {
         $("#preview-action").hide();
         $("#view-post-btn").hide();
     }
@@ -20,6 +20,14 @@ jQuery(document).ready(function($){
         cvtx_validate("cvtx_top_short");
         $("#cvtx_top_ord_field").keyup(function() { cvtx_validate("cvtx_top_ord"); });
         $("#cvtx_top_short_field").keyup(function() { cvtx_validate("cvtx_top_short"); });
+    }
+    
+    // edit application
+    if ($("#post_type").val() == "cvtx_application") {
+        cvtx_fields = Array({"key": "cvtx_application_ord", "empty": false, "unique": true});
+        cvtx_validate("cvtx_application_ord");
+        $("#cvtx_antrag_top_select").change(function() { cvtx_validate("cvtx_application_ord"); });
+        $("#cvtx_application_ord_field").keyup(function() { cvtx_validate("cvtx_application_ord"); });
     }
     
     // edit antrag
@@ -104,6 +112,10 @@ jQuery(document).ready(function($){
             } else if (meta_key == "cvtx_aeantrag_zeile") {
                 query.args.push({"key"     : "cvtx_aeantrag_antrag",
                                  "value"   : $("#cvtx_aeantrag_antrag_select").val(),
+                                 "compare" : "="});
+            } else if (meta_key == "cvtx_application_ord") {
+                query.args.push({"key"     : "cvtx_application_top",
+                                 "value"   : $("#cvtx_antrag_top_select").val(),
                                  "compare" : "="});
             }
             // fetch info

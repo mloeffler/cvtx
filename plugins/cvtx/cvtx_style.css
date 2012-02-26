@@ -57,11 +57,11 @@ div.cvtx_reader_toc_top label.cvtx_top {
     font-size: 1.5em;
 }
 
-div.cvtx_reader_toc_antrag {
+div.cvtx_reader_toc_antrag, div.cvtx_reader_toc_application {
     margin: 1em;
 }
 
-div.cvtx_reader_toc_antrag label.cvtx_antrag {
+div.cvtx_reader_toc_antrag label.cvtx_antrag, div.cvtx_reader_toc_application label.cvtx_application {
     font-weight: bold;
 }
 

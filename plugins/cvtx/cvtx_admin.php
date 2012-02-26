@@ -34,6 +34,11 @@ function cvtx_add_meta_boxes() {
         add_meta_box('cvtx_aeantrag_pdf', __('PDF', 'cvtx'), 'cvtx_metabox_pdf', 'cvtx_aeantrag', 'side', 'low');
     }
     add_meta_box('cvtx_aeantrag_reader', __('Readerzuordnung', 'cvtx'), 'cvtx_metabox_reader', 'cvtx_aeantrag', 'side', 'low');
+
+    // Applications
+    add_meta_box('cvtx_application_meta', __('Metainformationen', 'cvtx'), 'cvtx_application_meta', 'cvtx_application', 'side', 'high');
+    add_meta_box('cvtx_application_pdf', __('PDF', 'cvtx'), 'cvtx_metabox_pdf', 'cvtx_application', 'side', 'low');
+    add_meta_box('cvtx_application_reader', __('Readerzuordnung', 'cvtx'), 'cvtx_metabox_reader', 'cvtx_application', 'side', 'low');
 }
 
 
@@ -60,7 +65,7 @@ function cvtx_reader_contents() {
 
     // list all contents
     $output = '<div class="cvtx_reader_toc" id="cvtx_reader_toc">';
-    $query  = new WP_Query(array('post_type' => array('cvtx_top', 'cvtx_antrag', 'cvtx_aeantrag'),
+    $query  = new WP_Query(array('post_type' => array('cvtx_top', 'cvtx_antrag', 'cvtx_aeantrag', 'cvtx_application'),
                                  'orderby'   => 'meta_value',
                                  'meta_key'  => 'cvtx_sort',
                                  'order'     => 'ASC',
@@ -107,6 +112,12 @@ function cvtx_reader_contents() {
                 $output .= ' <input type="checkbox" id="cvtx_aeantrag_'.get_the_ID().'" name="cvtx_post_ids['.get_the_ID().']" '.$checked.' /> ';
                 $output .= ' <label class="cvtx_aeantrag '.$unpublished.'" for="cvtx_aeantrag_'.get_the_ID().'">'.$title.'</label>';
                 $output .= '</div>';
+            } else if ($post->post_type == 'cvtx_application') {
+                $output .= '<a name="cvtx_'.get_the_ID().'"></a>';
+                $output .= '<div class="cvtx_reader_toc_application">';
+                $output .= ' <input type="checkbox" id="cvtx_application_'.get_the_ID().'" name="cvtx_post_ids['.get_the_ID().']" '.$checked.' /> ';
+                $output .= ' <label class="cvtx_application '.$unpublished.'" for="cvtx_application_'.get_the_ID().'">'.$title.'</label>';
+                $output .= '</div>';
             }
         }
         if ($open_antrag) { $output .= '</div>'; $open_antrag = false; }
@@ -130,11 +141,10 @@ function cvtx_top_meta() {
 
     echo('<label for="cvtx_top_ord_field">'.__('TOP-Nummer', 'cvtx').':</label><br />');
     echo('<input name="cvtx_top_ord" id="cvtx_top_ord_field" type="text" maxlength="4" value="'.get_post_meta($post->ID, 'cvtx_top_ord', true).'" />');
-
     echo('<br />');
-
     echo('<label for="cvtx_top_short_field">'.__('Kürzel', 'cvtx').':</label><br />');
     echo('<input name="cvtx_top_short" id="cvtx_top_short_field" type="text" value="'.get_post_meta($post->ID, 'cvtx_top_short', true).'" />');
+    echo('<br />');
 
     echo('<p id="admin_message" class="error">');
     echo(' <span id="unique_error_cvtx_top_ord" class="cvtx_unique_error">'.__('Diese Nummer ist bereits vergeben.', 'cvtx').'</span> ');
@@ -142,6 +152,17 @@ function cvtx_top_meta() {
     echo(' <span id="empty_error_cvtx_top_ord" class="cvtx_empty_error">'.__('Bitte TOP-Nummer vergeben.', 'cvtx').'</span> ');
     echo(' <span id="empty_error_cvtx_top_short" class="cvtx_empty_error">'.__('Bitte Kürzel für den TOP vergeben.', 'cvtx').'</span> ');
     echo('</p>');
+    
+    echo('<label for="cvtx_top_antraege">'.__('Hinzufügen folgender Inhalte ermöglichen', 'cvtx').':</label><br />');
+    $enable_antrag = get_post_meta($post->ID, 'cvtx_top_antraege', true);
+    $enable_antrag = ($enable_antrag == 'off' ? false : true);
+    echo('<input name="cvtx_top_antraege" id="cvtx_top_antraege" type="checkbox" '.($enable_antrag ? 'checked="checked"' : '').' /> ');
+    echo('<label for="cvtx_top_antraege">'.__('Anträge', 'cvtx').'</label>');
+    echo(' ');
+    $enable_appl = get_post_meta($post->ID, 'cvtx_top_applications', true);
+    $enable_appl = ($enable_appl == 'on' ? true : false);
+    echo('<input name="cvtx_top_applications" id="cvtx_top_applications" type="checkbox" '.($enable_appl ? 'checked="checked"' : '').' /> ');
+    echo('<label for="cvtx_top_applications">'.__('Applications', 'cvtx').'</label>');
 }
 
 
@@ -153,7 +174,7 @@ function cvtx_antrag_meta() {
     $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);    
     
     echo('<label for="cvtx_antrag_top_select">'.__('Tagesordnungspunkt', 'cvtx').':</label><br />');
-    echo(cvtx_dropdown_tops($top_id, __('Keine Tagesordnungspunkte angelegt', 'cvtx').'.'));
+    echo(cvtx_dropdown_tops($top_id, __('Keine Tagesordnungspunkte für Anträge angelegt', 'cvtx').'.', true, false));
     echo('<br />');
     echo('<label for="cvtx_antrag_ord_field">'.__('Antragsnummer', 'cvtx').':</label><br />');
     echo('<input name="cvtx_antrag_ord" id="cvtx_antrag_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
@@ -246,6 +267,25 @@ function cvtx_aeantrag_verfahren() {
 }
 
 
+/* Applications */
+
+// Metainformationen (application number, TOP)
+function cvtx_application_meta() {
+    global $post;
+    $top_id = get_post_meta($post->ID, 'cvtx_application_top', true);    
+    
+    echo('<label for="cvtx_antrag_top_select">'.__('Tagesordnungspunkt', 'cvtx').':</label><br />');
+    echo(cvtx_dropdown_tops($top_id, __('Keine Tagesordnungspunkte für Bewerbungen angelegt', 'cvtx').'.', false, true));
+    echo('<br />');
+    echo('<label for="cvtx_application_ord_field">'.__('Bewerbungsnummer', 'cvtx').':</label><br />');
+    echo('<input name="cvtx_application_ord" id="cvtx_application_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_application_ord', true).'" />');
+    echo('<p id="admin_message" class="error">');
+    echo('<span id="unique_error_cvtx_application_ord" class="cvtx_unique_error">'.__('Es liegt bereits eine Bewerbung mit identischer Bewerbungsnummer vor.', 'cvtx').'</span> ');
+    echo('<span id="empty_error_cvtx_application_ord" class="cvtx_empty_error">'.__('Bitte Bewerbungsnummer vergeben.', 'cvtx').'</span> ');
+    echo('</p>');
+}
+
+
 /* Allgemeingültige Meta-Boxen */
 
 // Link zum PDF
@@ -254,12 +294,13 @@ function cvtx_metabox_pdf() {
     
     // check if pdf file exists
     if ($file = cvtx_get_file($post, 'pdf')) {
-        echo('<a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a> ');
+        echo('<a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a>');
     }
     // show info otherwise
     else {
-        echo(__('Kein PDF erstellt. ', 'cvtx'));
+        echo(__('Kein PDF verfügbar.', 'cvtx'));
     }
+    echo(' ');
 
     // check if tex file exists
     if ($file = cvtx_get_file($post, 'tex')) {
@@ -304,16 +345,27 @@ function cvtx_metabox_reader() {
     
     // any term+reader-combination?
     if (count($items) > 0) {
-        echo($post->post_type == 'cvtx_antrag' ? __('Der Antrag erscheint in den folgenden Readern:', 'cvtx')
-                                               : __('Der Änderungsantrag erscheint in den folgenden Readern:', 'cvtx'));
+        if ($post->post_type == 'cvtx_antrag') {
+            echo(__('Der Antrag erscheint in den folgenden Readern:', 'cvtx'));
+        } else if ($post->post_type == 'cvtx_aeantrag') {
+            echo(__('Der Änderungsantrag erscheint in den folgenden Readern:', 'cvtx'));
+        } else if ($post->post_type == 'cvtx_application') {
+            echo(__('Die Bewerbung erscheint in den folgenden Readern:', 'cvtx'));
+        }
+        
         echo('<ul class="zeichen">');
         foreach ($items as $item) {
             echo('<li>'.$item.'</li>');
         }
         echo('</ul>');
     } else {
-        echo($post->post_type == 'cvtx_antrag' ? __('Der Antrag ist bisher keinem Reader zugeordnet.', 'cvtx')
-                                               : __('Der Änderungsantrag ist bisher keinem Reader zugeordnet.', 'cvtx'));
+        if ($post->post_type == 'cvtx_antrag') {
+            echo(__('Der Antrag ist bisher keinem Reader zugeordnet.', 'cvtx'));
+        } else if ($post->post_type == 'cvtx_aeantrag') {
+            echo(__('Der Änderungsantrag ist bisher keinem Reader zugeordnet.', 'cvtx'));
+        } else if ($post->post_type == 'cvtx_application') {
+            echo(__('Die Bewerbung ist bisher keinem Reader zugeordnet.', 'cvtx'));
+        }
     }
 }
 
@@ -354,6 +406,15 @@ function cvtx_antrag_columns($columns) {
 if (is_admin()) add_filter('manage_edit-cvtx_antrag_sortable_columns', 'cvtx_register_sortable_antrag');
 function cvtx_register_sortable_antrag($columns) {
     $columns['cvtx_antrag_steller'] = 'cvtx_antrag_steller';
+    return $columns;
+}
+
+if (is_admin()) add_filter('manage_edit-cvtx_application_columns', 'cvtx_application_columns');
+function cvtx_application_columns($columns) {
+    $columns = array('cb'                       => '<input type="checkbox" />',
+                     'title'                    => __('Application', 'cvtx'),
+                     'cvtx_application_status'  => '',
+                     'date'                     => __('Date'));
     return $columns;
 }
 
@@ -442,6 +503,17 @@ function cvtx_format_lists($column) {
                 echo('<a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a>');
             }
             break;
+            
+        // Applications
+        case 'cvtx_application_ord':
+            echo(cvtx_get_short($post));
+            break;
+        case "cvtx_application_status":
+            echo(($post->post_status == 'publish' ? '+ ' : ''));
+            if ($file = cvtx_get_file($post, 'pdf', 'url')) {
+                echo('<a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a>');
+            }
+            break;
     }
 }
 
@@ -450,22 +522,19 @@ function cvtx_order_lists($vars) {
     global $post_type;
     if (isset($vars['orderby'])) {
         // Anträge
-        if ($vars['orderby'] == 'cvtx_antrag_ord' || ($post_type == 'cvtx_antrag' && $vars['orderby'] == 'title')) {
+        if ($vars['orderby'] == 'cvtx_antrag_ord' || $vars['orderby'] == 'cvtx_aeantrag_ord'
+         || $vars['orderby'] == 'cvtx_top_ord'    || $vars['orderby'] == 'cvtx_application_ord'
+         || ($vars['orderby'] == 'title' && ($post_type == 'cvtx_antrag'   || $post_type == 'cvtx_top'
+                                          || $post_type == 'cvtx_aeantrag' || $post_type == 'cvtx_application'))) {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_sort', 'orderby' => 'meta_value'));
         } else if ($vars['orderby'] == 'cvtx_antrag_steller') {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_antrag_steller_short', 'orderby' => 'meta_value'));
         }
         // Änderungsanträge
-        else if ($vars['orderby'] == 'cvtx_aeantrag_ord' || ($post_type == 'cvtx_aeantrag' && $vars['orderby'] == 'title')) {
-            $vars = array_merge($vars, array('meta_key' => 'cvtx_sort', 'orderby' => 'meta_value'));
-        } else if ($vars['orderby'] == 'cvtx_aeantrag_steller') {
+        else if ($vars['orderby'] == 'cvtx_aeantrag_steller') {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_steller_short', 'orderby' => 'meta_value'));
         } else if ($vars['orderby'] == 'cvtx_aeantrag_verfahren') {
             $vars = array_merge($vars, array('meta_key' => 'cvtx_aeantrag_verfahren', 'orderby' => 'meta_value'));
-        }
-        // TOPs
-        else if ($vars['orderby'] == 'cvtx_top_ord' ||  ($post_type == 'cvtx_top' && $vars['orderby'] == 'title')) {
-            $vars = array_merge($vars, array('meta_key' => 'cvtx_sort', 'orderby' => 'meta_value'));
         }
     }
 
@@ -514,6 +583,13 @@ function cvtx_conf() {
             update_option('cvtx_latex_tpldir', $_POST['cvtx_latex_tpldir']);
         } else {
             update_option('cvtx_latex_tpldir', 'latex');
+        }
+        
+        // LaTeX output path
+        if (isset($_POST['cvtx_latex_outdir']) && !empty($_POST['cvtx_latex_outdir'])) {
+            update_option('cvtx_latex_outdir', $_POST['cvtx_latex_outdir']);
+        } else {
+            update_option('cvtx_latex_outdir', '');
         }
 
         
@@ -570,21 +646,25 @@ function cvtx_conf() {
         if (isset($_POST['cvtx_default_reader_aeantrag']) && is_array($_POST['cvtx_default_reader_aeantrag'])) {
             update_option('cvtx_default_reader_aeantrag', implode(', ', $_POST['cvtx_default_reader_aeantrag']));
         }
+        if (isset($_POST['cvtx_default_reader_application']) && is_array($_POST['cvtx_default_reader_application'])) {
+            update_option('cvtx_default_reader_application', implode(', ', $_POST['cvtx_default_reader_application']));
+        }
     }
 
 
     /* get settings */
     
     // cvtx settings
-    $antrag_format           = get_option('cvtx_antrag_format');
-    if (!$antrag_format)       $antrag_format   = '%top%-%antrag%';
-    $aeantrag_format         = get_option('cvtx_aeantrag_format');
-    if (!$aeantrag_format)     $aeantrag_format = '%antrag%-%zeile%';
-    $aeantrag_pdf            = get_option('cvtx_aeantrag_pdf');
-    $anon_user               = get_option('cvtx_anon_user');
-    if (!$anon_user)           $anon_user = 1;
-    $default_reader_antrag   = get_option('cvtx_default_reader_antrag');
-    $default_reader_aeantrag = get_option('cvtx_default_reader_aeantrag');
+    $antrag_format              = get_option('cvtx_antrag_format');
+    if (!$antrag_format)          $antrag_format   = '%top%-%antrag%';
+    $aeantrag_format            = get_option('cvtx_aeantrag_format');
+    if (!$aeantrag_format)        $aeantrag_format = '%antrag%-%zeile%';
+    $aeantrag_pdf               = get_option('cvtx_aeantrag_pdf');
+    $anon_user                  = get_option('cvtx_anon_user');
+    if (!$anon_user)              $anon_user = 1;
+    $default_reader_antrag      = get_option('cvtx_default_reader_antrag');
+    $default_reader_aeantrag    = get_option('cvtx_default_reader_aeantrag');
+    $default_reader_application = get_option('cvtx_default_reader_application');
     $reader = cvtx_get_reader();
 
     // mail settings
@@ -666,6 +746,8 @@ function cvtx_conf() {
     if (!$drop_logfile) $drop_logfile = 2;
     $latex_tpldir     = get_option('cvtx_latex_tpldir');
     if (!$latex_tpldir) $latex_tpldir = 'latex';
+    $latex_outdir     = get_option('cvtx_latex_outdir');
+    if (!$latex_outdir) $latex_outdir = '';
 
 
     // print config page
@@ -688,7 +770,7 @@ function cvtx_conf() {
         echo('<table class="form-table">');
             echo('<tr valign="top">');
                 echo('<th scope="row">');
-                    echo('<label for="cvtx_antrag_format">'.__('Kurzbezeichnung für Anträge', 'cvtx').'</label>');
+                    echo('<label for="cvtx_antrag_format">'.__('Kurzbezeichnung für Anträge und Bewerbungen', 'cvtx').'</label>');
                 echo('</th>');
                 echo('<td>');
                     echo('<input id="cvtx_antrag_format" name="cvtx_antrag_format" type="text" value="'.$antrag_format.'" /> ');
@@ -765,6 +847,25 @@ function cvtx_conf() {
                         // list reader terms
                         foreach ($reader as $item) {
                             $selected = (strpos($default_reader_aeantrag, $item['term']) !== false ? 'selected="selected"' : '' );
+                            echo('<option value="'.$item['term'].'" '.$selected.'>'.$item['title'].'</option>');
+                        }
+                    } else {
+                        echo(__('Bisher keine Reader erstellt.', 'cvtx'));
+                    }
+                    echo('</select> ');
+                echo('</td>');
+            echo('</tr>');
+            
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_default_reader_application">'.__('Neue Bewerbungen den folgenden Readern zuordnen', 'cvtx').'</label>');
+                echo('</th>');
+                echo('<td>');
+                    if (count($reader) > 0) {
+                        echo('<select name="cvtx_default_reader_application[]" id="cvtx_default_reader_application" multiple="multiple">');
+                        // list reader terms
+                        foreach ($reader as $item) {
+                            $selected = (strpos($default_reader_application, $item['term']) !== false ? 'selected="selected"' : '' );
                             echo('<option value="'.$item['term'].'" '.$selected.'>'.$item['title'].'</option>');
                         }
                     } else {
@@ -992,7 +1093,7 @@ function cvtx_conf() {
         echo('<table class="form-table">');
             echo('<tr valign="top">');
                 echo('<th scope="row">');
-                    echo('<label for="cvtx_pdflatex_cmd">'.__('LaTeX-Pfad', 'cvtx').'</label>');
+                    echo('<label for="cvtx_pdflatex_cmd">'.__('LaTeX to pdf path', 'cvtx').'</label>');
                 echo('</th>');
                 echo('<td>');
                     echo('<input id="cvtx_pdflatex_cmd" name="cvtx_pdflatex_cmd" type="text" value="'.$pdflatex_cmd.'" /> ');
@@ -1002,49 +1103,59 @@ function cvtx_conf() {
 
             echo('<tr valign="top">');
                 echo('<th scope="row">');
-                    echo('<label>'.__('Erzeugte Tex-Files löschen', 'cvtx').'</label>');
+                    echo('<label>'.__('Remove generated .tex-files', 'cvtx').'</label>');
                 echo('</th>');
                 echo('<td>');
                     echo('<fieldset>');
                         echo('<input id="cvtx_drop_texfile_yes" name="cvtx_drop_texfile" type="radio"'
                             .' value="1" '.($drop_texfile == 1 ? 'checked="checked"' : '').'" /> ');
-                        echo('<label for="cvtx_drop_texfile_yes">'.__('immer', 'cvtx').'</label> ');
+                        echo('<label for="cvtx_drop_texfile_yes">'.__('always', 'cvtx').'</label> ');
                         echo('<input id="cvtx_drop_texfile_if" name="cvtx_drop_texfile" type="radio"'
                             .' value="2" '.($drop_texfile == 2 ? 'checked="checked"' : '').'" /> ');
-                        echo('<label for="cvtx_drop_texfile_if">'.__('nur wenn fehlerfrei', 'cvtx').'</label> ');
+                        echo('<label for="cvtx_drop_texfile_if">'.__('if successfull', 'cvtx').'</label> ');
                         echo('<input id="cvtx_drop_texfile_no" name="cvtx_drop_texfile" type="radio"'
                             .' value="3" '.($drop_texfile == 3 ? 'checked="checked"' : '').'" /> ');
-                        echo('<label for="cvtx_drop_texfile_no">'.__('nie', 'cvtx').'</label>');
+                        echo('<label for="cvtx_drop_texfile_no">'.__('never', 'cvtx').'</label>');
                     echo('</fieldset>');
                 echo('</td>');
             echo('</tr>');
             
             echo('<tr valign=top">');
                 echo('<th scope="row">');
-                    echo('<label>'.__('Erzeugte log-Files löschen', 'cvtx').'</label>');
+                    echo('<label>'.__('Remove generated .log-files', 'cvtx').'</label>');
                 echo('</th>');
                 echo('<td>');
                     echo('<fieldset>');
                         echo('<input id="cvtx_drop_logfile_yes" name="cvtx_drop_logfile" type="radio"'
                             .' value="1" '.($drop_logfile == 1 ? 'checked="checked"' : '').'" /> ');
-                        echo('<label for="cvtx_drop_logfile_yes">'.__('immer', 'cvtx').'</label> ');
+                        echo('<label for="cvtx_drop_logfile_yes">'.__('always', 'cvtx').'</label> ');
                         echo('<input id="cvtx_drop_logfile_if" name="cvtx_drop_logfile" type="radio"'
                             .' value="2" '.($drop_logfile == 2 ? 'checked="checked"' : '').'" /> ');
-                        echo('<label for="cvtx_drop_logfile_if">'.__('nur wenn fehlerfrei', 'cvtx').'</label> ');
+                        echo('<label for="cvtx_drop_logfile_if">'.__('if successfull', 'cvtx').'</label> ');
                         echo('<input id="cvtx_drop_logfile_no" name="cvtx_drop_logfile" type="radio"'
                             .' value="3" '.($drop_logfile == 3 ? 'checked="checked"' : '').'" /> ');
-                        echo('<label for="cvtx_drop_logfile_no">'.__('nie', 'cvtx').'</label>');
+                        echo('<label for="cvtx_drop_logfile_no">'.__('never', 'cvtx').'</label>');
                     echo('</fieldset>');
                 echo('</td>');
             echo('</tr>');
 
             echo('<tr valign="top">');
                 echo('<th scope="row">');
-                    echo('<label for="cvtx_latex_tpldir">'.__('Eigene Templates', 'cvtx').'</label>');
+                    echo('<label for="cvtx_latex_tpldir">'.__('User templates', 'cvtx').'</label>');
                 echo('</th>');
                 echo('<td>');
-                    echo('<input id="cvtx_latex_tpldir" name=cvtx_latex_tpldir" type="text" value="'.$latex_tpldir.'" /> ');
+                    echo('<input id="cvtx_latex_tpldir" name="cvtx_latex_tpldir" type="text" value="'.$latex_tpldir.'" /> ');
                     echo('<span class="description">'.__('Unterverzeichnis des aktivierten Themes, in dem spezielle LaTeX-Templates liegen', 'cvtx').'</span>');
+                echo('</td>');
+            echo('</tr>');
+
+            echo('<tr valign="top">');
+                echo('<th scope="row">');
+                    echo('<label for="cvtx_latex_outdir">'.__('Output directory', 'cvtx').'</label>');
+                echo('</th>');
+                echo('<td>');
+                    echo('<input id="cvtx_latex_outdir" name="cvtx_latex_outdir" type="text" value="'.$latex_outdir.'" /> ');
+                    echo('<span class="description">'.__('Unterverzeichnis des Upload-Ordners, in dem die erzeugten PDFs abgelegt werden sollen', 'cvtx').'</span>');
                 echo('</td>');
             echo('</tr>');
         echo('</table>');
@@ -1052,7 +1163,7 @@ function cvtx_conf() {
       echo('</li>');
     echo('</ul>');
 
-    echo('<p class="submit"><input type="submit" name="submit" value="'.__('Einstellungen speichern', 'cvtx').'" /></p>');
+    echo('<p class="submit"><input type="submit" name="submit" value="'.__('Save settings', 'cvtx').'" /></p>');
     echo('</form>');
     echo('</div>');
 }
@@ -1076,11 +1187,11 @@ function cvtx_hide_quick_edit($actions) {
     global $post, $cvtx_types;
 
     // hide quickedit only if cvtx post_type
-    if(in_array($post->post_type, array_keys($cvtx_types))) {
+    if (in_array($post->post_type, array_keys($cvtx_types))) {
         unset($actions['inline hide-if-no-js']);
 
-        // hide preview if post type top
-        if($post->post_type == 'cvtx_top') {
+        // hide preview if post type top or application
+        if ($post->post_type == 'cvtx_top' || $post->post_type == 'cvtx_application') {
             unset($actions['view']);
         }
     }
@@ -1155,10 +1266,14 @@ if (is_admin()) add_filter('add_menu_classes','show_pending_number');
 function show_pending_number($menu) {
     foreach ($menu as $key => $sub) {
         $type = false;
-        if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_antrag')
+        if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_antrag') {
             $type = 'cvtx_antrag';
-        else if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_aeantrag')
+        } else if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_aeantrag') {
             $type = 'cvtx_aeantrag';
+        } else if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_application') {
+            $type = 'cvtx_application';
+        }
+        
         if ($type) {
             $count = cvtx_get_pending($type);
             $menu[$key][0] .= '<span class="awaiting-mod count-'.$count.'"><span class="pending-count">'.$count.'</span></span>';
@@ -1194,6 +1309,15 @@ function cvtx_admin_bar_render(){
         'id'     => 'cvtx_aeantrag',
         'title'  => __('Änderungsanträge', 'cvtx').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
         'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_aeantrag'),
+        'meta'   => array('class' => 'cvtx')
+    ));
+    // link to cvtx_application
+    $count = cvtx_get_pending('cvtx_application');
+    $wp_admin_bar->add_menu(array(
+        'parent' => 'cvtx',
+        'id'     => 'cvtx_application',
+        'title'  => __('Applications', 'cvtx').' <span class="pending-count count-'.$count.'">'.$count.'</span</span>',
+        'href'   => home_url('/wp-admin/edit.php?post_type=cvtx_application'),
         'meta'   => array('class' => 'cvtx')
     ));
     // link to cvtx_top
