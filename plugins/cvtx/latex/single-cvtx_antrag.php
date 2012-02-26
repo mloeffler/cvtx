@@ -30,12 +30,14 @@
                                                     &                                                                           \\
     \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}   &   \textbf{\large <?php cvtx_top_titel($post); ?>}                         \\
                                                     &                                                                           \\
-    AntragstellerInnen:                             &   <?php cvtx_antragsteller_kurz($post); ?>                                \\
+    <?php _e('AntragstellerInnen', 'cvtx'); ?>:     &   <?php cvtx_antragsteller_kurz($post); ?>                                \\
                                                     &                                                                           \\
-    Gegenstand:                                     &   <?php cvtx_top_titel($post); ?> (<?php cvtx_top_kuerzel($post); ?>)     \\
+    <?php _e('Gegenstand', 'cvtx'); ?>:             &   <?php cvtx_top_titel($post); ?> (<?php cvtx_top_kuerzel($post); ?>)     \\
                                                     &                                                                           \\
-    Anmerkungen:                                    &   <?php cvtx_info($post); ?>                                              \\
+<?php if (cvtx_has_info($post)) { ?>
+    <?php _e('Anmerkungen', 'cvtx'); ?>:            &   <?php cvtx_info($post); ?>                                              \\
                                                     &                                                                           \\
+<?php } ?>
     \hline
 \end{tabularx}
 
@@ -45,10 +47,12 @@
 <?php cvtx_antragstext($post); ?>
 \end{linenumbers}
 
-\subsection*{Begründung}
-<?php cvtx_begruendung($post); ?>
+<?php if (cvtx_has_begruendung($post)) { ?>
+    \subsection*{<?php _e('Begründung', 'cvtx'); ?>}
+    <?php cvtx_begruendung($post); ?>
+<?php } ?>
 
-\subsection*{AntragstellerInnen}
+\subsection*{<?php _e('AntragstellerInnen', 'cvtx'); ?>}
 <?php cvtx_antragsteller($post); ?>
 
 \end{document}

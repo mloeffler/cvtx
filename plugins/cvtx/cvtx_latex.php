@@ -97,6 +97,16 @@ function cvtx_antragstext($post) {
     }
 }
 
+function cvtx_has_begruendung($post) {
+    $begruendung = '';
+    if ($post->post_type == 'cvtx_antrag') {
+        $begruendung = cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_grund', true));
+    } else if ($post->post_type == 'cvtx_aeantrag') {
+        $begruendung = cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_grund', true));
+    }
+    return !empty($begruendung);
+}
+
 function cvtx_begruendung($post) {
     if ($post->post_type == 'cvtx_antrag') {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_grund', true)));
@@ -186,6 +196,16 @@ function cvtx_antrag_kuerzel($post) {
         $antrag = get_post(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true));
         echo(cvtx_get_latex(cvtx_get_short($antrag)));
     }
+}
+
+function cvtx_has_info($post) {
+    $info = '';
+    if ($post->post_type == 'cvtx_antrag') {
+        $info = cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_info', true));
+    } else if ($post->post_type == 'cvtx_aeantrag') {
+        $info = cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_info', true));
+    }
+    return !empty($info);
 }
 
 function cvtx_info($post) {

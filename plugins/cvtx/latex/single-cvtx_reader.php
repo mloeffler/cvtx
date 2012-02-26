@@ -2,7 +2,11 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[utf8x]{inputenc}
-\usepackage[ngerman]{babel}
+<?php if (get_bloginfo('language') == 'de-DE') { ?>
+    \usepackage[ngerman]{babel}
+<?php } else { ?>
+    \usepackage[english]{babel}
+<?php } ?>
 \usepackage{fixltx2e}
 \usepackage{lineno}
 \usepackage{tabularx}
@@ -14,14 +18,13 @@
 \sloppy
 
 \pagestyle{scrheadings}
-\ohead{<?php cvtx_titel($post); ?>}
 \setheadsepline{0.4pt}
 
 \newcommand*\adjust{\setlength\hsize{\textwidth-2\tabcolsep}}
 
 \subject{<?php cvtx_name(); ?>\\ <?php cvtx_beschreibung(); ?>}
 \title{<?php cvtx_titel($post); ?>}
-\date{Stand: \today}
+\date{<?php _e('Stand', 'cvtx'); ?>: \today}
 \author{}
 
 \begin{document}
@@ -78,12 +81,14 @@ while ($query->have_posts()) {
                                                     &                                                                           \\
     \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}   &   \textbf{\large <?php cvtx_top_titel($item); ?>}                         \\
                                                     &                                                                           \\
-    AntragstellerInnen:                             &   <?php cvtx_antragsteller_kurz($item); ?>                                \\
+    <?php _e('AntragstellerInnen', 'cvtx'); ?>:     &   <?php cvtx_antragsteller_kurz($item); ?>                                \\
                                                     &                                                                           \\
-    Gegenstand:                                     &   <?php cvtx_top_titel($item); ?> (<?php cvtx_top_kuerzel($item); ?>)     \\
+    <?php _e('Gegenstand', 'cvtx'); ?>:             &   <?php cvtx_top_titel($item); ?> (<?php cvtx_top_kuerzel($item); ?>)     \\
                                                     &                                                                           \\
-    Anmerkungen:                                    &   <?php cvtx_info($item); ?>                                              \\
+<?php if (cvtx_has_info($item)) { ?>
+    <?php _e('Anmerkungen', 'cvtx'); ?>:            &   <?php cvtx_info($item); ?>                                              \\
                                                     &                                                                           \\
+<?php } ?>
     \hline
 \end{tabularx}
 
@@ -94,10 +99,12 @@ while ($query->have_posts()) {
 <?php cvtx_antragstext($item); ?>
 \end{linenumbers}
 
-\subsection*{Begründung}
-<?php cvtx_begruendung($item); ?>
+<?php if (cvtx_has_begruendung($item)) { ?>
+   \subsection*{<?php _e('Begründung', 'cvtx'); ?>}
+   <?php cvtx_begruendung($item); ?>
+<?php } ?>
 
-\subsection*{AntragstellerInnen}
+\subsection*{<?php _e('AntragstellerInnen', 'cvtx'); ?>}
 <?php cvtx_antragsteller($item); ?>
 
 
@@ -119,8 +126,8 @@ while ($query->have_posts()) {
 ?>
 
 \pagestyle{scrheadings}
-\ohead{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
-\addcontentsline{toc}{section}{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+\ohead{<?php _e('Application', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+\addcontentsline{toc}{section}{<?php _e('Application ', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
 \includepdf[pages=-, pagecommand={\thispagestyle{scrheadings}}, offset=-1em 2em, width=1.15\textwidth]{<?php cvtx_application_file($item); ?>}
 
@@ -145,15 +152,14 @@ while ($query->have_posts()) {
             $antrag = $this_antrag;
 ?>
 \addcontentsline{toc}{section}{<?php cvtx_antrag($item); ?>}
-TOC_LINE: <?php cvtx_antrag($item); ?>
 <?php
         }
 ?>
 
 \pagestyle{scrheadings}
-\ohead{Änderungsantrag <?php cvtx_kuerzel($item); ?>}
+\ohead{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
 \thispagestyle{empty}
-\addcontentsline{toc}{subsection}{<?php cvtx_kuerzel($item); ?>}
+\addcontentsline{toc}{subsection}{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
 
 \begin{flushright}
  \textbf{\large <?php cvtx_name(); ?>}\\
@@ -165,26 +171,30 @@ TOC_LINE: <?php cvtx_antrag($item); ?>
                                                 &                                                               \\
     \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($item); ?>}}                               \\
                                                 &                                                               \\
-    AntragstellerInnen:                         &   <?php cvtx_antragsteller_kurz($item); ?>                    \\
+    <?php _e('AntragstellerInnen', 'cvtx'); ?>: &   <?php cvtx_antragsteller_kurz($item); ?>                    \\
                                                 &                                                               \\
-    Gegenstand:                                 &   <?php cvtx_antrag($item); ?> (<?php cvtx_top($item); ?>)    \\
+    <?php _e('Gegenstand', 'cvtx'); ?>:         &   <?php cvtx_antrag($item); ?> (<?php cvtx_top($item); ?>)    \\
                                                 &                                                               \\
-    Anmerkungen:                                &   <?php cvtx_info($item); ?>                                  \\
+<?php if (cvtx_has_info($item)) { ?>
+    <?php _e('Anmerkungen', 'cvtx'); ?>:        &   <?php cvtx_info($item); ?>                                  \\
                                                 &                                                               \\
+<?php } ?>
     \hline
 \end{tabularx}
 
-\section*{Änderungsantrag <?php cvtx_kuerzel($item); ?>}
+\section*{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
 
 \begin{linenumbers}
 \setcounter{linenumber}{1}
 <?php cvtx_antragstext($item); ?>
 \end{linenumbers}
 
-\subsection*{Begründung}
-<?php cvtx_begruendung($item); ?>
+<?php if (cvtx_has_begruendung($item)) { ?>
+    \subsection*{<?php _e('Begründung', 'cvtx'); ?>}
+    <?php cvtx_begruendung($item); ?>
+<?php } ?>
 
-\subsection*{AntragstellerInnen}
+\subsection*{<?php _e('AntragstellerInnen', 'cvtx'); ?>}
 <?php cvtx_antragsteller($item); ?>
 <?php
     }

@@ -12,7 +12,7 @@
 \sloppy
 
 \pagestyle{scrheadings}
-\ohead{Änderungsantrag <?php cvtx_kuerzel($post); ?>}
+\ohead{<?php _e('Änderungsantrag', 'cvtx'); ?> <?php cvtx_kuerzel($post); ?>}
 \setheadsepline{0.4pt}
 
 \begin{document}
@@ -32,25 +32,29 @@
                                                 &                                                               \\
     \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}                               \\
                                                 &                                                               \\
-    AntragstellerInnen:                         &   <?php cvtx_antragsteller_kurz($post); ?>                    \\
+    <?php _e('AntragstellerInnen', 'cvtx'); ?>: &   <?php cvtx_antragsteller_kurz($post); ?>                    \\
                                                 &                                                               \\
-    Gegenstand:                                 &   <?php cvtx_antrag($post); ?> (<?php cvtx_top($post); ?>)    \\
+    <?php _e('Gegenstand', 'cvtx'); ?>:         &   <?php cvtx_antrag($post); ?> (<?php cvtx_top($post); ?>)    \\
                                                 &                                                               \\
-    Anmerkungen:                                &   <?php cvtx_info($post); ?>                                  \\
+<?php if (cvtx_has_info($post)) { ?>
+    <?php _e('Anmerkungen', 'cvtx'); ?>:        &   <?php cvtx_info($post); ?>                                  \\
                                                 &                                                               \\
+<?php } ?>
     \hline
 \end{tabularx}
 
-\section*{Änderungsantrag <?php cvtx_kuerzel($post); ?>}
+\section*{<?php _e('Änderungsantrag', 'cvtx'); ?> <?php cvtx_kuerzel($post); ?>}
 
 \begin{linenumbers}
 <?php cvtx_antragstext($post); ?>
 \end{linenumbers}
 
-\subsection*{Begründung}
-<?php cvtx_begruendung($post); ?>
+<?php if (cvtx_has_begruendung($post)) { ?>
+    \subsection*{<?php _e('Begründung', 'cvtx'); ?>}
+    <?php cvtx_begruendung($post); ?>
+<?php } ?>
 
-\subsection*{AntragstellerInnen}
+\subsection*{<?php _e('AntragstellerInnen', 'cvtx'); ?>}
 <?php cvtx_antragsteller($post); ?>
 
 \end{document}
