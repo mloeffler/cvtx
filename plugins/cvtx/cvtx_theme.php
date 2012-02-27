@@ -58,13 +58,13 @@ function cvtx_aenderungsantraege_action($post_id = false) {
                                                            'compare' => '='))));
     if($loop->have_posts()):?>
         <div id="ae_antraege">
-            <h3><?php print __('&Auml;nderungsantr&auml;ge','cvtx'); ?><?php print (isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) ? ' zu '.cvtx_get_short($post) : ''; ?></h3>
+            <h3><?php print __('&Auml;nderungsantr&auml;ge','cvtx'); ?><?php print (isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) ? __(' zu ', 'cvtx').cvtx_get_short($post) : ''; ?></h3>
             <table cellpadding="3" cellspacing="0" valign="top">
                 <tr>
-                    <th><strong>Zeile</strong></th>
-                    <th><strong>AntragstellerInnen</strong></th>
-                    <th><strong>Antragstext</strong></th>
-                    <th><strong>Begr&uuml;ndung</strong></th>
+                    <th><strong><?php _e('Zeile', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('AntragstellerInnen', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('Antragstext', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('Begr&uuml;ndung', 'cvtx'); ?></strong></th>
                 </tr>
                 <?php 
                 while($loop->have_posts()):$loop->the_post();?>
