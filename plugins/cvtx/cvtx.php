@@ -302,6 +302,9 @@ function cvtx_get_sort($post_type, $top=false, $subject=false, $zeile=false, $va
 
 
 add_action('wp_insert_post', 'cvtx_insert_post', 10, 2);
+/**
+ * Action inserts/updates posts
+ */
 function cvtx_insert_post($post_id, $post = null) {
     global $cvtx_types;
 
@@ -321,6 +324,7 @@ function cvtx_insert_post($post_id, $post = null) {
         else if ($post->post_type == 'cvtx_application' && isset($_POST['cvtx_antrag_top'])) {
             $_POST['cvtx_application_top'] = $_POST['cvtx_antrag_top'];   // BUGGY --MaxL
             
+            // get top and validate data
             $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);
             $appl_ord = (isset($_POST['cvtx_application_ord']) ? $_POST['cvtx_application_ord'] : 0);
 
@@ -332,17 +336,26 @@ function cvtx_insert_post($post_id, $post = null) {
         }
         // Update/insert antrag
         else if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
+            // get top and validate data
             $top_ord    = get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true);
             $antrag_ord = (isset($_POST['cvtx_antrag_ord']) ? $_POST['cvtx_antrag_ord'] : 0);
 
             // get globally sortable string
             $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_antrag', $top_ord, $antrag_ord);
             
+            // generate short antragsteller if field is empty
+            if (!isset($_POST['cvtx_antrag_steller_short']) || empty($_POST['cvtx_antrag_steller_short'])) {
+                $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_antrag_steller'], 2);
+                if (count($parts) == 2) $_POST['cvtx_antrag_steller_short'] = trim($parts[0]).' u.a.';
+                else                    $_POST['cvtx_antrag_steller_short'] = $_POST['cvtx_antrag_steller'];
+            }
+            
             // get default reader terms for amendments
             $terms = explode(', ', get_option('cvtx_default_reader_antrag'));
         }
         // Update/insert amendment
         else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
+            // get top and antrag and validate data
             $top_id     = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
             $top_ord    = get_post_meta($top_id, 'cvtx_top_ord', true);
             $antrag_ord = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true);
@@ -360,6 +373,13 @@ function cvtx_insert_post($post_id, $post = null) {
             // get globally sortable string
             $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_aeantrag', $top_ord, $antrag_ord, $aeantrag_zeile, $aeantrag_vari);
             
+            // generate short antragsteller if field is empty
+            if (!isset($_POST['cvtx_aeantrag_steller_short']) || empty($_POST['cvtx_aeantrag_steller_short'])) {
+                $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_aeantrag_steller'], 2);
+                if (count($parts) == 2) $_POST['cvtx_aeantrag_steller_short'] = trim($parts[0]).' u.a.';
+                else                    $_POST['cvtx_aeantrag_steller_short'] = $_POST['cvtx_aeantrag_steller'];
+            }
+        
             // get default reader terms for amendments
             $terms = explode(', ', get_option('cvtx_default_reader_aeantrag'));
         }
@@ -414,19 +434,6 @@ function cvtx_insert_post($post_id, $post = null) {
             }
         }
                 
-        // Generate short antragsteller if field is empty
-        if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_steller']) && !empty($_POST['cvtx_antrag_steller'])
-         && (!isset($_POST['cvtx_antrag_steller_short']) || empty($_POST['cvtx_antrag_steller_short']))) {
-            $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_antrag_steller'], 2);
-            if (count($parts) == 2) $_POST['cvtx_antrag_steller_short'] = trim($parts[0]).' u.a.';
-            else                    $_POST['cvtx_antrag_steller_short'] = $_POST['cvtx_antrag_steller'];
-        } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_steller']) && !empty($_POST['cvtx_aeantrag_steller'])
-                && (!isset($_POST['cvtx_aeantrag_steller_short']) || empty($_POST['cvtx_aeantrag_steller_short']))) {
-            $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_aeantrag_steller'], 2);
-            if (count($parts) == 2) $_POST['cvtx_aeantrag_steller_short'] = trim($parts[0]).' u.a.';
-            else                    $_POST['cvtx_aeantrag_steller_short'] = $_POST['cvtx_aeantrag_steller'];
-        }
-        
         // add default reader terms to antrag, amendment or application
         if (is_array($terms) && count($terms) > 0) {
             $items = array();
