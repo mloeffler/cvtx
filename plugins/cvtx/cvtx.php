@@ -306,25 +306,43 @@ function cvtx_insert_post($post_id, $post = null) {
     global $cvtx_types;
 
     if (in_array($post->post_type, array_keys($cvtx_types))) {
-        // Add globally sortable field
+        $terms = array();
+    
+        // Update/insert top
         if ($post->post_type == 'cvtx_top') {
+            // get globally sortable string
             $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_top', get_post_meta($post_id, 'cvtx_top_ord', true));
             
+            // check wheater antraege and applications may be added to this top or not
             $_POST['cvtx_top_antraege']     = (isset($_POST['cvtx_top_antraege'])     ? $_POST['cvtx_top_antraege']     : 'off');
             $_POST['cvtx_top_applications'] = (isset($_POST['cvtx_top_applications']) ? $_POST['cvtx_top_applications'] : 'off');
-        } else if ($post->post_type == 'cvtx_application' && isset($_POST['cvtx_antrag_top'])) {
+        }
+        // Update/insert application
+        else if ($post->post_type == 'cvtx_application' && isset($_POST['cvtx_antrag_top'])) {
             $_POST['cvtx_application_top'] = $_POST['cvtx_antrag_top'];   // BUGGY --MaxL
             
             $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);
             $appl_ord = (isset($_POST['cvtx_application_ord']) ? $_POST['cvtx_application_ord'] : 0);
 
+            // get globally sortable string
             $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_application', $top_ord, $appl_ord);
-        } else if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
+            
+            // get default reader terms for applications
+            $terms = explode(', ', get_option('cvtx_default_reader_application'));
+        }
+        // Update/insert antrag
+        else if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
             $top_ord    = get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true);
             $antrag_ord = (isset($_POST['cvtx_antrag_ord']) ? $_POST['cvtx_antrag_ord'] : 0);
 
+            // get globally sortable string
             $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_antrag', $top_ord, $antrag_ord);
-        } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
+            
+            // get default reader terms for amendments
+            $terms = explode(', ', get_option('cvtx_default_reader_antrag'));
+        }
+        // Update/insert amendment
+        else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
             $top_id     = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
             $top_ord    = get_post_meta($top_id, 'cvtx_top_ord', true);
             $antrag_ord = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true);
@@ -339,25 +357,14 @@ function cvtx_insert_post($post_id, $post = null) {
                 $aeantrag_vari = $match2[1];
             } else $aeantrag_vari = false;
             
-            // get sort code for aeantrag
+            // get globally sortable string
             $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_aeantrag', $top_ord, $antrag_ord, $aeantrag_zeile, $aeantrag_vari);
+            
+            // get default reader terms for amendments
+            $terms = explode(', ', get_option('cvtx_default_reader_aeantrag'));
         }
-                
-        // Generate short antragsteller if field is empty
-        if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_steller']) && !empty($_POST['cvtx_antrag_steller'])
-         && (!isset($_POST['cvtx_antrag_steller_short']) || empty($_POST['cvtx_antrag_steller_short']))) {
-            $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_antrag_steller'], 2);
-            if (count($parts) == 2) $_POST['cvtx_antrag_steller_short'] = trim($parts[0]).' u.a.';
-            else                    $_POST['cvtx_antrag_steller_short'] = $_POST['cvtx_antrag_steller'];
-        } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_steller']) && !empty($_POST['cvtx_aeantrag_steller'])
-                && (!isset($_POST['cvtx_aeantrag_steller_short']) || empty($_POST['cvtx_aeantrag_steller_short']))) {
-            $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_aeantrag_steller'], 2);
-            if (count($parts) == 2) $_POST['cvtx_aeantrag_steller_short'] = trim($parts[0]).' u.a.';
-            else                    $_POST['cvtx_aeantrag_steller_short'] = $_POST['cvtx_aeantrag_steller'];
-        }
-        
-        // update reader taxonomy
-        if ($post->post_type == 'cvtx_reader') {
+        // Update/insert reader taxonomy
+        else if ($post->post_type == 'cvtx_reader') {
             // Add term if new reader is created
             if (!term_exists('cvtx_reader_'.$post_id, 'cvtx_tax_reader')) {
                 wp_insert_term('cvtx_reader_'.$post_id, 'cvtx_tax_reader');
@@ -382,7 +389,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 $new = array_keys($_POST['cvtx_post_ids']);
             }
             
-            // fetch terms by object and copy all - except this reader!
+            // fetch object terms for added, unselected and remaining objects and copy all of them except this reader!
             $terms = array();
             foreach (array_unique(array_merge($old, $new)) as $item) {
                 $terms["$item"] = array();
@@ -391,14 +398,14 @@ function cvtx_insert_post($post_id, $post = null) {
                 }
             }
             
-            // update object terms
+            // update object terms of unselected objects
             foreach ($old as $item) {
                 if (!in_array($item, $new)) {
                     wp_set_object_terms($item, $terms["$item"], 'cvtx_tax_reader');
                 }
             }
             
-            // add this reader to terms list and update object terms
+            // add this reader to terms list and update object terms of newly added objects
             foreach ($new as $item) {
                 $terms["$item"][] = 'cvtx_reader_'.intval($post_id);
                 if (!in_array($item, $old)) {
@@ -406,29 +413,23 @@ function cvtx_insert_post($post_id, $post = null) {
                 }
             }
         }
+                
+        // Generate short antragsteller if field is empty
+        if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_steller']) && !empty($_POST['cvtx_antrag_steller'])
+         && (!isset($_POST['cvtx_antrag_steller_short']) || empty($_POST['cvtx_antrag_steller_short']))) {
+            $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_antrag_steller'], 2);
+            if (count($parts) == 2) $_POST['cvtx_antrag_steller_short'] = trim($parts[0]).' u.a.';
+            else                    $_POST['cvtx_antrag_steller_short'] = $_POST['cvtx_antrag_steller'];
+        } else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_steller']) && !empty($_POST['cvtx_aeantrag_steller'])
+                && (!isset($_POST['cvtx_aeantrag_steller_short']) || empty($_POST['cvtx_aeantrag_steller_short']))) {
+            $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_aeantrag_steller'], 2);
+            if (count($parts) == 2) $_POST['cvtx_aeantrag_steller_short'] = trim($parts[0]).' u.a.';
+            else                    $_POST['cvtx_aeantrag_steller_short'] = $_POST['cvtx_aeantrag_steller'];
+        }
         
         // add default reader terms to antrag, amendment or application
-        if ($post->post_type == 'cvtx_antrag') {
+        if (is_array($terms) && count($terms) > 0) {
             $items = array();
-            $terms = explode(', ', get_option('cvtx_default_reader_antrag'));
-            foreach ($terms as $term) {
-                if (term_exists($term, 'cvtx_tax_reader')) $items[] = $term;
-            }
-            if (count($items) > 0) {
-                wp_set_object_terms($post->ID, $items, 'cvtx_tax_reader');
-            }
-        } else if ($post->post_type == 'cvtx_aeantrag') {
-            $items = array();
-            $terms = explode(', ', get_option('cvtx_default_reader_aeantrag'));
-            foreach ($terms as $term) {
-                if (term_exists($term, 'cvtx_tax_reader')) $items[] = $term;
-            }
-            if (count($items) > 0) {
-                wp_set_object_terms($post->ID, $items, 'cvtx_tax_reader');
-            }
-        } else if ($post->post_type == 'cvtx_application') {
-            $items = array();
-            $terms = explode(', ', get_option('cvtx_default_reader_application'));
             foreach ($terms as $term) {
                 if (term_exists($term, 'cvtx_tax_reader')) $items[] = $term;
             }
