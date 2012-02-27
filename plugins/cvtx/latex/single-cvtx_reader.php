@@ -1,4 +1,4 @@
-\documentclass[a4paper, 12pt, pagesize, halfparskip]{scrbook}
+\documentclass[a4paper, 12pt, pagesize, halfparskip, DIV=calc]{scrbook}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[utf8x]{inputenc}
@@ -129,7 +129,7 @@ while ($query->have_posts()) {
 \ohead{<?php _e('Application', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 \addcontentsline{toc}{section}{<?php _e('Application ', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
-\includepdf[pages=-, pagecommand={\thispagestyle{scrheadings}}, offset=-1em 2em, width=1.15\textwidth]{<?php cvtx_application_file($item); ?>}
+\includepdf[pages=-, pagecommand={\thispagestyle{scrheadings}}, offset=-1.5em 2em, width=1.15\textwidth]{<?php cvtx_application_file($item); ?>}
 
 <?php
     }

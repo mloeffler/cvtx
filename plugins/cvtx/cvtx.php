@@ -86,7 +86,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_reader_small.png',
-        'rewrite'     => array('slug' => __('reader', 'cvtx')),
+        'rewrite'     => array('slug' => __('slug_reader', 'cvtx')),
         'supports'    => array('title'),
         )
     );
@@ -107,7 +107,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_top_small.png',
-        'rewrite'     => array('slug' => __('tops', 'cvtx')),
+        'rewrite'     => array('slug' => __('slug_tops', 'cvtx')),
         'supports'    => array('title', 'editor'),
         )
     );
@@ -128,7 +128,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_antrag_small.png',
-        'rewrite'     => array('slug' => __('antraege', 'cvtx')),
+        'rewrite'     => array('slug' => __('slug_antraege', 'cvtx')),
         'supports'    => array('title', 'editor'),
         )
     );
@@ -150,7 +150,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_aeantrag_small.png',
-        'rewrite'     => array('slug' => __('aeantraege', 'cvtx')),
+        'rewrite'     => array('slug' => __('slug_amendments', 'cvtx')),
         'supports'    => array('editor'),
         )
     );
@@ -172,7 +172,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
 //        'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_application_small.png',
-        'rewrite'     => array('slug' => __('applications', 'cvtx')),
+        'rewrite'     => array('slug' => __('slug_applications', 'cvtx')),
         'supports'    => array('title'),
         )
     );
