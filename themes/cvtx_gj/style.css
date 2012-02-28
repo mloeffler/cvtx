@@ -161,6 +161,12 @@ nav ul li.first a {
 	text-indent: -1000px;
 }
 
+nav ul li.menu-item-home a {
+	background: url(images/home.jpg) no-repeat center;
+	width:20px;
+	text-indent: -1000px;
+}
+
 nav ul li.current_page_item {
 }
 

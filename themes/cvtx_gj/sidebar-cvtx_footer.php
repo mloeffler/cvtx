@@ -13,7 +13,7 @@
 	 *
 	 * If none of the sidebars have widgets, then let's bail early.
 	 */
-	if (is_active_sidebar('cvtx_footer')):
+	if (is_active_sidebar('cvtx_footer_first')):
 ?>
 		<div id="first" class="widget-area">
 			<ul class="xoxo">

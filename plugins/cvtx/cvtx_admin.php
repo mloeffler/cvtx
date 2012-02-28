@@ -37,7 +37,7 @@ function cvtx_add_meta_boxes() {
 
     // Applications
     add_meta_box('cvtx_application_meta', __('Metainformationen', 'cvtx'), 'cvtx_application_meta', 'cvtx_application', 'side', 'high');
-    add_meta_box('cvtx_application_pdf', __('PDF', 'cvtx'), 'cvtx_metabox_pdf', 'cvtx_application', 'side', 'low');
+    add_meta_box('cvtx_application_pdf', __('PDF', 'cvtx'), 'cvtx_metabox_pdf', 'cvtx_application', 'normal', 'low');
     add_meta_box('cvtx_application_reader', __('Readerzuordnung', 'cvtx'), 'cvtx_metabox_reader', 'cvtx_application', 'side', 'low');
 }
 
@@ -285,6 +285,75 @@ function cvtx_application_meta() {
     echo('</p>');
 }
 
+// add "enctype="multipart/form-data" to application-edit-page
+add_action('post_edit_form_tag', 'post_edit_form_tag');
+function post_edit_form_tag() {
+    global $post;
+    if($post->post_type == 'cvtx_application')
+        echo ' enctype="multipart/form-data"';
+}
+
+/**
+ * Prints an application-upload-formular
+ *
+ * @param $post post to which the application should be uploaded
+ */
+function cvtx_application_upload($post = NULL) {
+    if($post == NULL) global $post;
+    
+    // get the attachments ID
+    $download_id = get_post_meta($post->ID, 'cvtx_application_file_id', true);
+    
+    // an attachment has already been uploaded
+    if(!empty($download_id) && $download_id != 0 && $url = wp_get_attachment_url($download_id)) {
+        echo '<p><a href="' . $url .'">'.__('Download', 'cvtx').'</a></p>';
+        $neu = true;
+    }
+    // actual form
+    echo '<p><label for="cvtx_application_file">';
+    echo (isset($neu)) ? __('Bewerbung neu hochladen', 'cvtx') : __('Bewerbung hochladen', 'cvtx');
+    echo ':</label><br />';
+    echo '<input type="file" name="cvtx_application_file" id="cvtx_application_file" /></p>';
+    echo '</p>';
+}
+
+// we should hook into application-attachment/edit/insert to name the files how we want them
+add_action('edit_attachment', 'cvtx_application_rename_attachment');
+add_action('add_attachment', 'cvtx_application_rename_attachment');
+
+/**
+ * Renames a given attachment
+ *
+ * @param $post_ID this is the post_ID of the _attachment_, not its parent!
+ */
+function cvtx_application_rename_attachment($post_ID) {
+
+    if(!isset($post_ID)) {
+        global $post;
+        $post_ID = $post->ID;
+    }
+    
+    // get the attachment
+    $post = get_post($post_ID);
+    // get the application to which the attachment belongs to
+    $appl = get_post($post->post_parent);
+    // get attached file
+    $file = get_attached_file($post_ID);
+    $path = pathinfo($file);
+
+    // application published? get short-name-name-combo and use it as filename
+    if($appl->post_status == 'publish' && $short = cvtx_get_short($appl))
+        $newfilename = cvtx_sanitize_file_name($short.'_'.$appl->post_title);
+    // else we use the parents ID
+    else
+        $newfilename = $appl->ID;
+
+    $newfile = $path['dirname'].'/'.$newfilename.'.'.$path['extension'];
+
+    // rename the file and update the attachment!
+    rename($file,$newfile);
+    update_attached_file($post_ID, $newfile);
+}
 
 /* Allgemeingültige Meta-Boxen */
 
@@ -292,22 +361,26 @@ function cvtx_application_meta() {
 function cvtx_metabox_pdf() {
     global $post;
     
+    // include application-upload formular
+    if($post->post_type == 'cvtx_application') cvtx_application_upload($post);
+
     // check if pdf file exists
-    if ($file = cvtx_get_file($post, 'pdf')) {
+    else if ($file = cvtx_get_file($post, 'pdf') ) {
         echo('<a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a>');
     }
     // show info otherwise
     else {
-        echo(__('Kein PDF verfügbar.', 'cvtx'));
+        if($post->post_type == 'cvtx_application') cvtx_application_upload($post);
+        else echo(__('Kein PDF verfügbar.', 'cvtx'));
     }
     echo(' ');
 
     // check if tex file exists
-    if ($file = cvtx_get_file($post, 'tex')) {
+    if ($file = cvtx_get_file($post, 'tex') && $post->post_type != 'cvtx_application') {
         echo('<a href="'.$file.'">(tex)</a> ');
     }
     // check if log file exists
-    if ($file = cvtx_get_file($post, 'log')) {
+    if ($file = cvtx_get_file($post, 'log')  && $post->post_type != 'cvtx_application') {
         echo('<a href="'.$file.'">(log)</a> ');
     }
 }

@@ -56,10 +56,11 @@ $cvtx_types = array('cvtx_reader'   => array(),
                                              'cvtx_aeantrag_verfahren',
                                              'cvtx_aeantrag_detail',
                                              'cvtx_aeantrag_info'),
-                    'cvtx_application' => array('cvtx_application_ord',
-                                                'cvtx_sort',
-                                                'cvtx_application_top',
-                                                'cvtx_application_name'));
+                 'cvtx_application' => array('cvtx_application_ord',
+                                             'cvtx_sort',
+                                             'cvtx_application_top',
+                                             'cvtx_application_name',
+                                             'cvtx_application_file_id'));
 
 
 add_action('init', 'cvtx_init');
@@ -320,20 +321,6 @@ function cvtx_insert_post($post_id, $post = null) {
             $_POST['cvtx_top_antraege']     = (isset($_POST['cvtx_top_antraege'])     ? $_POST['cvtx_top_antraege']     : 'off');
             $_POST['cvtx_top_applications'] = (isset($_POST['cvtx_top_applications']) ? $_POST['cvtx_top_applications'] : 'off');
         }
-        // Update/insert application
-        else if ($post->post_type == 'cvtx_application' && isset($_POST['cvtx_antrag_top'])) {
-            $_POST['cvtx_application_top'] = $_POST['cvtx_antrag_top'];   // BUGGY --MaxL
-            
-            // get top and validate data
-            $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);
-            $appl_ord = (isset($_POST['cvtx_application_ord']) ? $_POST['cvtx_application_ord'] : 0);
-
-            // get globally sortable string
-            $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_application', $top_ord, $appl_ord);
-            
-            // get default reader terms for applications
-            $terms = explode(', ', get_option('cvtx_default_reader_application'));
-        }
         // Update/insert antrag
         else if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
             // get top and validate data
@@ -433,6 +420,60 @@ function cvtx_insert_post($post_id, $post = null) {
                 }
             }
         }
+        // cvtx_application
+        else if ($post->post_type == 'cvtx_application') {
+	        // Update/insert application
+	        if (isset($_POST['cvtx_antrag_top'])) {
+	            $_POST['cvtx_application_top'] = $_POST['cvtx_antrag_top'];   // BUGGY --MaxL
+	            
+	            // get top and validate data
+	            $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);
+	            $appl_ord = (isset($_POST['cvtx_application_ord']) ? $_POST['cvtx_application_ord'] : 0);
+	
+	            // get globally sortable string
+	            $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_application', $top_ord, $appl_ord);
+	            
+	            // get default reader terms for applications
+	            $terms = explode(', ', get_option('cvtx_default_reader_application'));
+	        }
+            // file upload
+            $_POST['cvtx_application_file_id'] = get_post_meta($post->ID, 'cvtx_application_file_id', true);
+	        if(isset($_FILES['cvtx_application_file']) && ($_FILES['cvtx_application_file']['size'] > 0)) {
+	            $file         = $_FILES['cvtx_application_file'];
+	            // of which filetype is the uploaded file?
+	            $arr_filetype = wp_check_filetype(basename($file['name']));
+	            $filetype     = $arr_filetype['type'];
+	            // we accept only pdfs!
+	            if($filetype == 'application/pdf') {
+	            
+	                // there exists already an attachment
+                    $existing_download = (int)get_post_meta($post->ID, 'cvtx_application_file_id', true);
+                    // we delete it
+	                if(is_numeric($existing_download)) {
+	                    wp_delete_attachment($existing_download,true);
+	                }
+	                // upload the pdf
+    	            $upload = wp_handle_upload($file, array('test_form' => false));
+    	            // check if upload was succesful, get meta-informations
+	                if(!isset($upload['error']) && isset($upload['file'])) {
+	                    $title      = $file['name'];
+	                    $ext        = strrchr($title, '.');
+	                    $title      = ($ext != false) ? substr($title, 0, -strlen($ext)) : $title;
+	                    $attachment = array(
+	                        'post_mime_type' => $filetype,
+	                        'post_title'     => addslashes($title),
+	                        'post_content'   => '',
+	                        'post_status'    => 'inherit',
+	                        'post_parent'    => $post->ID,
+	                    );
+	                    // insert attachment
+    	                $attach_id  = wp_insert_attachment($attachment, $upload['file']);
+    	                // set the cvtx_application_file_id 
+    	                $_POST['cvtx_application_file_id'] = $attach_id;
+    	            }
+	            }
+	        }
+        }
                 
         // add default reader terms to antrag, amendment or application
         if (is_array($terms) && count($terms) > 0) {
@@ -475,8 +516,9 @@ function cvtx_insert_post($post_id, $post = null) {
         if (is_admin()) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
+        	$mail = (get_option('cvtx_send_html_mail',true) == true ? true : false);
             $headers = array('From: '.get_option('cvtx_send_from_email', get_bloginfo('admin_email'))."\r\n",
-                             (get_option('cvtx_send_html_mail') ? "Content-Type: text/html\r\n" : ''));
+                             ($mail ? "Content-Type: text/html\r\n" : ''));
             
             // post type antrag created
             if ($post->post_type == 'cvtx_antrag') {
@@ -496,7 +538,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
-                        if($part=='body' && get_option('cvtx_send_html_mail',true) == true) {
+                        if($part=='body' && $mail) {
                             $tpl = get_template_directory().'/mail.php';
                             if(is_file($tpl)) {
                                 $content = nl2br(strtr($content, $fields));
@@ -549,7 +591,18 @@ function cvtx_insert_post($post_id, $post = null) {
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
-                        $mails[$rcpt][$part] = strtr($content, $fields);
+                        if($part=='body' && $mail) {
+                            $tpl = get_template_directory().'/mail.php';
+                            if(is_file($tpl)) {
+                                $content = nl2br(strtr($content, $fields));
+                                ob_start();
+                                require($tpl);
+                                $out = ob_get_contents();
+                                ob_end_clean();
+	                            $mails[$rcpt][$part] = $out;
+                            }
+                         }
+                         else $mails[$rcpt][$part] = strtr($content, $fields);
                     }
                 }
                 
@@ -803,6 +856,9 @@ function cvtx_get_file($post, $ending = 'pdf', $base = 'url') {
     $dir  = wp_upload_dir();
     $base = 'base'.($base == 'dir' ? $base : 'url');
     
+    if($post->post_type == 'cvtx_application' && $ending == 'pdf') 
+       return wp_get_attachment_url(get_post_meta($post->ID, 'cvtx_application_file_id', true));
+        
     // specify filename
     if ($post->post_status == 'publish' && $short = cvtx_get_short($post)) {
         if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_application') {
@@ -840,7 +896,7 @@ function cvtx_remove_files($post, $endings = array('*')) {
     }
 
     foreach ($endings as $ending) {
-        if ($file = cvtx_get_file($post, $ending, 'dir')) unlink($file);
+        if ($file = cvtx_get_file($post, $ending, 'dir') && $post->post_type != 'cvtx_application') unlink($file);
     }
 }
 
@@ -1376,7 +1432,7 @@ function cvtx_feed_rss2($for_comments) {
 function get_cvtx_rss_before_content($post, $type) {
     $output  = '';
     if($type == 'cvtx_antrag') {
-        $output .= '<p><strong>'.__('TOP','cvtx').'</strong>: '.get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_ord', true).'</p>';
+        $output .= '<p><strong>'.__('TOP','cvtx').'</strong>: '.get_the_title(get_post_meta($post->ID, 'cvtx_antrag_top', true)).'</p>';
         $output .= '<p><strong>'.__('AntragstellerInnen','cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller_short',true).'</p>';
     } else if($type == 'cvtx_aeantrag') {
         $output .= '<p><strong>'.__('Zeile','cvtx').'</strong>: '.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'</p>';
