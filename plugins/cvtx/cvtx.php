@@ -137,16 +137,16 @@ function cvtx_init() {
     // Änderungsanträge
     register_post_type('cvtx_aeantrag',
         array('labels'             => array(
-              'name'               => __('Änderungsanträge', 'cvtx'),
-              'singular_name'      => __('Änderungsantrag', 'cvtx'),
-              'add_new_item'       => __('Änderungsantrag erstellen', 'cvtx'),
-              'edit_item'          => __('Änderungsantrag bearbeiten', 'cvtx'),
-              'view_item'          => __('Änderungsantrag ansehen', 'cvtx'),
-              'menu_name'          => __('Ä-Anträge', 'cvtx'),
-              'new_item'           => __('Neuer Änderungsantrag', 'cvtx'),
-              'search_items'       => __('Änderungsanträge suchen', 'cvtx'),
-              'not_found'          => __('Keine Änderungsanträge gefunden', 'cvtx'),
-              'not_found_in_trash' => __('Keine Änderungsanträge im Papierkorb gefunden', 'cvtx')),
+              'name'               => __('Amendments', 'cvtx'),
+              'singular_name'      => __('Amendment', 'cvtx'),
+              'add_new_item'       => __('Create amendment', 'cvtx'),
+              'edit_item'          => __('Edit Amendment', 'cvtx'),
+              'view_item'          => __('View amendment', 'cvtx'),
+              'menu_name'          => __('Amendments (menu_name)', 'cvtx'),
+              'new_item'           => __('New amendment', 'cvtx'),
+              'search_items'       => __('Search amendment', 'cvtx'),
+              'not_found'          => __('No amendments found', 'cvtx'),
+              'not_found_in_trash' => __('No amendments found in Trash', 'cvtx')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
@@ -163,7 +163,7 @@ function cvtx_init() {
               'singular_name'      => __('Application', 'cvtx'),
               'add_new_item'       => __('Create application', 'cvtx'),
               'edit_item'          => __('Edit application', 'cvtx'),
-              'view_item'          => __('View Application', 'cvtx'),
+              'view_item'          => __('View application', 'cvtx'),
               'menu_name'          => __('Applications', 'cvtx'),
               'new_item'           => __('New application', 'cvtx'),
               'search_items'       => __('Search applications', 'cvtx'),
@@ -172,7 +172,6 @@ function cvtx_init() {
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
-//        'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_application_small.png',
         'rewrite'     => array('slug' => __('slug_applications', 'cvtx')),
         'supports'    => array('title'),
         )
@@ -235,6 +234,12 @@ function cvtx_delete_post($post_id) {
             while ($query->have_posts()) {
                 $query->the_post();
                 wp_delete_post(get_the_ID(), true);
+            }
+        }
+        
+        if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_reader' || $post->post_type == 'cvtx_application') {
+            foreach (array('pdf', 'tex', 'log') as $ending) {
+                if (cvtx_get_file($post, $ending, 'dir')) wp_delete_post(get_post_meta($post->ID, 'cvtx_'.$ending.'_id', true), true);
             }
         }
     }
@@ -434,37 +439,75 @@ function cvtx_insert_post($post_id, $post = null) {
 	            $terms = explode(', ', get_option('cvtx_default_reader_application'));
 	        }
 	        
-            // file upload
-	        if (isset($_FILES['cvtx_application_file']) && ($_FILES['cvtx_application_file']['size'] > 0)) {
-	            $file         = $_FILES['cvtx_application_file'];
-	            // of which filetype is the uploaded file?
-	            $arr_filetype = wp_check_filetype(basename($file['name']));
-	            $filetype     = $arr_filetype['type'];
-
-	            // we accept only pdfs!
-	            if ($filetype == 'application/pdf') {
-	                // is there already an attachment? remove it
-	                if ($existing = get_post_meta($post->ID, 'cvtx_pdf_id', true)) {
-	                    wp_delete_attachment($existing, true);
-	                }
-	                
-	                // upload the pdf
-    	            $upload = wp_handle_upload($file, array('test_form' => false));
-    	            // check if upload was succesful, get meta-informations
-	                if (!isset($upload['error']) && isset($upload['file'])) {
-	                    $attachment = array(
-	                        'post_mime_type' => $filetype,
-	                        'post_title'     => __('Application', 'cvtx').' '.get_the_title($post),
-	                        'post_content'   => '',
-	                        'post_status'    => 'inherit',
-	                        'post_parent'    => $post->ID
-	                    );
-	                    // insert attachment
-    	                $attach_id  = wp_insert_attachment($attachment, $upload['file']);
-    	                // save attachment id to application
-    	                update_post_meta($post->ID, 'cvtx_pdf_id', $attach_id);
-    	            }
-	            }
+            /* DAS IST NOCH IMMER EHER QUICK UND DIRTY */
+            if ($post->post_status != 'auto-draft') {
+                // get old filename
+                $old_file = cvtx_get_file($post, 'pdf', 'dir');
+                // generate file name
+                $out_dir = wp_upload_dir();
+                // generate short (BUGGY!!!)
+                $top  = get_post_meta(get_post_meta($post->ID, 'cvtx_application_top', true), 'cvtx_top_short', true);
+                $appl = get_post_meta($post->ID, 'cvtx_application_ord', true);
+                // format
+                $format = strtr(get_option('cvtx_antrag_format'), array('%top%' => $top, '%antrag%' => $appl));
+                if (!empty($top) && !empty($appl)) $short = $format;
+            
+                // application published?
+                if ($post->post_status == 'publish' && isset($short)) {
+                    $filename = $out_dir['path'].'/'.cvtx_sanitize_file_name($short.'_'.$post->post_title).'.pdf';
+                }
+                // else we use the parents ID
+                else {
+                    $filename = $out_dir['path'].'/'.$post->ID.'.pdf';
+                }
+                
+                // configure attachment
+                $attachment = array('post_mime_type' => 'application/pdf',
+                                    'post_title'     => __('Application', 'cvtx').' '.get_the_title($post).' (pdf)',
+                                    'post_content'   => '',
+                                    'post_status'    => 'inherit',
+                                    'post_parent'    => $post->ID);
+    
+                // file upload
+                if (isset($_FILES['cvtx_application_file']) && ($_FILES['cvtx_application_file']['size'] > 0)) {
+                    $file         = $_FILES['cvtx_application_file'];
+                    // of which filetype is the uploaded file?
+                    $arr_filetype = wp_check_filetype(basename($file['name']));
+                    $filetype     = $arr_filetype['type'];
+    
+                    // we accept only pdfs!
+                    if ($filetype == 'application/pdf') {
+                        // is there already an attachment? remove it
+                        if ($existing = get_post_meta($post->ID, 'cvtx_pdf_id', true)) {
+                            wp_delete_attachment($existing, true);
+                        }
+                        
+                        // upload the pdf
+                        $upload = wp_handle_upload($file, array('test_form' => false));
+                        // check if upload was succesful, get meta-informations
+                        if (!isset($upload['error']) && isset($upload['file'])) {
+                            // move file
+                            rename($upload['file'], $filename);
+                            
+                            // insert attachment
+                            $attach_id  = wp_insert_attachment($attachment, $filename);
+                            // save attachment id to application
+                            update_post_meta($post->ID, 'cvtx_pdf_id', $attach_id);
+                        }
+                    }
+                }
+                else if ($old_file !== false && $old_file != $filename) {
+                    // move file
+                    rename($old_file, $filename);
+                    // delete old attachment
+                    if ($existing = get_post_meta($post->ID, 'cvtx_pdf_id', true)) {
+                        wp_delete_attachment($existing, true);
+                    }
+                    // insert attachment
+                    $attach_id  = wp_insert_attachment($attachment, $filename);
+                    // save attachment id to application
+                    update_post_meta($post->ID, 'cvtx_pdf_id', $attach_id);
+                }
             }
         }
                 

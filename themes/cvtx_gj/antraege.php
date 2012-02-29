@@ -95,7 +95,32 @@
         <?php endif;?>
         <div class="clear-block"></div></li>
       <?php endwhile;?>
-      </ul></li>
+      </ul>
+      
+      <?php
+      // query top-content
+      $loop4 = new WP_Query(array('post_type'  => 'cvtx_application',
+                                  'meta_key'   => 'cvtx_sort',
+                                  'orderby'    => 'meta_value',
+                                  'nopaging'   => true,
+                                  'order'      => 'ASC',
+                                  'meta_query' => array(array('key'     => 'cvtx_application_top',
+                                                              'value'   => $top_id,
+                                                              'compare' => '='))));
+      if ($loop4->have_posts()):
+      ?>
+       <ul>
+        <?php
+        while ($loop4->have_posts()): $loop4->the_post(); ?>
+         <li class="application">
+          <h4><?php if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) the_title('<a href="'.$file.'">', ' (pdf)</a>'); else the_title(); ?></h4>
+          <div class="clear-block"></div>
+         </li>
+        <?php endwhile;?>
+       </ul>
+      <?php endif; ?>
+      
+      </li>
     <?php endwhile;?>
     </ul>
     <?php endif; ?>

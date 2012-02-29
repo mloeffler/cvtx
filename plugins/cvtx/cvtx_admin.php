@@ -9,31 +9,47 @@
 if (is_admin()) add_action('add_meta_boxes', 'cvtx_add_meta_boxes');
 function cvtx_add_meta_boxes() {
     // Reader
-    add_meta_box('cvtx_reader_contents', __('Inhalt', 'cvtx'), 'cvtx_reader_contents', 'cvtx_reader', 'normal', 'high');
-    add_meta_box('cvtx_reader_pdf', __('PDF', 'cvtx'), 'cvtx_metabox_pdf', 'cvtx_reader', 'side', 'low');
+    add_meta_box('cvtx_reader_contents', __('Inhalt', 'cvtx'),
+                 'cvtx_reader_contents', 'cvtx_reader', 'normal', 'high');
+    add_meta_box('cvtx_reader_pdf', __('PDF', 'cvtx'),
+                 'cvtx_metabox_pdf', 'cvtx_reader', 'side', 'low');
     
     // Tagesordnungspunkte
-    add_meta_box('cvtx_top_meta', __('Metainformationen', 'cvtx'), 'cvtx_top_meta', 'cvtx_top', 'side', 'high');
+    add_meta_box('cvtx_top_meta', __('Metainformationen', 'cvtx'),
+                 'cvtx_top_meta', 'cvtx_top', 'side', 'high');
     
     // Anträge
-    add_meta_box('cvtx_antrag_meta', __('Metainformationen', 'cvtx'), 'cvtx_antrag_meta', 'cvtx_antrag', 'side', 'high');
-    add_meta_box('cvtx_antrag_steller', __('AntragstellerIn(nen)', 'cvtx'), 'cvtx_antrag_steller', 'cvtx_antrag', 'normal', 'high');
-    add_meta_box('cvtx_antrag_grund', __('Begründung', 'cvtx'), 'cvtx_antrag_grund', 'cvtx_antrag', 'normal', 'high');
-    add_meta_box('cvtx_antrag_info', __('Weitere Informationen', 'cvtx'), 'cvtx_antrag_info', 'cvtx_antrag', 'normal', 'low');
-    add_meta_box('cvtx_antrag_pdf', __('PDF', 'cvtx'), 'cvtx_metabox_pdf', 'cvtx_antrag', 'side', 'low');
-    add_meta_box('cvtx_antrag_reader', __('Readerzuordnung', 'cvtx'), 'cvtx_metabox_reader', 'cvtx_antrag', 'side', 'low');
+    add_meta_box('cvtx_antrag_meta', __('Metainformationen', 'cvtx'),
+                 'cvtx_antrag_meta', 'cvtx_antrag', 'side', 'high');
+    add_meta_box('cvtx_antrag_steller', __('AntragstellerIn(nen)', 'cvtx'),
+                 'cvtx_antrag_steller', 'cvtx_antrag', 'normal', 'high');
+    add_meta_box('cvtx_antrag_grund', __('Begründung', 'cvtx'),
+                 'cvtx_antrag_grund', 'cvtx_antrag', 'normal', 'high');
+    add_meta_box('cvtx_antrag_info', __('Weitere Informationen', 'cvtx'),
+                 'cvtx_antrag_info', 'cvtx_antrag', 'normal', 'low');
+    add_meta_box('cvtx_antrag_pdf', __('PDF', 'cvtx'),
+                 'cvtx_metabox_pdf', 'cvtx_antrag', 'side', 'low');
+    add_meta_box('cvtx_antrag_reader', __('Readerzuordnung', 'cvtx'),
+                 'cvtx_metabox_reader', 'cvtx_antrag', 'side', 'low');
     
     // Änderungsanträge
-    add_meta_box('cvtx_aeantrag_meta', __('Metainformationen', 'cvtx'), 'cvtx_aeantrag_meta', 'cvtx_aeantrag', 'side', 'high');
-    add_meta_box('cvtx_aeantrag_steller', __('AntragstellerIn(nen)', 'cvtx'), 'cvtx_aeantrag_steller', 'cvtx_aeantrag', 'normal', 'high');
-    add_meta_box('cvtx_aeantrag_grund', __('Begründung', 'cvtx'), 'cvtx_aeantrag_grund', 'cvtx_aeantrag', 'normal', 'high');
-    add_meta_box('cvtx_aeantrag_verfahren', __('Verfahren', 'cvtx'), 'cvtx_aeantrag_verfahren', 'cvtx_aeantrag', 'normal', 'high');
-    add_meta_box('cvtx_aeantrag_info', __('Weitere Informationen', 'cvtx'), 'cvtx_aeantrag_info', 'cvtx_aeantrag', 'normal', 'low');
+    add_meta_box('cvtx_aeantrag_meta', __('Metainformationen', 'cvtx'),
+                 'cvtx_aeantrag_meta', 'cvtx_aeantrag', 'side', 'high');
+    add_meta_box('cvtx_aeantrag_steller', __('AntragstellerIn(nen)', 'cvtx'),
+                 'cvtx_aeantrag_steller', 'cvtx_aeantrag', 'normal', 'high');
+    add_meta_box('cvtx_aeantrag_grund', __('Begründung', 'cvtx'),
+                 'cvtx_aeantrag_grund', 'cvtx_aeantrag', 'normal', 'high');
+    add_meta_box('cvtx_aeantrag_verfahren', __('Verfahren', 'cvtx'),
+                 'cvtx_aeantrag_verfahren', 'cvtx_aeantrag', 'normal', 'high');
+    add_meta_box('cvtx_aeantrag_info', __('Weitere Informationen', 'cvtx'),
+                 'cvtx_aeantrag_info', 'cvtx_aeantrag', 'normal', 'low');
     // show/hide pdf-box for of aeantrag
     if (get_option('cvtx_aeantrag_pdf')) {
-        add_meta_box('cvtx_aeantrag_pdf', __('PDF', 'cvtx'), 'cvtx_metabox_pdf', 'cvtx_aeantrag', 'side', 'low');
+        add_meta_box('cvtx_aeantrag_pdf', __('PDF', 'cvtx'),
+                     'cvtx_metabox_pdf', 'cvtx_aeantrag', 'side', 'low');
     }
-    add_meta_box('cvtx_aeantrag_reader', __('Readerzuordnung', 'cvtx'), 'cvtx_metabox_reader', 'cvtx_aeantrag', 'side', 'low');
+    add_meta_box('cvtx_aeantrag_reader', __('Readerzuordnung', 'cvtx'),
+                 'cvtx_metabox_reader', 'cvtx_aeantrag', 'side', 'low');
 
     // Applications
     add_meta_box('cvtx_application_meta', __('Metainformationen', 'cvtx'),
@@ -42,7 +58,7 @@ function cvtx_add_meta_boxes() {
                  'cvtx_metabox_pdf', 'cvtx_application', 'side', 'low');
     add_meta_box('cvtx_application_reader', __('Readerzuordnung', 'cvtx'),
                  'cvtx_metabox_reader', 'cvtx_application', 'side', 'low');
-    add_meta_box('cvtx_application_upload', __('PDF', 'cvtx'),
+    add_meta_box('cvtx_application_upload', __('File upload', 'cvtx'),
                  'cvtx_application_upload', 'cvtx_application', 'normal', 'low');
 }
 
@@ -70,7 +86,10 @@ function cvtx_reader_contents() {
 
     // list all contents
     $output = '<div class="cvtx_reader_toc" id="cvtx_reader_toc">';
-    $query  = new WP_Query(array('post_type' => array('cvtx_top', 'cvtx_antrag', 'cvtx_aeantrag', 'cvtx_application'),
+    $query  = new WP_Query(array('post_type' => array('cvtx_top',
+                                                      'cvtx_antrag',
+                                                      'cvtx_aeantrag',
+                                                      'cvtx_application'),
                                  'orderby'   => 'meta_value',
                                  'meta_key'  => 'cvtx_sort',
                                  'order'     => 'ASC',
@@ -296,7 +315,8 @@ add_action('post_edit_form_tag', 'cvtx_post_edit_form_tag');
  */
 function cvtx_post_edit_form_tag() {
     global $post;
-    if($post->post_type == 'cvtx_application') {
+    
+    if ($post->post_type == 'cvtx_application') {
         echo(' enctype="multipart/form-data"');
     }
 }
@@ -313,7 +333,10 @@ function cvtx_application_upload() {
     // an attachment has already been uploaded
     if ($download) {
         echo('<p><a href="'.$download.'">'.__('View application', 'cvtx').'</a></p>');
+    } else {
+        echo('<p>'.__('Bisher kein PDF hochgeladen.', 'cvtx').'</p>');
     }
+    
     // actual form
     echo('<p>');
     echo(' <label for="cvtx_application_file">');
@@ -323,45 +346,6 @@ function cvtx_application_upload() {
     echo('</p>');
 }
 
-// we should hook into application-attachment/edit/insert to name the files how we want them
-add_action('edit_attachment', 'cvtx_application_rename_attachment');
-add_action('add_attachment', 'cvtx_application_rename_attachment');
-
-/**
- * Renames a given attachment
- *
- * @param $post_ID this is the post_ID of the _attachment_, not its parent!
- */
-function cvtx_application_rename_attachment($post_ID) {
-    if (!isset($post_ID)) {
-        global $post;
-        $post_ID = $post->ID;
-    }
-    
-    // get the attachment
-    $post = get_post($post_ID);
-    // get the application to which the attachment belongs to
-    $appl = get_post($post->post_parent);
-    if ($appl->post_type == 'cvtx_application') {
-        // get attached file
-        $file = get_attached_file($post_ID);
-        $path = pathinfo($file);
-    
-        // application published? get short-name-name-combo and use it as filename
-        if ($appl->post_status == 'publish' && $short = cvtx_get_short($appl)) {
-            $newfilename = cvtx_sanitize_file_name($short.'_'.$appl->post_title);
-        // else we use the parents ID
-        } else {
-            $newfilename = $appl->ID;
-        }
-    
-        $newfile = $path['dirname'].'/'.$newfilename.'.'.$path['extension'];
-    
-        // rename the file and update the attachment!
-        rename($file, $newfile);
-        update_attached_file($post_ID, $newfile);
-    }
-}
 
 /* Allgemeingültige Meta-Boxen */
 
@@ -459,7 +443,7 @@ function cvtx_reader_columns($columns) {
     $columns = array('cb'                 => '<input type="checkbox" />',
                      'title'              => __('Reader', 'cvtx'),
                      'cvtx_reader_status' => '',
-                     'date'               => __('Date'));
+                     'date'               => __('Date', 'cvtx'));
     return $columns;
 }
 
@@ -469,7 +453,7 @@ function cvtx_top_columns($columns) {
                      'title'           => __('Tagesordnungspunkt', 'cvtx'),
                      'cvtx_top_short'  => __('Kürzel', 'cvtx'),
                      'cvtx_top_status' => '',
-                     'date'            => __('Date'));
+                     'date'            => __('Date', 'cvtx'));
     return $columns;
 }
 
@@ -480,7 +464,7 @@ function cvtx_antrag_columns($columns) {
                      'cvtx_antrag_steller' => __('AntragstellerIn(nen)', 'cvtx'),
                      'cvtx_antrag_top'     => __('Tagesordnungspunkt', 'cvtx'),
                      'cvtx_antrag_status'  => '',
-                     'date'                => __('Date'));
+                     'date'                => __('Date', 'cvtx'));
     return $columns;
 }
 
@@ -496,19 +480,19 @@ function cvtx_application_columns($columns) {
     $columns = array('cb'                       => '<input type="checkbox" />',
                      'title'                    => __('Application', 'cvtx'),
                      'cvtx_application_status'  => '',
-                     'date'                     => __('Date'));
+                     'date'                     => __('Date', 'cvtx'));
     return $columns;
 }
 
 if (is_admin()) add_filter('manage_edit-cvtx_aeantrag_columns', 'cvtx_aeantrag_columns');
 function cvtx_aeantrag_columns($columns) {
     $columns = array('cb'                      => '<input type="checkbox" />',
-                     'title'                   => __('Änderungsantrag', 'cvtx'),
+                     'title'                   => __('Amendment', 'cvtx'),
                      'cvtx_aeantrag_steller'   => __('AntragstellerIn(nen)', 'cvtx'),
                      'cvtx_aeantrag_verfahren' => __('Verfahren', 'cvtx'),
                      'cvtx_aeantrag_antrag'    => __('Antrag', 'cvtx'),
                      'cvtx_aeantrag_status'    => '',
-                     'date'                    => __('Date'));
+                     'date'                    => __('Date', 'cvtx'));
     return $columns;
 }
 

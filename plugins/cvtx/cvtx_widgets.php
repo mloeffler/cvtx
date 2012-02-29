@@ -31,7 +31,9 @@ class ReaderWidget extends WP_Widget {
             echo('<ul>');
             while ($loop->have_posts()) {
                 $loop->the_post();
-                echo(the_title('<li><a href="'.cvtx_get_file($post, 'pdf').'" title="'.__('View PDF', 'cvtx').'" class="extern">', '</a></li>'));
+                if ($file = cvtx_get_file($post, 'pdf')) {
+                    echo(the_title('<li><a href="'.$file.'" title="'.__('View PDF', 'cvtx').'" class="extern">', '</a></li>'));
+                }
             }
             echo('</ul>');
             echo($after_widget);
@@ -189,7 +191,7 @@ function cvtx_dashboard_widget_function() {
     echo(' </tbody></table>');
     echo('</div>');
     echo('<div class="more">');
-    echo(' <p><a href="plugins.php?page=cvtx-config">'.__('Settings').'</a></p>');
+    echo(' <p><a href="plugins.php?page=cvtx-config">'.__('Settings', 'cvtx').'</a></p>');
     echo(__('<p>Fragen? Hier gibt\'s <a href="http://cvtx-project.org">Antworten</a>!</p>','cvtx'));
     echo('</div>');
 } 
