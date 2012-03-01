@@ -51,7 +51,6 @@
       <div class="top_info" id="<?php print get_post_meta($post->ID,'cvtx_top_short',true);?>_info">
        <?php the_content(); ?>
       </div>
-      <ul>
       <?php
       // query top-content
       $loop2 = new WP_Query(array('post_type'  => 'cvtx_antrag',
@@ -62,6 +61,7 @@
                                   'meta_query' => array(array('key'     => 'cvtx_antrag_top',
                                                               'value'   => $top_id,
                                                               'compare' => '='))));
+      if($loop2->have_posts()) print '<ul>';
       while ($loop2->have_posts()): $loop2->the_post(); ?>
         <li class="antrag"><h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
         <span class="steller">
@@ -95,7 +95,32 @@
         <?php endif;?>
         <div class="clear-block"></div></li>
       <?php endwhile;?>
-      </ul></li>
+      <?php if($loop2->have_posts()) print '</ul>';?>
+      
+      <?php
+      // query top-content
+      $loop4 = new WP_Query(array('post_type'  => 'cvtx_application',
+                                  'meta_key'   => 'cvtx_sort',
+                                  'orderby'    => 'meta_value',
+                                  'nopaging'   => true,
+                                  'order'      => 'ASC',
+                                  'meta_query' => array(array('key'     => 'cvtx_application_top',
+                                                              'value'   => $top_id,
+                                                              'compare' => '='))));
+      if ($loop4->have_posts()):
+      ?>
+       <ul>
+        <?php
+        while ($loop4->have_posts()): $loop4->the_post(); ?>
+         <li class="application">
+          <h4><?php if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) the_title('<a href="'.$file.'">', ' (pdf)</a>'); else the_title(); ?></h4>
+          <div class="clear-block"></div>
+         </li>
+        <?php endwhile;?>
+       </ul>
+      <?php endif; ?>
+      
+      </li>
     <?php endwhile;?>
     </ul>
     <?php endif; ?>

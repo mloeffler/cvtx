@@ -412,6 +412,10 @@ ul#antraege li.top {
     margin-top: 1em;
 }
 
+ul#antraege li.top div.top_content {
+    padding: 1em 2em;
+}
+
 ul#antraege li.rss p {
     font-size: 0.8em;
     margin: 1em 1em 0 1em;
@@ -439,20 +443,24 @@ ul#antraege li.overview ul li {
     font-size:0.9em;
 }
 
-ul#antraege li.top ul li.antrag {
+ul#antraege li.top ul li.antrag, ul#antraege li.top ul li.application {
     list-style:url(images/arrow.png);
 }
 
-ul#antraege li.top ul li.antrag h4 {
+ul#antraege li.top h4 {
     margin-bottom:0.5em;
 }
 
-ul#antraege li.top ul li.antrag ul {
+ul#antraege li.top ul li.antrag ul, ul#antraege li.top div.top_content ul {
     margin-top:0.5em;
     padding:0px;
 }
 
-ul#antraege li.top ul li.antrag ul.options li {
+ul#antraege li.top div.top_content ul.options li {
+    font-size: 0.9em;
+}
+
+ul#antraege li.top ul.options li {
     list-style: none;
     margin-right:10px;
     font-size:0.8em;
@@ -460,22 +468,26 @@ ul#antraege li.top ul li.antrag ul.options li {
     margin-bottom:1em;
 }
 
-ul#antraege li.top ul li.antrag ul.ae_antraege li {
+ul#antraege li.top ul.ae_antraege li {
     float:none;
     list-style:none;
     margin-left:1em;
     line-height:1.5em;
 }
 
-ul#antraege li.top ul li.antrag ul.ae_antraege li span {
+ul#antraege li.top ul.ae_antraege li span {
     color: #58ab27;
     font-weight: bold;
 }
 
-ul#antraege li.top ul li.antrag ul.ae_antraege {
+ul#antraege li.top ul.ae_antraege {
     clear: both;
     margin-top:1em;
     font-size:0.8em;
+}
+
+ul#antraege li.top div.top_content ul.ae_antraege {
+    font-size: 0.9em;
 }
 
 #ae_antraege table {

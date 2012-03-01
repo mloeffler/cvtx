@@ -97,7 +97,7 @@ function cvtx_add_aeantrag_action($post_id = false) {
 add_action('cvtx_theme_add_aeantrag','cvtx_add_aeantrag_action',10,1);
 
 /**
- * themed output for an antrags pdf
+ * themed output for pdfs of all different cvtx_post_types
  */
 function cvtx_pdf_action($post_id = false) {
     if(!isset($post_id) || !$post_id) global $post;
@@ -111,6 +111,9 @@ function cvtx_pdf_action($post_id = false) {
 }
 add_action('cvtx_theme_pdf','cvtx_pdf_action',10,1);
 
+/**
+ * themed output for line
+ */
 function cvtx_zeile_action($post_id = false) {
    if(!isset($post_id) || !$post_id) global $post;
    else $post = get_post($post_id);
@@ -122,5 +125,125 @@ function cvtx_zeile_action($post_id = false) {
    }
 }
 add_action('cvtx_theme_zeile','cvtx_zeile_action',10,1);
+
+/**
+ * themed output for reader
+ */
+function cvtx_reader_action($post_id = false) {
+    if(!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    if(is_object($post)) {
+        $items = array();
+        $query = new WP_Query(array('taxonomy' => 'cvtx_tax_reader',
+                                    'term'     => 'cvtx_reader_'.intval($post->ID),
+                                    'orderby'  => 'meta_value',
+                                    'meta_key' => 'cvtx_sort',
+                                    'order'    => 'ASC',
+                                    'nopaging' => true));
+        while ($query->have_posts()) {
+            $query->the_post();
+            $items[] = $post->ID;
+        }
+        
+        echo '<p>In dieser Antragsmappe sind enthalten:</p>';
+        // list all contents
+        echo '<ul class="reader_list">';
+        $open_top    = false;
+        $open_antrag = false;
+        foreach($items as $item) {
+            $post = get_post($item);
+            if($post->post_type == 'cvtx_top') {
+                if($open_antrag || $open_top) echo '</ul></li>';
+        		echo '<li><h4>'; the_title(); echo '</h4><ul>';
+        		$open_top = true; $open_antrag = false; $open_app = false;
+        	}
+        	else if($post->post_type == 'cvtx_antrag') {
+        	    if($open_antrag) echo '</ul></li>';
+        		echo '<li><a href="';the_permalink();echo '">'; the_title(); echo '</a><ul>';
+        		$open_antrag = true;
+        	}
+        	else if($post->post_type == 'cvtx_aeantrag') {
+        		echo '<li><a href="';the_permalink();echo '">'; the_title(); echo '</a></li>';
+        	}
+        	else if($post->post_type == 'cvtx_application') {
+        	    if($open_antrag) echo '</ul></li>';
+        	    echo '<li><a href="';the_permalink();echo '">'; the_title(); echo '</a></li>';
+        	}
+		}
+    
+        wp_reset_postdata();
+	    if($open_top) echo '</ul></li>'; 
+        if($open_antrag) echo '</ul></li>'; 
+		echo '</ul>';
+    }
+}
+add_action('cvtx_theme_reader','cvtx_reader_action',10,1);
+
+function cvtx_top_action($post_id = false) {
+    if(!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    if(is_object($post)) {
+        // query top-content
+        $loop2 = new WP_Query(array('post_type'  => 'cvtx_antrag',
+                                    'meta_key'   => 'cvtx_sort',
+                                    'orderby'    => 'meta_value',
+                                    'nopaging'   => true,
+                                    'order'      => 'ASC',
+                                    'meta_query' => array(array('key'     => 'cvtx_antrag_top',
+                                                                'value'   => $post->ID,
+                                                                'compare' => '='))));
+        echo '<ul id="antraege">';
+        while ($loop2->have_posts()){
+            $loop2->the_post();
+            echo '<li class="top"><h3><a href="'; the_permalink();echo '">';
+                the_title();echo '</a></h3>';
+                echo '<div class="top_content"><span class="steller">';
+                    echo '<strong>AntragstellerInnen:</strong> ';
+                    echo get_post_meta($post->ID,'cvtx_antrag_steller_short',true);
+                echo '</span>';
+                echo '<ul class="options">';
+                    echo '<li>'; 
+                    if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) 
+                        echo('<a href="'.$file.'">Download (pdf)</a>'); 
+                    else echo('Kein PDF erstellt.'); 
+                    echo '</li>';
+                    echo '<li><a href="'; the_permalink();
+                    echo '#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="'.
+                         $post->ID.'">Änderungsantrag hinzufügen</a></li>';
+                    $loop3 = new WP_Query(array(
+                              'post_type'  => 'cvtx_aeantrag',
+                              'meta_key'   => 'cvtx_sort',
+                              'orderby'    => 'meta_value',
+                              'order'      => 'ASC',
+                              'nopaging'   => true,
+                              'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                          'value'   => $post->ID,
+                                                          'compare' => '='))));
+                    if($loop3->have_posts()) {
+                        echo '<li><a href="'; the_permalink(); 
+                        echo '" rel="extern" class="ae_antraege_overview" meta-id="'.$post->ID.'">Änderungsantragsübersicht</a></li>';
+                    }
+                echo '</ul>';
+                echo '<div id="result-'.$post->ID.'" class="ae_antraege_result"></div>';
+                if($loop3->have_posts()) {
+                    echo '<ul class="ae_antraege">';
+                        echo '<h4>Änderungsanträge</h4>';
+                        while($loop3->have_posts()){
+                            $loop3->the_post();
+                            echo '<li><span>';
+                            the_title();
+                            echo '</span> (AntragstellerInnen: <em>';
+                            echo get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true).'</em>)</li>';
+                        }
+                    echo '</ul>';
+                }
+            echo '<div class="clear-block"></div></div>';
+        echo '</li>'; // end li.top
+        }
+        echo '</ul>'; // end ul#antraege
+        wp_reset_postdata();
+    }
+}
+add_action('cvtx_theme_top','cvtx_top_action',10,1);
 
 ?>

@@ -45,7 +45,10 @@
                                'orderby'   => 'meta_value',
                                'meta_key'  => 'cvtx_sort',
                                'order'     => 'ASC',
-                               'nopaging'  => true));
+                               'nopaging'  => true,
+                               'meta_query'=> array(array('key'   => 'cvtx_top_antraege',
+                                                          'value' => 'off',
+                                                          'compare' => '!='))));
     if($loop->have_posts()):?>
       <div id="liste">
         <div class="toggler"><a href="#">Filter <?php if($hide) print 'anzeigen'; else print 'verbergen'; ?></a></div>
