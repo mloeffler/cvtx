@@ -102,7 +102,7 @@ function cvtx_reader_contents() {
             $title = get_the_title();
             if (empty($title)) $title = __('(no title)', 'cvtx');
             $checked = (in_array($post->ID, $items) ? 'checked="checked"' : '');
-            $unpublished = ($post->post_status != 'publish' ? 'cvtx_reader_unpublished' : '');
+            $unpublished = ($post->post_status != 'publish' || ($post->post_type == 'cvtx_application' && !cvtx_get_file($post)) ? 'cvtx_reader_unpublished' : '');
             
             if ($post->post_type == 'cvtx_top') {
                 if ($open_top) {

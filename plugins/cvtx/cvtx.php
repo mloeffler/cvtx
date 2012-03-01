@@ -62,6 +62,9 @@ $cvtx_types = array('cvtx_reader'   => array(),
                                              'cvtx_application_name',
                                              'cvtx_application_file_id'));
 
+$cvtx_mime_types = array('pdf' => 'application/pdf',
+                         'tex' => 'application/x-latex',
+                         'log' => 'text/plain');
 
 add_action('init', 'cvtx_init');
 /**
@@ -204,14 +207,14 @@ function cvtx_init() {
 }
 
 
-if (is_admin()) add_action('delete_post', 'cvtx_delete_post');
+if (is_admin()) add_action('before_delete_post', 'cvtx_before_delete_post');
 /**
  * Removes all latex files if custom post type is deleted. // buggy
  *
  * @todo drop cvtx_aeantraege when cvtx_antrag deleted? drop cvtx_antrag when cvtx_top deleted?
  */
-function cvtx_delete_post($post_id) {
-    global $post;
+function cvtx_before_delete_post($post_id) {
+    $post = get_post($post_id);
     
     if (is_object($post)) {
         if ($post->post_type == 'cvtx_reader') {
@@ -237,9 +240,15 @@ function cvtx_delete_post($post_id) {
             }
         }
         
-        if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_reader' || $post->post_type == 'cvtx_application') {
-            foreach (array('pdf', 'tex', 'log') as $ending) {
-                if (cvtx_get_file($post, $ending, 'dir')) wp_delete_post(get_post_meta($post->ID, 'cvtx_'.$ending.'_id', true), true);
+        if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'
+         || $post->post_type == 'cvtx_reader' || $post->post_type == 'cvtx_application') {
+            $query2 = new WP_Query(array('post_type'   => 'attachment',
+                                         'post_status' => 'any',
+                                         'nopaging'    => true,
+                                         'post_parent' => $post->ID));
+            while ($query2->have_posts()) {
+                $query2->the_post();
+                wp_delete_attachment(get_the_ID(), true);
             }
         }
     }
@@ -251,21 +260,27 @@ if (is_admin()) add_action('wp_trash_post', 'cvtx_trash_post');
  * Moves all child data to the trash.
  */
 function cvtx_trash_post($post_id) {
-    global $post;
+    $post = get_post($post_id);
 
     if (is_object($post)) {
         if ($post->post_type == 'cvtx_top') {
-            $query = new WP_Query(array('post_type'  => 'cvtx_antrag',
-                                        'nopaging'   => true,
-                                        'meta_query' => array(array('key'     => 'cvtx_antrag_top',
-                                                                    'value'   => $post->ID,
-                                                                    'compare' => '='))));
+            $query = new WP_Query(array('post_type'   => array('cvtx_antrag', 'cvtx_application'),
+                                        'post_status' => 'any',
+                                        'nopaging'    => true,
+                                        'meta_query'  => array('relation' => 'OR',
+                                                               array('key'     => 'cvtx_antrag_top',
+                                                                     'value'   => $post->ID,
+                                                                     'compare' => '='),
+                                                               array('key'     => 'cvtx_application_top',
+                                                                     'value'   => $post->ID,
+                                                                     'compare' => '='))));
         } else if ($post->post_type == 'cvtx_antrag') {
-            $query = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
-                                        'nopaging'   => true,
-                                        'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
-                                                                    'value'   => $post->ID,
-                                                                    'compare' => '='))));
+            $query = new WP_Query(array('post_type'   => 'cvtx_aeantrag',
+                                        'post_status' => 'any',
+                                        'nopaging'    => true,
+                                        'meta_query'  => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                                     'value'   => $post->ID,
+                                                                     'compare' => '='))));
         }
         
         if (isset($query) && $query != null && $query->have_posts()) {
@@ -463,7 +478,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 
                 // configure attachment
                 $attachment = array('post_mime_type' => 'application/pdf',
-                                    'post_title'     => __('Application', 'cvtx').' '.get_the_title($post).' (pdf)',
+                                    'post_title'     => $post->post_type.'_'.$post->ID,
                                     'post_content'   => '',
                                     'post_status'    => 'inherit',
                                     'post_parent'    => $post->ID);
@@ -669,6 +684,8 @@ function cvtx_insert_post($post_id, $post = null) {
  * @param object $post the post
  */
 function cvtx_create_pdf($post_id, $post = null) {
+    global $cvtx_mime_types;
+
     $pdflatex = get_option('cvtx_pdflatex_cmd');
     
     if (isset($post) && is_object($post) && !empty($pdflatex)) {
@@ -797,36 +814,8 @@ function cvtx_create_pdf($post_id, $post = null) {
                 // register files as attachments
                 foreach ($attach as $ending) {
                     if (is_file($file.'.'.$ending) && !in_array($ending, $remove)) {
-                        $post_type = '';
-                        switch ($post->post_type) {
-                            case 'cvtx_reader':
-                                $post_type = __('Reader', 'cvtx').' ';
-                                break;
-                            case 'cvtx_antrag':
-                                $post_type = __('Antrag', 'cvtx').' ';
-                                break;
-                            case 'cvtx_aeantrag':
-                                $post_type = __('Amendment', 'cvtx').' ';
-                                break;
-                            case 'cvtx_application':
-                                $post_type = __('Application', 'cvtx').' ';
-                                break;
-                        }
-                        $mime = '';
-                        switch ($ending) {
-                            case 'pdf':
-                                $mime = 'application/pdf';
-                                break;
-                            case 'log':
-                                $mime = 'text/plain';
-                                break;
-                            case 'tex':
-                                $mime = 'application/x-latex';
-                                break;
-                        }
-                        
-                        $attachment = array('post_mime_type' => $mime,
-                                            'post_title'     => $post_type.get_the_title($post).' ('.$ending.')',
+                        $attachment = array('post_mime_type' => $cvtx_mime_types[$ending],
+                                            'post_title'     => $post->post_type.'_'.$post->ID,
                                             'post_content'   => '',
                                             'post_status'    => 'inherit',
                                             'post_parent'    => $post->ID);
@@ -845,11 +834,14 @@ add_filter('the_title', 'cvtx_the_title', 1, 2);
  * replaces filter "the title" in order to generate custom titles for post-types "top", "antrag" and "aeantrag"
  */
 function cvtx_the_title($before='', $after='') {
+    global $cvtx_types, $cvtx_mime_types;
+
     if(is_numeric($after)) $post = &get_post($after);
     
-    if(isset($post)) {
+    if(isset($post) && (in_array($post->post_type, array_keys($cvtx_types)) || $post->post_type == 'attachment')) {
         $title = (!empty($post->post_title) ? $post->post_title : __('(no title)', 'cvtx'));
         
+        // add short name as prefix
         if ($short = cvtx_get_short($post)) {
             // Antrag or application
             if($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_application') {
@@ -864,7 +856,40 @@ function cvtx_the_title($before='', $after='') {
                 $title = $short.': '.$title;
             }
         }
-        else {
+        // get title for generated attachments
+        else if ($post->post_type == 'attachment' && $parent = get_post($post->post_parent)) {
+            if (in_array($parent->post_type, array_keys($cvtx_types))) {
+                $title = '';
+                // post type
+                switch ($parent->post_type) {
+                    case 'cvtx_reader':
+                        $title .= __('Reader', 'cvtx');
+                        break;
+                    case 'cvtx_antrag':
+                        $title .= __('Antrag', 'cvtx');
+                        break;
+                    case 'cvtx_aeantrag':
+                        $title .= __('Änderungsantrag', 'cvtx');
+                        break;
+                    case 'cvtx_application':
+                        $title .= __('Bewerbung', 'cvtx');
+                        break;
+                }
+                $title .= ' ';
+                // short name, post title or no title
+                if ($short = cvtx_get_short($parent)) {
+                    $title .= $short;
+                } else if (!empty($parent->post_title)) {
+                    $title .= $parent->post_title;
+                } else {
+                    $title .= __('(no title)', 'cvtx');
+                }
+                // add mime type
+                $mimes = array_flip($cvtx_mime_types);
+                $title .= ' ('.$mimes[$post->post_mime_type].')';
+                return $title;
+            }
+        } else {
             return (!empty($before) ? $before : __('(no title)', 'cvtx'));
         }
     }    
@@ -1524,4 +1549,5 @@ function get_cvtx_rss_after_content($post) {
         $output .= '<p><a href="'.$file.'">Download (pdf)</a></p>';
     return $output;
 }
+
 ?>

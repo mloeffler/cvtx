@@ -111,7 +111,7 @@ while ($query->have_posts()) {
 <?php
     }
     /* show application */
-    else if ($item->post_type == 'cvtx_application') {
+    else if ($item->post_type == 'cvtx_application' && cvtx_get_file($item)) {
 ?>
 \newpage
 <?php
