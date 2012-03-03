@@ -838,7 +838,7 @@ function cvtx_the_title($before='', $after='') {
 
     if(is_numeric($after)) $post = &get_post($after);
     
-    if(isset($post) && (in_array($post->post_type, array_keys($cvtx_types)) || $post->post_type == 'attachment')) {
+    if(isset($post)) {
         $title = (!empty($post->post_title) ? $post->post_title : __('(no title)', 'cvtx'));
         
         // add short name as prefix
