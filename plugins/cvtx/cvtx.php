@@ -893,7 +893,7 @@ function cvtx_the_title($before='', $after='') {
             return (!empty($before) ? $before : __('(no title)', 'cvtx'));
         }
     }    
-    return $title;
+    return $before;
 }
 
 
