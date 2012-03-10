@@ -8,7 +8,7 @@ add_action('widgets_init', create_function('', 'register_widget("ReaderWidget");
 class ReaderWidget extends WP_Widget {
     /** constructor */
     function __construct() {
-        parent::WP_Widget('ReaderWidget', __('Reader-Übersicht', 'cvtx'), array('description' => __('Veröffentlichte Reader anzeigen.', 'cvtx')));
+        parent::WP_Widget('ReaderWidget', __('Reader list', 'cvtx'), array('description' => __('Show list of published readers.', 'cvtx')));
     }
     
     /** @see WP_Widget::widget */
@@ -65,11 +65,11 @@ class ReaderWidget extends WP_Widget {
         }
         
         echo('<p>');
-        echo(' <label for="'.$this->get_field_id('title').'">'.__('Title:').'</label> ');
+        echo(' <label for="'.$this->get_field_id('title').'">'.__('Title', 'cvtx').':</label> ');
         echo(' <input class="widefat" id="'.$this->get_field_id('title').'" name="'.$this->get_field_name('title').'" type="text" value="'.$title.'" />');
         echo('</p>');
         echo('<p>');
-        echo(' <label for="'.$this->get_field_id('description').'">'.__('Description:').'</label>');
+        echo(' <label for="'.$this->get_field_id('description').'">'.__('Description', 'cvtx').':</label>');
         echo(' <textarea class="widefat" id="'.$this->get_field_id('description').'" name="'.$this->get_field_name('description').'">'.$description.'</textarea>');
         echo('</p>');
     }
@@ -84,7 +84,7 @@ add_action('widgets_init', create_function('', 'register_widget("CountWidget");'
  */
 class CountWidget extends WP_Widget {
     function __construct() {
-        parent::WP_Widget('CountWidget', __('Antrags-Statistik', 'cvtx'), array('description' => __('Zeigt an, wie viele Anträge und Änderungsanträge bisher veröffentlicht wurden.', 'cvtx')));
+        parent::WP_Widget('CountWidget', __('Statistics', 'cvtx'), array('description' => __('List with total count of published resolutions, amendments and applications.', 'cvtx')));
     }
     
     function widget($args,$instance) {
@@ -97,9 +97,9 @@ class CountWidget extends WP_Widget {
         $count_aeantrag    = wp_count_posts('cvtx_aeantrag')->publish;
         $count_application = wp_count_posts('cvtx_application')->publish;
         
-        echo(__('Es sind online:', 'cvtx').'<p>');
-        echo(' <strong>'.$count_antraege.'</strong> <em>'.($count_antraege == 1 ? __('Antrag', 'cvtx') : __('Anträge', 'cvtx')).'</em><br/>');
-        echo(' <strong>'.$count_aeantrag.'</strong> <em>'.($count_aeantrag == 1 ? __('Änderungsantrag', 'cvtx') : __('Änderungsanträge', 'cvtx')).'</em><br/>');
+        echo(__('Online:', 'cvtx').'<p>');
+        echo(' <strong>'.$count_antraege.'</strong> <em>'.($count_antraege == 1 ? __('resolution', 'cvtx') : __('resolutions', 'cvtx')).'</em><br/>');
+        echo(' <strong>'.$count_aeantrag.'</strong> <em>'.($count_aeantrag == 1 ? __('amendment', 'cvtx') : __('amendments', 'cvtx')).'</em><br/>');
         echo(' <strong>'.$count_application.'</strong> <em>'.($count_application == 1 ? __('application', 'cvtx') : __('applications', 'cvtx')).'</em><br/>');
         echo('</p>');
         echo($after_widget);
@@ -119,7 +119,7 @@ class CountWidget extends WP_Widget {
         }
         
         echo('<p>');
-        echo(' <label for="'.$this->get_field_id('title').'">'.__('Title:').'</label>');
+        echo(' <label for="'.$this->get_field_id('title').'">'.__('Title', 'cvtx').':</label>');
         echo(' <input class="widefat" id="'.$this->get_field_id('title').'" name="'.$this->get_field_name('title').'" type="text" value="'.$title.'" />');
         echo('</p>');
     }
@@ -133,7 +133,7 @@ add_action('widgets_init', create_function('', 'register_widget("RSS_aeantrag_Wi
  */
 class RSS_aeantrag_Widget extends WP_Widget {
     function __construct() {
-        parent::WP_Widget('RSS_aeantrag_Widget', __('RSS-Feed zu Änderungsanträgen', 'cvtx'), array('description' => __('Bietet einen Link zum RSS-Feed für neue Änderungsanträge eines spezifischen Antrags an.', 'cvtx')));
+        parent::WP_Widget('RSS_aeantrag_Widget', __('RSS feed for amendments', 'cvtx'), array('description' => __('Offers a link to the RSS-Feed for new amendments to specific resolution.', 'cvtx')));
     }
     
     function widget($args, $instance) {
@@ -147,8 +147,8 @@ class RSS_aeantrag_Widget extends WP_Widget {
 			$link = add_query_arg(array('post_type'            => 'cvtx_aeantrag',
                                         'cvtx_aeantrag_antrag' => $post->ID),
                                   get_feed_link('rss2'));
-            $rss_url = '<a href="'.$link.'">'.__('RSS-Feed', 'cvtx').'</a>';
-            printf(__('Immer auf dem Laufenden über %s bleiben? <p>Abbonier doch einfach diesen %s mit allen Änderungsanträgen!</p>', 'cvtx'), $post_title,$rss_url);
+            $rss_url = '<a href="'.$link.'">'.__('RSS feed', 'cvtx').'</a>';
+            printf(__('Stay updated about %s? <p>Sign up for %s with all amendments!</p>', 'cvtx'), $post_title, $rss_url);
             echo($after_widget);
         }
     }
@@ -163,11 +163,11 @@ class RSS_aeantrag_Widget extends WP_Widget {
         if ($instance) {
             $title = esc_attr($instance['title']);
         } else {
-            $title = __('RSS-Feed');
+            $title = __('RSS feed', 'cvtx');
         }
         
         echo('<p>');
-        echo(' <label for="'.$this->get_field_id('title').'">'.__('Title:').'</label>');
+        echo(' <label for="'.$this->get_field_id('title').'">'.__('Title', 'cvtx').':</label>');
         echo(' <input class="widefat" id="'.$this->get_field_id('title').'" name="'.$this->get_field_name('title').'" type="text" value="'.$title.'" />');
         echo('</p>');
     }
@@ -192,7 +192,7 @@ function cvtx_dashboard_widget_function() {
     echo('</div>');
     echo('<div class="more">');
     echo(' <p><a href="plugins.php?page=cvtx-config">'.__('Settings', 'cvtx').'</a></p>');
-    echo(__('<p>Fragen? Hier gibt\'s <a href="http://cvtx-project.org">Antworten</a>!</p>','cvtx'));
+    echo(__('<p>Questions? Get some <a href="http://cvtx-project.org/">answers</a>!', 'cvtx'));
     echo('</div>');
 } 
 
@@ -202,7 +202,7 @@ add_action('wp_dashboard_setup', 'cvtx_add_dashboard_widgets');
  * Create the function use in the action hook
  */
 function cvtx_add_dashboard_widgets() {
-    wp_add_dashboard_widget('cvtx_dashboard_widget', __('cvtx Antragstool', 'cvtx'), 'cvtx_dashboard_widget_function');
+    wp_add_dashboard_widget('cvtx_dashboard_widget', __('cvtx Agenda Plugin', 'cvtx'), 'cvtx_dashboard_widget_function');
 }
 
 /**
@@ -218,19 +218,19 @@ function cvtx_dashboard_widget_helper($perms) {
         
         switch($type) {
             case 'cvtx_top':
-                $name = ($count == 1 ? __('TOP', 'cvtx') : __('TOPs', 'cvtx'));
+                $name = ($count == 1 ? __('Agenda point', 'cvtx') : __('Agenda points', 'cvtx'));
                 break;
             case 'cvtx_reader':
-                $name = ($count == 1 ? __('Reader', 'cvtx') : __('Reader', 'cvtx'));
+                $name = ($count == 1 ? __('Reader', 'cvtx') : __('Readers', 'cvtx'));
                 break;
             case 'cvtx_antrag':
-                $name = ($count == 1 ? __('Antrag', 'cvtx') : __('Anträge', 'cvtx'));
+                $name = ($count == 1 ? __('Resolution', 'cvtx') : __('Resolutions', 'cvtx'));
                 break;
             case 'cvtx_aeantrag':
-                $name = ($count == 1 ? __('Änderungsantrag', 'cvtx') : __('Änderungsanträge', 'cvtx'));
+                $name = ($count == 1 ? __('Amendment', 'cvtx') : __('Amendments', 'cvtx'));
                 break;
             case 'cvtx_application':
-                $name = ($count == 1 ? __('application', 'cvtx') : __('applications', 'cvtx'));
+                $name = ($count == 1 ? __('application', 'cvtx') : __('Applications', 'cvtx'));
                 break;
         }
         

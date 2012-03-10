@@ -24,7 +24,7 @@
 
 \subject{<?php cvtx_name(); ?>\\ <?php cvtx_beschreibung(); ?>}
 \title{<?php cvtx_titel($post); ?>}
-\date{<?php _e('Stand', 'cvtx'); ?>: \today}
+\date{<?php _e('This version', 'cvtx'); ?>: \today}
 \author{}
 
 \begin{document}
@@ -78,16 +78,16 @@ while ($query->have_posts()) {
 
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                    &                                                                           \\
-    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}   &   \textbf{\large <?php cvtx_top_titel($item); ?>}                         \\
-                                                    &                                                                           \\
-    <?php _e('AntragstellerInnen', 'cvtx'); ?>:     &   <?php cvtx_antragsteller_kurz($item); ?>                                \\
-                                                    &                                                                           \\
-    <?php _e('Gegenstand', 'cvtx'); ?>:             &   <?php cvtx_top_titel($item); ?> (<?php cvtx_top_kuerzel($item); ?>)     \\
-                                                    &                                                                           \\
+                                                      &                                                                           \\
+    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}     &   \textbf{\large <?php cvtx_top_titel($item); ?>}                         \\
+                                                      &                                                                           \\
+    <?php _e('Author(s)', 'cvtx'); ?>:                &   <?php cvtx_antragsteller_kurz($item); ?>                                \\
+                                                      &                                                                           \\
+    <?php _e('Concerning agenda point', 'cvtx'); ?>:  &   <?php cvtx_top_titel($item); ?> (<?php cvtx_top_kuerzel($item); ?>)     \\
+                                                      &                                                                           \\
 <?php if (cvtx_has_info($item)) { ?>
-    <?php _e('Anmerkungen', 'cvtx'); ?>:            &   <?php cvtx_info($item); ?>                                              \\
-                                                    &                                                                           \\
+    <?php _e('Remarks', 'cvtx'); ?>:                  &   <?php cvtx_info($item); ?>                                              \\
+                                                      &                                                                           \\
 <?php } ?>
     \hline
 \end{tabularx}
@@ -100,11 +100,11 @@ while ($query->have_posts()) {
 \end{linenumbers}
 
 <?php if (cvtx_has_begruendung($item)) { ?>
-   \subsection*{<?php _e('Begründung', 'cvtx'); ?>}
+   \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
    <?php cvtx_begruendung($item); ?>
 <?php } ?>
 
-\subsection*{<?php _e('AntragstellerInnen', 'cvtx'); ?>}
+\subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
 <?php cvtx_antragsteller($item); ?>
 
 
@@ -168,16 +168,16 @@ while ($query->have_posts()) {
 
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                &                                                               \\
+                                                     &                                                               \\
     \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($item); ?>}}                               \\
-                                                &                                                               \\
-    <?php _e('AntragstellerInnen', 'cvtx'); ?>: &   <?php cvtx_antragsteller_kurz($item); ?>                    \\
-                                                &                                                               \\
-    <?php _e('Gegenstand', 'cvtx'); ?>:         &   <?php cvtx_antrag($item); ?> (<?php cvtx_top($item); ?>)    \\
-                                                &                                                               \\
+                                                     &                                                               \\
+    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($item); ?>                    \\
+                                                     &                                                               \\
+    <?php _e('Concerning agenda point', 'cvtx'); ?>: &   <?php cvtx_antrag($item); ?> (<?php cvtx_top($item); ?>)    \\
+                                                     &                                                               \\
 <?php if (cvtx_has_info($item)) { ?>
-    <?php _e('Anmerkungen', 'cvtx'); ?>:        &   <?php cvtx_info($item); ?>                                  \\
-                                                &                                                               \\
+    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($item); ?>                                  \\
+                                                     &                                                               \\
 <?php } ?>
     \hline
 \end{tabularx}
@@ -190,11 +190,11 @@ while ($query->have_posts()) {
 \end{linenumbers}
 
 <?php if (cvtx_has_begruendung($item)) { ?>
-    \subsection*{<?php _e('Begründung', 'cvtx'); ?>}
+    \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
     <?php cvtx_begruendung($item); ?>
 <?php } ?>
 
-\subsection*{<?php _e('AntragstellerInnen', 'cvtx'); ?>}
+\subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
 <?php cvtx_antragsteller($item); ?>
 <?php
     }

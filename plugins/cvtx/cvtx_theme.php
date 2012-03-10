@@ -14,7 +14,8 @@ function cvtx_antragsteller_action($args = array('post_id' => false, 'short' => 
         $field = $post->post_type.'_steller'.(isset($args['short']) && $args['short'] ? '_short' : '');
         $antragsteller = get_post_meta($post->ID,$field,true);
         if(!empty($antragsteller)){
-            printf(__('<strong>AntragstellerInnen:</strong> %1$s'),$antragsteller);
+            echo('<strong>'.__('Author(s)', 'cvtx').':</strong> ');
+            printf('%1$s', $antragsteller);
         }
     }
 }
@@ -32,7 +33,8 @@ function cvtx_grund_action($post_id = false) {
     if(is_object($post)) {
         $grund = get_post_meta($post->ID,$post->post_type.'_grund',true);
         if(!empty($grund)) {
-            printf(__('<strong>Begr&uuml;ndung:</strong> %1$s'),$grund);
+            echo('<strong>'.__('Explanation', 'cvtx').':</strong> ');
+            printf('%1$s', $grund);
         }
     }
 }
@@ -58,13 +60,13 @@ function cvtx_aenderungsantraege_action($post_id = false) {
                                                            'compare' => '='))));
     if($loop->have_posts()):?>
         <div id="ae_antraege">
-            <h3><?php print __('&Auml;nderungsantr&auml;ge','cvtx'); ?><?php print (isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) ? __(' zu ', 'cvtx').cvtx_get_short($post) : ''; ?></h3>
+            <h3><?php print __('Amendments', 'cvtx'); ?><?php print (isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) ? __(' to ', 'cvtx').cvtx_get_short($post) : ''; ?></h3>
             <table cellpadding="3" cellspacing="0" valign="top">
                 <tr>
-                    <th><strong><?php _e('Zeile', 'cvtx'); ?></strong></th>
-                    <th><strong><?php _e('AntragstellerInnen', 'cvtx'); ?></strong></th>
-                    <th><strong><?php _e('Antragstext', 'cvtx'); ?></strong></th>
-                    <th><strong><?php _e('Begr&uuml;ndung', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('Line', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('Author(s)', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('Text', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('Explanation', 'cvtx'); ?></strong></th>
                 </tr>
                 <?php 
                 while($loop->have_posts()):$loop->the_post();?>
@@ -89,7 +91,7 @@ function cvtx_add_aeantrag_action($post_id = false) {
     else $post = get_post($post_id);
     if(is_object($post)) {
         print '<div id="add_aeantrag">';
-        printf(__('<h3>&Auml;nderungsantrag zu %s erstellen</h3>','cvtx'), cvtx_get_short($post));
+        printf(__('<h3>Create amendment to %s</h3>','cvtx'), cvtx_get_short($post));
         cvtx_submit_aeantrag($post->ID);
         print '</div>';
     }
@@ -105,7 +107,7 @@ function cvtx_pdf_action($post_id = false) {
     if(is_object($post)) {
         if ($file = cvtx_get_file($post, 'pdf')) {
             echo '<h3>PDF</h3>';
-            echo '<a href="'.$file.'">Download (pdf)</a>';
+            echo '<a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a>';
         }
     }
 }
@@ -120,7 +122,7 @@ function cvtx_zeile_action($post_id = false) {
    if(is_object($post)) {
       $zeile = get_post_meta($post->ID,'cvtx_aeantrag_zeile',true);
       if(!empty($zeile)){
-          printf(__('<p><strong>Zeile:</strong> %1$s</p>','cvtx'),$zeile);
+          printf(__('<p><strong>Line:</strong> %1$s</p>','cvtx'),$zeile);
       }
    }
 }

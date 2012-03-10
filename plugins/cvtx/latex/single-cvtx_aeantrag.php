@@ -16,7 +16,7 @@
 \sloppy
 
 \pagestyle{scrheadings}
-\ohead{<?php _e('Änderungsantrag', 'cvtx'); ?> <?php cvtx_kuerzel($post); ?>}
+\ohead{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($post); ?>}
 \setheadsepline{0.4pt}
 
 \begin{document}
@@ -33,32 +33,32 @@
 \newcommand*\adjust{\setlength\hsize{\textwidth-2\tabcolsep}}
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                &                                                               \\
+                                                     &                                                               \\
     \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}                               \\
-                                                &                                                               \\
-    <?php _e('AntragstellerInnen', 'cvtx'); ?>: &   <?php cvtx_antragsteller_kurz($post); ?>                    \\
-                                                &                                                               \\
-    <?php _e('Gegenstand', 'cvtx'); ?>:         &   <?php cvtx_antrag($post); ?> (<?php cvtx_top($post); ?>)    \\
-                                                &                                                               \\
+                                                     &                                                               \\
+    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($post); ?>                    \\
+                                                     &                                                               \\
+    <?php _e('Concerning agenda point', 'cvtx'); ?>: &   <?php cvtx_antrag($post); ?> (<?php cvtx_top($post); ?>)    \\
+                                                     &                                                               \\
 <?php if (cvtx_has_info($post)) { ?>
-    <?php _e('Anmerkungen', 'cvtx'); ?>:        &   <?php cvtx_info($post); ?>                                  \\
-                                                &                                                               \\
+    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($post); ?>                                  \\
+                                                     &                                                               \\
 <?php } ?>
     \hline
 \end{tabularx}
 
-\section*{<?php _e('Änderungsantrag', 'cvtx'); ?> <?php cvtx_kuerzel($post); ?>}
+\section*{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($post); ?>}
 
 \begin{linenumbers}
 <?php cvtx_antragstext($post); ?>
 \end{linenumbers}
 
 <?php if (cvtx_has_begruendung($post)) { ?>
-    \subsection*{<?php _e('Begründung', 'cvtx'); ?>}
+    \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
     <?php cvtx_begruendung($post); ?>
 <?php } ?>
 
-\subsection*{<?php _e('AntragstellerInnen', 'cvtx'); ?>}
+\subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
 <?php cvtx_antragsteller($post); ?>
 
 \end{document}

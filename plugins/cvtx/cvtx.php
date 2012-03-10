@@ -77,20 +77,21 @@ function cvtx_init() {
     // Reader
     register_post_type('cvtx_reader',
         array('labels'             => array(
-              'name'               => __('Reader', 'cvtx'),
+              'name'               => __('Readers', 'cvtx'),
               'singular_name'      => __('Reader', 'cvtx'),
-              'add_new_item'       => __('Reader erstellen', 'cvtx'),
-              'new_item'           => __('Neuer Reader', 'cvtx'),
-              'edit_item'          => __('Reader bearbeiten', 'cvtx'),
-              'view_item'          => __('Reader ansehen', 'cvtx'),
-              'search_items'       => __('Reader suchen', 'cvtx'),
-              'not_found'          => __('Keine Reader gefunden', 'cvtx'),
-              'not_found_in_trash' => __('Keine Reader im Papierkorb gefunden', 'cvtx')),
+              'add_new_item'       => __('Create reader', 'cvtx'),
+              'new_item'           => __('New reader', 'cvtx'),
+              'edit_item'          => __('Edit reader', 'cvtx'),
+              'view_item'          => __('View reader', 'cvtx'),
+              'menu_name'          => __('readers (menu_name)', 'cvtx'),
+              'search_items'       => __('Search reader', 'cvtx'),
+              'not_found'          => __('No readers found', 'cvtx'),
+              'not_found_in_trash' => __('No readers found in trash', 'cvtx')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_reader_small.png',
-        'rewrite'     => array('slug' => __('slug_reader', 'cvtx')),
+        'rewrite'     => array('slug' => __('readers (slug)', 'cvtx')),
         'supports'    => array('title'),
         )
     );
@@ -98,20 +99,21 @@ function cvtx_init() {
     // Tagesordnungspunkte
     register_post_type('cvtx_top',
         array('labels'             => array(
-              'name'               => __('TOPs', 'cvtx'),
-              'singular_name'      => __('TOP', 'cvtx'),
-              'add_new_item'       => __('TOP erstellen', 'cvtx'),
-              'edit_item'          => __('TOP bearbeiten', 'cvtx'),
-              'view_item'          => __('TOP ansehen', 'cvtx'),
-              'new_item'           => __('Neuer TOP', 'cvtx'),
-              'search_items'       => __('TOPs suchen', 'cvtx'),
-              'not_found'          => __('Keine TOPs gefunden', 'cvtx'),
-              'not_found_in_trash' => __('Keine TOPs im Papierkorb gefunden', 'cvtx')),
+              'name'               => __('Agenda points', 'cvtx'),
+              'singular_name'      => __('Agenda point', 'cvtx'),
+              'add_new_item'       => __('Create agenda point', 'cvtx'),
+              'edit_item'          => __('Edit agenda point', 'cvtx'),
+              'view_item'          => __('View agenda point', 'cvtx'),
+              'menu_name'          => __('agenda points (menu_name)', 'cvtx'),
+              'new_item'           => __('New agenda point', 'cvtx'),
+              'search_items'       => __('Search agenda points', 'cvtx'),
+              'not_found'          => __('No agenda points found', 'cvtx'),
+              'not_found_in_trash' => __('No agenda points found in trash', 'cvtx')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_top_small.png',
-        'rewrite'     => array('slug' => __('slug_tops', 'cvtx')),
+        'rewrite'     => array('slug' => __('agenda points (slug)', 'cvtx')),
         'supports'    => array('title', 'editor'),
         )
     );
@@ -119,20 +121,21 @@ function cvtx_init() {
     // Anträge
     register_post_type('cvtx_antrag',
         array('labels'             => array(
-              'name'               => __('Anträge', 'cvtx'),
-              'singular_name'      => __('Antrag', 'cvtx'),
-              'add_new_item'       => __('Antrag erstellen', 'cvtx'),
-              'edit_item'          => __('Antrag bearbeiten', 'cvtx'),
-              'view_item'          => __('Antrag ansehen', 'cvtx'),
-              'new_item'           => __('Neuer Antrag', 'cvtx'),
-              'search_items'       => __('Anträge suchen', 'cvtx'),
-              'not_found'          => __('Keine Anträge gefunden', 'cvtx'),
-              'not_found_in_trash' => __('Keine Anträge im Papierkorb gefunden', 'cvtx')),
+              'name'               => __('Resolutions', 'cvtx'),
+              'singular_name'      => __('Resolution', 'cvtx'),
+              'add_new_item'       => __('Create resolution', 'cvtx'),
+              'edit_item'          => __('Edit resolution', 'cvtx'),
+              'view_item'          => __('View resolution', 'cvtx'),
+              'menu_name'          => __('resolutions (menu_name)', 'cvtx'),
+              'new_item'           => __('New resolution', 'cvtx'),
+              'search_items'       => __('Search resolutions', 'cvtx'),
+              'not_found'          => __('No resolutions found', 'cvtx'),
+              'not_found_in_trash' => __('No resolutions found in trash', 'cvtx')),
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_antrag_small.png',
-        'rewrite'     => array('slug' => __('slug_antraege', 'cvtx')),
+        'rewrite'     => array('slug' => __('resolutions (slug)', 'cvtx')),
         'supports'    => array('title', 'editor'),
         )
     );
@@ -143,9 +146,9 @@ function cvtx_init() {
               'name'               => __('Amendments', 'cvtx'),
               'singular_name'      => __('Amendment', 'cvtx'),
               'add_new_item'       => __('Create amendment', 'cvtx'),
-              'edit_item'          => __('Edit Amendment', 'cvtx'),
+              'edit_item'          => __('Edit amendment', 'cvtx'),
               'view_item'          => __('View amendment', 'cvtx'),
-              'menu_name'          => __('Amendments (menu_name)', 'cvtx'),
+              'menu_name'          => __('amendments (menu_name)', 'cvtx'),
               'new_item'           => __('New amendment', 'cvtx'),
               'search_items'       => __('Search amendment', 'cvtx'),
               'not_found'          => __('No amendments found', 'cvtx'),
@@ -154,7 +157,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_aeantrag_small.png',
-        'rewrite'     => array('slug' => __('slug_amendments', 'cvtx')),
+        'rewrite'     => array('slug' => __('amendments (slug)', 'cvtx')),
         'supports'    => array('editor'),
         )
     );
@@ -184,7 +187,7 @@ function cvtx_init() {
     // Register reader taxonomy to Anträgen
     register_taxonomy('cvtx_tax_reader', 'cvtx_antrag',
                       array('hierarchical' => true,
-                            'label'        => __('Reader', 'cvtx'),
+                            'label'        => __('Readers', 'cvtx'),
                             'show_ui'      => false,
                             'query_var'    => true,
                             'rewrite'      => false));
@@ -192,7 +195,7 @@ function cvtx_init() {
     // Register reader taxonomy to amendments
     register_taxonomy('cvtx_tax_reader', 'cvtx_aeantrag',
                       array('hierarchical' => true,
-                            'label'        => __('Reader', 'cvtx'),
+                            'label'        => __('Readers', 'cvtx'),
                             'show_ui'      => false,
                             'query_var'    => true,
                             'rewrite'      => false));
@@ -200,7 +203,7 @@ function cvtx_init() {
     // Register reader taxonomy to applications
     register_taxonomy('cvtx_tax_reader', 'cvtx_application',
                       array('hierarchical' => true,
-                            'label'        => __('Reader', 'cvtx'),
+                            'label'        => __('Readers', 'cvtx'),
                             'show_ui'      => false,
                             'query_var'    => true,
                             'rewrite'      => false));
@@ -866,13 +869,13 @@ function cvtx_the_title($before='', $after='') {
                         $title .= __('Reader', 'cvtx');
                         break;
                     case 'cvtx_antrag':
-                        $title .= __('Antrag', 'cvtx');
+                        $title .= __('Resolution', 'cvtx');
                         break;
                     case 'cvtx_aeantrag':
-                        $title .= __('Änderungsantrag', 'cvtx');
+                        $title .= __('Amendment', 'cvtx');
                         break;
                     case 'cvtx_application':
-                        $title .= __('Bewerbung', 'cvtx');
+                        $title .= __('Application', 'cvtx');
                         break;
                 }
                 $title .= ' ';
@@ -892,8 +895,10 @@ function cvtx_the_title($before='', $after='') {
         } else {
             return (!empty($before) ? $before : __('(no title)', 'cvtx'));
         }
-    }    
-    return $before;
+        return $title;
+    } else {
+        return $before;
+    }
 }
 
 
@@ -1226,7 +1231,7 @@ function cvtx_submit_antrag() {
                                            $_POST['recaptcha_response_field']);
             if (!$resp->is_valid) {
                 // What happens when the CAPTCHA was entered incorrectly
-                echo('<p id="message" class="error">'.__('Der Captcha wurde falsch eingegeben. Bitte versuche es erneut.', 'cvtx').'</p>');
+                echo('<p id="message" class="error">'.__('Wrong captcha. Please try again.', 'cvtx').'</p>');
             }
         }
         if(!$recaptcha || $resp->is_valid) {
@@ -1246,17 +1251,17 @@ function cvtx_submit_antrag() {
                     'post_type'           => 'cvtx_antrag');
                 // submit the post
                 if($antrag_id = wp_insert_post($antrag_data)) {
-                    echo '<p id="message" class="success">'.__('Der Antrag wurde erstellt und muss noch freigeschaltet werden.', 'cvtx').'</p>';
+                    echo '<p id="message" class="success">'.__('The resolution has been created but it is not published yet.', 'cvtx').'</p>';
                     $erstellt = true;
                 }
                 else {
-                    echo '<p id="message" class="error">'.__('Antrag wurde NICHT gespeichert. Warum auch immer.', 'cvtx').'</p>';
+                    echo '<p id="message" class="error">'.__('Resolution could not be saved. God knows why.', 'cvtx').'</p>';
                 }
             }
             // return error-message because some required fields have not been submitted
             else {
                 echo '<p id="message" class="error">Der Antrag konnte nicht gespeichert werden, weil einige benötigte Felder '. 
-                     '(mit einem <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*<'.
+                     '(mit einem <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*<'.
                      '/span> bezeichnet) nicht ausgefüllt wurden.</p>';
             }
         }
@@ -1291,46 +1296,46 @@ function cvtx_create_antrag_form($cvtx_antrag_top   = 0,  $cvtx_antrag_title = '
     
     // Antragstitel
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_title">'.__('Antragstitel', 'cvtx').': <span class="form-required"'
-              .' title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br/>';
+    $output .= '<label for="cvtx_antrag_title">'.__('Title', 'cvtx').': <span class="form-required"'
+              .' title="'.__('This field is mandatory', 'cvtx').'">*</span></label><br/>';
     $output .= '<input type="text" id="cvtx_antrag_title" name="cvtx_antrag_title" class="required" value="'.$cvtx_antrag_title.'" size="80" /><br />';
     $output .= '</div>';
     
     // TOP
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_top">TOP: <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br />';
-    $output .= cvtx_dropdown_tops($cvtx_antrag_top, __('Keine Tagesordnungspunkte angelegt', 'cvtx')).'<br />';
+    $output .= '<label for="cvtx_antrag_top">'.__('Agenda point', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label><br />';
+    $output .= cvtx_dropdown_tops($cvtx_antrag_top, __('No agenda created', 'cvtx')).'<br />';
     $output .= '</div>';
     
     // Antragsteller
     $output .= '<div class="form-group">';
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_steller">'.__('AntragstellerInnen', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br/>';
+    $output .= '<label for="cvtx_antrag_steller">'.__('Author(s)', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label><br/>';
     $output .= '<textarea id="cvtx_antrag_steller" name="cvtx_antrag_steller" class="required" size="100%" cols="60" rows="5" />'.$cvtx_antrag_steller.'</textarea><br/>';
     $output .= '</div>';
     
     // Kontakt (E-Mail)
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_email">'.__('E-Mail-Adresse', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label> ('.__('wird nicht veröffentlicht', 'cvtx').')<br/>';
+    $output .= '<label for="cvtx_antrag_email">'.__('e-mail address', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
     $output .= '<input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" class="required" value="'.$cvtx_antrag_email.'" size="70" /><br/>';
     $output .= '</div>';
     
     // Kontakt (Telefon)
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_phone">'.__('Telefonnummer', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label> ('.__('wird nicht veröffentlicht', 'cvtx').')<br/>';
+    $output .= '<label for="cvtx_antrag_phone">'.__('mobile number', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
     $output .= '<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" class="required" value="'.$cvtx_antrag_phone.'" size="70" /><br/>';
     $output .= '</div>';
     $output .= '</div>';
         
     // Antragstext
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_text">'.__('Antragstext', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br/>';
+    $output .= '<label for="cvtx_antrag_text">'.__('Text', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label><br/>';
     $output .= '<textarea id="cvtx_antrag_text" name="cvtx_antrag_text" class="required" size="100%" cols="60" rows="20" />'.$cvtx_antrag_text.'</textarea><br/>';
     $output .= '</div>';
 
     // Antragsgrund
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_grund">'.__('Antragsbegründung', 'cvtx').':</label><br/>';
+    $output .= '<label for="cvtx_antrag_grund">'.__('Explanation', 'cvtx').':</label><br/>';
     $output .= '<textarea id="cvtx_antrag_grund" name="cvtx_antrag_grund" size="100%" cols="60" rows="10" />'.$cvtx_antrag_grund.'</textarea><br/>';
     $output .= '</div>';
 
@@ -1348,7 +1353,7 @@ function cvtx_create_antrag_form($cvtx_antrag_top   = 0,  $cvtx_antrag_title = '
     
     // Submit-Button
     $output .= '<div class="form-item">';
-    $output .= '<input type="submit" id="cvtx_antrag_submit" class="submit" value="'.__('Antrag erstellen', 'cvtx').'">';
+    $output .= '<input type="submit" id="cvtx_antrag_submit" class="submit" value="'.__('Submit resolution', 'cvtx').'">';
     $output .= '</div>';
     $output .= '</form>';
     
@@ -1380,7 +1385,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
                                             $_POST['recaptcha_response_field']);
             if (!$resp->is_valid) {
                 // What happens when the CAPTCHA was entered incorrectly
-                echo('<p id="message" class="error">'.__('Der Captcha wurde falsch eingegeben. Bitte versuche es erneut.', 'cvtx').'</p>');
+                echo('<p id="message" class="error">'.__('Wrong captcha. Please try again.', 'cvtx').'</p>');
             }
         }
         if(!$recaptcha || $resp->is_valid) {
@@ -1401,18 +1406,19 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
                 );
                 // submit the post!
                 if($antrag_id = wp_insert_post($aeantrag_data)) {
-                    echo '<p id="message" class="success">'.__('Der Änderungsantrag wurde erstellt und muss noch freigeschaltet werden.', 'cvtx').'</p>';
+                    echo '<p id="message" class="success">'.__('The amendment has been created but it is not plublished yet.', 'cvtx').'</p>';
                     $erstellt = true;
                 }
                 else {
-                    echo '<p id="message" class="error">'.__('Der Änderungsantrag wurde nicht gespeichert. '
-                        .'Bitte tanzen Sie um den Tisch und probieren sie es dann mit einer anderen Computer-Stellung noch einmal.', 'cvtx').'</p>';
+                    echo '<p id="message" class="error">'.__('Amendment could not be saved. '
+                        .'Please dance around the table and try again with the computer in a '
+                        .'different position.', 'cvtx').'</p>';
                 }
             }
             else {
-                echo '<p id="message" class="error">Der Änderungsantrag konnte nicht gespeichert werden, weil einige benötigte Felder '.
-                     ' (mit einem <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span> be'.
-                     'zeichnet) nicht ausgefüllt wurden.</p>';
+                echo '<p id="message" class="error">'.__('The amendment could not be saved '
+                    .'because some mandatory fields (marked by <span class="form-required" '
+                    .'title="'.__('This field is mandatory', 'cvtx').'">*</span>) are empty.', 'cvtx').'</p>';
             }
         }
     }
@@ -1445,26 +1451,26 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
     
     // Antragszeile
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_aeantrag_zeile">'.__('Zeile', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br/>';
+    $output .= '<label for="cvtx_aeantrag_zeile">'.__('Line', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label><br/>';
     $output .= '<input type="text" id="cvtx_aeantrag_zeile" name="cvtx_aeantrag_zeile" class="required" value="'.$cvtx_aeantrag_zeile.'" size="4" /><br>';
     $output .= '</div>';
         
     // Antragsteller
     $output .= '<div class="form-group">';
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_aeantrag_steller">'.__('AntragstellerInnen', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br/>';
+    $output .= '<label for="cvtx_aeantrag_steller">'.__('Author(s)', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label><br/>';
     $output .= '<textarea id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" class="required" size="100%" cols="60" rows="5" />'.$cvtx_aeantrag_steller.'</textarea><br/>';
     $output .= '</div>';
     
     // E-Mail-Adresse
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_aeantrag_email">'.__('E-Mail-Adresse', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label> (wird nicht veröffentlicht)<br/>';
+    $output .= '<label for="cvtx_aeantrag_email">'.__('e-mail address', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
     $output .= '<input type="text" id="cvtx_aeantrag_email" name="cvtx_aeantrag_email" class="required" value="'.$cvtx_aeantrag_email.'" size="80" /><br/>';
     $output .= '</div>';
     
     // Telefonnummer
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_aeantrag_phone">'.__('Telefonnummer', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label> (wird nicht veröffentlicht)<br/>';
+    $output .= '<label for="cvtx_aeantrag_phone">'.__('mobile number', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
     $output .= '<input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" class="required" value="'.$cvtx_aeantrag_phone.'" size="80" /><br/>';
     $output .= '</div>';
     $output .= '</div>';
@@ -1474,13 +1480,13 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
     
     // Antragstext
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_aeantrag_text">'.__('Antragstext', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br/>';
+    $output .= '<label for="cvtx_aeantrag_text">'.__('Text', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label><br/>';
     $output .= '<textarea id="cvtx_aeantrag_text" name="cvtx_aeantrag_text" class="required" size="100%" cols="60" rows="10" />'.$cvtx_aeantrag_text.'</textarea><br/>';
     $output .= '</div>';
 
     // Antragsgrund
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_aeantrag_grund">'.__('Antragsbegründung', 'cvtx').':</label><br/>';
+    $output .= '<label for="cvtx_aeantrag_grund">'.__('Explanation', 'cvtx').':</label><br/>';
     $output .= '<textarea id="cvtx_aeantrag_grund" name="cvtx_aeantrag_grund" size="100%" cols="60" rows="5" />'.$cvtx_aeantrag_grund.'</textarea><br/>';
     $output .= '</div>';
 
@@ -1498,7 +1504,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
     
     // Submit-Button
     $output .= ' <div class="form-item">';
-    $output .= '  <input type="submit" id="cvtx_aeantrag_submit" class="submit" value="'.__('Änderungsantrag erstellen', 'cvtx').'">';
+    $output .= '  <input type="submit" id="cvtx_aeantrag_submit" class="submit" value="'.__('Submit amendment', 'cvtx').'">';
     $output .= ' </div>';
     $output .= '</form>';
     
@@ -1530,11 +1536,11 @@ function cvtx_feed_rss2($for_comments) {
 function get_cvtx_rss_before_content($post, $type) {
     $output  = '';
     if($type == 'cvtx_antrag') {
-        $output .= '<p><strong>'.__('TOP','cvtx').'</strong>: '.get_the_title(get_post_meta($post->ID, 'cvtx_antrag_top', true)).'</p>';
-        $output .= '<p><strong>'.__('AntragstellerInnen','cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller_short',true).'</p>';
+        $output .= '<p><strong>'.__('Agenda item', 'cvtx').'</strong>: '.get_the_title(get_post_meta($post->ID, 'cvtx_antrag_top', true)).'</p>';
+        $output .= '<p><strong>'.__('Author(s)', 'cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller_short',true).'</p>';
     } else if($type == 'cvtx_aeantrag') {
-        $output .= '<p><strong>'.__('Zeile','cvtx').'</strong>: '.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'</p>';
-        $output .= '<p><strong>'.__('AntragstellerInnen','cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller',true).'</p>';
+        $output .= '<p><strong>'.__('Line', 'cvtx').'</strong>: '.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'</p>';
+        $output .= '<p><strong>'.__('Author(s)', 'cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller',true).'</p>';
     }
     return $output;
 }
@@ -1546,7 +1552,7 @@ function get_cvtx_rss_after_content($post) {
     $output  = '';
     if (function_exists('cvtx_get_file')
         && $file = cvtx_get_file($post, 'pdf'))
-        $output .= '<p><a href="'.$file.'">Download (pdf)</a></p>';
+        $output .= '<p><a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a></p>';
     return $output;
 }
 

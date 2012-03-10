@@ -31,16 +31,16 @@
 
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                    &                                                                           \\
-    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}   &   \textbf{\large <?php cvtx_top_titel($post); ?>}                         \\
-                                                    &                                                                           \\
-    <?php _e('AntragstellerInnen', 'cvtx'); ?>:     &   <?php cvtx_antragsteller_kurz($post); ?>                                \\
-                                                    &                                                                           \\
-    <?php _e('Gegenstand', 'cvtx'); ?>:             &   <?php cvtx_top_titel($post); ?> (<?php cvtx_top_kuerzel($post); ?>)     \\
-                                                    &                                                                           \\
+                                                     &                                                                           \\
+    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}    &   \textbf{\large <?php cvtx_top_titel($post); ?>}                         \\
+                                                     &                                                                           \\
+    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($post); ?>                                \\
+                                                     &                                                                           \\
+    <?php _e('Concerning agenda point', 'cvtx'); ?>: &   <?php cvtx_top_titel($post); ?> (<?php cvtx_top_kuerzel($post); ?>)     \\
+                                                     &                                                                           \\
 <?php if (cvtx_has_info($post)) { ?>
-    <?php _e('Anmerkungen', 'cvtx'); ?>:            &   <?php cvtx_info($post); ?>                                              \\
-                                                    &                                                                           \\
+    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($post); ?>                                              \\
+                                                     &                                                                           \\
 <?php } ?>
     \hline
 \end{tabularx}
@@ -52,11 +52,11 @@
 \end{linenumbers}
 
 <?php if (cvtx_has_begruendung($post)) { ?>
-    \subsection*{<?php _e('Begründung', 'cvtx'); ?>}
+    \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
     <?php cvtx_begruendung($post); ?>
 <?php } ?>
 
-\subsection*{<?php _e('AntragstellerInnen', 'cvtx'); ?>}
+\subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
 <?php cvtx_antragsteller($post); ?>
 
 \end{document}
