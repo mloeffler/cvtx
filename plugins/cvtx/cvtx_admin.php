@@ -198,7 +198,7 @@ function cvtx_antrag_meta() {
     $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);    
     
     echo('<label for="cvtx_antrag_top_select">'.__('Agenda point', 'cvtx').':</label><br />');
-    echo(cvtx_dropdown_tops($top_id, __('Keine Tagesordnungspunkte für Anträge angelegt', 'cvtx').'.', true, false));
+    echo(cvtx_dropdown_tops($top_id, __('No agenda points enabled to resolutions.', 'cvtx').'.', true, false));
     echo('<br />');
     echo('<label for="cvtx_antrag_ord_field">'.__('Resolution number', 'cvtx').':</label><br />');
     echo('<input name="cvtx_antrag_ord" id="cvtx_antrag_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
@@ -214,7 +214,7 @@ function cvtx_antrag_steller() {
     echo('<label for="cvtx_antrag_steller_short">'.__('Author(s) short', 'cvtx').':</label> ');
     echo('<input type="text" id="cvtx_antrag_steller_short" name="cvtx_antrag_steller_short" value="'.get_post_meta($post->ID, 'cvtx_antrag_steller_short', true).'" /><br />');
     echo('<textarea style="width: 100%" name="cvtx_antrag_steller">'.get_post_meta($post->ID, 'cvtx_antrag_steller', true).'</textarea><br />');
-    echo('<label for="cvtx_antrag_email">'.__('E-Mail address', 'cvtx').':</label> ');
+    echo('<label for="cvtx_antrag_email">'.__('E-mail address', 'cvtx').':</label> ');
     echo('<input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" value="'.get_post_meta($post->ID, 'cvtx_antrag_email', true).'" /> ');
     echo('<label for="cvtx_antrag_phone">'.__('Mobile number', 'cvtx').':</label> ');
     echo('<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" value="'.get_post_meta($post->ID, 'cvtx_antrag_phone', true).'" />');
@@ -628,14 +628,14 @@ function cvtx_conf() {
         
         // Formatierung des Antragskürzels
         if (!isset($_POST['cvtx_antrag_format']) || empty($_POST['cvtx_antrag_format'])) {
-            update_option('cvtx_antrag_format', '%top%-%antrag%');
+            update_option('cvtx_antrag_format', __('%agenda_point%', 'cvtx').'-'.__('%resolution%', 'cvtx'));
         } else {
             update_option('cvtx_antrag_format', $_POST['cvtx_antrag_format']);
         }
         
         // Formatierung des Änderungsantragskürzels
         if (!isset($_POST['cvtx_aeantrag_format']) || empty($_POST['cvtx_aeantrag_format'])) {
-            update_option('cvtx_aeantrag_format', '%antrag%-%zeile%');
+            update_option('cvtx_aeantrag_format', __('%resolution%', 'cvtx').'-'.__('%line%', 'cvtx'));
         } else {
             update_option('cvtx_aeantrag_format', $_POST['cvtx_aeantrag_format']);
         }
@@ -719,9 +719,9 @@ function cvtx_conf() {
     
     // cvtx settings
     $antrag_format              = get_option('cvtx_antrag_format');
-    if (!$antrag_format)          $antrag_format   = '%top%-%antrag%';
+    if (!$antrag_format)          $antrag_format   = __('%agenda_point%', 'cvtx').'-'.__('%resolution%', 'cvtx');
     $aeantrag_format            = get_option('cvtx_aeantrag_format');
-    if (!$aeantrag_format)        $aeantrag_format = '%antrag%-%zeile%';
+    if (!$aeantrag_format)        $aeantrag_format = __('%resolution%', 'cvtx').'-'.__('%line%', 'cvtx');
     $aeantrag_pdf               = get_option('cvtx_aeantrag_pdf');
     $anon_user                  = get_option('cvtx_anon_user');
     if (!$anon_user)              $anon_user = 1;
@@ -744,57 +744,95 @@ function cvtx_conf() {
     $sendaeantragadmin   = get_option('cvtx_send_create_aeantrag_admin');
     // mail design
     $sendantragowner_subject       = get_option('cvtx_send_create_antrag_owner_subject');
-    if (!$sendantragowner_subject)   $sendantragowner_subject   = __('Resolution submitted “%titel%”', 'cvtx');
+    if (!$sendantragowner_subject)   $sendantragowner_subject   = sprintf(__('Resolution submitted “%s”', 'cvtx'),
+                                                                          __('%title%', 'cvtx'));
     $sendantragowner_body          = get_option('cvtx_send_create_antrag_owner_body');
-    if (!$sendantragowner_body)      $sendantragowner_body      = __("Hej,\n\n"
-                                                                 ."dein Antrag „%titel%“ zum %top% wurde erfolgreich eingereicht. "
-                                                                 ."Bevor er auf der Website zu sehen sein wird, muss er "
-                                                                 ."erst noch eine Antragsnummer bekommen und dann "
-                                                                 ."freigeschaltet werden.\n\n"
-                                                                 ."Zur Bestätigung hier nochmal deine Angaben:\n\n"
-                                                                 ."%top%\n\n"
-                                                                 ."%titel%\n\n"
-                                                                 ."%antragstext%\n\n"
-                                                                 ."Explanation:\n%begruendung%\n\n"
-                                                                 ."Author(s):\n%antragsteller%\n", 'cvtx');
+    if (!$sendantragowner_body)      $sendantragowner_body      = sprintf(__("Hej,\n\n"
+                                                                            .'your resolution “%3$s” to %1$s has been successfully submitted. We have '
+                                                                            ."to give it a number and will publish it as soon as possible.\n\n"
+                                                                            ."Here is what you submitted:\n\n"
+                                                                            .'%1$s'."\n\n"
+                                                                            .'%3$s'."\n\n"
+                                                                            .'%6$s'."\n\n"
+                                                                            ."Explanation:\n"
+                                                                            .'%7$s'."\n\n"
+                                                                            ."Author(s):\n"
+                                                                            .'%4$s'."\n", 'cvtx'),
+                                                                          __('%agenda_point%', 'cvtx'),
+                                                                          __('%agenda_point_token%', 'cvtx'),
+                                                                          __('%title%', 'cvtx'),
+                                                                          __('%authors%', 'cvtx'),
+                                                                          __('%authors_short%', 'cvtx'),
+                                                                          __('%text%', 'cvtx'),
+                                                                          __('%explanation%', 'cvtx'));
     $sendantragadmin_subject       = get_option('cvtx_send_create_antrag_admin_subject');
-    if (!$sendantragadmin_subject)   $sendantragadmin_subject   = __('New resolution has been submitted (“%titel%”)', 'cvtx');
+    if (!$sendantragadmin_subject)   $sendantragadmin_subject   = sprintf(__('New resolution has been submitted “%s”', 'cvtx'),
+                                                                          __('%title%', 'cvtx'));
     $sendantragadmin_body          = get_option('cvtx_send_create_antrag_admin_body');
-    if (!$sendantragadmin_body)      $sendantragadmin_body      = __("Hej,\n\n"
-                                                                 ."es wurde ein neuer Antrag zu %top% eingereicht. "
-                                                                 ."Bitte prüfen und veröffentlichen!\n\n"
-                                                                 .home_url('/wp-admin')."\n\n"
-                                                                 ."%top%\n\n"
-                                                                 ."%titel%\n\n"
-                                                                 ."%antragstext%\n\n"
-                                                                 ."Explanation:\n%begruendung%\n\n"
-                                                                 ."Author(s):\n%antragsteller%\n", 'cvtx');
+    if (!$sendantragadmin_body)      $sendantragadmin_body      = sprintf(__("Hej,\n\n"
+                                                                            .'a new resolution to %1$s has been submitted. '
+                                                                            ."Please check and publish it!\n\n"
+                                                                            .'%8$s'."\n\n"
+                                                                            .'%1$s'."\n\n"
+                                                                            .'%3$s'."\n\n"
+                                                                            .'%6$s'."\n\n"
+                                                                            ."Explanation:\n".'%7$s'."\n\n"
+                                                                            ."Author(s):\n".'%4$s'."\n", 'cvtx'),
+                                                                          __('%agenda_point%', 'cvtx'),
+                                                                          __('%agenda_point_token%', 'cvtx'),
+                                                                          __('%title%', 'cvtx'),
+                                                                          __('%authors%', 'cvtx'),
+                                                                          __('%authors_short%', 'cvtx'),
+                                                                          __('%text%', 'cvtx'),
+                                                                          __('%explanation%', 'cvtx'),
+                                                                          home_url('/wp-admin'));
     $sendaeantragowner_subject     = get_option('cvtx_send_create_aeantrag_owner_subject');
-    if (!$sendaeantragowner_subject) $sendaeantragowner_subject = __('Amendment to %antrag_kuerzel% (Line %zeile%) submitted', 'cvtx');
+    if (!$sendaeantragowner_subject) $sendaeantragowner_subject = sprintf(__('Amendment to %1$s (line %2$s) submitted', 'cvtx'),
+                                                                          __('%resolution_token%', 'cvtx'),
+                                                                          __('%line%', 'cvtx'));
     $sendaeantragowner_body        = get_option('cvtx_send_create_aeantrag_owner_body');
-    if (!$sendaeantragowner_body)    $sendaeantragowner_body    = __("Hej,\n\n"
-                                                                 ."dein Änderungsantrag zum Antrag %antrag% wurde erfolgreich eingereicht. "
-                                                                 ."Bevor er auf der Website zu sehen sein wird, muss er "
-                                                                 ."erst noch eine Antragsnummer bekommen und dann "
-                                                                 ."freigeschaltet werden.\n\n"
-                                                                 ."Zur Bestätigung hier nochmal deine Angaben:\n\n"
-                                                                 ."Resolution:\n%antrag%\n\n"
-                                                                 ."Line:\n%zeile%\n\n"
-                                                                 ."%antragstext%\n\n"
-                                                                 ."Explanation:\n%begruendung%\n\n"
-                                                                 ."Author(s):\n%antragsteller%\n", 'cvtx');
+    if (!$sendaeantragowner_body)    $sendaeantragowner_body    = sprintf(__("Hej,\n\n"
+                                                                            .'your amendment to resolution %3$s has been successfully submitted. '
+                                                                            ."We will give it a number and will publish it as soon as possible.\n\n"
+                                                                            ."Here is what you submitted:\n\n"
+                                                                            ."Resolution:\n".'%3$s'."\n\n"
+                                                                            ."Line:\n".'%5$s'."\n\n"
+                                                                            .'%8$s'."\n\n"
+                                                                            ."Explanation:\n".'%9$s'."\n\n"
+                                                                            ."Author(s):\n".'%6$s'."\n", 'cvtx'),
+                                                                          __('%agenda_point%', 'cvtx'),
+                                                                          __('%agenda_point_token%', 'cvtx'),
+                                                                          __('%resolution%', 'cvtx'),
+                                                                          __('%resolution_token%', 'cvtx'),
+                                                                          __('%line%', 'cvtx'),
+                                                                          __('%authors%', 'cvtx'),
+                                                                          __('%authors_short%', 'cvtx'),
+                                                                          __('%text%', 'cvtx'),
+                                                                          __('%explanation%', 'cvtx'));
     $sendaeantragadmin_subject     = get_option('cvtx_send_create_aeantrag_admin_subject');
-    if (!$sendaeantragadmin_subject) $sendaeantragadmin_subject = __('New amendment to %antrag_kuerzel% (Line %zeile%) has been submitted', 'cvtx');
+    if (!$sendaeantragadmin_subject) $sendaeantragadmin_subject = sprintf(__('New amendment to %1$s (line %2$s) has been submitted', 'cvtx'),
+                                                                          __('%resolution_token%', 'cvtx'),
+                                                                          __('%line%', 'cvtx'));
     $sendaeantragadmin_body        = get_option('cvtx_send_create_aeantrag_admin_body');
-    if (!$sendaeantragadmin_body)    $sendaeantragadmin_body    = __("Hej,\n\n"
-                                                                 ."es wurde ein neuer Änderungsantrag zum Antrag %antrag% eingereicht. "
-                                                                 ."Bitte prüfen und veröffentlichen!\n\n"
-                                                                 .home_url('/wp-admin')."\n\n"
-                                                                 ."Resolution:\n%antrag%\n\n"
-                                                                 ."Line:\n%zeile%\n\n"
-                                                                 ."%antragstext%\n\n"
-                                                                 ."Explanation:\n%begruendung%\n\n"
-                                                                 ."Author(s):\n%antragsteller%\n", 'cvtx');
+    if (!$sendaeantragadmin_body)    $sendaeantragadmin_body    = sprintf(__("Hej,\n\n"
+                                                                            .'a new amendment to resolution %3$s has been submitted. '
+                                                                            ."Please check and publish it!\n\n"
+                                                                            .'%10$s'."\n\n"
+                                                                            ."Resolution:\n".'%3$s'."\n\n"
+                                                                            ."Line:\n".'%5$s'."\n\n"
+                                                                            .'%8$s'."\n\n"
+                                                                            ."Explanation:\n".'%9$s'."\n\n"
+                                                                            ."Author(s):\n".'%6$s'."\n", 'cvtx'),
+                                                                          __('%agenda_point%', 'cvtx'),
+                                                                          __('%agenda_point_token%', 'cvtx'),
+                                                                          __('%resolution%', 'cvtx'),
+                                                                          __('%resolution_token%', 'cvtx'),
+                                                                          __('%line%', 'cvtx'),
+                                                                          __('%authors%', 'cvtx'),
+                                                                          __('%authors_short%', 'cvtx'),
+                                                                          __('%text%', 'cvtx'),
+                                                                          __('%explanation%', 'cvtx'),
+                                                                          home_url('/wp-admin'));
     
     // reCaptcha settings
     $use_recpatcha        = get_option('cvtx_use_recaptcha');
@@ -835,7 +873,7 @@ function cvtx_conf() {
                 echo('</th>');
                 echo('<td>');
                     echo('<input id="cvtx_antrag_format" name="cvtx_antrag_format" type="text" value="'.$antrag_format.'" /> ');
-                    echo('<span class="description">(%top%, %antrag%)</span>');
+                    echo('<span class="description">('.__('%agenda_point%', 'cvtx').', '.__('%resolution%', 'cvtx').')</span>');
                 echo('</td>');
             echo('</tr>');
 
@@ -845,7 +883,7 @@ function cvtx_conf() {
                 echo('</th>');
                 echo('<td>');
                     echo('<input id="cvtx_aeantrag_format" name="cvtx_aeantrag_format" type="text" value="'.$aeantrag_format.'" /> ');
-                    echo('<span class="description">(%antrag%, %zeile%)</span>');
+                    echo('<span class="description">('.__('%resolution%', 'cvtx').', '.__('%line%', 'cvtx').')</span>');
                 echo('</td>');
             echo('</tr>');
 
@@ -876,7 +914,7 @@ function cvtx_conf() {
             echo('</tr>');
         echo('</table>');
             
-        echo('<h4>'.__('Readerzuordnung', 'cvtx').'</h4>');
+        echo('<h4>'.__('Reader assignment', 'cvtx').'</h4>');
         
         echo('<table class="form-table">');    
             echo('<tr valign="top">');
@@ -973,7 +1011,14 @@ function cvtx_conf() {
         echo('</table>');
             
         echo('<h4>'.__('Resolution submitted', 'cvtx').'</h4>');
-        echo('<span class="description">'.__('Fields: %top%, %top_kuerzel%, %titel%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.', 'cvtx').'</span>');
+        echo('<span class="description">'.sprintf(__('Fields: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s.', 'cvtx'),
+                                                  __('%agenda_point%', 'cvtx'),
+                                                  __('%agenda_point_token%', 'cvtx'),
+                                                  __('%title%', 'cvtx'),
+                                                  __('%authors%', 'cvtx'),
+                                                  __('%authors_short%', 'cvtx'),
+                                                  __('%text%', 'cvtx'),
+                                                  __('%explanation%', 'cvtx')).'</span>');
         
         echo('<table class="form-table">');    
             echo('<tr valign="top">');
@@ -1043,8 +1088,17 @@ function cvtx_conf() {
         echo('</table>');
              
         echo('<h4>'.__('Amendment submitted', 'cvtx').'</h4>');
-        echo('<span class="description">'.__('Fields: %top%, %top_kuerzel%, %antrag%, %antrag_kuerzel%, %zeile%, %antragsteller%, %antragsteller_kurz%, %antragstext%, %begruendung%.', 'cvtx').'</span>');
-            
+        echo('<span class="description">'.sprintf(__('Fields: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s.', 'cvtx'),
+                                                  __('%agenda_point%', 'cvtx'),
+                                                  __('%agenda_point_token%', 'cvtx'),
+                                                  __('%resolution%', 'cvtx'),
+                                                  __('%resolution_token%', 'cvtx'),
+                                                  __('%line%', 'cvtx'),
+                                                  __('%authors%', 'cvtx'),
+                                                  __('%authors_short%', 'cvtx'),
+                                                  __('%text%', 'cvtx'),
+                                                  __('%explanation%', 'cvtx')).'</span>');
+
         echo('<table class="form-table">');
             echo('<tr valign="top">');
                 echo('<th scope="row">');
@@ -1341,7 +1395,7 @@ function cvtx_admin_bar_render(){
     // Parent, directs to the cvtx-config-page
     $wp_admin_bar->add_menu(array(
         'id'    => 'cvtx',
-        'title' => __('cvtx', 'cvtx'),
+        'title' => __('cvtx Agenda Plugin', 'cvtx'),
         'href'  => home_url('/wp-admin/plugins.php?page=cvtx-config')
     ));
     // link to cvtx_antrag

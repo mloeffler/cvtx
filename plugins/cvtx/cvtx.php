@@ -467,7 +467,8 @@ function cvtx_insert_post($post_id, $post = null) {
                 $top  = get_post_meta(get_post_meta($post->ID, 'cvtx_application_top', true), 'cvtx_top_short', true);
                 $appl = get_post_meta($post->ID, 'cvtx_application_ord', true);
                 // format
-                $format = strtr(get_option('cvtx_antrag_format'), array('%top%' => $top, '%antrag%' => $appl));
+                $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
+                                                                        __('%resolution%', 'cvtx')   => $appl));
                 if (!empty($top) && !empty($appl)) $short = $format;
             
                 // application published?
@@ -581,13 +582,13 @@ function cvtx_insert_post($post_id, $post = null) {
                 $mails['admin'] = array('subject' => get_option('cvtx_send_create_antrag_admin_subject'),
                                         'body'    => get_option('cvtx_send_create_antrag_admin_body'));
                 
-                $fields = array('%top_kuerzel%'        => 'TOP '.get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true),
-                                '%top%'                => get_the_title($_POST['cvtx_antrag_top']),
-                                '%titel%'              => $post->post_title,
-                                '%antragsteller%'      => $_POST['cvtx_antrag_steller'],
-                                '%antragsteller_kurz%' => $_POST['cvtx_antrag_steller_short'],
-                                '%antragstext%'        => $post->post_content,
-                                '%begruendung%'        => $_POST['cvtx_antrag_grund']);
+                $fields = array(__('%agenda_point_token%', 'cvtx') => __('Agenda point', 'cvtx').' '.get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true),
+                                __('%agenda_point%', 'cvtx')       => get_the_title($_POST['cvtx_antrag_top']),
+                                __('%title%', 'cvtx')              => $post->post_title,
+                                __('%authors%', 'cvtx')            => $_POST['cvtx_antrag_steller'],
+                                __('%authors_short%', 'cvtx')      => $_POST['cvtx_antrag_steller_short'],
+                                __('%text%', 'cvtx')               => $post->post_content,
+                                __('%explanation%', 'cvtx')        => $_POST['cvtx_antrag_grund']);
                 
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
@@ -631,16 +632,16 @@ function cvtx_insert_post($post_id, $post = null) {
                                         'body'    => get_option('cvtx_send_create_aeantrag_admin_body'));
                 
                 $top_id = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
-                $fields = array('%top_kuerzel%'        => 'TOP '.get_post_meta($top_id, 'cvtx_top_ord', true),
-                                '%top%'                => get_the_title($top_id),
-                                '%antrag_kuerzel%'     => get_post_meta($top_id, 'cvtx_top_short', true).'-'
-                                                         .get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true),
-                                '%antrag%'             => get_the_title($_POST['cvtx_aeantrag_antrag']),
-                                '%zeile%'              => $_POST['cvtx_aeantrag_zeile'],
-                                '%antragsteller%'      => $_POST['cvtx_aeantrag_steller'],
-                                '%antragsteller_kurz%' => $_POST['cvtx_aeantrag_steller_short'],
-                                '%antragstext%'        => $post->post_content,
-                                '%begruendung%'        => $_POST['cvtx_aeantrag_grund']);
+                $fields = array(__('%agenda_point_token%', 'cvtx') => __('Agenda point', 'cvtx').' '.get_post_meta($top_id, 'cvtx_top_ord', true),
+                                __('%agenda_point%', 'cvtx')       => get_the_title($top_id),
+                                __('%resolution_token%', 'cvtx')   => get_post_meta($top_id, 'cvtx_top_short', true).'-'
+                                                                     .get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_ord', true),
+                                __('%resolution%', 'cvtx')         => get_the_title($_POST['cvtx_aeantrag_antrag']),
+                                __('%line%', 'cvtx')               => $_POST['cvtx_aeantrag_zeile'],
+                                __('%authors%', 'cvtx')            => $_POST['cvtx_aeantrag_steller'],
+                                __('%authors_short%', 'cvtx')      => $_POST['cvtx_aeantrag_steller_short'],
+                                __('%text%', 'cvtx')               => $post->post_content,
+                                __('%explanation%', 'cvtx')        => $_POST['cvtx_aeantrag_grund']);
                 
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
@@ -921,7 +922,8 @@ function cvtx_get_short($post) {
         $antrag = get_post_meta($post->ID, 'cvtx_antrag_ord', true);
 
         // format
-        $format = strtr(get_option('cvtx_antrag_format'), array('%top%' => $top, '%antrag%' => $antrag));
+        $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
+                                                                __('%resolution%', 'cvtx')   => $antrag));
 
         if (!empty($top) && !empty($antrag)) return $format;
     }
@@ -931,7 +933,8 @@ function cvtx_get_short($post) {
         $appl = get_post_meta($post->ID, 'cvtx_application_ord', true);
 
         // format
-        $format = strtr(get_option('cvtx_antrag_format'), array('%top%' => $top, '%antrag%' => $appl));
+        $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
+                                                                __('%resolution%', 'cvtx')   => $antrag));
 
         if (!empty($top) && !empty($appl)) return $format;
     }
@@ -944,8 +947,10 @@ function cvtx_get_short($post) {
         $zeile     = get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true);
         
         // format and return aeantrag_short
-        $antrag = strtr(get_option('cvtx_antrag_format'), array('%top%' => $top_nr, '%antrag%' => $antrag_nr));
-        $format = strtr(get_option('cvtx_aeantrag_format'), array('%antrag%' => $antrag, '%zeile%' => $zeile));
+        $antrag = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top_nr,
+                                                                __('%resolution%', 'cvtx')   => $antrag_nr));
+        $format = strtr(get_option('cvtx_aeantrag_format'), array(__('%resolution%', 'cvtx') => $antrag,
+                                                                  __('%line%', 'cvtx')       => $zeile));
         
         if (!empty($top_nr) && !empty($antrag_nr) && !empty($zeile)) return $format;
     }
@@ -1418,7 +1423,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
             else {
                 echo '<p id="message" class="error">'.__('The amendment could not be saved '
                     .'because some mandatory fields (marked by <span class="form-required" '
-                    .'title="'.__('This field is mandatory', 'cvtx').'">*</span>) are empty.', 'cvtx').'</p>';
+                    .'title="This field is mandatory">*</span>) are empty.', 'cvtx').'</p>';
             }
         }
     }

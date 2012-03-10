@@ -23,9 +23,9 @@
 			</p>
 					<?php comments_template( '', true ); ?>
 		</div>
-	<?php endwhile; else: ?>
-		<p><?php _e('Es konnten leider keine EintrŠge gefunden werden!', 'cvtx'); ?></p>
-	<?php endif; ?>
+    <?php endwhile; else: ?>
+     <p><?php _e('No posts found', 'cvtx'); ?></p>
+    <?php endif; ?>
 		</div>
 	</div>
 	<?php get_sidebar(); ?>
