@@ -4,7 +4,7 @@
  * @version 0.1
  */
 /*
-Plugin Name: cvtx project
+Plugin Name: cvtx Agenda Plugin
 Plugin URI: http://cvtx-project.org
 Description: Das Antragssystem „cvtx“ stellt zahlreiche Hilfsmittel zur Verfügung, um Tagesordnungen, Anträge, Änderungsanträge und Antragsreader auf politischen Kongressen oder Mitgliederversammlungen zu verwalten. Es basiert auf dem Textsatzsystem LaTeX und ist verfügbar als Open Source.
 Author: Alexander Fecke & Max Löffler
@@ -178,7 +178,7 @@ function cvtx_init() {
         'public'      => true,
         '_builtin'    => false,
         'has_archive' => false,
-        'rewrite'     => array('slug' => __('slug_applications', 'cvtx')),
+        'rewrite'     => array('slug' => __('applications (slug)', 'cvtx')),
         'supports'    => array('title'),
         )
     );
@@ -934,7 +934,7 @@ function cvtx_get_short($post) {
 
         // format
         $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
-                                                                __('%resolution%', 'cvtx')   => $antrag));
+                                                                __('%resolution%', 'cvtx')   => $appl));
 
         if (!empty($top) && !empty($appl)) return $format;
     }
@@ -1321,13 +1321,13 @@ function cvtx_create_antrag_form($cvtx_antrag_top   = 0,  $cvtx_antrag_title = '
     
     // Kontakt (E-Mail)
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_email">'.__('e-mail address', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
+    $output .= '<label for="cvtx_antrag_email">'.__('E-mail address', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
     $output .= '<input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" class="required" value="'.$cvtx_antrag_email.'" size="70" /><br/>';
     $output .= '</div>';
     
     // Kontakt (Telefon)
     $output .= '<div class="form-item">';
-    $output .= '<label for="cvtx_antrag_phone">'.__('mobile number', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
+    $output .= '<label for="cvtx_antrag_phone">'.__('Mobile number', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
     $output .= '<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" class="required" value="'.$cvtx_antrag_phone.'" size="70" /><br/>';
     $output .= '</div>';
     $output .= '</div>';

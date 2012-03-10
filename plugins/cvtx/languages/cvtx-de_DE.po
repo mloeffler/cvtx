@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: cvtx\n"
+"Project-Id-Version: cvtx Agenda Plugin 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-10 22:55+0100\n"
-"PO-Revision-Date: 2012-03-10 22:56+0100\n"
+"POT-Creation-Date: 2012-03-11 00:16+0100\n"
+"PO-Revision-Date: 2012-03-11 00:16+0100\n"
 "Last-Translator: Max Löffler\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,8 +15,7 @@ msgstr ""
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: ..\n"
-"X-Poedit-SearchPath-1: ../../../themes/cvtx\n"
-"X-Poedit-SearchPath-2: ../../../themes/cvtx_gj\n"
+"X-Poedit-SearchPath-1: ../latex\n"
 
 #: ../cvtx.php:80
 #: ../cvtx.php:190
@@ -278,7 +277,7 @@ msgid "No applications found in Trash"
 msgstr "Keine Bewerbungen im Papierkorb gefunden"
 
 #: ../cvtx.php:181
-msgid "slug_applications"
+msgid "applications (slug)"
 msgstr "bewerbungen"
 
 #: ../cvtx.php:470
@@ -1203,7 +1202,7 @@ msgstr "Es sind veröffentlicht:"
 
 #: ../cvtx_widgets.php:101
 msgid "resolution"
-msgstr "antrag"
+msgstr "Antrag"
 
 #: ../cvtx_widgets.php:101
 msgid "resolutions"
@@ -1271,173 +1270,23 @@ msgstr "Stand"
 msgid "Application "
 msgstr "Bewerbung"
 
-#: ../../../themes/cvtx/antraege.php:19
-#: ../../../themes/cvtx/archive.php:35
-#: ../../../themes/cvtx/category.php:30
-#: ../../../themes/cvtx/create_antrag.php:20
-msgid "Read the rest of this entry &raquo;"
-msgstr "Weiterlesen &raquo;"
+#~ msgid "slug_applications"
+#~ msgstr "bewerbungen"
 
-#: ../../../themes/cvtx/antraege.php:35
-#, php-format
-msgid "Um immer über neue Anträge auf dem Laufenden zu bleiben, abonniere doch einfach den %1$s!"
-msgstr ""
+#~ msgid "Read the rest of this entry &raquo;"
+#~ msgstr "Weiterlesen &raquo;"
 
-#: ../../../themes/cvtx/archive.php:15
-#, php-format
-msgid "Tägliches Archiv: <span>%s</span>"
-msgstr ""
+#~ msgid "Sorry, no posts matched your criteria."
+#~ msgstr "Sorry, keine Einträge entsprechen den Kriterien."
 
-#: ../../../themes/cvtx/archive.php:17
-#, php-format
-msgid "Monatliches Archiv: <span>%s</span>"
-msgstr ""
+#~ msgid "This %1$s was posted %2$s at %3$s."
+#~ msgstr "Dieser %1$s wurde am %2$s um %3$s eingestellt."
 
-#: ../../../themes/cvtx/archive.php:19
-#, php-format
-msgid "Jährliches Archiv: <span>%s</span>"
-msgstr ""
+#~ msgid "No entries found"
+#~ msgstr "Keine Einträge gefunden"
 
-#: ../../../themes/cvtx/archive.php:21
-msgid "Archiv"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:31
-#: ../../../themes/cvtx/category.php:26
-#, php-format
-msgid "Permanenter Link zu %s"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:32
-#: ../../../themes/cvtx/category.php:27
-msgid "j.m.Y"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:38
-#: ../../../themes/cvtx/category.php:33
-msgid "Tags:"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:38
-#: ../../../themes/cvtx/category.php:33
-#, php-format
-msgid "Veröffentlicht in %s"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:38
-#: ../../../themes/cvtx/category.php:33
-msgid "Bearbeiten"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:38
-#: ../../../themes/cvtx/category.php:33
-msgid "Keine Kommentare &#187;"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:38
-#: ../../../themes/cvtx/category.php:33
-msgid "1 Kommentar &#187;"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:38
-#: ../../../themes/cvtx/category.php:33
-msgid "% Kommentare &#187;"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:38
-#: ../../../themes/cvtx/category.php:33
-msgid "Kommentare geschlossen"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:46
-#: ../../../themes/cvtx/category.php:41
-msgid "<span class=\"meta-nav\">&larr;</span> Ältere Beiträge"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:47
-#: ../../../themes/cvtx/category.php:42
-msgid "Neuere Beiträge <span class=\"meta-nav\">&rarr;</span>"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:52
-#: ../../../themes/cvtx/category.php:47
-msgid "Nicht gefunden"
-msgstr ""
-
-#: ../../../themes/cvtx/archive.php:53
-#: ../../../themes/cvtx/category.php:48
-#: ../../../themes/cvtx/create_antrag.php:25
-msgid "Es konnten leider keine Einträge gefunden werden!"
-msgstr ""
-
-#: ../../../themes/cvtx/category.php:14
-#, php-format
-msgid "Kategorie: %s"
-msgstr ""
-
-#: ../../../themes/cvtx/comments.php:13
-msgid "Dieser Artikel ist passwortgeschützt. Gib das Passwort ein, um ihn sehen zu können."
-msgstr ""
-
-#: ../../../themes/cvtx/functions.php:49
-msgid "Header Menu"
-msgstr ""
-
-#: ../../../themes/cvtx/functions.php:50
-msgid "Cvtx Menu"
-msgstr ""
-
-#: ../../../themes/cvtx/search.php:12
-#, php-format
-msgid "Suchresultate für: %s"
-msgstr ""
-
-#: ../../../themes/cvtx/single-cvtx_aeantrag.php:23
-#: ../../../themes/cvtx/single-cvtx_antrag.php:22
-#: ../../../themes/cvtx/single-cvtx_reader.php:25
-#: ../../../themes/cvtx/single-cvtx_top.php:21
-#, php-format
-msgid "Dieser %1$s wurde am %2$s um %3$s eingestellt."
-msgstr ""
-
-#: ../../../themes/cvtx/single-cvtx_aeantrag.php:25
-#: ../../../themes/cvtx/single-cvtx_antrag.php:24
-#: ../../../themes/cvtx/single-cvtx_application.php:22
-#: ../../../themes/cvtx/single-cvtx_top.php:23
-msgid "j. F Y"
-msgstr ""
-
-#: ../../../themes/cvtx/single-cvtx_application.php:20
-#, php-format
-msgid "Diese %1$s wurde am %2$s um %3$s eingestellt."
-msgstr ""
-
-#: ../../../themes/cvtx/single-cvtx_reader.php:25
-#: ../../../themes/cvtx/single.php:23
-msgid "l, j. F Y"
-msgstr ""
-
-#: ../../../themes/cvtx/single-cvtx_reader.php:30
-msgid "Sorry, no posts matched your criteria."
-msgstr "Sorry, keine Einträge entsprechen den Kriterien."
-
-#: ../../../themes/cvtx/single.php:21
-#, php-format
-msgid "This %1$s was posted %2$s at %3$s."
-msgstr "Dieser %1$s wurde am %2$s um %3$s eingestellt."
-
-#: ../../../themes/cvtx/single.php:31
-msgid "No entries found"
-msgstr "Keine Einträge gefunden"
-
-#: ../../../themes/cvtx/feeds/feed-cvtx_aeantrag-rss2.php:40
-#, php-format
-msgid "&Auml;nderungsantr&auml;ge zu %s"
-msgstr ""
-
-#: ../../../themes/cvtx_gj/single.php:27
-msgid "No posts found"
-msgstr "Keine Einträge gefunden"
+#~ msgid "No posts found"
+#~ msgstr "Keine Einträge gefunden"
 
 #~ msgid ""
 #~ "Fields: %top%, %top_kuerzel%, %titel%, %antragsteller%, %"
