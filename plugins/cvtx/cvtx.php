@@ -60,7 +60,9 @@ $cvtx_types = array('cvtx_reader'   => array(),
                                              'cvtx_sort',
                                              'cvtx_application_top',
                                              'cvtx_application_name',
-                                             'cvtx_application_file_id'));
+                                             'cvtx_application_file_id',
+                                             'cvtx_application_email',
+                                             'cvtx_application_phone'));
 
 $cvtx_mime_types = array('pdf' => 'application/pdf',
                          'tex' => 'application/x-latex',
@@ -456,7 +458,6 @@ function cvtx_insert_post($post_id, $post = null) {
 	            // get default reader terms for applications
 	            $terms = explode(', ', get_option('cvtx_default_reader_application'));
 	        }
-	        
             /* DAS IST NOCH IMMER EHER QUICK UND DIRTY */
             if ($post->post_status != 'auto-draft') {
                 // get old filename
@@ -1130,7 +1131,8 @@ function cvtx_dropdown_tops($selected = null, $message = '', $antraege = true, $
                                                              'value'   => ($applications ? 'on' : 'off'),
                                                              'compare' => '='))));
     if ($tquery->have_posts()) {
-        $output .= '<select name="cvtx_antrag_top" id="cvtx_antrag_top_select">';
+        $output .= '<select name="cvtx_'.($applications ? 'application' : 'antrag').'_top" id="cvtx_'
+            .($applications ? 'application' : 'antrag').'_top_select">';
         while ($tquery->have_posts()) {
             $tquery->the_post();
             $output .= '<option value="'.get_the_ID().'"'.(get_the_ID() == $selected ? ' selected="selected"' : '').'>';
@@ -1208,10 +1210,140 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
     return $output;
 }
 
+/**
+ * Method which evaluates input of application-creation form and saves it to wordpress
+ */
+function cvtx_submit_application() {
+    $cvtx_application_name   = (!empty($_POST['cvtx_application_name'])   ? trim($_POST['cvtx_application_name'])   : '');
+    $cvtx_application_top    = (!empty($_POST['cvtx_application_top'])   ? trim($_POST['cvtx_application_top'])   : '');
+    $cvtx_application_file   = (!empty($_FILES['cvtx_application_file'])   ? $_FILES['cvtx_application_file']   : '');
+    $cvtx_application_email   = (!empty($_POST['cvtx_application_email'])   ? trim($_POST['cvtx_application_email'])   : '');
+    $cvtx_application_phone   = (!empty($_POST['cvtx_application_phone'])   ? trim($_POST['cvtx_application_phone'])   : '');
+    // Check whether the form has been submitted and the wp_nonce for security reasons
+    if (isset($_POST['cvtx_form_create_application_submitted'] ) && wp_verify_nonce($_POST['cvtx_form_create_application_submitted'], 'cvtx_form_create_application') ){
+          
+        $recaptcha  = get_option('cvtx_use_recaptcha');
+        $privatekey = get_option('cvtx_recaptcha_privatekey');
+          
+        if($recaptcha && !empty($privatekey)) {
+            require_once(WP_PLUGIN_DIR.'/cvtx/reCaptcha/recaptchalib.php');
+            $resp = recaptcha_check_answer($privatekey,
+                                           $_SERVER['REMOTE_ADDR'],
+                                           $_POST['recaptcha_challenge_field'],
+                                           $_POST['recaptcha_response_field']);
+            if (!$resp->is_valid) {
+                // What happens when the CAPTCHA was entered incorrectly
+                echo('<p id="message" class="error">'.__('Der Captcha wurde falsch eingegeben. Bitte versuche es erneut.', 'cvtx').'</p>');
+            }
+        }
+        if(!$recaptcha || $resp->is_valid) {
+            // check whether the required fields have been submitted
+             if(!empty($cvtx_application_name) && !empty($cvtx_application_top) && !empty($cvtx_application_email) && !empty($cvtx_application_phone) && !empty($cvtx_application_file)) {
+                 // create an array which holds all data about the antrag
+                $application_data = array(
+                    'post_title'             => $cvtx_application_name,
+                    'post_content'           => '',
+                    'cvtx_application_email' => $cvtx_application_email,
+                    'cvtx_application_phone' => $cvtx_application_phone,
+                    'cvtx_application_top'   => $cvtx_application_top,
+                    'cvtx_application_file'  => $cvtx_application_file,
+                    'post_status'            => 'pending',
+                    'post_author'            => get_option('cvtx_anon_user'),
+                    'post_type'              => 'cvtx_application');
+                // submit the post
+                if($application_id = wp_insert_post($application_data)) {
+                    echo '<p id="message" class="success">'.__('Die Bewerbung wurde erstellt und muss noch freigeschaltet werden.', 'cvtx').'</p>';
+                    $created = true;
+                }
+                else {
+                    echo '<p id="message" class="error">'.__('Die Bewerbung wurde NICHT gespeichert. Warum auch immer.', 'cvtx').'</p>';
+                }
+            }
+            // return error-message because some required fields have not been submitted
+            else {
+                echo '<p id="message" class="error">Die Bewerbung konnte nicht gespeichert werden, weil einige benötigte Felder '. 
+                     '(mit einem <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*<'.
+                     '/span> bezeichnet) nicht ausgefüllt wurden.</p>';
+            }
+        }
+    }
+    
+    // nothing has been submitted yet -> include creation form
+    if(!isset($created))
+        echo cvtx_create_application_form($cvtx_application_name, $cvtx_application_top, $cvtx_application_file, $cvtx_application_email, $cvtx_application_phone);
+}
+
+/**
+ * Creates formular for creating applications
+ */
+/*
+function cvtx_create_application_form($cvtx_application_name   = '',  $cvtx_application_top = 0, 
+    $cvtx_application_file  = 0, $cvtx_application_email = '', $cvtx_application_phone = '') {
+
+    $output  = '';
+    
+    // specify form
+    $output .= '<form id="create_application_form" class="cvtx_application_form" method="post" action="" enctype="multipart/form-data">';
+    
+    // Wp-nonce for security reasons
+    $output .= wp_nonce_field('cvtx_form_create_application','cvtx_form_create_application_submitted');
+    
+    // Antragstitel
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_application_name">'.__('Bewerbungsname', 'cvtx').': <span class="form-required"'
+              .' title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br/>';
+    $output .= '<input type="text" id="cvtx_application_name" name="cvtx_application_name" class="required" value="'.$cvtx_application_name.'" size="80" /><br />';
+    $output .= '</div>';
+
+    // TOP
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_application_top">TOP: <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br />';
+    $output .= cvtx_dropdown_tops($cvtx_application_top, __('Keine Tagesordnungspunkte angelegt', 'cvtx'), false, true).'<br />';
+    $output .= '</div>';
+
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_application_file">'.__('Bewerbung hochladen', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label><br/>';
+    $output .= '<input type="file" name="cvtx_application_file" id="cvtx_application_file" />';
+    $output .= '</div>';
+    
+    // Kontakt (E-Mail)
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_application_email">'.__('E-Mail-Adresse', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label> ('.__('wird nicht veröffentlicht', 'cvtx').')<br/>';
+    $output .= '<input type="text" id="cvtx_application_email" name="cvtx_application_email" class="required" value="'.$cvtx_application_email.'" size="70" /><br/>';
+    $output .= '</div>';
+    
+    // Kontakt (Telefon)
+    $output .= '<div class="form-item">';
+    $output .= '<label for="cvtx_application_phone">'.__('Telefonnummer', 'cvtx').': <span class="form-required" title="'.__('Dieses Feld wird benötigt', 'cvtx').'">*</span></label> ('.__('wird nicht veröffentlicht', 'cvtx').')<br/>';
+    $output .= '<input type="text" id="cvtx_application_phone" name="cvtx_application_phone" class="required" value="'.$cvtx_application_phone.'" size="70" /><br/>';
+    $output .= '</div>';
+
+    // Check if reCaptcha is used
+    $recaptcha = get_option('cvtx_use_recaptcha');
+       $publickey = get_option('cvtx_recaptcha_publickey');
+    
+    // embed reCaptcha
+    if($recaptcha && !empty($publickey)) {
+        require_once(WP_PLUGIN_DIR . '/cvtx/reCaptcha/recaptchalib.php');
+        $output .= '<div class="form-item">';
+        $output .= recaptcha_get_html($publickey);
+        $output .= '</div>';
+    }
+    
+    // Submit-Button
+    $output .= '<div class="form-item">';
+    $output .= '<input type="submit" id="cvtx_application_submit" class="submit" value="'.__('Bewerbung erstellen', 'cvtx').'">';
+    $output .= '</div>';
+    $output .= '</form>';
+    
+    return $output;
+}
+*/
 
 /**
  * Method which evaluates input of antrags-creation form and saves it to the wordpress database
  */
+/*
 function cvtx_submit_antrag() {
     // Request Variables, if already submitted, set corresponding variables to '' else
     $cvtx_antrag_title   = (!empty($_POST['cvtx_antrag_title'])   ? trim($_POST['cvtx_antrag_title'])   : '');
@@ -1228,7 +1360,7 @@ function cvtx_submit_antrag() {
         $recaptcha  = get_option('cvtx_use_recaptcha');
         $privatekey = get_option('cvtx_recaptcha_privatekey');
           
-          if($recaptcha && !empty($privatekey)) {
+        if($recaptcha && !empty($privatekey)) {
             require_once(WP_PLUGIN_DIR.'/cvtx/reCaptcha/recaptchalib.php');
             $resp = recaptcha_check_answer($privatekey,
                                            $_SERVER['REMOTE_ADDR'],
@@ -1277,6 +1409,7 @@ function cvtx_submit_antrag() {
         echo cvtx_create_antrag_form($cvtx_antrag_top, $cvtx_antrag_title, $cvtx_antrag_text, $cvtx_antrag_steller,
                                      $cvtx_antrag_email, $cvtx_antrag_phone, $cvtx_antrag_grund);
 }
+*/
 
 /**
  * Creates formular for creating antraege
