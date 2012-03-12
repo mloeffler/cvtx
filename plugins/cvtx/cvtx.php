@@ -35,7 +35,8 @@ $cvtx_types = array('cvtx_reader'   => array(),
                                              'cvtx_sort',
                                              'cvtx_top_short',
                                              'cvtx_top_antraege',
-                                             'cvtx_top_applications'),
+                                             'cvtx_top_applications',
+                                             'cvtx_top_appendix'),
                     'cvtx_antrag'   => array('cvtx_antrag_ord',
                                              'cvtx_sort',
                                              'cvtx_antrag_top',
@@ -75,28 +76,6 @@ add_action('init', 'cvtx_init');
 function cvtx_init() {
     // load language files
     load_plugin_textdomain('cvtx', false, dirname(plugin_basename(__FILE__)).'/languages/');
-
-    // Reader
-    register_post_type('cvtx_reader',
-        array('labels'             => array(
-              'name'               => __('Readers', 'cvtx'),
-              'singular_name'      => __('Reader', 'cvtx'),
-              'add_new_item'       => __('Create reader', 'cvtx'),
-              'new_item'           => __('New reader', 'cvtx'),
-              'edit_item'          => __('Edit reader', 'cvtx'),
-              'view_item'          => __('View reader', 'cvtx'),
-              'menu_name'          => __('readers (menu_name)', 'cvtx'),
-              'search_items'       => __('Search reader', 'cvtx'),
-              'not_found'          => __('No readers found', 'cvtx'),
-              'not_found_in_trash' => __('No readers found in trash', 'cvtx')),
-        'public'      => true,
-        '_builtin'    => false,
-        'has_archive' => false,
-        'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_reader_small.png',
-        'rewrite'     => array('slug' => __('readers (slug)', 'cvtx')),
-        'supports'    => array('title'),
-        )
-    );
 
     // Tagesordnungspunkte
     register_post_type('cvtx_top',
@@ -181,6 +160,28 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'rewrite'     => array('slug' => __('applications (slug)', 'cvtx')),
+        'supports'    => array('title'),
+        )
+    );
+
+    // Reader
+    register_post_type('cvtx_reader',
+        array('labels'             => array(
+              'name'               => __('Readers', 'cvtx'),
+              'singular_name'      => __('Reader', 'cvtx'),
+              'add_new_item'       => __('Create reader', 'cvtx'),
+              'new_item'           => __('New reader', 'cvtx'),
+              'edit_item'          => __('Edit reader', 'cvtx'),
+              'view_item'          => __('View reader', 'cvtx'),
+              'menu_name'          => __('readers (menu_name)', 'cvtx'),
+              'search_items'       => __('Search reader', 'cvtx'),
+              'not_found'          => __('No readers found', 'cvtx'),
+              'not_found_in_trash' => __('No readers found in trash', 'cvtx')),
+        'public'      => true,
+        '_builtin'    => false,
+        'has_archive' => false,
+        'menu_icon'   => CVTX_PLUGIN_URL.'images/cvtx_reader_small.png',
+        'rewrite'     => array('slug' => __('readers (slug)', 'cvtx')),
         'supports'    => array('title'),
         )
     );
@@ -856,8 +857,8 @@ function cvtx_the_title($before='', $after='') {
             else if($post->post_type == 'cvtx_aeantrag') {
                 $title = $short;
             }
-            // Tagesordnungspunkt
-            else if($post->post_type == 'cvtx_top') {
+            // Agenda point
+            else if($post->post_type == 'cvtx_top' && get_post_meta($post->ID, 'cvtx_top_appendix', true) != 'on') {
                 $title = $short.': '.$title;
             }
         }
@@ -915,7 +916,7 @@ function cvtx_get_short($post) {
     if ($post->post_type == 'cvtx_top') {
         $top = get_post_meta($post->ID, 'cvtx_top_ord', true);
 
-        if (!empty($top)) return 'TOP '.$top;
+        if (!empty($top)) return __('TOP', 'cvtx').' '.$top;
     }
     // post type antrag
     else if ($post->post_type == 'cvtx_antrag') {

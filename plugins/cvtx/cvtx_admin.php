@@ -14,11 +14,11 @@ function cvtx_add_meta_boxes() {
     add_meta_box('cvtx_reader_pdf', __('PDF', 'cvtx'),
                  'cvtx_metabox_pdf', 'cvtx_reader', 'side', 'low');
     
-    // Tagesordnungspunkte
+    // Agenda points
     add_meta_box('cvtx_top_meta', __('Metadata', 'cvtx'),
                  'cvtx_top_meta', 'cvtx_top', 'side', 'high');
     
-    // Anträge
+    // Resolutions
     add_meta_box('cvtx_antrag_meta', __('Metadata', 'cvtx'),
                  'cvtx_antrag_meta', 'cvtx_antrag', 'side', 'high');
     add_meta_box('cvtx_antrag_steller', __('Author(s)', 'cvtx'),
@@ -32,7 +32,7 @@ function cvtx_add_meta_boxes() {
     add_meta_box('cvtx_antrag_reader', __('Reader assignment', 'cvtx'),
                  'cvtx_metabox_reader', 'cvtx_antrag', 'side', 'low');
     
-    // Änderungsanträge
+    // Amendments
     add_meta_box('cvtx_aeantrag_meta', __('Metadata', 'cvtx'),
                  'cvtx_aeantrag_meta', 'cvtx_aeantrag', 'side', 'high');
     add_meta_box('cvtx_aeantrag_steller', __('Author(s)', 'cvtx'),
@@ -187,6 +187,12 @@ function cvtx_top_meta() {
     $enable_appl = ($enable_appl == 'on' ? true : false);
     echo('<input name="cvtx_top_applications" id="cvtx_top_applications" type="checkbox" '.($enable_appl ? 'checked="checked"' : '').' /> ');
     echo('<label for="cvtx_top_applications">'.__('Applications', 'cvtx').'</label>');
+    
+    echo('<br />');
+    $appendix = get_post_meta($post->ID, 'cvtx_top_appendix', true);
+    $appendix = ($appendix == 'on' ? true : false);
+    echo('<input name="cvtx_top_appendix" id="cvtx_top_appendix" type="checkbox" '.($appendix ? 'checked="checked"' : '').' /> ');
+    echo('<label for="cvtx_top_appendix">'.__('View as appendix', 'cvtx').'</label>');
 }
 
 
