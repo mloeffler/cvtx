@@ -1213,6 +1213,7 @@ function cvtx_dropdown_antraege($selected = null, $message = '') {
 /**
  * Method which evaluates input of application-creation form and saves it to wordpress
  */
+/*
 function cvtx_submit_application() {
     $cvtx_application_name   = (!empty($_POST['cvtx_application_name'])   ? trim($_POST['cvtx_application_name'])   : '');
     $cvtx_application_top    = (!empty($_POST['cvtx_application_top'])   ? trim($_POST['cvtx_application_top'])   : '');
@@ -1272,6 +1273,7 @@ function cvtx_submit_application() {
     if(!isset($created))
         echo cvtx_create_application_form($cvtx_application_name, $cvtx_application_top, $cvtx_application_file, $cvtx_application_email, $cvtx_application_phone);
 }
+*/
 
 /**
  * Creates formular for creating applications
@@ -1343,7 +1345,6 @@ function cvtx_create_application_form($cvtx_application_name   = '',  $cvtx_appl
 /**
  * Method which evaluates input of antrags-creation form and saves it to the wordpress database
  */
-/*
 function cvtx_submit_antrag() {
     // Request Variables, if already submitted, set corresponding variables to '' else
     $cvtx_antrag_title   = (!empty($_POST['cvtx_antrag_title'])   ? trim($_POST['cvtx_antrag_title'])   : '');
@@ -1409,7 +1410,6 @@ function cvtx_submit_antrag() {
         echo cvtx_create_antrag_form($cvtx_antrag_top, $cvtx_antrag_title, $cvtx_antrag_text, $cvtx_antrag_steller,
                                      $cvtx_antrag_email, $cvtx_antrag_phone, $cvtx_antrag_grund);
 }
-*/
 
 /**
  * Creates formular for creating antraege

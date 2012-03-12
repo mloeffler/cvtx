@@ -29,7 +29,7 @@ body {
 
 #content {
     background: white;
-    width:570px;
+    width:560px;
     min-height: 100px;
     float:left;
     margin-bottom:1em;
@@ -74,11 +74,28 @@ body {
 
 #footer .widget-area {
 	float: left;
-	margin-right:20px;
+	margin-right:40px;
 	width: 370px;
 }
 
-#footer #first {
+#footer #second ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+#footer #second ul li{
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+#footer #second ul li ul li {
+	list-style: disc;
+	margin-left: 2em;
+}
+
+#footer #second ul li ul li a {
+	color: white;
 }
 
 #footer ul.xoxo {
@@ -137,7 +154,6 @@ nav ul {
 nav ul li {
 	background: url(images/bg_nav.png) repeat-x top;
 	padding:5px 8px 5px 8px;
-	font-size:0.9em;
 	font-weight: bold;
 	text-transform:uppercase;
 	float:left;
@@ -158,6 +174,12 @@ nav ul li a:hover {
 nav ul li.first a {
 	background: url(images/home.jpg) no-repeat center;
 	width:20px;
+	text-indent: -1000px;
+}
+
+nav ul li#menu-item-89 a {
+	background: url(images/igel.jpg) no-repeat bottom center;
+	width: 45px;
 	text-indent: -1000px;
 }
 
@@ -311,7 +333,7 @@ header,
  */
 
 #content .inner {
-    padding: 0px 20px 15px 20px;
+    padding: 0px 25px 15px 25px;
 }
 
 #content .inner .entry {
@@ -406,10 +428,6 @@ ul#antraege li.top {
     margin-top: 1em;
 }
 
-ul#antraege li.top div.top_content {
-    padding: 1em 2em;
-}
-
 ul#antraege li.rss p {
     font-size: 0.8em;
     margin: 1em 1em 0 1em;
@@ -437,24 +455,20 @@ ul#antraege li.overview ul li {
     font-size:0.9em;
 }
 
-ul#antraege li.top ul li.antrag, ul#antraege li.top ul li.application {
+ul#antraege li.top ul li.antrag {
     list-style:url(images/arrow.png);
 }
 
-ul#antraege li.top h4 {
+ul#antraege li.top ul li.antrag h4 {
     margin-bottom:0.5em;
 }
 
-ul#antraege li.top ul li.antrag ul, ul#antraege li.top div.top_content ul {
+ul#antraege li.top ul li.antrag ul {
     margin-top:0.5em;
     padding:0px;
 }
 
-ul#antraege li.top div.top_content ul.options li {
-    font-size: 0.9em;
-}
-
-ul#antraege li.top ul.options li {
+ul#antraege li.top ul li.antrag ul.options li {
     list-style: none;
     margin-right:10px;
     font-size:0.8em;
@@ -462,26 +476,22 @@ ul#antraege li.top ul.options li {
     margin-bottom:1em;
 }
 
-ul#antraege li.top ul.ae_antraege li {
+ul#antraege li.top ul li.antrag ul.ae_antraege li {
     float:none;
     list-style:none;
     margin-left:1em;
     line-height:1.5em;
 }
 
-ul#antraege li.top ul.ae_antraege li span {
+ul#antraege li.top ul li.antrag ul.ae_antraege li span {
     color: #58ab27;
     font-weight: bold;
 }
 
-ul#antraege li.top ul.ae_antraege {
+ul#antraege li.top ul li.antrag ul.ae_antraege {
     clear: both;
     margin-top:1em;
     font-size:0.8em;
-}
-
-ul#antraege li.top div.top_content ul.ae_antraege {
-    font-size: 0.9em;
 }
 
 #ae_antraege table {
