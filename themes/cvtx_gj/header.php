@@ -19,7 +19,7 @@ nav ul li:hover ul {
 
 <body>
 <div id="overlay"></div>
-<header>
+<div id="header">
 	<div class="wrapper">
 		<div id="headerimg"><!--<h1><a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a></h1>-->
 	    	<div class="description">
@@ -27,7 +27,7 @@ nav ul li:hover ul {
      		</div>
      	</div>
 	</div>
-</header>
+</div>
 <div id="c_wrap" class="wrapper">
 	<div id="content">
 		<nav><?php wp_nav_menu(array('theme_location' => 'header-menu', 'walker' => (has_nav_menu('header-menu') ? new cvtx_walker() : ''))); ?></nav>
