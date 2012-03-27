@@ -60,7 +60,6 @@ $cvtx_types = array('cvtx_reader'   => array(),
                  'cvtx_application' => array('cvtx_application_ord',
                                              'cvtx_sort',
                                              'cvtx_application_top',
-                                             'cvtx_application_name',
                                              'cvtx_application_file_id',
                                              'cvtx_application_email',
                                              'cvtx_application_phone'));
@@ -446,8 +445,8 @@ function cvtx_insert_post($post_id, $post = null) {
         // Update/insert application
         else if ($post->post_type == 'cvtx_application') {
 	        // application data
-	        if (isset($_POST['cvtx_antrag_top'])) {
-	            $_POST['cvtx_application_top'] = $_POST['cvtx_antrag_top'];   // BUGGY --MaxL
+	        if (isset($_POST['cvtx_application_top'])) {
+	            $_POST['cvtx_application_top'] = $_POST['cvtx_application_top'];   // BUGGY --MaxL
 	            
 	            // get top and validate data
 	            $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);

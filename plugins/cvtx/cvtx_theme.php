@@ -186,7 +186,7 @@ function cvtx_top_action($post_id = false) {
     else $post = get_post($post_id);
     if(is_object($post)) {
         // query top-content
-        $loop2 = new WP_Query(array('post_type'  => 'cvtx_antrag',
+        $loop2 = new WP_Query(array('post_type'  => array('cvtx_antrag'),
                                     'meta_key'   => 'cvtx_sort',
                                     'orderby'    => 'meta_value',
                                     'nopaging'   => true,

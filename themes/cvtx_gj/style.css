@@ -455,7 +455,7 @@ ul#antraege li.overview ul li {
     font-size:0.9em;
 }
 
-ul#antraege li.top ul li.antrag {
+ul#antraege li.top ul li.antrag, ul#antraege li.top ul li.application {
     list-style:url(images/arrow.png);
 }
 
