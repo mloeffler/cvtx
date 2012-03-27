@@ -305,7 +305,7 @@ function cvtx_application_meta() {
     $top_id = get_post_meta($post->ID, 'cvtx_application_top', true);    
     
     echo('<label for="cvtx_antrag_top_select">'.__('Agenda point', 'cvtx').':</label><br />');
-    echo(cvtx_dropdown_tops($top_id, __('No agenda points enabled to applications.', 'cvtx').'.', false, true));
+    echo(cvtx_dropdown_tops($top_id, __('No agenda points enabled to applications.', 'cvtx').'.', '', true));
     echo('<br />');
     echo('<label for="cvtx_application_ord_field">'.__('Application number', 'cvtx').':</label><br />');
     echo('<input name="cvtx_application_ord" id="cvtx_application_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_application_ord', true).'" />');
@@ -1370,11 +1370,11 @@ function cvtx_mce_before_init($settings) {
     return $settings;
 }
 
-if (is_admin()) add_filter('add_menu_classes','show_pending_number');
+if (is_admin()) add_filter('add_menu_classes', 'cvtx_show_pending_number');
 /**
  * Add a count of pending antrage/aeatraege in the admin-sidebar
  */
-function show_pending_number($menu) {
+function cvtx_show_pending_number($menu) {
     foreach ($menu as $key => $sub) {
         $type = false;
         if (isset($sub[5]) && $sub[5] == 'menu-posts-cvtx_antrag') {

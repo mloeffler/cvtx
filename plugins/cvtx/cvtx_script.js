@@ -26,7 +26,7 @@ jQuery(document).ready(function($){
     if ($("#post_type").val() == "cvtx_application") {
         cvtx_fields = Array({"key": "cvtx_application_ord", "empty": false, "unique": true});
         cvtx_validate("cvtx_application_ord");
-        $("#cvtx_antrag_top_select").change(function() { cvtx_validate("cvtx_application_ord"); });
+        $("#cvtx_application_top_select").change(function() { cvtx_validate("cvtx_application_ord"); });
         $("#cvtx_application_ord_field").keyup(function() { cvtx_validate("cvtx_application_ord"); });
     }
     
@@ -115,9 +115,10 @@ jQuery(document).ready(function($){
                                  "compare" : "="});
             } else if (meta_key == "cvtx_application_ord") {
                 query.args.push({"key"     : "cvtx_application_top",
-                                 "value"   : $("#cvtx_antrag_top_select").val(),
+                                 "value"   : $("#cvtx_application_top_select").val(),
                                  "compare" : "="});
             }
+
             // fetch info
             $.post(ajaxurl, query, function (str) {
                                        for (var i = 0; i < cvtx_fields.length; i++) {

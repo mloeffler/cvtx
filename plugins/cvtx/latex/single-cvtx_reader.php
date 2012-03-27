@@ -78,16 +78,16 @@ while ($query->have_posts()) {
 
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                      &                                                                           \\
-    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}     &   \textbf{\large <?php cvtx_top_titel($item); ?>}                         \\
-                                                      &                                                                           \\
-    <?php _e('Author(s)', 'cvtx'); ?>:                &   <?php cvtx_antragsteller_kurz($item); ?>                                \\
-                                                      &                                                                           \\
-    <?php _e('Concerning agenda point', 'cvtx'); ?>:  &   <?php cvtx_top_titel($item); ?> (<?php cvtx_top_kuerzel($item); ?>)     \\
-                                                      &                                                                           \\
+                                                      &                                              \\
+    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}     &                                              \\
+                                                      &                                              \\
+    <?php _e('Author(s)', 'cvtx'); ?>:                &   <?php cvtx_antragsteller_kurz($item); ?>   \\
+                                                      &                                              \\
+    <?php _e('Concerning', 'cvtx'); ?>:               &   <?php cvtx_top($item); ?>                  \\
+                                                      &                                              \\
 <?php if (cvtx_has_info($item)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:                  &   <?php cvtx_info($item); ?>                                              \\
-                                                      &                                                                           \\
+    <?php _e('Remarks', 'cvtx'); ?>:                  &   <?php cvtx_info($item); ?>                 \\
+                                                      &                                              \\
 <?php } ?>
     \hline
 \end{tabularx}
@@ -168,16 +168,16 @@ while ($query->have_posts()) {
 
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                     &                                                               \\
-    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($item); ?>}}                               \\
-                                                     &                                                               \\
-    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($item); ?>                    \\
-                                                     &                                                               \\
-    <?php _e('Concerning agenda point', 'cvtx'); ?>: &   <?php cvtx_antrag($item); ?> (<?php cvtx_top($item); ?>)    \\
-                                                     &                                                               \\
+                                                     &                                                                     \\
+    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($item); ?>}}                                          \\
+                                                     &                                                                     \\
+    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($item); ?>                          \\
+                                                     &                                                                     \\
+    <?php _e('Concerning', 'cvtx'); ?>:              &   <?php cvtx_antrag($item); ?> (<?php cvtx_top_titel($item); ?>)    \\
+                                                     &                                                                     \\
 <?php if (cvtx_has_info($item)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($item); ?>                                  \\
-                                                     &                                                               \\
+    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($item); ?>                                        \\
+                                                     &                                                                     \\
 <?php } ?>
     \hline
 \end{tabularx}

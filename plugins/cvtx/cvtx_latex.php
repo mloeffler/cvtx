@@ -164,14 +164,14 @@ function cvtx_top_titel($post) {
 
 function cvtx_top_kuerzel($post) {
     if ($post->post_type == 'cvtx_top') {
-        echo('TOP '.cvtx_get_latex(get_post_meta($post->ID, 'cvtx_top_ord', true)));
+        printf(__('agenda_point_format', 'cvtx'), cvtx_get_latex(get_post_meta($post->ID, 'cvtx_top_ord', true)));
     } else if ($post->post_type == 'cvtx_antrag') {
-        echo('TOP '.cvtx_get_latex(get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_ord', true)));
+        printf(__('agenda_point_format', 'cvtx'), cvtx_get_latex(get_post_meta(get_post_meta($post->ID, 'cvtx_antrag_top', true), 'cvtx_top_ord', true)));
     } else if ($post->post_type == 'cvtx_aeantrag') {
         $top_id = get_post_meta(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true), 'cvtx_antrag_top', true);
-        echo('TOP '.cvtx_get_latex(get_post_meta($top_id, 'cvtx_top_ord', true)));
+        printf(__('agenda_point_format', 'cvtx'), cvtx_get_latex(get_post_meta($top_id, 'cvtx_top_ord', true)));
     } else if ($post->post_type == 'cvtx_application') {
-        echo('TOP '.cvtx_get_latex(get_post_meta(get_post_meta($post->ID, 'cvtx_application_top', true), 'cvtx_top_ord', true)));
+        printf(__('agenda_point_format', 'cvtx'), cvtx_get_latex(get_post_meta(get_post_meta($post->ID, 'cvtx_application_top', true), 'cvtx_top_ord', true)));
     }
 }
 

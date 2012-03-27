@@ -31,16 +31,16 @@
 
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                     &                                                                           \\
-    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}    &   \textbf{\large <?php cvtx_top_titel($post); ?>}                         \\
-                                                     &                                                                           \\
-    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($post); ?>                                \\
-                                                     &                                                                           \\
-    <?php _e('Concerning agenda point', 'cvtx'); ?>: &   <?php cvtx_top_titel($post); ?> (<?php cvtx_top_kuerzel($post); ?>)     \\
-                                                     &                                                                           \\
+                                                     &                                              \\
+    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}    &                                              \\
+                                                     &                                              \\
+    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($post); ?>   \\
+                                                     &                                              \\
+    <?php _e('Concerning', 'cvtx'); ?>:              &   <?php cvtx_top($post); ?>                  \\
+                                                     &                                              \\
 <?php if (cvtx_has_info($post)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($post); ?>                                              \\
-                                                     &                                                                           \\
+    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($post); ?>                 \\
+                                                     &                                              \\
 <?php } ?>
     \hline
 \end{tabularx}

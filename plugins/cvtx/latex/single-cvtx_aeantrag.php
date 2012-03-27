@@ -33,16 +33,16 @@
 \newcommand*\adjust{\setlength\hsize{\textwidth-2\tabcolsep}}
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                     &                                                               \\
+                                          &                                                                     \\
     \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}                               \\
-                                                     &                                                               \\
-    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($post); ?>                    \\
-                                                     &                                                               \\
-    <?php _e('Concerning agenda point', 'cvtx'); ?>: &   <?php cvtx_antrag($post); ?> (<?php cvtx_top($post); ?>)    \\
-                                                     &                                                               \\
+                                          &                                                                     \\
+    <?php _e('Author(s)', 'cvtx'); ?>:    &   <?php cvtx_antragsteller_kurz($post); ?>                          \\
+                                          &                                                                     \\
+    <?php _e('Concerning', 'cvtx'); ?>:   &   <?php cvtx_antrag($post); ?> (<?php cvtx_top_titel($post); ?>)    \\
+                                          &                                                                     \\
 <?php if (cvtx_has_info($post)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($post); ?>                                  \\
-                                                     &                                                               \\
+    <?php _e('Remarks', 'cvtx'); ?>:      &   <?php cvtx_info($post); ?>                                        \\
+                                          &                                                                     \\
 <?php } ?>
     \hline
 \end{tabularx}

@@ -859,7 +859,8 @@ function cvtx_the_title($before='', $after='') {
             }
             // Agenda point
             else if($post->post_type == 'cvtx_top' && get_post_meta($post->ID, 'cvtx_top_appendix', true) != 'on') {
-                $title = $short.': '.$title;
+                $title = sprintf(__('agenda_point_prefix_format', 'cvtx'),
+                                 get_post_meta($post->ID, 'cvtx_top_ord', true)).' '.$title;
             }
         }
         // get title for generated attachments
@@ -916,7 +917,7 @@ function cvtx_get_short($post) {
     if ($post->post_type == 'cvtx_top') {
         $top = get_post_meta($post->ID, 'cvtx_top_ord', true);
 
-        if (!empty($top)) return __('TOP', 'cvtx').' '.$top;
+        if (!empty($top)) return sprintf(__('agenda_point_format', 'cvtx'), $top);
     }
     // post type antrag
     else if ($post->post_type == 'cvtx_antrag') {
@@ -1115,22 +1116,29 @@ function cvtx_get_reader() {
  * @param $selected post_id of selected top, otherwise null
  * @param $message message that will be displayed if no top exists
  */
-function cvtx_dropdown_tops($selected = null, $message = '', $antraege = true, $applications = false) {
+function cvtx_dropdown_tops($selected = null, $message = '', $antraege = true, $applications = '') {
     global $post;
     $post_bak = $post;
     $output = '';
+    
+    $query_conds = array();
+    if (is_bool($antraege)) {
+        $query_conds[] = array('key'     => 'cvtx_top_antraege',
+                               'value'   => ($antraege ? 'on' : 'off'),
+                               'compare' => '=');
+    }
+    if (is_bool($applications)) {
+        $query_conds[] = array('key'     => 'cvtx_top_applications',
+                               'value'   => ($applications ? 'on' : 'off'),
+                               'compare' => '=');
+    }
 
     $tquery = new WP_Query(array('post_type'  => 'cvtx_top',
                                  'orderby'    => 'meta_value',
                                  'meta_key'   => 'cvtx_sort',
                                  'order'      => 'ASC',
                                  'nopaging'   => true,
-                                 'meta_query' => array(array('key'     => 'cvtx_top_antraege',
-                                                             'value'   => ($antraege ? 'on' : 'off'),
-                                                             'compare' => '='),
-                                                       array('key'     => 'cvtx_top_applications',
-                                                             'value'   => ($applications ? 'on' : 'off'),
-                                                             'compare' => '='))));
+                                 'meta_query' => $query_conds));
     if ($tquery->have_posts()) {
         $output .= '<select name="cvtx_'.($applications ? 'application' : 'antrag').'_top" id="cvtx_'
             .($applications ? 'application' : 'antrag').'_top_select">';
