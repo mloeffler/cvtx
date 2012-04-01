@@ -443,21 +443,17 @@ function cvtx_insert_post($post_id, $post = null) {
             }
         }
         // Update/insert application
-        else if ($post->post_type == 'cvtx_application') {
-	        // application data
-	        if (isset($_POST['cvtx_application_top'])) {
-	            $_POST['cvtx_application_top'] = $_POST['cvtx_application_top'];   // BUGGY --MaxL
-	            
-	            // get top and validate data
-	            $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);
-	            $appl_ord = (isset($_POST['cvtx_application_ord']) ? $_POST['cvtx_application_ord'] : 0);
-	
-	            // get globally sortable string
-	            $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_application', $top_ord, $appl_ord);
-	            
-	            // get default reader terms for applications
-	            $terms = explode(', ', get_option('cvtx_default_reader_application'));
-	        }
+        else if ($post->post_type == 'cvtx_application' && isset($_POST['cvtx_application_top'])) {
+            // get top and validate data
+            $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);
+            $appl_ord = (isset($_POST['cvtx_application_ord']) ? $_POST['cvtx_application_ord'] : 0);
+
+            // get globally sortable string
+            $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_application', $top_ord, $appl_ord);
+            
+            // get default reader terms for applications
+            $terms = explode(', ', get_option('cvtx_default_reader_application'));
+            
             /* DAS IST NOCH IMMER EHER QUICK UND DIRTY */
             if ($post->post_status != 'auto-draft') {
                 // get old filename
@@ -465,13 +461,12 @@ function cvtx_insert_post($post_id, $post = null) {
                 // generate file name
                 $out_dir = wp_upload_dir();
                 // generate short (BUGGY!!!)
-                $top  = get_post_meta(get_post_meta($post->ID, 'cvtx_application_top', true), 'cvtx_top_short', true);
-                $appl = get_post_meta($post->ID, 'cvtx_application_ord', true);
+                $top  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_short', true);
                 // format
                 $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
-                                                                        __('%resolution%', 'cvtx')   => $appl));
-                if (!empty($top) && !empty($appl)) $short = $format;
-            
+                                                                        __('%resolution%', 'cvtx')   => $_POST['cvtx_application_ord']));
+                if (!empty($top) && !empty($_POST['cvtx_application_ord'])) $short = $format;
+                
                 // application published?
                 if ($post->post_status == 'publish' && isset($short)) {
                     $filename = $out_dir['path'].'/'.cvtx_sanitize_file_name($short.'_'.$post->post_title).'.pdf';
@@ -572,7 +567,7 @@ function cvtx_insert_post($post_id, $post = null) {
         if (is_admin()) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
-        	$mail = (get_option('cvtx_send_html_mail',true) == true ? true : false);
+            $mail = (get_option('cvtx_send_html_mail',true) == true ? true : false);
             $headers = array('From: '.get_option('cvtx_send_from_email', get_bloginfo('admin_email'))."\r\n",
                              ($mail ? "Content-Type: text/html\r\n" : ''));
             
@@ -602,7 +597,7 @@ function cvtx_insert_post($post_id, $post = null) {
                                 require($tpl);
                                 $out = ob_get_contents();
                                 ob_end_clean();
-	                            $mails[$rcpt][$part] = $out;
+                                $mails[$rcpt][$part] = $out;
                             }
                             else $mails[$rcpt][$part] = strtr($content, $fields);
                         }
@@ -655,7 +650,7 @@ function cvtx_insert_post($post_id, $post = null) {
                                 require($tpl);
                                 $out = ob_get_contents();
                                 ob_end_clean();
-	                            $mails[$rcpt][$part] = $out;
+                                $mails[$rcpt][$part] = $out;
                             }
                          }
                          else $mails[$rcpt][$part] = strtr($content, $fields);

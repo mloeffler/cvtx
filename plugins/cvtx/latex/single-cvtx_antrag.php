@@ -1,7 +1,7 @@
-\documentclass[a4paper, 12pt, pagesize, halfparskip, DIV=calc]{scrartcl}
+\documentclass[paper=a4, 12pt, pagesize, parskip=half, DIV=calc]{scrartcl}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 <?php if (get_bloginfo('language') == 'de-DE') { ?>
     \usepackage[ngerman]{babel}
 <?php } else { ?>
@@ -20,7 +20,9 @@
 
 \begin{document}
 
-\shorthandoff{"}
+<?php if (get_bloginfo('language') == 'de-DE') { ?>
+    \shorthandoff{"}
+<?php } ?>
 
 \thispagestyle{empty}
 
