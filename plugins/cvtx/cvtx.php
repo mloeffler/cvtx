@@ -568,7 +568,8 @@ function cvtx_insert_post($post_id, $post = null) {
         // send mails if antrag created
         else {
             $tpl  = get_template_directory().'/mail.php';
-            $mail = ((get_option('cvtx_send_html_mail',true) == true && is_file($tpl)) ? true : false);
+            if(get_option('cvtx_send_html_mail', true) == FALSE || !is_file($tpl)) $mail = FALSE;
+            else $mail = TRUE;
             $headers = array('From: '.get_option('cvtx_send_from_email', get_bloginfo('admin_email'))."\r\n",
                              ($mail ? "Content-Type: text/html\r\n" : ''));
             
@@ -591,15 +592,12 @@ function cvtx_insert_post($post_id, $post = null) {
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
                         if($part=='body' && $mail) {
-                            if($mail) {
-                                $content = nl2br(strtr($content, $fields));
-                                ob_start();
-                                require($tpl);
-                                $out = ob_get_contents();
-                                ob_end_clean();
-                                $mails[$rcpt][$part] = $out;
-                            }
-                            else $mails[$rcpt][$part] = strtr($content, $fields);
+                            $content = nl2br(strtr($content, $fields));
+                            ob_start();
+                            require($tpl);
+                            $out = ob_get_contents();
+                            ob_end_clean();
+                            $mails[$rcpt][$part] = $out;
                         }
                         else
                             $mails[$rcpt][$part] = strtr($content, $fields);
@@ -643,14 +641,12 @@ function cvtx_insert_post($post_id, $post = null) {
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
                         if($part=='body' && $mail) {
-                            if($mail) {
-                                $content = nl2br(strtr($content, $fields));
-                                ob_start();
-                                require($tpl);
-                                $out = ob_get_contents();
-                                ob_end_clean();
-                                $mails[$rcpt][$part] = $out;
-                            }
+                            $content = nl2br(strtr($content, $fields));
+                            ob_start();
+                            require($tpl);
+                            $out = ob_get_contents();
+                            ob_end_clean();
+                            $mails[$rcpt][$part] = $out;
                          }
                          else $mails[$rcpt][$part] = strtr($content, $fields);
                     }
