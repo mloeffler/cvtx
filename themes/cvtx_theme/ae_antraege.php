@@ -6,7 +6,7 @@
  * eingerichteten Anträge dar.
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 ?>
 
@@ -26,7 +26,7 @@
 
     <div id="header">
       <div id="verlauf">
-        <p><a href="<?php bloginfo('url'); ?>"><< Zur&uuml;ck zur Seite</a> <span class="right"><?php bloginfo('name'); ?></span></p>
+        <p><a href="<?php bloginfo('url'); ?>"><< <?php echo __('Back to the page', 'cvtx_theme'); ?></a> <span class="right"><?php bloginfo('name'); ?></span></p>
       </div>
     </div>
 
@@ -51,9 +51,9 @@
                                                           'compare' => '!='))));
     if($loop->have_posts()):?>
       <div id="liste">
-        <div class="toggler"><a href="#">Filter <?php if($hide) print 'anzeigen'; else print 'verbergen'; ?></a></div>
+        <div class="toggler"><a href="#"><?php if($hide) print __('Show filters','cvtx_theme'); else print __('Hide filters', 'cvtx_theme'); ?></a></div>
         <form method="post" id="filter" <?php if($hide) print 'style="display:none"'; ?> >
-          <label for="tops">Tagesordnungspunkte und Änderungsanträge</label>
+          <label for="tops"><?php print __('Agenda points and amendments', 'cvtx_theme'); ?></label>
           <select id="tops" style="width: 100%" multiple="multiple" size="20" name="antraege[]">
           <?php
           while ($loop->have_posts()):$loop->the_post(); $top_id = $post->ID;?>
@@ -77,11 +77,11 @@
           </select>
           <p>
             <input id="show_empty" name="show_empty" type="checkbox" <?php if($show_empty) print 'checked="true"'; ?> />
-            <label for="show_empty">Nur Anträge mit Änderungsanträgen anzeigen</label>
+            <label for="show_empty"><?php print __('Show only resolutions with amendments', 'cvtx_theme'); ?></label>
             <input id="show_verfahren" name="show_verfahren" type="checkbox" <?php if($show_verfahren) print 'checked="true"'; ?> />
-            <label for="show_verfahren">Verfahren anzeigen</label>
+            <label for="show_verfahren"><?php print __('Show procedure', 'cvtx_theme'); ?></label>
             <input id="show_steller" name="show_steller" type="checkbox" <?php if($show_steller) print 'checked="true"'; ?> />
-            <label for="show_steller">Vollständige Antragsteller anzeigen</label>
+            <label for="show_steller"><?php print __('Show full authors field','cvtx_theme'); ?></label>
           </p>
           <input type="submit" value="Liste anzeigen" />
         </form>
@@ -105,10 +105,10 @@
           <?php if ($loop3->have_posts()): ?>
             <table>
               <tr>
-                <th>Zeile</th>
-                <th>AntragstellerInnen</th>
-                <th>Antrag</th>
-                <?php if ($show_verfahren): ?><th>Verfahren</th><?php endif; ?>
+                <th><?php print __('Line', 'cvtx_theme'); ?></th>
+                <th><?php print __('Author(s)', 'cvtx_theme'); ?></th>
+                <th><?php print __('Resolution', 'cvtx_theme'); ?></th>
+                <?php if ($show_verfahren): ?><th><?php print __('Procedure', 'cvtx_theme'); ?></th><?php endif; ?>
               </tr>
               <tbody>
               <?php while ($loop3->have_posts()): $loop3->the_post();?>

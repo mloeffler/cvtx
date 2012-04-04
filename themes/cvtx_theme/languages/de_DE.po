@@ -1,0 +1,236 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Cvtx Theme\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-04 10:48+0100\n"
+"PO-Revision-Date: 2012-04-04 10:51+0100\n"
+"Last-Translator: Alexander Fecke <alex@cvtx-project.org>\n"
+"Language-Team:  <alex@cvtx-project.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../ae_antraege.php:29
+msgid "Back to the page"
+msgstr "Zurück zur Seite"
+
+#: ../ae_antraege.php:54
+msgid "Show filters"
+msgstr "Filter anzeigen"
+
+#: ../ae_antraege.php:54
+msgid "Hide filters"
+msgstr "Filter verbergen"
+
+#: ../ae_antraege.php:56
+msgid "Agenda points and amendments"
+msgstr "Tagesordnungspunkte und Änderungsanträge"
+
+#: ../ae_antraege.php:80
+msgid "Show only resolutions with amendments"
+msgstr "Nur Anträge mit Änderungsanträgen zeigen"
+
+#: ../ae_antraege.php:82
+msgid "Show procedure"
+msgstr "Verfahren anzeigen"
+
+#: ../ae_antraege.php:84
+msgid "Show full authors field"
+msgstr "Vollständige AntragstellerInnen anzeigen"
+
+#: ../ae_antraege.php:108
+msgid "Line"
+msgstr "Zeile"
+
+#: ../ae_antraege.php:109
+#: ../antraege.php:68
+#: ../antraege.php:92
+msgid "Author(s)"
+msgstr "AntragstellerInnen"
+
+#: ../ae_antraege.php:110
+msgid "Resolution"
+msgstr "Antrag"
+
+#: ../ae_antraege.php:111
+msgid "Procedure"
+msgstr "Verfahren"
+
+#: ../antraege.php:19
+#: ../archive.php:35
+#: ../category.php:30
+#: ../create_antrag.php:20
+#: ../index.php:21
+#: ../search.php:23
+#: ../single-cvtx_aeantrag.php:18
+#: ../single-cvtx_antrag.php:17
+#: ../single-cvtx_application.php:16
+msgid "Read the rest of this entry &raquo;"
+msgstr "Den vollständigen Beitrag lesen &raquo;"
+
+#: ../antraege.php:35
+msgid "RSS-Feed"
+msgstr "RSS-Feed"
+
+#: ../antraege.php:35
+#, php-format
+msgid "Stay up to date? Sign up to our %1$s!"
+msgstr "Immer auf dem Laufenden bleiben? Einfach diesen %1$s abonnieren!"
+
+#: ../antraege.php:36
+msgid "Overview"
+msgstr "Übersicht"
+
+#: ../antraege.php:73
+msgid "Add amendment"
+msgstr "Änderungsantrag hinzufügen"
+
+#: ../antraege.php:84
+msgid "Amendment overview"
+msgstr "Änderungsantragsübersicht"
+
+#: ../antraege.php:89
+msgid "Amendments"
+msgstr "Änderungsanträge"
+
+#: ../archive.php:15
+#, php-format
+msgid "Daily archive: <span>%s</span>"
+msgstr "Tägliches Archiv: <span>%s</span>"
+
+#: ../archive.php:17
+#, php-format
+msgid "Monthly archive: <span>%s</span>"
+msgstr "Monatliches Archiv: <span>%s</span>"
+
+#: ../archive.php:19
+#, php-format
+msgid "Yearly Archive: <span>%s</span>"
+msgstr "Jährliches Archiv: <span>%s</span>"
+
+#: ../archive.php:31
+#: ../category.php:26
+#: ../index.php:17
+#: ../search.php:19
+#, php-format
+msgid "Permanent link to %s"
+msgstr "Permanenter Link zu %s"
+
+#: ../archive.php:32
+#: ../category.php:27
+#: ../index.php:18
+#: ../search.php:20
+msgid "j.m.Y"
+msgstr "j.m.Y"
+
+#: ../archive.php:38
+#: ../category.php:33
+#: ../index.php:24
+#: ../search.php:26
+msgid "Tags:"
+msgstr "Tags:"
+
+#: ../archive.php:38
+#, php-format
+msgid "Plublished in %s"
+msgstr "Veröffentlicht in %s"
+
+#: ../archive.php:38
+#: ../category.php:33
+#: ../index.php:24
+#: ../search.php:26
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: ../archive.php:38
+#: ../category.php:33
+#: ../index.php:24
+#: ../search.php:26
+msgid "No comments &#187;"
+msgstr "Keine Kommentare &#187;"
+
+#: ../archive.php:38
+#: ../category.php:33
+#: ../index.php:24
+#: ../search.php:26
+msgid "1 comment &#187;"
+msgstr "Ein Kommentar &#187;"
+
+#: ../archive.php:38
+#: ../category.php:33
+#: ../index.php:24
+#: ../search.php:26
+#, php-format
+msgid "% comments &#187;"
+msgstr "% Kommentare &#187;"
+
+#: ../archive.php:38
+#: ../category.php:33
+#: ../index.php:24
+#: ../search.php:26
+msgid "Comments closed"
+msgstr "Kommentare geschlossen"
+
+#: ../archive.php:46
+#: ../category.php:41
+#: ../index.php:32
+#: ../search.php:34
+msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
+msgstr "<span class=\"meta-nav\">&larr;</span> Ältere Beiträge"
+
+#: ../archive.php:47
+#: ../category.php:42
+#: ../index.php:33
+#: ../search.php:35
+msgid "Newer posts <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Neuere Beiträge <span class=\"meta-nav\">&rarr;</span>"
+
+#: ../category.php:14
+#, php-format
+msgid "Category: %s"
+msgstr "Kategorie: %s"
+
+#: ../category.php:33
+#: ../index.php:24
+#: ../search.php:26
+#, php-format
+msgid "Published in %s"
+msgstr "Veröffentlicht in %s"
+
+#: ../functions.php:54
+msgid "Header Menu"
+msgstr "Menü im Kopfbereich"
+
+#: ../functions.php:55
+msgid "Cvtx Menu"
+msgstr "Cvtx-Menü"
+
+#: ../search.php:12
+#, php-format
+msgid "Results for: %s"
+msgstr "Suchresultate für: %s"
+
+#: ../single-cvtx_aeantrag.php:23
+#: ../single-cvtx_antrag.php:22
+#: ../single-cvtx_application.php:20
+#, php-format
+msgid "This %1$s was published on %2$s at %3$s."
+msgstr "Dieser %1$s wurde am %2$s um %3$s eingetragen."
+
+#: ../single-cvtx_aeantrag.php:25
+#: ../single-cvtx_antrag.php:24
+#: ../single-cvtx_application.php:22
+msgid "j. F Y"
+msgstr "j. F Y"
+
+#: ../single-cvtx_reader.php:25
+#: ../single.php:23
+msgid "l, j. F Y"
+msgstr "l, j. F Y"
+

@@ -3,7 +3,7 @@
  * Reader-Template
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 ?>
 
@@ -13,7 +13,7 @@
 		<div <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 			<h2><?php the_title(); ?></h2>
 			<div class="entry">
-				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'kubrick') . '</p>'); ?>
+				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx_theme') . '</p>'); ?>
 								
 				<?php do_action('cvtx_theme_reader'); ?>
 				
@@ -22,12 +22,12 @@
 			</div>
 			<p class="postmetadata alt">
 				<small>
-				<?php printf(__('Dieser %1$s wurde am %2$s um %3$s eingestellt.'),get_post_type_object(get_post_type())->labels->singular_name, get_the_time(__('l, j. F Y')), get_the_time(), get_the_category_list(', ')); ?>
+				<?php printf(__('This %1$s was published on %2$s at %3$s.'),get_post_type_object(get_post_type())->labels->singular_name, get_the_time(__('l, j. F Y')), get_the_time(), get_the_category_list(', ')); ?>
 				</small>
 			</p>
 		</div>
 	<?php endwhile; else: ?>
-	<p><?php _e('Sorry, no posts matched your criteria.', 'kubrick'); ?></p>
+	<p><?php _e('There are no posts matching your search criteria. Sorry!', 'cvtx_theme'); ?></p>
 	<?php endif; ?>
 		</div>
 	</div>

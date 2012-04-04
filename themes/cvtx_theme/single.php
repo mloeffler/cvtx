@@ -1,9 +1,9 @@
 <?php
 /**
- * Template fŸr einzelne BeitrŠge
+ * Template fÃ¼r einzelne BeitrÃ¤ge
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 ?>
 
@@ -14,13 +14,13 @@
 		<div <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 			<h2><?php the_title(); ?></h2>
 			<div class="entry">
-				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx') . '</p>'); ?>
+				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx_theme') . '</p>'); ?>
 			</div>
 			<p class="postmetadata alt">
 				<small>
-				<?php printf(__('This %1$s was posted %2$s at %3$s.', 'cvtx'),
+				<?php printf(__('This %1$s was published on %2$s at %3$s.', 'cvtx_theme'),
                                 get_post_type_object(get_post_type())->labels->singular_name,
-                                get_the_time(__('l, j. F Y', 'cvtx')),
+                                get_the_time(__('l, j. F Y', 'cvtx_theme')),
                                 get_the_time(),
                                 get_the_category_list(', ')); ?>
 				</small>
@@ -28,7 +28,7 @@
 					<?php comments_template( '', true ); ?>
 		</div>
 	<?php endwhile; else: ?>
-     <p><?php _e('No entries found', 'cvtx'); ?></p>
+	    <p><?php _e('There are no posts matching your search criteria. Sorry!', 'cvtx_theme'); ?></p>
 	<?php endif; ?>
 		</div>
 	</div>

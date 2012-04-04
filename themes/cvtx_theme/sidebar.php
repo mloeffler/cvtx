@@ -3,7 +3,7 @@
  * Sidebar
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 ?>
 

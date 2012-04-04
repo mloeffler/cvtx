@@ -6,7 +6,7 @@
  * eingerichteten Anträge, Änderungsanträge und TOPs dar.
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 ?>
 
@@ -16,7 +16,7 @@
       <div <?php post_class(); ?> id="post-<?php the_ID(); ?>">
         <h2><?php the_title(); ?></h2>
         <div class="entry">
-          <?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx') . '</p>'); ?>
+          <?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx_theme') . '</p>'); ?>
         </div>
       </div>
     <?php endwhile; endif; ?>
@@ -32,8 +32,8 @@
     if ($loop->have_posts()): ?>
       <ul id="antraege">
       	<?php $rss_url = add_query_arg(array('post_type' => 'cvtx_antrag'),get_feed_link('rss2'));?>
-      	<li class="rss top"><h3>RSS-Feed</h3><?php printf('<p>'.__('Um immer über neue Anträge auf dem Laufenden zu bleiben, abonniere doch einfach den %1$s!', 'cvtx').'</p>','<a href="'.$rss_url.'">RSS-Feed</a>'); ?></li>
-        <li class="top overview"><h3>Übersicht</h3>
+      	<li class="rss top"><h3><?php print __('RSS-Feed', 'cvtx_theme'); ?></h3><?php printf('<p>'.__('Stay up to date? Sign up to our %1$s!', 'cvtx_theme').'</p>','<a href="'.$rss_url.'">RSS-Feed</a>'); ?></li>
+        <li class="top overview"><h3><?php print __('Overview','cvtx_theme'); ?></h3>
           <ul>
             <?php while ($loop->have_posts()): $loop->the_post();?>
               <li class="antrag">
@@ -65,12 +65,12 @@
       while ($loop2->have_posts()): $loop2->the_post(); ?>
         <li class="antrag"><h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
         <span class="steller">
-          <strong>AntragstellerInnen:</strong>
+          <strong><?php print __('Author(s)', 'cvtx_theme'); ?>:</strong>
           <?php print get_post_meta($post->ID,'cvtx_antrag_steller_short',true);?>
         </span>
         <ul class="options">
           <li><?php if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
-          <li><a href="<?php the_permalink(); ?>#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>">Änderungsantrag hinzufügen</a></li>
+          <li><a href="<?php the_permalink(); ?>#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="<?php print $post->ID; ?>"><?php print __('Add amendment', 'cvtx_theme'); ?></a></li>
           <?php $antrag_id = $post->ID; ?>
           <?php $loop3 = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
                                             'meta_key'   => 'cvtx_sort',
@@ -81,15 +81,15 @@
                                                                         'value'   => $antrag_id,
                                                                         'compare' => '=')))); ?>
           <?php if($loop3->have_posts()): ?>
-            <li><a href="<?php the_permalink(); ?>" rel="extern" class="ae_antraege_overview" meta-id="<?php print $post->ID; ?>">Änderungsantragsübersicht</a></li>
+            <li><a href="<?php the_permalink(); ?>" rel="extern" class="ae_antraege_overview" meta-id="<?php print $post->ID; ?>"><?php print __('Amendment overview', 'cvtx_theme'); ?></a></li>
           <?php endif;?>
         </ul><div id="result-<?php print $post->ID; ?>" class="ae_antraege_result"></div>
         <?php if($loop3->have_posts()): ?>
         <ul class="ae_antraege">
-          <h4>Änderungsanträge</h4>
+          <h4><?php print __('Amendments', 'cvtx_theme'); ?></h4>
         <?php
           while($loop3->have_posts()):$loop3->the_post();?>
-            <li><span><?php the_title(); ?></span> (AntragstellerInnen: <em><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true);?></em>)</li>
+            <li><span><?php the_title(); ?></span> (<?php print __('Author(s)', 'cvtx_theme'); ?>: <em><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true);?></em>)</li>
           <?php endwhile;?>
         </ul>
         <?php endif;?>

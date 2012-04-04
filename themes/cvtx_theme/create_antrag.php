@@ -6,7 +6,7 @@
  * Dafür muss das Plugin "cvtx" installiert sein.
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 ?>
 
@@ -22,7 +22,7 @@
 			</div>
 		</div>
 	<?php endwhile; else: ?>
-	    <p><?php _e('Es konnten leider keine Einträge gefunden werden!', 'cvtx'); ?></p>
+		<p><?php _e('There are no posts matching your search criteria. Sorry!', 'cvtx_theme'); ?></p>
 	<?php endif; ?>
 		</div>
 	</div>

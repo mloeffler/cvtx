@@ -3,8 +3,13 @@
  * Functions-file for cvtx_theme
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
+
+add_action( 'after_setup_theme', 'cvtx_theme_setup' );
+function cvtx_theme_setup() {
+    load_theme_textdomain('cvtx_theme', TEMPLATEPATH . '/languages' );
+}
 
 // Register a cvtx_sidebar
 if (function_exists('register_sidebar')) {

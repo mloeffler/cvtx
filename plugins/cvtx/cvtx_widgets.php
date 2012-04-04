@@ -46,7 +46,7 @@ class ReaderWidget extends WP_Widget {
     function update($new_instance, $old_instance) {
         $instance                = $old_instance;
         $instance['title']       = strip_tags($new_instance['title']);
-        $instance['description'] = strip_tags($new_instance['description']);
+        $instance['description'] = strip_tags($new_instance['description'],'<a><em><strong>');
         return $instance;
     }
     

@@ -5,7 +5,7 @@
  * Used for HTML-Output of cvtx-sended mails
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 ?>
 

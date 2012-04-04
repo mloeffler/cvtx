@@ -2,7 +2,7 @@
  * CSS, used for the ae_antraege-Template
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 
 body {
@@ -58,7 +58,7 @@ td, th {
     vertical-align: top;
 }
 
-td.†bernahme {
+td.â€ bernahme {
 	background: green;
 	color: white;
 }

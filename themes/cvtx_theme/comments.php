@@ -4,13 +4,13 @@
  * Artikel dar.
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_theme
  */
 ?>
 
 			<div id="comments">
 <?php if ( post_password_required() ) : // don't display comments for password-protected posts ?>
-				<p class="nopassword"><?php _e( 'Dieser Artikel ist passwortgeschützt. Gib das Passwort ein, um ihn sehen zu können.', 'cvtx' ); ?></p>
+				<p class="nopassword"><?php _e( 'This post is password-protected. Enter the password to read the post.', 'cvtx_theme' ); ?></p>
 			</div><!-- #comments -->
 <?php
 		/* Stop the rest of comments.php from being processed,
