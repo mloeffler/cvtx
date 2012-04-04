@@ -568,7 +568,7 @@ function cvtx_insert_post($post_id, $post = null) {
         // send mails if antrag created
         else {
             $tpl  = get_template_directory().'/mail.php';
-            if(get_option('cvtx_send_html_mail', true) == FALSE || !is_file($tpl)) $mail = FALSE;
+            if(get_option('cvtx_send_html_mail') == FALSE || !file_exists($tpl)) $mail = FALSE;
             else $mail = TRUE;
             $headers = array('From: '.get_option('cvtx_send_from_email', get_bloginfo('admin_email'))."\r\n",
                              ($mail ? "Content-Type: text/html\r\n" : ''));
