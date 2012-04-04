@@ -567,7 +567,8 @@ function cvtx_insert_post($post_id, $post = null) {
         if (is_admin()) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
-            $mail = (get_option('cvtx_send_html_mail',true) == true ? true : false);
+            $tpl  = get_template_directory().'/mail.php';
+            $mail = ((get_option('cvtx_send_html_mail',true) == true && is_file($tpl)) ? true : false);
             $headers = array('From: '.get_option('cvtx_send_from_email', get_bloginfo('admin_email'))."\r\n",
                              ($mail ? "Content-Type: text/html\r\n" : ''));
             
@@ -590,8 +591,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
                         if($part=='body' && $mail) {
-                            $tpl = get_template_directory().'/mail.php';
-                            if(is_file($tpl)) {
+                            if($mail) {
                                 $content = nl2br(strtr($content, $fields));
                                 ob_start();
                                 require($tpl);
@@ -643,8 +643,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
                         if($part=='body' && $mail) {
-                            $tpl = get_template_directory().'/mail.php';
-                            if(is_file($tpl)) {
+                            if($mail) {
                                 $content = nl2br(strtr($content, $fields));
                                 ob_start();
                                 require($tpl);
