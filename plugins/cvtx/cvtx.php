@@ -568,10 +568,10 @@ function cvtx_insert_post($post_id, $post = null) {
         // send mails if antrag created
         else {
             $tpl  = get_template_directory().'/mail.php';
-            if(get_option('cvtx_send_html_mail') == FALSE || !file_exists($tpl)) $mail = FALSE;
-            else $mail = TRUE;
+            if(get_option('cvtx_send_html_mail') == FALSE || !file_exists($tpl)) $html_mail = FALSE;
+            else $html_mail = TRUE;
             $headers = array('From: '.get_option('cvtx_send_from_email', get_bloginfo('admin_email'))."\r\n",
-                             ($mail ? "Content-Type: text/html\r\n" : ''));
+                             ($html_mail ? "Content-Type: text/html\r\n" : ''));
             
             // post type antrag created
             if ($post->post_type == 'cvtx_antrag') {
@@ -591,7 +591,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
-                        if($part=='body' && $mail) {
+                        if($part=='body' && $html_mail) {
                             $content = nl2br(strtr($content, $fields));
                             ob_start();
                             require($tpl);
@@ -640,7 +640,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 // replace post type data
                 foreach ($mails as $rcpt => $mail) {
                     foreach ($mail as $part => $content) {
-                        if($part=='body' && $mail) {
+                        if($part=='body' && $html_mail) {
                             $content = nl2br(strtr($content, $fields));
                             ob_start();
                             require($tpl);
