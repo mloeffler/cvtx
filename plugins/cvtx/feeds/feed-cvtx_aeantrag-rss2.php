@@ -37,7 +37,7 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 ?>
 
 <channel>
-	<title><?php if(isset($antrag)) printf(__('&Auml;nderungsantr&auml;ge zu %s','cvtx'),get_the_title($antrag)); else bloginfo_rss('name'); wp_title_rss();?></title>
+	<title><?php if(isset($antrag)) printf(__('Amendments to %s','cvtx'),get_the_title($antrag)); else bloginfo_rss('name'); wp_title_rss();?></title>
 	<atom:link href="<?php if(isset($antrag)) echo get_permalink($antrag); else self_link(); ?>" rel="self" type="application/rss+xml" />
 	<link><?php if(isset($antrag)) echo get_permalink($antrag); else self_link();  ?></link>
 	<description><?php bloginfo_rss("description") ?></description>

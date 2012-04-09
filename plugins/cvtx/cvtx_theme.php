@@ -147,7 +147,7 @@ function cvtx_reader_action($post_id = false) {
             $items[] = $post->ID;
         }
         
-        echo __('<p>In dieser Antragsmappe sind enthalten:</p>', 'cvtx');
+        echo '<p>'.__('Contents', 'cvtx').':</p>';
         // list all contents
         echo '<ul class="reader_list">';
         $open_top    = false;
@@ -200,18 +200,18 @@ function cvtx_top_action($post_id = false) {
             echo '<li class="top"><h3><a href="'; the_permalink();echo '">';
                 the_title();echo '</a></h3>';
                 echo '<div class="top_content"><span class="steller">';
-                    echo __('<strong>AntragstellerInnen:</strong> ', 'cvtx');
+                    echo '<strong>'.__('Author(s)', 'cvtx').':</strong> ';
                     echo get_post_meta($post->ID,'cvtx_antrag_steller_short',true);
                 echo '</span>';
                 echo '<ul class="options">';
                     echo '<li>'; 
                     if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) 
                         echo('<a href="'.$file.'">Download (pdf)</a>'); 
-                    else echo __('Kein PDF erstellt.', 'cvtx'); 
+                    else echo __('No PDF available.', 'cvtx'); 
                     echo '</li>';
                     echo '<li><a href="'; the_permalink();
                     echo '#add_aeantrag" rel="extern" class="add_ae_antraeg" meta-id="'.
-                         $post->ID.'">'.__('Änderungsantrag hinzufügen</a>', 'cvtx').'</li>';
+                         $post->ID.'">'.__('Add amendment', 'cvtx').'</a></li>';
                     $loop3 = new WP_Query(array(
                               'post_type'  => 'cvtx_aeantrag',
                               'meta_key'   => 'cvtx_sort',
@@ -223,18 +223,18 @@ function cvtx_top_action($post_id = false) {
                                                           'compare' => '='))));
                     if($loop3->have_posts()) {
                         echo '<li><a href="'; the_permalink(); 
-                        echo '" rel="extern" class="ae_antraege_overview" meta-id="'.$post->ID.'">'.__('Änderungsantragsübersicht','cvtx').'</a></li>';
+                        echo '" rel="extern" class="ae_antraege_overview" meta-id="'.$post->ID.'">'.__('Overview','cvtx').'</a></li>';
                     }
                 echo '</ul>';
                 echo '<div id="result-'.$post->ID.'" class="ae_antraege_result"></div>';
                 if($loop3->have_posts()) {
                     echo '<ul class="ae_antraege">';
-                        echo '<h4>'.__('Änderungsanträge','cvtx').'</h4>';
+                        echo '<h4>'.__('Amendments','cvtx').'</h4>';
                         while($loop3->have_posts()){
                             $loop3->the_post();
                             echo '<li><span>';
                             the_title();
-                            echo '</span> ('.__('AntragstellerInnen', 'cvtx').': <em>';
+                            echo '</span> ('.__('Author(s)', 'cvtx').': <em>';
                             echo get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true).'</em>)</li>';
                         }
                     echo '</ul>';
