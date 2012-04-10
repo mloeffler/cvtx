@@ -30,7 +30,7 @@ load_plugin_textdomain('cvtx', false, CVTX_PLUGIN_DIR.'/languages');
 
 
 // define post types
-$cvtx_types = array('cvtx_reader'   => array(),
+$cvtx_types = array('cvtx_reader'   => array('cvtx_reader_style'),
                     'cvtx_top'      => array('cvtx_top_ord',
                                              'cvtx_sort',
                                              'cvtx_top_short',
@@ -697,18 +697,8 @@ function cvtx_create_pdf($post_id, $post = null) {
                 $file = $out_dir.$post->ID;
             }
             
-            // use special theme template for id=x if exists
-            if (is_file($tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_antrag-'.$post_id.'.php';
-            }
-            // use theme template
-            else if(is_file($tpl_dir.'/single-cvtx_antrag.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_antrag.php';
-            }
-            // use default template
-            else if(is_file(CVTX_PLUGIN_DIR.'/latex/single-cvtx_antrag.php')) {
-                $tpl = CVTX_PLUGIN_DIR.'/latex/single-cvtx_antrag.php';
-            }
+            // set file post type
+            $file_post_type = 'cvtx_antrag';
         }
         // prepare Ä-Antrag if pdf-option enabled
         else if ($post->post_type == 'cvtx_aeantrag' && get_option('cvtx_aeantrag_pdf')) {
@@ -718,19 +708,9 @@ function cvtx_create_pdf($post_id, $post = null) {
             } else {
                 $file = $out_dir.$post->ID;
             }
-
-            // use special theme template for id=x if exists
-            if (is_file($tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_aeantrag-'.$post_id.'.php';
-            }
-            // use theme template
-            else if(is_file($tpl_dir.'/single-cvtx_aeantrag.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_aeantrag.php';
-            }
-            // use default template
-            else if(is_file(CVTX_PLUGIN_DIR.'/latex/single-cvtx_aeantrag.php')) {
-                $tpl = CVTX_PLUGIN_DIR.'/latex/single-cvtx_aeantrag.php';
-            }
+            
+            // set file post type
+            $file_post_type = 'cvtx_aeantrag';
         }
         // prepare Reader
         else if ($post->post_type == 'cvtx_reader') {
@@ -741,17 +721,27 @@ function cvtx_create_pdf($post_id, $post = null) {
                 $file = $out_dir.$post->ID;
             }
             
+            // get reader style
+            $style = get_post_meta($post->ID, 'cvtx_reader_style', true);
+            if ($style != 'book' && $style != 'table') $style = 'book';
+            
+            // set file post type
+            $file_post_type = 'cvtx_reader_'.$style;
+        }
+        
+        // get template
+        if (isset($file_post_type) && !empty($file_post_type)) {
             // use special theme template for id=x if exists
-            if (is_file($tpl_dir.'/single-cvtx_reader-'.$post_id.'.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_reader-'.$post_id.'.php';
+            if (is_file($tpl_dir.'/single-'.$file_post_type.'-'.$post->ID.'.php')) {
+                $tpl = $tpl_dir.'/single-'.$file_post_type.'-'.$post->ID.'.php';
             }
             // use theme template
-            else if(is_file($tpl_dir.'/single-cvtx_reader.php')) {
-                $tpl = $tpl_dir.'/single-cvtx_reader.php';
+            else if(is_file($tpl_dir.'/single-'.$file_post_type.'.php')) {
+                $tpl = $tpl_dir.'/single-'.$file_post_type.'.php';
             }
             // use default template
-            else if(is_file(CVTX_PLUGIN_DIR.'/latex/single-cvtx_reader.php')) {
-                $tpl = CVTX_PLUGIN_DIR.'/latex/single-cvtx_reader.php';
+            else if(is_file(CVTX_PLUGIN_DIR.'/latex/single-'.$file_post_type.'.php')) {
+                $tpl = CVTX_PLUGIN_DIR.'/latex/single-'.$file_post_type.'.php';
             }
         }
 

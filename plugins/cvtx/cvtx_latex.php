@@ -198,6 +198,26 @@ function cvtx_antrag_kuerzel($post) {
     }
 }
 
+function cvtx_amendment_procedure($post) {
+    if ($post->post_type == 'cvtx_aeantrag') {
+        echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true)));
+    }
+}
+
+function cvtx_amendment_procedure_has_details($post) {
+    $details = '';
+    if ($post->post_type == 'cvtx_aeantrag') {
+        $details = cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_detail', true));
+    }
+    return !empty($details);
+}
+
+function cvtx_amendment_procedure_details($post) {
+    if ($post->post_type == 'cvtx_aeantrag') {
+        echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_detail', true)));
+    }
+}
+
 function cvtx_has_info($post) {
     $info = '';
     if ($post->post_type == 'cvtx_antrag') {

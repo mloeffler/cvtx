@@ -9,6 +9,8 @@
 if (is_admin()) add_action('add_meta_boxes', 'cvtx_add_meta_boxes');
 function cvtx_add_meta_boxes() {
     // Reader
+    add_meta_box('cvtx_reader_meta', __('Metadata', 'cvtx'),
+                 'cvtx_reader_meta', 'cvtx_reader', 'side', 'high');
     add_meta_box('cvtx_reader_contents', __('Contents', 'cvtx'),
                  'cvtx_reader_contents', 'cvtx_reader', 'normal', 'high');
     add_meta_box('cvtx_reader_pdf', __('PDF', 'cvtx'),
@@ -64,6 +66,24 @@ function cvtx_add_meta_boxes() {
 
 
 /* Reader */
+
+// Metainformationen (Anzeigestil)
+function cvtx_reader_meta() {
+    global $post;
+
+    // fetch info
+    $style = get_post_meta($post->ID, 'cvtx_reader_style', true);
+    $book  = ($style == 'book'  || !$style ? 'checked="checked"' : '');
+    $table = ($style == 'table'            ? 'checked="checked"' : '');
+    
+    // output    
+    echo(__('Create PDF as', 'cvtx').'<br />');
+    echo('<input name="cvtx_reader_style" id="cvtx_reader_style_book" value="book" type="radio" '.$book.' /> ');
+    echo('<label for="cvtx_reader_style_book">'.__('book', 'cvtx').'</label><br />');
+    echo('<input name="cvtx_reader_style" id="cvtx_reader_style_table" value="table" type="radio" '.$table.' /> ');
+    echo('<label for="cvtx_reader_style_table">'.__('table of amendments', 'cvtx').'</label>');
+}
+
 
 // Inhalt
 function cvtx_reader_contents() {
