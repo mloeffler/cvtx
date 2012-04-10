@@ -6,7 +6,7 @@
  * eingerichteten Anträge dar.
  *
  * @package WordPress
- * @subpackage cvtx
+ * @subpackage cvtx_gj
  */
 ?>
 
@@ -19,6 +19,7 @@
     <link rel="profile" href="http://gmpg.org/xfn/11" />
     <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/ae_antraege.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/ae_antraege_print.css" type="text/css" media="print" />
     <?php wp_head(); ?>
   </head>
 
@@ -108,7 +109,7 @@
                 <th>Zeile</th>
                 <th>AntragstellerInnen</th>
                 <th>Antrag</th>
-                <?php if ($show_verfahren): ?><th>Verfahren</th><?php endif; ?>
+                <?php if ($show_verfahren): ?><th>Modifikationen</th><th>Verfahren</th><?php endif; ?>
               </tr>
               <tbody>
               <?php while ($loop3->have_posts()): $loop3->the_post();?>
@@ -123,9 +124,13 @@
                   </td>
                   <td><?php the_content(); ?></td>
                   <?php if($show_verfahren):?>
+                    <td>
+                      <p>
+                        <?php print get_post_meta($post->ID, 'cvtx_aeantrag_detail', true); ?>
+                      </p>
+                    </td>
                     <td class="<?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?>">
                       <p class="verfahren"><?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?></p>
-                      <?php print get_post_meta($post->ID, 'cvtx_aeantrag_detail', true); ?>
                     </td>
                   <?php endif; ?>
                 </tr>

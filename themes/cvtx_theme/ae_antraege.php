@@ -19,6 +19,7 @@
     <link rel="profile" href="http://gmpg.org/xfn/11" />
     <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/ae_antraege.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/ae_antraege_print.css" type="text/css" media="print" />
     <?php wp_head(); ?>
   </head>
 
@@ -29,7 +30,7 @@
         <p><a href="<?php bloginfo('url'); ?>"><< <?php echo __('Back to the page', 'cvtx_theme'); ?></a> <span class="right"><?php bloginfo('name'); ?></span></p>
       </div>
     </div>
-
+    
     <?php
 
     $antraege       = (isset($_POST['antraege']) ? $_POST['antraege'] : false);
@@ -105,15 +106,15 @@
           <?php if ($loop3->have_posts()): ?>
             <table>
               <tr>
-                <th><?php print __('Line', 'cvtx_theme'); ?></th>
+                <th><?php print __('Title'); ?></th>
                 <th><?php print __('Author(s)', 'cvtx_theme'); ?></th>
                 <th><?php print __('Resolution', 'cvtx_theme'); ?></th>
-                <?php if ($show_verfahren): ?><th><?php print __('Procedure', 'cvtx_theme'); ?></th><?php endif; ?>
+                <?php if ($show_verfahren): ?><th><?php print __('Modifications', 'cvtx_theme'); ?></th><th><?php print __('Procedure', 'cvtx_theme'); ?></th><?php endif; ?>
               </tr>
               <tbody>
               <?php while ($loop3->have_posts()): $loop3->the_post();?>
                 <tr>
-                  <td><p><?php print get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true); ?></p></td>
+                  <td><p><?php print the_title(); ?></p></td>
                   <td>
                     <p>
                       <?php if ($show_steller): print get_post_meta($post->ID, 'cvtx_aeantrag_steller', true); ?>
@@ -123,9 +124,13 @@
                   </td>
                   <td><?php the_content(); ?></td>
                   <?php if($show_verfahren):?>
+                    <td>
+                      <p>
+                        <?php print get_post_meta($post->ID, 'cvtx_aeantrag_detail', true); ?>
+                      </p>
+                    </td>
                     <td class="<?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?>">
                       <p class="verfahren"><?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?></p>
-                      <?php print get_post_meta($post->ID, 'cvtx_aeantrag_detail', true); ?>
                     </td>
                   <?php endif; ?>
                 </tr>

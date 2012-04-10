@@ -1,0 +1,59 @@
+/**
+ * CSS, used for the ae_antraege-Template
+ *
+ * @package WordPress
+ * @subpackage cvtx_theme
+ */
+
+body {
+	font-family: "Trebuchet MS";
+	font-size: 9pt;
+	padding: 0;
+	margin: 0;
+}
+
+#header {
+	display: none;
+}
+
+table {
+	border:1px solid black;
+	border-collapse: collapse;
+	display: table;
+}
+
+#result {
+	margin: 1em;
+}
+
+tbody {
+	display: table-row-group;
+	vertical-align: middle;
+}
+
+td, th {
+	border: 1px solid black;
+	padding: 5px 10px;
+    vertical-align: top;
+}
+
+td.†bernahme {
+	background: green;
+	color: white;
+}
+
+form select {
+	margin-bottom:1em;
+}
+
+div#liste {
+	display: none;
+}
+
+div.toggler {
+	display: none;
+}
+
+p.verfahren {
+	font-weight: bold;
+}

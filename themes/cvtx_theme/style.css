@@ -104,11 +104,11 @@ nav ul li a {
 }
 
 nav ul li.current_page_item {
-    background: #266209;
+    background: #ffe500;
 }
 
 nav ul li.current_page_item a {
-    color: #ffe500;
+    color: #58ab27;
 }
 
 nav div.inside {

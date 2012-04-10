@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cvtx Theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-04 10:48+0100\n"
-"PO-Revision-Date: 2012-04-04 10:51+0100\n"
+"POT-Creation-Date: 2012-04-10 10:33+0100\n"
+"PO-Revision-Date: 2012-04-10 10:33+0100\n"
 "Last-Translator: Alexander Fecke <alex@cvtx-project.org>\n"
 "Language-Team:  <alex@cvtx-project.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,49 +16,53 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../ae_antraege.php:29
+#: ../ae_antraege.php:30
 msgid "Back to the page"
 msgstr "Zurück zur Seite"
 
-#: ../ae_antraege.php:54
+#: ../ae_antraege.php:55
 msgid "Show filters"
 msgstr "Filter anzeigen"
 
-#: ../ae_antraege.php:54
+#: ../ae_antraege.php:55
 msgid "Hide filters"
 msgstr "Filter verbergen"
 
-#: ../ae_antraege.php:56
+#: ../ae_antraege.php:57
 msgid "Agenda points and amendments"
 msgstr "Tagesordnungspunkte und Änderungsanträge"
 
-#: ../ae_antraege.php:80
+#: ../ae_antraege.php:81
 msgid "Show only resolutions with amendments"
 msgstr "Nur Anträge mit Änderungsanträgen zeigen"
 
-#: ../ae_antraege.php:82
+#: ../ae_antraege.php:83
 msgid "Show procedure"
 msgstr "Verfahren anzeigen"
 
-#: ../ae_antraege.php:84
+#: ../ae_antraege.php:85
 msgid "Show full authors field"
 msgstr "Vollständige AntragstellerInnen anzeigen"
 
-#: ../ae_antraege.php:108
-msgid "Line"
-msgstr "Zeile"
-
 #: ../ae_antraege.php:109
+msgid "Title"
+msgstr "Titel"
+
+#: ../ae_antraege.php:110
 #: ../antraege.php:68
 #: ../antraege.php:92
 msgid "Author(s)"
 msgstr "AntragstellerInnen"
 
-#: ../ae_antraege.php:110
+#: ../ae_antraege.php:111
 msgid "Resolution"
 msgstr "Antrag"
 
-#: ../ae_antraege.php:111
+#: ../ae_antraege.php:112
+msgid "Modifications"
+msgstr "Modifizierungen"
+
+#: ../ae_antraege.php:112
 msgid "Procedure"
 msgstr "Verfahren"
 
@@ -234,3 +238,5 @@ msgstr "j. F Y"
 msgid "l, j. F Y"
 msgstr "l, j. F Y"
 
+#~ msgid "Line"
+#~ msgstr "Zeile"
