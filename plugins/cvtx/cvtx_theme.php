@@ -67,6 +67,8 @@ function cvtx_aenderungsantraege_action($post_id = false) {
                     <th><strong><?php _e('Author(s)', 'cvtx'); ?></strong></th>
                     <th><strong><?php _e('Text', 'cvtx'); ?></strong></th>
                     <th><strong><?php _e('Explanation', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('Modifications', 'cvtx'); ?></strong></th>
+                    <th><strong><?php _e('Procedure', 'cvtx'); ?></strong></th>
                 </tr>
                 <?php 
                 while($loop->have_posts()):$loop->the_post();?>
@@ -75,6 +77,8 @@ function cvtx_aenderungsantraege_action($post_id = false) {
                     <td class="steller"><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true);?></td>
                     <td class="text"><?php the_content(); ?></td>
                     <td class="grund"><?php print get_post_meta($post->ID,'cvtx_aeantrag_grund',true);?></td>
+                    <td><?php print get_post_meta($post->ID, 'cvtx_aeantrag_detail', true); ?></td>
+                    <td class="verfahren"><?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?></td>
                 </tr>
                 <?php endwhile;?>
             </table>

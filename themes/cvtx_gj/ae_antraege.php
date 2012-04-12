@@ -114,7 +114,7 @@
               <tbody>
               <?php while ($loop3->have_posts()): $loop3->the_post();?>
                 <tr>
-                  <td><p><?php print get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true); ?></p></td>
+                  <td class="zeile"><p><?php the_title(); ?></p></td>
                   <td>
                     <p>
                       <?php if ($show_steller): print get_post_meta($post->ID, 'cvtx_aeantrag_steller', true); ?>

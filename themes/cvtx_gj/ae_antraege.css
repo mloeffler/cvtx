@@ -108,3 +108,7 @@ input {
 p.verfahren {
 	font-weight: bold;
 }
+
+table tr td.zeile {
+	min-width: 120px;
+}
