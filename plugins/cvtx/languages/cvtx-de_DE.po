@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cvtx Agenda Plugin 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-12 10:12+0100\n"
-"PO-Revision-Date: 2012-04-12 10:13+0100\n"
+"POT-Creation-Date: 2012-04-16 08:08+0100\n"
+"PO-Revision-Date: 2012-04-16 08:10+0100\n"
 "Last-Translator: Alexander Fecke <alex@cvtx-project.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgstr "antraege"
 #: ../cvtx.php:126
 #: ../cvtx_admin.php:1441
 #: ../cvtx_theme.php:63
-#: ../cvtx_theme.php:236
+#: ../cvtx_theme.php:252
 #: ../cvtx_widgets.php:230
 msgid "Amendments"
 msgstr "Änderungsanträge"
@@ -483,8 +483,8 @@ msgstr "Keine TOPs erstellt"
 #: ../cvtx_admin.php:518
 #: ../cvtx_theme.php:17
 #: ../cvtx_theme.php:67
-#: ../cvtx_theme.php:207
-#: ../cvtx_theme.php:241
+#: ../cvtx_theme.php:223
+#: ../cvtx_theme.php:257
 #: ../latex/single-cvtx_aeantrag.php:41
 #: ../latex/single-cvtx_aeantrag.php:63
 #: ../latex/single-cvtx_antrag.php:39
@@ -582,7 +582,7 @@ msgstr "TOP"
 #: ../cvtx_admin.php:574
 #: ../cvtx_admin.php:596
 #: ../cvtx_admin.php:611
-#: ../cvtx_theme.php:114
+#: ../cvtx_theme.php:130
 msgid "Download"
 msgstr "Download"
 
@@ -595,7 +595,7 @@ msgid "Metadata"
 msgstr "Metainformationen"
 
 #: ../cvtx_admin.php:14
-#: ../cvtx_theme.php:154
+#: ../cvtx_theme.php:170
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -625,7 +625,7 @@ msgstr "Readerzuordnung"
 #: ../cvtx_admin.php:44
 #: ../cvtx_admin.php:307
 #: ../cvtx_admin.php:519
-#: ../cvtx_theme.php:71
+#: ../cvtx_theme.php:70
 #: ../latex/single-cvtx_reader_table.php:98
 msgid "Procedure"
 msgstr "Verfahren"
@@ -723,6 +723,7 @@ msgid "Mobile phone"
 msgstr "Telefonnummer"
 
 #: ../cvtx_admin.php:308
+#: ../cvtx_theme.php:93
 msgid "Adoption"
 msgstr "Übernahme"
 
@@ -731,14 +732,17 @@ msgid "Modified adoption"
 msgstr "Modifizierte Übernahme"
 
 #: ../cvtx_admin.php:308
+#: ../cvtx_theme.php:95
 msgid "Vote"
 msgstr "Abstimmung"
 
 #: ../cvtx_admin.php:308
+#: ../cvtx_theme.php:96
 msgid "Withdrawn"
 msgstr "Zurückgezogen"
 
 #: ../cvtx_admin.php:308
+#: ../cvtx_theme.php:97
 msgid "Obsolete"
 msgstr "Erledigt"
 
@@ -763,7 +767,7 @@ msgid "Upload application"
 msgstr "Bewerbung hochladen"
 
 #: ../cvtx_admin.php:390
-#: ../cvtx_theme.php:214
+#: ../cvtx_theme.php:230
 msgid "No PDF available."
 msgstr "Kein PDF verfügbar."
 
@@ -1204,25 +1208,25 @@ msgstr "cvtx Antragstool"
 msgid " to "
 msgstr " zu "
 
-#: ../cvtx_theme.php:70
-msgid "Modifications"
-msgstr "Modifikationen"
+#: ../cvtx_theme.php:94
+msgid "modified adoption"
+msgstr "Modifizierte Übernahme"
 
-#: ../cvtx_theme.php:98
+#: ../cvtx_theme.php:114
 #, php-format
 msgid "<h3>Create amendment to %s</h3>"
 msgstr "<h3>Änderungsantrag zu %s erstellen</h3>"
 
-#: ../cvtx_theme.php:129
+#: ../cvtx_theme.php:145
 #, php-format
 msgid "<p><strong>Line:</strong> %1$s</p>"
 msgstr "<p><strong>Zeile:</strong> %1$s</p>"
 
-#: ../cvtx_theme.php:218
+#: ../cvtx_theme.php:234
 msgid "Add amendment"
 msgstr "Änderungsantrag erstellen"
 
-#: ../cvtx_theme.php:230
+#: ../cvtx_theme.php:246
 msgid "Overview"
 msgstr "Änderungsantragsübersicht"
 
@@ -1331,6 +1335,9 @@ msgstr "Stand"
 #: ../latex/single-cvtx_reader_book.php:132
 msgid "Application "
 msgstr "Bewerbung"
+
+#~ msgid "Modifications"
+#~ msgstr "Modifikationen"
 
 #~ msgid "agenda_point_separator"
 #~ msgstr ": "

@@ -33,13 +33,20 @@
 	});
 	$('a.extern').attr('target','_blank');
 	$('body').delegate('a.close','click', function() {
-		$(".ae_antraege_overlay").fadeOut().remove();
+		remove_Overlay();
+		return false;
+	});
+	$('body').delegate('.ae_antraege_overlay', 'click', function() {
+		remove_Overlay();
 		return false;
 	});
 	$('body').delegate('a.print','click', function() {
 		$('#ae_window .result').printElement();
 		return false;
 	});
+	$('body').delegate('#ae_antraege td.verfahren', 'hover', function() {
+        $(this).parent().find('span.procedure').toggle('fast');
+    });
 	$('a.ae_antraege_overview').click(function() {
 		var target = $(this).attr("href");
 		create_Overlay();
@@ -95,6 +102,12 @@ function create_Overlay() {
 	jQuery("#ae_window").append(navi);
 	jQuery("#ae_window").append(result);
 	jQuery(".ae_antraege_overlay").fadeIn();
+	jQuery("body").addClass('overlay');
+}
+
+function remove_Overlay() {
+	jQuery(".ae_antraege_overlay").fadeOut().remove();
+	jQuery('body').removeClass('overlay');
 }
 
 function check_mail(text) {

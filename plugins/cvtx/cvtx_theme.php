@@ -61,24 +61,22 @@ function cvtx_aenderungsantraege_action($post_id = false) {
     if($loop->have_posts()):?>
         <div id="ae_antraege">
             <h3><?php print __('Amendments', 'cvtx'); ?><?php print (isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) ? __(' to ', 'cvtx').cvtx_get_short($post) : ''; ?></h3>
-            <table cellpadding="3" cellspacing="0" valign="top">
+            <table cellpadding="3" cellspacing="0" valign="top" class="ae_antraege_table">
                 <tr>
                     <th><strong><?php _e('Line', 'cvtx'); ?></strong></th>
                     <th><strong><?php _e('Author(s)', 'cvtx'); ?></strong></th>
                     <th><strong><?php _e('Text', 'cvtx'); ?></strong></th>
                     <th><strong><?php _e('Explanation', 'cvtx'); ?></strong></th>
-                    <th><strong><?php _e('Modifications', 'cvtx'); ?></strong></th>
                     <th><strong><?php _e('Procedure', 'cvtx'); ?></strong></th>
                 </tr>
                 <?php 
                 while($loop->have_posts()):$loop->the_post();?>
-                <tr>
+                <tr <?php if(cvtx_map_procedure(get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true)) === 'd') echo ('class="withdrawn"'); ?>>
                     <td class="zeile"><strong><?php print get_post_meta($post->ID,'cvtx_aeantrag_zeile',true); ?></strong></td>
                     <td class="steller"><?php print get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true);?></td>
                     <td class="text"><?php the_content(); ?></td>
                     <td class="grund"><?php print get_post_meta($post->ID,'cvtx_aeantrag_grund',true);?></td>
-                    <td><?php print get_post_meta($post->ID, 'cvtx_aeantrag_detail', true); ?></td>
-                    <td class="verfahren"><?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?></td>
+                    <td class="verfahren"><span class="flag <?php print cvtx_map_procedure(get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true)); ?>"></span><span class="procedure"><span class="arrow"></span><strong><?php print get_post_meta($post->ID, 'cvtx_aeantrag_verfahren', true); ?></strong><?php if(get_post_meta($post->ID, 'cvtx_aeantrag_detail', true)) echo '<p/>'; ?><?php print get_post_meta($post->ID, 'cvtx_aeantrag_detail', true); ?></span></td>
                 </tr>
                 <?php endwhile;?>
             </table>
@@ -86,6 +84,24 @@ function cvtx_aenderungsantraege_action($post_id = false) {
    <?php endif; wp_reset_postdata();
 }
 add_action('cvtx_theme_aenderungsantraege','cvtx_aenderungsantraege_action',10,1);
+
+/**
+ * maps procedures to numbers or the other way around
+ */
+function cvtx_map_procedure($input) {
+    $map = array(
+        'a' => __('Adoption', 'cvtx'),
+        'b' => __('modified adoption', 'cvtx'),
+        'c' => __('Vote', 'cvtx'),
+        'd' => __('Withdrawn', 'cvtx'),
+        'e' => __('Obsolete', 'cvtx')
+    );
+    foreach($map as $key => $value) {
+        if($input === $value) return $key;
+        if($input === $key)   return $value;
+    }
+    return false;
+}
 
 /**
  * themed output for add_aenderungsantraege
