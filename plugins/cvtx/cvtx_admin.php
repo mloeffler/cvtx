@@ -639,6 +639,69 @@ function cvtx_order_lists($vars) {
 }
 
 
+add_filter('posts_search', 'cvtx_posts_search');
+function cvtx_posts_search($search) {
+    global $wpdb, $cvtx_types;
+    
+    if (preg_match('/ AND \(\(\(('.$wpdb->posts.'\.post_title LIKE \'%(.*)%\')\) OR \(('.$wpdb->posts.'\.post_content LIKE \'%(.*)%\')\)\)\)/', $search, $parts) && count($parts) == 5) {
+        $conds   = array($parts[1], $parts[3]);
+        $conds[] = "{$wpdb->posts}.ID IN (SELECT {$wpdb->postmeta}.post_id FROM {$wpdb->postmeta} WHERE {$wpdb->postmeta}.meta_value LIKE '%".$parts[2]."%')";
+        
+        $antrag   = str_replace(array(__('%agenda_point%', 'cvtx'), __('%resolution%', 'cvtx')), '([\w]+)', preg_quote(get_option('cvtx_antrag_format'), '/'));
+        $aeantrag = str_replace(array(__('%resolution%', 'cvtx'), __('%line%', 'cvtx')), array($antrag, '([\w]+)'), preg_quote(get_option('cvtx_aeantrag_format'), '/'));
+        if (preg_match('/'.$aeantrag.'/i', $parts[2], $match)) {
+            $conds[] = "(SELECT {$wpdb->postmeta}.meta_value\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.post_id  = {$wpdb->posts}.ID\n"
+                      ."    AND {$wpdb->postmeta}.meta_key = 'cvtx_aeantrag_zeile'\n"
+                      ."  LIMIT 1) LIKE '".$match[3]."%'\n"
+                      ."    AND\n"
+                      ."(SELECT {$wpdb->postmeta}.meta_value\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.post_id  = {$wpdb->posts}.ID\n"
+                      ."    AND {$wpdb->postmeta}.meta_key = 'cvtx_aeantrag_antrag'\n"
+                      ."  LIMIT 1) = \n"
+                      ."(SELECT {$wpdb->postmeta}.post_id\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.meta_key   = 'cvtx_antrag_ord'\n"
+                      ."    AND {$wpdb->postmeta}.meta_value = '".$match[2]."'\n"
+                      ."    AND {$wpdb->postmeta}.post_id IN\n"
+                      ."                    (SELECT {$wpdb->postmeta}.post_id\n"
+                      ."                       FROM {$wpdb->postmeta}\n"
+                      ."                      WHERE {$wpdb->postmeta}.meta_key   = 'cvtx_antrag_top'\n"
+                      ."                        AND {$wpdb->postmeta}.meta_value = (SELECT {$wpdb->postmeta}.post_id\n"
+                      ."                                                              FROM {$wpdb->postmeta}\n"
+                      ."                                                             WHERE {$wpdb->postmeta}.meta_key   = 'cvtx_top_short'\n"
+                      ."                                                               AND {$wpdb->postmeta}.meta_value = '".$match[1]."'\n"
+                      ."                                                             LIMIT 1))\n"
+                      ."  LIMIT 1)";
+        }
+        
+        if (preg_match('/'.$antrag.'/i', $parts[2], $match)) {
+            $conds[] = "(SELECT meta_value\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.post_id  = {$wpdb->posts}.ID\n"
+                      ."    AND {$wpdb->postmeta}.meta_key = 'cvtx_antrag_ord'\n"
+                      ."  LIMIT 1) LIKE '".$match[2]."%'\n"
+                      ."    AND\n"
+                      ."(SELECT meta_value\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.post_id  = {$wpdb->posts}.ID\n"
+                      ."    AND {$wpdb->postmeta}.meta_key = 'cvtx_antrag_top'\n"
+                      ."  LIMIT 1) =\n"
+                      ."(SELECT post_id\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.meta_key = 'cvtx_top_short'\n"
+                      ."    AND {$wpdb->postmeta}.meta_value = '".$match[1]."'\n"
+                      ."  LIMIT 1)";
+        }
+        
+        $search = " AND ((\n".implode($conds, ")\n\n OR (").")) ";
+    }
+    return $search;
+}
+
+
 if (is_admin()) add_action('admin_menu', 'cvtx_config_page');
 function cvtx_config_page() {
     if (function_exists('add_submenu_page')) {
