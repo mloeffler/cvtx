@@ -191,7 +191,7 @@ div.filler {
 }
 
 #ae_window {
-    position: absolute;
+    position: relative;
     left:50px;
     background: white;
     z-index: 1000;
@@ -211,8 +211,13 @@ div.filler {
 }
 
 #ae_window .result {
+    position: relative;
     padding:15px;
     overflow: auto;
+}
+
+#ae_window td.verfahren {
+	width: 75px;
 }
 
 span.replace {
