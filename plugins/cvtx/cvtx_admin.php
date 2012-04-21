@@ -693,7 +693,33 @@ function cvtx_posts_search($search) {
                       ."   FROM {$wpdb->postmeta}\n"
                       ."  WHERE {$wpdb->postmeta}.meta_key = 'cvtx_top_short'\n"
                       ."    AND {$wpdb->postmeta}.meta_value = '".$match[1]."'\n"
-                      ."  LIMIT 1)";
+                      ."  LIMIT 1)\n"
+                      ."    AND {$wpdb->posts}.post_type = 'cvtx_antrag'\n";
+            $conds[] = "(SELECT meta_value\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.post_id  = (SELECT meta_value\n"
+                      ."                                        FROM {$wpdb->postmeta}\n"
+                      ."                                       WHERE {$wpdb->postmeta}.post_id  = {$wpdb->posts}.ID\n"
+                      ."                                         AND {$wpdb->postmeta}.meta_key = 'cvtx_aeantrag_antrag'\n"
+                      ."                                       LIMIT 1)\n"
+                      ."    AND {$wpdb->postmeta}.meta_key = 'cvtx_antrag_ord'\n"
+                      ."  LIMIT 1) LIKE '".$match[2]."%'\n"
+                      ."    AND\n"
+                      ."(SELECT meta_value\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.post_id  = (SELECT meta_value\n"
+                      ."                                        FROM {$wpdb->postmeta}\n"
+                      ."                                       WHERE {$wpdb->postmeta}.post_id  = {$wpdb->posts}.ID\n"
+                      ."                                         AND {$wpdb->postmeta}.meta_key = 'cvtx_aeantrag_antrag'\n"
+                      ."                                       LIMIT 1)\n"
+                      ."    AND {$wpdb->postmeta}.meta_key = 'cvtx_antrag_top'\n"
+                      ."  LIMIT 1) =\n"
+                      ."(SELECT post_id\n"
+                      ."   FROM {$wpdb->postmeta}\n"
+                      ."  WHERE {$wpdb->postmeta}.meta_key = 'cvtx_top_short'\n"
+                      ."    AND {$wpdb->postmeta}.meta_value = '".$match[1]."'\n"
+                      ."  LIMIT 1)\n"
+                      ."    AND {$wpdb->posts}.post_type = 'cvtx_aeantrag'\n";
         }
         
         $search = " AND ((\n".implode($conds, ")\n\n OR (").")) ";

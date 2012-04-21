@@ -60,7 +60,6 @@ $cvtx_types = array('cvtx_reader'   => array('cvtx_reader_style'),
                  'cvtx_application' => array('cvtx_application_ord',
                                              'cvtx_sort',
                                              'cvtx_application_top',
-                                             'cvtx_application_file_id',
                                              'cvtx_application_email',
                                              'cvtx_application_phone'));
 
@@ -337,11 +336,22 @@ function cvtx_insert_post($post_id, $post = null) {
         // Update/insert top
         if ($post->post_type == 'cvtx_top') {
             // get globally sortable string
-            $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_top', get_post_meta($post_id, 'cvtx_top_ord', true));
+            $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_top', (isset($_POST['cvtx_top_ord']) ? $_POST['cvtx_top_ord'] : ''));
             
-            // check wheater antraege and applications may be added to this top or not
-            $_POST['cvtx_top_antraege']     = (isset($_POST['cvtx_top_antraege'])     ? $_POST['cvtx_top_antraege']     : 'off');
-            $_POST['cvtx_top_applications'] = (isset($_POST['cvtx_top_applications']) ? $_POST['cvtx_top_applications'] : 'off');
+            // check whether antraege and applications may be added to this top or not
+            if (!isset($_POST['cvtx_top_antraege'])) {
+                $cvtx_top_antraege = get_post_meta($post_id, 'cvtx_top_antraege', true);
+                $_POST['cvtx_top_antraege'] = (is_string($cvtx_top_antraege) && !empty($cvtx_top_antraege) ? $cvtx_top_antraege : 'off');
+            }
+            if (!isset($_POST['cvtx_top_applications'])) {
+                $cvtx_top_applications = get_post_meta($post_id, 'cvtx_top_applications', true);
+                $_POST['cvtx_top_applications'] = (is_string($cvtx_top_applications) && !empty($cvtx_top_applications) ? $cvtx_top_applications : 'off');
+            }
+            // check whether or not the top is display as appendix
+            if (!isset($_POST['cvtx_top_appendix'])) {
+                $cvtx_top_appendix = get_post_meta($post_id, 'cvtx_top_appendix', true);
+                $_POST['cvtx_top_appendix'] = (is_string($cvtx_top_appendix) && !empty($cvtx_top_appendix) ? $cvtx_top_appendix : 'off');
+            }
         }
         // Update/insert antrag
         else if ($post->post_type == 'cvtx_antrag' && isset($_POST['cvtx_antrag_top'])) {
@@ -393,7 +403,7 @@ function cvtx_insert_post($post_id, $post = null) {
             $terms = explode(', ', get_option('cvtx_default_reader_aeantrag'));
         }
         // Update/insert reader taxonomy
-        else if ($post->post_type == 'cvtx_reader') {
+        else if ($post->post_type == 'cvtx_reader' & isset($_POST['cvtx_post_ids'])) {
             // Add term if new reader is created
             if (!term_exists('cvtx_reader_'.$post_id, 'cvtx_tax_reader')) {
                 wp_insert_term('cvtx_reader_'.$post_id, 'cvtx_tax_reader');
@@ -539,27 +549,29 @@ function cvtx_insert_post($post_id, $post = null) {
             
         // Loop through the POST data
         foreach ($cvtx_types[$post->post_type] as $key) {
-            // save data
-            $value = @$_POST[$key];
-            if (empty($value)) {
-                delete_post_meta($post_id, $key);
-                continue;
-            }
-
-            // If value is a string it should be unique
-            if (!is_array($value)) {
-                // Update meta
-                if (!update_post_meta($post_id, $key, $value)) {
-                    // Or add the meta data
-                    add_post_meta($post_id, $key, $value);
+            if (isset($_POST[$key])) {
+                // save data
+                $value = @$_POST[$key];
+                if (empty($value)) {
+                    delete_post_meta($post_id, $key);
+                    continue;
                 }
-            } else {
-                // If passed along is an array, we should remove all previous data
-                delete_post_meta($post_id, $key);
-                
-                // Loop through the array adding new values to the post meta as different entries with the same name
-                foreach ($value as $entry)
-                    add_post_meta($post_id, $key, $entry);
+    
+                // If value is a string it should be unique
+                if (!is_array($value)) {
+                    // Update meta
+                    if (!update_post_meta($post_id, $key, $value)) {
+                        // Or add the meta data
+                        add_post_meta($post_id, $key, $value);
+                    }
+                } else {
+                    // If passed along is an array, we should remove all previous data
+                    delete_post_meta($post_id, $key);
+                    
+                    // Loop through the array adding new values to the post meta as different entries with the same name
+                    foreach ($value as $entry)
+                        add_post_meta($post_id, $key, $entry);
+                }
             }
         }
         
