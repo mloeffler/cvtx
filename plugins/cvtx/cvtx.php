@@ -395,7 +395,7 @@ function cvtx_insert_post($post_id, $post = null) {
             // generate short antragsteller if field is empty
             if (!isset($_POST['cvtx_aeantrag_steller_short']) || empty($_POST['cvtx_aeantrag_steller_short'])) {
                 $parts = preg_split('/[,;\(\n]+/', $_POST['cvtx_aeantrag_steller'], 2);
-                if (count($parts) == 2) $_POST['cvtx_aeantrag_steller_short'] = trim($parts[0]).' u.a.';
+                if (count($parts) == 2) $_POST['cvtx_aeantrag_steller_short'] = trim($parts[0]).' '.__('et al.', 'cvtx');
                 else                    $_POST['cvtx_aeantrag_steller_short'] = $_POST['cvtx_aeantrag_steller'];
             }
         
