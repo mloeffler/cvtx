@@ -33,13 +33,20 @@
 	});
 	$('a.extern').attr('target','_blank');
 	$('body').delegate('a.close','click', function() {
-		$(".ae_antraege_overlay").fadeOut().remove();
+		remove_Overlay();
+		return false;
+	});
+	$('body').delegate('.ae_antraege_overlay', 'click', function() {
+		remove_Overlay();
 		return false;
 	});
 	$('body').delegate('a.print','click', function() {
 		$('#ae_window .result').printElement();
 		return false;
 	});
+	$('body').delegate('#ae_antraege td.verfahren', 'hover', function() {
+        $(this).parent().find('span.procedure').toggle('fast');
+    });
 	$('a.ae_antraege_overview').click(function() {
 		var target = $(this).attr("href");
 		create_Overlay();
@@ -81,20 +88,30 @@ function create_Overlay() {
 	var height = jQuery(document).height();
 	var width = jQuery(document).width();
 	var rheight = jQuery(window).height()-100;
-	var r2height = rheight-65;
-	var r2width = rwidth-65;
 	var rwidth = width-100;
+	var r2height = rheight-65;
 	var scroll = getPageScroll();
 	var top = scroll[1]+35;
-	var output = '<div class="ae_antraege_overlay" style="width:'+width+'px;height:'+height+'px;z-index:10090;display:none">'+
+	var output = '<div class="ae_antraege_overlay" style="width:'+width+'px;height:'+height+'px;z-index:100;display:none">'+
 				 '<div id="ae_window" style="width:'+rwidth+'px;height:'+rheight+'px;top:'+top+'px">'+
 				 '</div></div>';
 	jQuery("body").append(output);
 	var navi = '<div class="navi"><span class="replace"><a href="#" class="close">Close</a><a href="#" class="print">Print</a></span></div>';
-	var result = '<div class="result" style="height:'+r2height+'px;width:'+r2width+'px"></div>';
+	var result = '<div class="result" style="height:'+r2height+'px;"></div>';
 	jQuery("#ae_window").append(navi);
 	jQuery("#ae_window").append(result);
 	jQuery(".ae_antraege_overlay").fadeIn();
+	jQuery("body").addClass('overlay');
+	jQuery('body').keydown(function(event) {
+		if(event.keyCode == 27) {
+			remove_Overlay();
+		}
+	});
+}
+
+function remove_Overlay() {
+	jQuery(".ae_antraege_overlay").fadeOut().remove();
+	jQuery('body').removeClass('overlay');
 }
 
 function check_mail(text) {

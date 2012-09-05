@@ -211,9 +211,9 @@ div.filler {
 }
 
 #ae_window .result {
-    position: relative;
-    padding:15px;
+    padding: 5px 15px;
     overflow: auto;
+    position: relative;
 }
 
 #ae_window td.verfahren {
@@ -538,8 +538,9 @@ ul#antraege li.top div.top_content ul.ae_antraege {
 	width: 150px;
 	padding: 10px;
 	position: absolute;
-	margin-left: -75px;
-	margin-top: 10px;
+	z-index: 110;
+	margin-left: -180px;
+	margin-top: -15px;
 }
 
 #ae_antraege td.verfahren span.procedure p {
@@ -548,11 +549,11 @@ ul#antraege li.top div.top_content ul.ae_antraege {
 
 #ae_antraege td.verfahren span.procedure span.arrow {
 	display: block;
-	height: 5px;
-	width: 10px;
+	height: 10px;
+	width: 5px;
 	position: absolute;
-	margin-top: -15px;
-	margin-left: 65px;
+	margin-top: 0px;
+	margin-left: 160px;
 	background: url(images/procedure_up.png) no-repeat;
 }
 

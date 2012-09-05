@@ -784,6 +784,10 @@ function cvtx_conf() {
             update_option('cvtx_anon_user', intval($_POST['cvtx_anon_user']));
         }
         
+        if(isset($_POST['cvtx_privacy_message'])) {
+        	update_option('cvtx_privacy_message', $_POST['cvtx_privacy_message']);
+        }
+        
         // recpatcha settings
         $use_recaptcha = isset($_POST['cvtx_use_recaptcha']) && $_POST['cvtx_use_recaptcha'];
         update_option('cvtx_use_recaptcha',        $use_recaptcha);
@@ -844,6 +848,7 @@ function cvtx_conf() {
     $default_reader_aeantrag    = get_option('cvtx_default_reader_aeantrag');
     $default_reader_application = get_option('cvtx_default_reader_application');
     $reader = cvtx_get_reader();
+    $cvtx_privacy_message 		= get_option('cvtx_privacy_message');
 
     // mail settings
     $cvtx_send_html_mail = get_option('cvtx_send_html_mail');
@@ -1088,6 +1093,20 @@ function cvtx_conf() {
                     echo('</select> ');
                 echo('</td>');
             echo('</tr>');
+        echo('</table>');
+        
+        echo('<h4>'.__('Miscellaneous').'</h4>');
+        
+        echo('<table class="form-table">');
+        	echo('<tr valign="top">');
+        		echo('<th scope="row">');
+        			echo('<label for="cvtx_privacy_message">'.__('Privacy message to be shown below e-mail and phone form fields').'</label>');
+        		echo('</th>');
+        		echo('<td>');
+        			echo('<textarea id="cvtx_privacy_message" cols="40" rows="5"
+        				  name="cvtx_privacy_message">'.$cvtx_privacy_message.'</textarea>');
+        		echo('</td>');
+        	echo('</tr>');
         echo('</table>');
         
     echo('</li>');

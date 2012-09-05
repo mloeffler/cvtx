@@ -1463,6 +1463,12 @@ function cvtx_create_antrag_form($cvtx_antrag_top   = 0,  $cvtx_antrag_title = '
     $output .= '<label for="cvtx_antrag_phone">'.__('Mobile number', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
     $output .= '<input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" class="required" value="'.$cvtx_antrag_phone.'" size="70" /><br/>';
     $output .= '</div>';
+    
+    $cvtx_privacy_message = get_option('cvtx_privacy_message');
+    if(!empty($cvtx_privacy_message)) {
+    	$output .= '<p><small>'.$cvtx_privacy_message.'</small></p>';
+    }
+
     $output .= '</div>';
         
     // Antragstext
@@ -1611,6 +1617,11 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
     $output .= '<label for="cvtx_aeantrag_phone">'.__('mobile number', 'cvtx').': <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')<br/>';
     $output .= '<input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" class="required" value="'.$cvtx_aeantrag_phone.'" size="80" /><br/>';
     $output .= '</div>';
+    
+    $cvtx_privacy_message = get_option('cvtx_privacy_message');
+    if(!empty($cvtx_privacy_message)) {
+    	$output .= '<p><small>'.$cvtx_privacy_message.'</small></p>';
+    }
     $output .= '</div>';
     
     // Antrag

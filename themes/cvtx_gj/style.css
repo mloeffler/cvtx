@@ -18,6 +18,10 @@ body {
 	padding:0;
 }
 
+body.overlay {
+	overflow-y: hidden;
+}
+
 /**
  * Structure
  */
@@ -291,8 +295,9 @@ div.filler {
 }
 
 #ae_window .result {
-    padding:15px;
+    padding: 5px 15px;
     overflow: auto;
+    position: relative;
 }
 
 span.replace {
@@ -522,6 +527,61 @@ ul#antraege li.top ul li.antrag ul.ae_antraege {
     border-bottom: 2px solid #faa619;
     padding-bottom:5px;
     padding-right:10px;
+}
+
+#ae_antraege td.verfahren span.procedure {
+	display: none;
+	background: white;
+	border: 1px solid #ffe500;
+	border-radius: 3px;
+	width: 150px;
+	padding: 10px;
+	position: absolute;
+	z-index: 110;
+	margin-left: -180px;
+	margin-top: -15px;
+}
+
+#ae_antraege td.verfahren span.procedure p {
+	margin-top: 1em;
+}
+
+#ae_antraege td.verfahren span.procedure span.arrow {
+	display: block;
+	height: 10px;
+	width: 5px;
+	position: absolute;
+	margin-top: 0px;
+	margin-left: 160px;
+	background: url(images/procedure_up.png) no-repeat;
+}
+
+#ae_antraege td.verfahren span.flag {
+	display: block;
+	height: 10px;
+	width: 10px;
+	background-color: #afafaf;
+	border-radius: 10px;
+}
+
+#ae_antraege td.verfahren span.flag.a {
+	background-color: green;
+}
+
+#ae_antraege td.verfahren span.flag.b {
+	background-color: #ff9900;
+}
+
+#ae_antraege td.verfahren span.flag.c {
+	background-color: red;
+}
+
+#ae_antraege tr.withdrawn {
+	color: #afafaf;
+}
+
+#ae_antraege tr.withdrawn td.verfahren {
+	color: black;
 }
 
 .form-required {
