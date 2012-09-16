@@ -47,7 +47,7 @@ function cvtx_get_latex($out) {
                          'replace' => array('\begin{enumerate}', '\end{enumerate}')),
                    array('search'  => array('<li>', '</li>'),
                          'replace' => array('\item ', '')),
-                   array('search'  => '</p><p>',
+                   array('search'  => '</p>',
                          'replace' => "\n"),
                    array('search'  => '/<br[ ]*[\/]?>/',
                          'replace' => "\n",
