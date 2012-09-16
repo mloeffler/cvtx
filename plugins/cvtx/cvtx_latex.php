@@ -7,6 +7,15 @@
  * @return formatted output
  */
 function cvtx_get_latex($out) {
+    // purify code using HTMLPurifier-plugin
+    if (class_exists('HTMLPurifier') && class_exists('HTMLPurifier_Config')) {
+        $config = HTMLPurifier_Config::createDefault();
+        $config->set('HTML.Allowed', 'strong,b,em,i,h3,h4,ul,ol,li,br,p');
+        $config->set('HTML.Doctype', 'XHTML 1.1');
+        $purifier = new HTMLPurifier($config);
+        $out = $purifier->purify($out);
+    }
+    
     // strip html entities
 //    $out = html_entity_decode($out);
     $out = str_replace('&nbsp;', ' ', $out);
@@ -38,6 +47,8 @@ function cvtx_get_latex($out) {
                          'replace' => array('\begin{enumerate}', '\end{enumerate}')),
                    array('search'  => array('<li>', '</li>'),
                          'replace' => array('\item ', '')),
+                   array('search'  => '</p><p>',
+                         'replace' => "\n"),
                    array('search'  => '/<br[ ]*[\/]?>/',
                          'replace' => "\n",
                          'mode'    => 'preg'));
