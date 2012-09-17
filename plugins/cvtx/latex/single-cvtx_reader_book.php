@@ -14,6 +14,8 @@
 \usepackage{calc}
 \usepackage{pdfpages}
 \usepackage{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage[right]{eurosym}
 
 \sloppy
 

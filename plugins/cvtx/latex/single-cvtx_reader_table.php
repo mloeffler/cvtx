@@ -13,6 +13,8 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{scrpage2}
+\usepackage[normalem]{ulem}
+\usepackage[right]{eurosym}
 \usepackage{hyperref}
 \usepackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm,includehead,includefoot]{geometry}
 

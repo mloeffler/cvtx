@@ -10,22 +10,23 @@ function cvtx_get_latex($out) {
     // purify code using HTMLPurifier-plugin
     if (class_exists('HTMLPurifier') && class_exists('HTMLPurifier_Config')) {
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Allowed', 'strong,b,em,i,h3,h4,ul,ol,li,br,p');
+        $config->set('HTML.Allowed', 'strong,b,em,i,h3,h4,ul,ol,li,br,p,del,ins,span[style],code');
         $config->set('HTML.Doctype', 'XHTML 1.1');
         $purifier = new HTMLPurifier($config);
         $out = $purifier->purify($out);
     }
     
     // strip html entities
-//    $out = html_entity_decode($out);
-    $out = str_replace('&nbsp;', ' ', $out);
-    $out = str_replace('&amp;', '&', $out);
+    $out = html_entity_decode($out);
+//    if (strpos($out, 'Benannte Zeichen für diverse Symbole')) die($out);
+/*    $out = str_replace(array('&nbsp;', '&amp;', '&#8211;', '&ndash;', '&mdash;', '&#8212;'),
+                       array(' ', '&', '–', '–', '—', '—'), $out);*/
     
     // recode special chars
     $tmp = time().'\\textbackslash'.rand();
     $out = str_replace('\\', $tmp, $out);
-    $out = str_replace(array('$', '%', '_', '{', '}', '&', '#', '–'),
-                       array('\\$', '\\%', '\\_', '\\{', '\\}', '\\&', '\\#', '--'), $out);
+    $out = str_replace(array('$', '%', '_', '{', '}', '&', '#', '–', '€'),
+                       array('\\$', '\\%', '\\_', '\\{', '\\}', '\\&', '\\#', '--', '{\euro}'), $out);
     $out = str_replace($tmp, '{\\textbackslash}', $out);
     
     // recode formatting rules
@@ -33,10 +34,20 @@ function cvtx_get_latex($out) {
                          'replace' => array('\textbf{', '}')),
                    array('search'  => array('<b>', '</b>'),
                          'replace' => array('\textbf{', '}')),
+                   array('search'  => array('<del>', '</del>'),
+                         'replace' => array('\sout{', '}')),
+                   array('search'  => array('<span style="text-decoration: line-through;">', '</span>'),
+                         'replace' => array('\sout{', '}')),
+                   array('search'  => array('<ins>', '</ins>'),
+                         'replace' => array('\uline{', '}')),
+                   array('search'  => array('<span style="text-decoration: underline;">', '</span>'),
+                         'replace' => array('\uline{', '}')),
                    array('search'  => array('<em>', '</em>'),
                          'replace' => array('\textit{', '}')),
                    array('search'  => array('<i>', '</i>'),
                          'replace' => array('\textit{', '}')),
+                   array('search'  => array('<code>', '</code>'),
+                         'replace' => array('\begin{verbatim}', '\end{verbatim}')),
                    array('search'  => array('<h3>', '</h3>'),
                          'replace' => array('\subsection*{', '}')),
                    array('search'  => array('<h4>', '</h4>'),
@@ -66,7 +77,7 @@ function cvtx_get_latex($out) {
     $out = trim($out);
     
     // add new lines
-    $out = preg_replace("/[\r\n]+/", "\\par\n", $out);
+    $out = preg_replace("/[\r\n]+/", "\n\n", $out);
 #    $out = str_replace("\r\n", "\n", $out);
 #    $out = str_replace("\n", "\\par\n", $out);
     

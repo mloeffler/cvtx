@@ -11,6 +11,8 @@
 \usepackage{lineno}
 \usepackage{tabularx}
 \usepackage{scrpage2}
+\usepackage[normalem]{ulem}
+\usepackage[right]{eurosym}
 
 \sloppy
 
