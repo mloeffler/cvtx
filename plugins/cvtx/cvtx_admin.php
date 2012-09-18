@@ -787,13 +787,7 @@ function cvtx_conf() {
         if(isset($_POST['cvtx_privacy_message'])) {
         	update_option('cvtx_privacy_message', $_POST['cvtx_privacy_message']);
         }
-        
-        // recpatcha settings
-        $use_recaptcha = isset($_POST['cvtx_use_recaptcha']) && $_POST['cvtx_use_recaptcha'];
-        update_option('cvtx_use_recaptcha',        $use_recaptcha);
-        update_option('cvtx_recaptcha_publickey',  $_POST['cvtx_recaptcha_publickey']);
-        update_option('cvtx_recaptcha_privatekey', $_POST['cvtx_recaptcha_privatekey']);
-        
+                
         // mail settings
         $send_html_mail             = isset($_POST['cvtx_send_html_mail'])
                                          && $_POST['cvtx_send_html_mail'];
@@ -953,12 +947,7 @@ function cvtx_conf() {
                                                                           __('%text%', 'cvtx'),
                                                                           __('%explanation%', 'cvtx'),
                                                                           home_url('/wp-admin'));
-    
-    // reCaptcha settings
-    $use_recpatcha        = get_option('cvtx_use_recaptcha');
-    $recaptcha_publickey  = get_option('cvtx_recaptcha_publickey');
-    $recaptcha_privatekey = get_option('cvtx_recaptcha_privatekey');
-    
+        
     // latex settings
     $pdflatex_cmd     = get_option('cvtx_pdflatex_cmd');
     $drop_texfile     = get_option('cvtx_drop_texfile');
@@ -977,7 +966,6 @@ function cvtx_conf() {
     echo('<h2 class="nav-tab-wrapper" id="cvtx_navi">');
         echo('<a class="nav-tab cvtx_tool" href="#cvtx_tool">'.__('Agenda Plugin', 'cvtx').'</a>');
         echo('<a class="nav-tab cvtx_mail" href="#cvtx_mail">'.__('Notifications', 'cvtx').'</a>');
-        echo('<a class="nav-tab cvtx_recaptcha" href="#cvtx_recaptcha">'.__('Spam Filter', 'cvtx').'</a>');
         echo('<a class="nav-tab cvtx_latex" href="#cvtx_latex">'.__('LaTeX', 'cvtx').'</a>');
     echo('</h2>');
     
@@ -1297,42 +1285,6 @@ function cvtx_conf() {
                         .' name="cvtx_send_create_aeantrag_admin_body">'.$sendaeantragadmin_body.'</textarea>');
                 echo('</td>');
             echo('</tr>');
-        echo('</table>');
-        
-    echo('</li>');
-    
-    echo('<li id="cvtx_recaptcha">');
-        
-        echo('<table class="form-table">');
-            echo('<tr valign="top">');
-                echo('<th scope="row">');
-                    echo('<label for="cvtx_use_recaptcha">'.__('Enable spam filter', 'cvtx').'</label>');
-                echo('</th>');
-                   echo('<td>');
-                    echo('<input id="cvtx_use_recaptcha" name="cvtx_use_recaptcha"'
-                        .' type="checkbox" '.($use_recpatcha ? 'checked="checked"' : ''). '" /> ');
-                    echo('<span class="description">'.__('The use of reCaptcha is highly recommended to avoid spam.', 'cvtx').'</span>');
-                echo('</td>');
-            echo('</tr>');
-            
-               echo('<tr valign="top">');
-                   echo('<th scope="row">');
-                       echo('<label for="cvtx_recaptcha_publickey">'.__('Public reCaptcha key', 'cvtx').'</label>');
-                   echo('</th>');
-                   echo('<td>');
-                       echo('<input id="cvtx_recaptcha_publickey" name="cvtx_recaptcha_publickey" type="text" value="'.$recaptcha_publickey.'" /> ');
-                       echo('<span class="description">'.__('<a href="http://www.google.com/recaptcha/whyrecaptcha">Create key pairs</a>.', 'cvtx').'</span>');
-                   echo('</td>');
-               echo('</tr>');
-
-               echo('<tr valign="top">');
-                   echo('<th scope="row">');
-                       echo('<label for="cvtx_recaptcha_privatekey">'.__('Private reCaptcha key', 'cvtx').'</label>');
-                   echo('</th>');
-                   echo('<td>');
-                       echo('<input id="cvtx_recaptcha_privatekey" name="cvtx_recaptcha_privatekey" type="text" value="'.$recaptcha_privatekey.'" /> ');
-                   echo('</td>');
-               echo('</tr>');
         echo('</table>');
         
     echo('</li>');

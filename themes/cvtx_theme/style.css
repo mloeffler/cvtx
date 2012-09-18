@@ -552,7 +552,7 @@ ul#antraege li.top div.top_content ul.ae_antraege {
 	height: 10px;
 	width: 5px;
 	position: absolute;
-	margin-top: 0px;
+	margin-top: -6px;
 	margin-left: 160px;
 	background: url(images/procedure_up.png) no-repeat;
 }

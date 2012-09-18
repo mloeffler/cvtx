@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Returns latex formatted output
  *

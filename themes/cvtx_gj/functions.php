@@ -36,6 +36,12 @@ function cvtxtheme_script() {
     wp_enqueue_script('print_element');
 }
 
+add_action('wp_head', 'js_header');
+
+function js_header() {
+	wp_enqueue_script('tiny_mce');
+}
+
 /**
  * Register menu-regions for cvtx_theme
  *
