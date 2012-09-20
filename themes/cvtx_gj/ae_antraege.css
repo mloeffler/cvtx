@@ -13,7 +13,8 @@ body {
 }
 
 #header {
-	background-color: #037f09;
+	background-color: #037f09 !important;
+	background-image: none !important;
 	margin-bottom: 1em;
 	-webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.4);
 	-moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.4);

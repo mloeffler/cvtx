@@ -210,6 +210,9 @@ function cvtx_init() {
                             'rewrite'      => false));
 }
 
+/**
+ * Checks if the plugins HTML-Purified and WP-reCAPTCHA are installed
+ */
 function cvtx_admin_notices(){
 	$plugins = array();
 	if(!is_plugin_active('html-purified/html-purified.php'))
@@ -228,6 +231,16 @@ function cvtx_admin_notices(){
 	}	
 }
 if(is_admin()) add_action('admin_notices', 'cvtx_admin_notices');
+
+// Add settings link on plugin page
+function cvtx_settings_link($links) { 
+  $settings_link = '<a href="plugins.php?page=cvtx-config.php">Settings</a>'; 
+  array_unshift($links, $settings_link); 
+  return $links; 
+}
+ 
+$plugin = plugin_basename(__FILE__); 
+add_filter("plugin_action_links_$plugin", 'cvtx_settings_link');
 
 if (is_admin()) add_action('before_delete_post', 'cvtx_before_delete_post');
 /**
