@@ -1088,7 +1088,7 @@ function cvtx_conf() {
     // print config page
     echo('<div class="wrap">');
     echo('<div id="icon-options-general" class="icon32"><br /></div>');
-    echo('<h2>cvtx '.__('Settings').'</h2>');
+    echo('<h2>cvtx '.__('Settings', 'cvtx').'</h2>');
 
     echo('<h2 class="nav-tab-wrapper" id="cvtx_navi">');
         echo('<a class="nav-tab cvtx_tool" href="#cvtx_tool">'.__('Agenda Plugin', 'cvtx').'</a>');
@@ -1658,7 +1658,7 @@ function cvtx_admin_bar_render(){
     $wp_admin_bar->add_menu(array(
         'parent' => 'cvtx',
         'id'     => 'cvtx_config',
-        'title'  => __('Settings'),
+        'title'  => __('Settings', 'cvtx'),
         'href'   => home_url('/wp-admin/plugins.php?page=cvtx-config'),
         'meta'   => array('class' => 'cvtx')
     ));

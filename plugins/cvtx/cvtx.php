@@ -15,7 +15,7 @@ License: GPLv2 or later
 
 // DEBUG
 require_once(ABSPATH.'wp-includes/pluggable.php');
-include_once(ABSPATH.'wp-admin/includes/plugin.php');
+require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
 define('CVTX_VERSION', '0.1');
 define('CVTX_PLUGIN_FILE', plugin_basename(__FILE__));
