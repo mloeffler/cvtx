@@ -639,6 +639,132 @@ function cvtx_order_lists($vars) {
 }
 
 
+if (is_admin()) add_action('admin_notices', 'cvtx_admin_notices');
+/**
+ * Checks if the plugins HTML-Purified and WP-reCAPTCHA are installed
+ */
+function cvtx_admin_notices() {
+    $plugins = array();
+    
+    // Check for HTML Purified
+    if (!is_plugin_active('html-purified/html-purified.php')) {
+        $plugins[0] = '<a href="http://wordpress.org/extend/plugins/html-purified/">HTML Purified</a>';
+    }
+    // Check for WP-reCaptcha
+	if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
+        $plugins[1] = '<a href="http://wordpress.org/extend/plugins/wp-recaptcha/">WP-reCAPTCHA</a>';
+    }
+    
+    // Plugins missing?
+    if (!empty($plugins)) {
+        echo('<div class="updated">');
+        echo('<p><b>'.__('To unleash the full power of cvtx Agenda Plugin, we recommend you to install and activate the following plugin(s):', 'cvtx').'</b>');
+        echo('<ul style="list-style: disc; padding-left: 20px; margin-top: 0px;">');
+        foreach ($plugins as $plugin) {
+            echo('<li>'.$plugin.'</li>');
+        }
+        echo('</ul></div>');
+    }
+}
+
+
+add_filter('plugin_action_links_'.CVTX_PLUGIN_FILE, 'cvtx_settings_link');
+/**
+ * Add settings link on plugin page
+ */
+function cvtx_settings_link($links) { 
+    $settings_link = '<a href="plugins.php?page=cvtx-config.php">'.__('Settings', 'cvtx').'</a>'; 
+    array_unshift($links, $settings_link); 
+    return $links; 
+}
+
+
+if (is_admin()) add_action('before_delete_post', 'cvtx_before_delete_post');
+/**
+ * Removes all latex files if custom post type is deleted. // buggy
+ *
+ * @todo drop cvtx_aeantraege when cvtx_antrag deleted? drop cvtx_antrag when cvtx_top deleted?
+ */
+function cvtx_before_delete_post($post_id) {
+    $post = get_post($post_id);
+    
+    if (is_object($post)) {
+        if ($post->post_type == 'cvtx_reader') {
+            wp_delete_term('cvtx_reader_'.$post->ID, 'cvtx_tax_reader');
+        } else if ($post->post_type == 'cvtx_top') {
+            $query = new WP_Query(array('post_type'  => 'cvtx_antrag',
+                                        'nopaging'   => true,
+                                        'meta_query' => array(array('key'     => 'cvtx_antrag_top',
+                                                                    'value'   => $post->ID,
+                                                                    'compare' => '='))));
+        } else if ($post->post_type == 'cvtx_antrag') {
+            $query = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
+                                        'nopaging'   => true,
+                                        'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                                    'value'   => $post->ID,
+                                                                    'compare' => '='))));
+        }
+        
+        if (isset($query) && $query != null && $query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                wp_delete_post(get_the_ID(), true);
+            }
+        }
+        
+        if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'
+         || $post->post_type == 'cvtx_reader' || $post->post_type == 'cvtx_application') {
+            $query2 = new WP_Query(array('post_type'   => 'attachment',
+                                         'post_status' => 'any',
+                                         'nopaging'    => true,
+                                         'post_parent' => $post->ID));
+            while ($query2->have_posts()) {
+                $query2->the_post();
+                wp_delete_attachment(get_the_ID(), true);
+            }
+        }
+    }
+}
+
+
+if (is_admin()) add_action('wp_trash_post', 'cvtx_trash_post');
+/**
+ * Moves all child data to the trash.
+ */
+function cvtx_trash_post($post_id) {
+    $post = get_post($post_id);
+
+    if (is_object($post)) {
+        if ($post->post_type == 'cvtx_top') {
+            $query = new WP_Query(array('post_type'   => array('cvtx_antrag', 'cvtx_application'),
+                                        'post_status' => 'any',
+                                        'nopaging'    => true,
+                                        'meta_query'  => array('relation' => 'OR',
+                                                               array('key'     => 'cvtx_antrag_top',
+                                                                     'value'   => $post->ID,
+                                                                     'compare' => '='),
+                                                               array('key'     => 'cvtx_application_top',
+                                                                     'value'   => $post->ID,
+                                                                     'compare' => '='))));
+        } else if ($post->post_type == 'cvtx_antrag') {
+            $query = new WP_Query(array('post_type'   => 'cvtx_aeantrag',
+                                        'post_status' => 'any',
+                                        'nopaging'    => true,
+                                        'meta_query'  => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                                     'value'   => $post->ID,
+                                                                     'compare' => '='))));
+        }
+        
+        if (isset($query) && $query != null && $query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                wp_trash_post(get_the_ID());
+            }
+        }
+    }
+}
+
+
 add_filter('posts_search', 'cvtx_posts_search');
 function cvtx_posts_search($search) {
     global $wpdb, $cvtx_types;
@@ -731,7 +857,7 @@ function cvtx_posts_search($search) {
 if (is_admin()) add_action('admin_menu', 'cvtx_config_page');
 function cvtx_config_page() {
     if (function_exists('add_submenu_page')) {
-        add_submenu_page('plugins.php', 'cvtx '.__('Settings'), 'cvtx '.__('Settings'), 'manage_options', 'cvtx-config', 'cvtx_conf');
+        add_submenu_page('options-general.php', __('cvtx Agenda Plugin', 'cvtx'), __('cvtx Agenda Plugin', 'cvtx'), 'manage_options', 'cvtx-config', 'cvtx_conf');
     }
 }
 
@@ -784,7 +910,8 @@ function cvtx_conf() {
             update_option('cvtx_anon_user', intval($_POST['cvtx_anon_user']));
         }
         
-        if(isset($_POST['cvtx_privacy_message'])) {
+        // Privacy message
+        if (isset($_POST['cvtx_privacy_message'])) {
         	update_option('cvtx_privacy_message', $_POST['cvtx_privacy_message']);
         }
                 
@@ -1088,7 +1215,7 @@ function cvtx_conf() {
         echo('<table class="form-table">');
         	echo('<tr valign="top">');
         		echo('<th scope="row">');
-        			echo('<label for="cvtx_privacy_message">'.__('Privacy message to be shown below e-mail and phone form fields').'</label>');
+        			echo('<label for="cvtx_privacy_message">'.__('Privacy message to be shown below e-mail and phone form fields', 'cvtx').'</label>');
         		echo('</th>');
         		echo('<td>');
         			echo('<textarea id="cvtx_privacy_message" cols="40" rows="5"
