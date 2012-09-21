@@ -1,8 +1,58 @@
 <?php
 
-// Settings for the rich text editors
+add_filter('mce_buttons', 'cvtx_mce_manage_buttons');
+/**
+ * Restrict first button row of the rich text editor
+ *
+ * @todo include 'formatselect'
+ *
+ * @param array $buttons rich edit buttons that are enabled
+ */
+function cvtx_mce_manage_buttons($buttons) {
+    global $post;
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
+        return array('bold', 'italic', 'underline', 'strikethrough', 'ins', '|', 'bullist', 'numlist', '|', 'undo', 'redo', 'html', '|', 'formatselect');
+    } else {
+        return $buttons;
+    }
+}
+
+
+add_filter('mce_buttons_2', 'cvtx_mce_manage_buttons_2');
+/**
+ * Restrict second button row of the rich text editor
+ */
+function cvtx_mce_manage_buttons_2($buttons) {
+    global $post;
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
+        return array();
+    } else {
+        return $buttons;
+    }
+}
+
+
+add_filter('tiny_mce_before_init', 'cvtx_mce_before_init');
+/**
+ * Restrict blockformats of the rich text editor
+ */
+function cvtx_mce_before_init($settings) {
+    global $post;
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
+        $settings['theme_advanced_blockformats'] = __('Subsection', 'cvtx').'=h3; '.__('Subsubsection', 'cvtx').'=h4';
+    }
+    return $settings;
+}
+
+
+/**
+ * Settings for the rich text editors
+ */
 function cvtx_tinymce_settings() {
-    return array('theme_advanced_buttons1' => 'bold, italic, underline, strikethrough, bullist, numlist, code, formatselect, fullscreen');
+    return array('theme_advanced_buttons1' => 'bold, italic, underline, strikethrough, ins, bullist, numlist, undo, redo, code, formatselect, fullscreen');
 }
 
 

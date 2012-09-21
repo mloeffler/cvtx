@@ -1530,53 +1530,6 @@ function cvtx_manage_media_buttons() {
 }
 
 
-if (is_admin()) add_filter('mce_buttons', 'cvtx_mce_manage_buttons');
-/**
- * Restrict first button row of the rich text editor
- *
- * @todo include 'formatselect'
- *
- * @param array $buttons rich edit buttons that are enabled
- */
-function cvtx_mce_manage_buttons($buttons) {
-    global $post;
-    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
-     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
-        return array('bold', 'italic', 'underline', 'strikethrough', 'ins', '|', 'bullist', 'numlist', '|', 'undo', 'redo', '|', 'formatselect');
-    } else {
-        return $buttons;
-    }
-}
-
-
-if (is_admin()) add_filter('mce_buttons_2', 'cvtx_mce_manage_buttons_2');
-/**
- * Restrict second button row of the rich text editor
- */
-function cvtx_mce_manage_buttons_2($buttons) {
-    global $post;
-    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
-     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
-        return array();
-    } else {
-        return $buttons;
-    }
-}
-
-
-if (is_admin()) add_filter('tiny_mce_before_init', 'cvtx_mce_before_init');
-/**
- * Restrict blockformats of the rich text editor
- */
-function cvtx_mce_before_init($settings) {
-    global $post;
-    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
-     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
-        $settings['theme_advanced_blockformats'] = __('Subsection', 'cvtx').'=h3; '.__('Subsubsection', 'cvtx').'=h4';
-    }
-    return $settings;
-}
-
 if (is_admin()) add_filter('add_menu_classes', 'cvtx_show_pending_number');
 /**
  * Add a count of pending antrage/aeatraege in the admin-sidebar
@@ -1599,6 +1552,7 @@ function cvtx_show_pending_number($menu) {
     }
     return $menu;
 }
+
 
 /**
  * Add a cvtx-item to the wp_admin_bar
