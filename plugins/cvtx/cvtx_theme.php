@@ -106,13 +106,13 @@ function cvtx_map_procedure($input) {
 /**
  * themed output for add_aenderungsantraege
  */
-function cvtx_add_aeantrag_action($post_id = false) {
-    if(!isset($post_id) || !$post_id) global $post;
+function cvtx_add_aeantrag_action($args = array('post_id' => false, 'show_recaptcha' => true)) {
+    if(!isset($args['post_id']) || !$args['post_id']) global $post;
     else $post = get_post($post_id);
     if(is_object($post)) {
         print '<div id="add_aeantrag">';
         printf(__('<h3>Create amendment to %s</h3>','cvtx'), cvtx_get_short($post));
-        cvtx_submit_aeantrag($post->ID);
+        cvtx_submit_aeantrag($post->ID, $args['show_recaptcha']);
         print '</div>';
     }
 }
@@ -127,7 +127,7 @@ function cvtx_pdf_action($post_id = false) {
     if(is_object($post)) {
         if ($file = cvtx_get_file($post, 'pdf')) {
             echo '<h3>PDF</h3>';
-            echo '<a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a>';
+            echo '<a href="'.$file.'" rel="external">'.__('Download', 'cvtx').' (pdf)</a>';
         }
     }
 }

@@ -67,8 +67,7 @@ function cvtx_tinymce_settings() {
  * @param string $cvtx_antrag_phone phone number if it has already been submitted
  * @param string $cvtx_antrag_grund antragsbegruendung, if already submitted
  */
-function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '', $cvtx_antrag_text = '', $cvtx_antrag_steller = '',
-                                 $cvtx_antrag_email = '', $cvtx_antrag_phone = '', $cvtx_antrag_grund = '') {
+function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '', $cvtx_antrag_text = '', $cvtx_antrag_steller = '', $cvtx_antrag_email = '', $cvtx_antrag_phone = '', $cvtx_antrag_grund = '', $show_recaptcha = true) {
     ?>
     <form id="create_antrag_form" class="cvtx_antrag_form cvtx_form" method="post" action="">
      <?php echo(wp_nonce_field('cvtx_form_create_antrag', 'cvtx_form_create_antrag_submitted')); ?>
@@ -138,7 +137,7 @@ function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '',
       <div class="legend"><h3><?php _e('Submit', 'cvtx'); ?></h3></div>
       <?php
       // embed reCaptcha
-      if (is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
+      if (is_plugin_active('wp-recaptcha/wp-recaptcha.php') && $show_recaptcha) {
               $ropt = get_option('recaptcha_options');
       ?>
           <div class="form-item">
@@ -157,7 +156,7 @@ function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '',
 /**
  * Method which evaluates input of antrags-creation form and saves it to the wordpress database
  */
-function cvtx_submit_antrag() {
+function cvtx_submit_antrag($show_recaptcha = true) {
     // Request Variables, if already submitted, set corresponding variables to '' else
     $cvtx_antrag_title   = (!empty($_POST['cvtx_antrag_title'])   ? trim($_POST['cvtx_antrag_title'])   : '');
     $cvtx_antrag_steller = (!empty($_POST['cvtx_antrag_steller']) ? trim($_POST['cvtx_antrag_steller']) : '');
@@ -215,7 +214,7 @@ function cvtx_submit_antrag() {
     // nothing has been submitted yet -> include creation form
     if (!isset($erstellt)) {
         cvtx_create_antrag_form($cvtx_antrag_top, $cvtx_antrag_title, $cvtx_antrag_text, $cvtx_antrag_steller,
-                                     $cvtx_antrag_email, $cvtx_antrag_phone, $cvtx_antrag_grund);
+                                     $cvtx_antrag_email, $cvtx_antrag_phone, $cvtx_antrag_grund, $show_recaptcha);
     }
 }
 
@@ -231,8 +230,7 @@ function cvtx_submit_antrag() {
  * @param string $cvtx_aeantrag_phone phone number of antragsteller if it have been already submitted
  * @param string $cvtx_aeantrag_grund aeantragsbegruendung, if already submitted
  */
-function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zeile  = '', $cvtx_aeantrag_text  = '', $cvtx_aeantrag_steller = '',
-                                   $cvtx_aeantrag_email  = '', $cvtx_aeantrag_phone = '', $cvtx_aeantrag_grund = '') {
+function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zeile  = '', $cvtx_aeantrag_text  = '', $cvtx_aeantrag_steller = '', $cvtx_aeantrag_email  = '', $cvtx_aeantrag_phone = '', $cvtx_aeantrag_grund = '', $show_recaptcha = true) {
     ?>
     <form id="create_aeantrag_form" class="cvtx_antrag_form cvtx_form" method="post" action="">
      <?php echo(wp_nonce_field('cvtx_form_create_aeantrag', 'cvtx_form_create_aeantrag_submitted')); ?>
@@ -299,7 +297,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
       <div class="legend"><h3><?php _e('Submit', 'cvtx'); ?></h3></div>
       <?php
       // embed reCaptcha
-      if (is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
+      if (is_plugin_active('wp-recaptcha/wp-recaptcha.php') && $show_recaptcha) {
           $ropt = get_option('recaptcha_options'); ?>
           <div class="form-item">
            <?php echo(recaptcha_get_html($ropt['public_key'])); ?>
@@ -317,7 +315,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
 /**
  * Method which evaluates the input of an ae_antrags_creation-form and saves it to the wordpress database
  */
-function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
+function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true) {
     $cvtx_aeantrag_zeile   = (!empty($_POST['cvtx_aeantrag_zeile'])   ? trim($_POST['cvtx_aeantrag_zeile'])   : '');
     $cvtx_aeantrag_steller = (!empty($_POST['cvtx_aeantrag_steller']) ? trim($_POST['cvtx_aeantrag_steller']) : '');
     $cvtx_aeantrag_email   = (!empty($_POST['cvtx_aeantrag_email'])   ? trim($_POST['cvtx_aeantrag_email'])   : '');
@@ -374,7 +372,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0) {
     
     if (!isset($erstellt)) {
         cvtx_create_aeantrag_form($cvtx_aeantrag_antrag, $cvtx_aeantrag_zeile, $cvtx_aeantrag_text, $cvtx_aeantrag_steller,
-                                       $cvtx_aeantrag_email, $cvtx_aeantrag_phone, $cvtx_aeantrag_grund);
+                                       $cvtx_aeantrag_email, $cvtx_aeantrag_phone, $cvtx_aeantrag_grund, $show_recaptcha);
     }
 }
 ?>

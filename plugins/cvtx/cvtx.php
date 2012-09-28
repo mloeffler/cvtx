@@ -1171,4 +1171,16 @@ function get_cvtx_rss_after_content($post) {
     return $output;
 }
 
+function get_aeantrag_count($post_id) {
+	$loop = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
+                             'meta_key'   => 'cvtx_sort',
+                             'orderby'    => 'meta_value',
+                             'order'      => 'ASC',
+                             'nopaging'   => true,
+                             'meta_query' => array(array('key'     => 'cvtx_aeantrag_antrag',
+                                                         'value'   => $post_id,
+                                                         'compare' => '='))));
+  return $loop->post_count;
+}
+
 ?>

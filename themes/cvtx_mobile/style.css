@@ -1,0 +1,592 @@
+/*
+Theme Name: Cvtx-Mobile
+Theme URI: http://cvtx-project.org
+Description: mobile Wordpress-Theme for the cvtx-plugin.
+Author: Max Löffler & Alexander Fecke
+Author URI: http://cvtx-project.org
+Version: 0.1
+
+License:
+License URI:
+*/
+
+.wp_themeSkin iframe { 
+  background: #fff !important;
+  color:#000;
+}
+
+div.post {
+	background: white;
+	padding: 1px 15px;
+	border-radius: 5px;
+	margin-bottom: 1em;
+}
+
+div.inner {
+	padding: 1px 15px 15px;
+	background: white;
+	border-radius: 5px;
+	margin: 15px;
+}
+
+#header {
+	height: 120px;
+  background-color: #6ab141;
+  -webkit-box-shadow: 0px 0px 10px black;
+}
+
+#verlauf {
+  background: url(images/verlauf.png) top right no-repeat;
+  height:120px;
+  width:100%;
+}
+
+#logo {
+	width: 150px;
+	height:120px;
+	right: 15px;
+	top: 15px;
+	position: absolute;
+}
+
+#wpadminbar {
+	display: none !important;
+}
+
+#headerimg {
+	padding: 30px;
+	text-shadow: none;
+}
+
+#headerimg h1 {
+	margin: 0px;
+	padding: 0px;
+}
+
+#headerimg h1 a {
+	text-decoration: none;
+}
+
+#headerimg .description {
+	font-weight: bold;
+	color: #fff;
+	font-size:0.8em;
+}
+
+/**
+ * Antraege
+ */
+#ae_antraege table {
+  font-size:0.8em;
+  width:100%;
+}
+
+#ae_antraege table tr td.text {
+  width: 40%;
+}
+
+#ae_antraege table tr td {
+  padding-right:10px;
+}
+
+#ae_antraege table tr td{
+  border-bottom:1px solid #eee;
+  vertical-align: top;
+  padding: 1em;
+}
+
+#ae_antraege table tr td p {
+  margin:0;
+}
+
+#ae_antraege table th {
+  text-align:left;
+  padding-bottom:5px;
+  padding-right:10px;
+}
+
+#ae_antraege td.verfahren span.procedure {
+	display: none;
+	background: white;
+	border-radius: 3px;
+	width: 150px;
+	padding: 10px;
+	position: absolute;
+	z-index: 110;
+	margin-left: -180px;
+	margin-top: -15px;
+}
+
+#ae_antraege td.verfahren span.procedure p {
+	margin-top: 1em;
+}
+
+#ae_antraege td.verfahren span.procedure span.arrow {
+	display: block;
+	height: 10px;
+	width: 5px;
+	position: absolute;
+	margin-top: -6px;
+	margin-left: 160px;
+	background: url(images/procedure_up.png) no-repeat;
+}
+
+#ae_antraege td.verfahren span.flag {
+	display: block;
+	height: 10px;
+	width: 10px;
+	background-color: #afafaf;
+	border-radius: 10px;
+}
+
+#ae_antraege td.verfahren span.flag.a {
+	background-color: green;
+}
+
+#ae_antraege td.verfahren span.flag.b {
+	background-color: #ff9900;
+}
+
+#ae_antraege td.verfahren span.flag.c {
+	background-color: red;
+}
+
+#ae_antraege tr.withdrawn {
+	color: #afafaf;
+}
+
+#ae_antraege tr.withdrawn td.verfahren {
+	color: black;
+}
+
+.form-required {
+  color: red;
+}
+
+form.cvtx_antrag_form label {
+  font-weight: bold;
+  color: #333;
+}
+
+form.cvtx_antrag_form .form-item {
+  margin-top: 1em;
+  font-size: 12px;
+  padding: 0px 14px;
+}
+
+form.cvtx_antrag_form div.form-group {
+  border: 1px solid #eee;
+  padding: 0em 1em 1em;
+  margin-top:1em;
+}
+
+/*
+	Mobile
+*/
+
+.ui-icon-antrag {
+	background-image: url('images/antrag.png');
+}
+
+.noellipsis p {
+	text-overflow: ellipsis;
+	overflow: visible;
+	white-space: normal;
+}
+
+/*
+#add_aeantrag form,
+#add_aeantrag p {
+    font-size:0.8em;
+}
+*/
+
+/*
+form input,
+form textarea {
+    background: url(images/verlauf2.png) bottom repeat-x;
+    border: 1px solid #eee;
+    padding: 0.3em;
+    border-radius:3px;
+}
+*/
+form input.submit {
+  font-weight: bold;
+  padding: 1em;
+  background: white;
+  font-size:0.8em;
+  border: 1px solid #eee;
+  border-radius:3px;
+}
+
+.cvtx_form fieldset {
+	background-color: #eee;
+	border: 1px solid lightGrey;
+	border-bottom-left-radius: 3px 3px;
+	border-bottom-right-radius: 3px 3px;
+	border-top-left-radius: 3px 3px;
+	border-top-right-radius: 3px 3px;
+	clear: both;
+	margin: 15px 0px !important;
+}
+
+.cvtx_form fieldset .legend {
+	border-bottom: 1px solid #CCC;
+	font-size: inherit;
+	margin: 5px 14px;
+	padding: 1px 6px;
+}
+
+.cvtx_form fieldset .legend h3 {
+	font-size: 20px;
+}
+
+#searchsubmit {
+	padding: 0.3em 0.8em;
+  font-weight: bold;
+  background: white;
+  font-size:0.8em;
+  border: 1px solid #eee;
+  border-radius:3px;
+  -webkit-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+}
+
+input {
+	padding: 0.4em 0.8em;
+  border: 1px solid #eee;
+  border-radius:3px;
+  -webkit-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+}
+
+p#message {
+  background: #fafafa;
+  padding:1em;
+  border-radius: 4px;
+  border: 1px solid #333;
+}
+
+p#message.error {
+  background: #fef5f1;
+  border-color: #ed541d;
+}
+
+p#message.success {
+  background: #f8fff0;
+  border-color: #be7;
+}
+
+p#message ul {
+  margin-top: 0.8em;
+  margin-bottom:0px;
+}
+
+form.cvtx_antrag_form .error {
+  border-color: red;
+}
+
+ul.reader_list li h4 {
+  margin:0em;
+}
+
+ul.reader_list li {
+  padding-top: 7px;
+}
+
+/* =Images
+-------------------------------------------------------------- */
+
+/*
+Resize images to fit the main content area.
+- Applies only to images uploaded via WordPress by targeting size-* classes.
+- Other images will be left alone. Use "size-auto" class to apply to other images.
+*/
+img.size-auto,
+img.size-full,
+img.size-large,
+img.size-medium,
+.attachment img {
+	max-width: 100%; /* When images are too wide for containing element, force them to fit. */
+	height: auto; /* Override height to match resized width for correct aspect ratio. */
+}
+.alignleft,
+img.alignleft {
+	display: inline;
+	float: left;
+	margin-right: 24px;
+	margin-top: 4px;
+}
+.alignright,
+img.alignright {
+	display: inline;
+	float: right;
+	margin-left: 24px;
+	margin-top: 4px;
+}
+.aligncenter,
+img.aligncenter {
+	clear: both;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+img.alignleft,
+img.alignright,
+img.aligncenter {
+	margin-bottom: 12px;
+}
+.wp-caption {
+	background: #f1f1f1;
+	line-height: 18px;
+	margin-bottom: 20px;
+	max-width: 632px !important; /* prevent too-wide images from breaking layout */
+	padding: 4px;
+	text-align: center;
+}
+.wp-caption img {
+	margin: 5px 5px 0;
+}
+.wp-caption p.wp-caption-text {
+	color: #888;
+	font-size: 12px;
+	margin: 5px;
+}
+.wp-smiley {
+	margin: 0;
+}
+.gallery {
+	margin: 0 auto 18px;
+}
+.gallery .gallery-item {
+	float: left;
+	margin-top: 0;
+	text-align: center;
+	width: 33%;
+}
+.gallery-columns-2 .gallery-item {
+	width: 50%;
+}
+.gallery-columns-4 .gallery-item {
+	width: 25%;
+}
+.gallery img {
+	border: 2px solid #cfcfcf;
+}
+.gallery-columns-2 .attachment-medium {
+	max-width: 92%;
+	height: auto;
+}
+.gallery-columns-4 .attachment-thumbnail {
+	max-width: 84%;
+	height: auto;
+}
+.gallery .gallery-caption {
+	color: #888;
+	font-size: 12px;
+	margin: 0 0 12px;
+}
+.gallery dl {
+	margin: 0;
+}
+.gallery img {
+	border: 10px solid #f1f1f1;
+}
+.gallery br+br {
+	display: none;
+}
+#content .attachment img {/* single attachment images should be centered */
+	display: block;
+	margin: 0 auto;
+}
+
+/* =Comments
+-------------------------------------------------------------- */
+#comments {
+	clear: both;
+}
+#comments .navigation {
+	padding: 0 0 18px 0;
+}
+h3#comments-title,
+h3#reply-title {
+	color: #000;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 0;
+}
+h3#comments-title {
+	padding: 24px 0;
+}
+.commentlist {
+	list-style: none;
+	margin: 0;
+}
+.commentlist li.comment {
+	border-bottom: 1px solid #e7e7e7;
+	line-height: 24px;
+	margin: 0 0 24px 0;
+	padding: 0 0 0 56px;
+	position: relative;
+}
+.commentlist li:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+}
+#comments .comment-body ul,
+#comments .comment-body ol {
+	margin-bottom: 18px;
+}
+#comments .comment-body p:last-child {
+	margin-bottom: 6px;
+}
+#comments .comment-body blockquote p:last-child {
+	margin-bottom: 24px;
+}
+.commentlist ol {
+	list-style: decimal;
+}
+.commentlist .avatar {
+	position: absolute;
+	top: 4px;
+	left: 0;
+}
+.comment-author {
+}
+.comment-author cite {
+	color: #000;
+	font-style: normal;
+	font-weight: bold;
+}
+.comment-author .says {
+	font-style: italic;
+}
+.comment-meta {
+	font-size: 12px;
+	margin: 0 0 18px 0;
+}
+.comment-meta a:link,
+.comment-meta a:visited {
+	color: #888;
+	text-decoration: none;
+}
+.comment-meta a:active,
+.comment-meta a:hover {
+	color: #ff4b33;
+}
+.commentlist .even {
+}
+.commentlist .bypostauthor {
+}
+.reply {
+	font-size: 12px;
+	padding: 0 0 24px 0;
+}
+.reply a,
+a.comment-edit-link {
+	color: #888;
+}
+.reply a:hover,
+a.comment-edit-link:hover {
+	color: #ff4b33;
+}
+.commentlist .children {
+	list-style: none;
+	margin: 0;
+}
+.commentlist .children li {
+	border: none;
+	margin: 0;
+}
+.nopassword,
+.nocomments {
+	display: none;
+}
+#comments .pingback {
+	border-bottom: 1px solid #e7e7e7;
+	margin-bottom: 18px;
+	padding-bottom: 18px;
+}
+.commentlist li.comment+li.pingback {
+	margin-top: -6px;
+}
+#comments .pingback p {
+	color: #888;
+	display: block;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0;
+}
+#comments .pingback .url {
+	font-size: 13px;
+	font-style: italic;
+}
+
+/* Comments form */
+input[type=submit] {
+	color: #333;
+}
+#respond {
+	border-top: 1px solid #e7e7e7;
+	margin: 24px 0;
+	overflow: hidden;
+	position: relative;
+}
+#respond p {
+	margin: 0;
+}
+#respond .comment-notes {
+	margin-bottom: 1em;
+}
+.form-allowed-tags {
+	line-height: 1em;
+}
+.children #respond {
+	margin: 0 48px 0 0;
+}
+h3#reply-title {
+	margin: 18px 0;
+}
+#comments-list #respond {
+	margin: 0 0 18px 0;
+}
+#comments-list ul #respond {
+	margin: 0;
+}
+#cancel-comment-reply-link {
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 18px;
+}
+#respond .required {
+	color: #ff4b33;
+	font-weight: bold;
+}
+#respond label {
+	color: #888;
+	font-size: 12px;
+}
+#respond input {
+	margin: 0 0 9px;
+	width: 98%;
+}
+#respond textarea {
+	width: 98%;
+}
+#respond .form-allowed-tags {
+	color: #888;
+	font-size: 12px;
+	line-height: 18px;
+}
+#respond .form-allowed-tags code {
+	font-size: 11px;
+}
+#respond .form-submit {
+	margin: 12px 0;
+}
+#respond .form-submit input {
+	font-size: 14px;
+	width: auto;
+}
