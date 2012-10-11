@@ -1181,28 +1181,31 @@ function cvtx_feed_rss2($for_comments) {
 /**
  * returns meta-informations about antrag/aeantrag
  */
-function get_cvtx_rss_before_content($post, $type) {
-    $output  = '';
-    if($type == 'cvtx_antrag') {
-        $output .= '<p><strong>'.__('Agenda item', 'cvtx').'</strong>: '.get_the_title(get_post_meta($post->ID, 'cvtx_antrag_top', true)).'</p>';
+function cvtx_get_rss_before_content($post, $type) {
+    $output = '';
+    if ($type == 'cvtx_antrag') {
+        $output .= '<p><strong>'.__('Concerning', 'cvtx').'</strong>: '.get_the_title(get_post_meta($post->ID, 'cvtx_antrag_top', true)).'</p>';
         $output .= '<p><strong>'.__('Author(s)', 'cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller_short',true).'</p>';
-    } else if($type == 'cvtx_aeantrag') {
+    } else if ($type == 'cvtx_aeantrag') {
+        $output .= '<p><strong>'.__('Concerning', 'cvtx').'</strong>: '.get_the_title(get_post_meta($post->ID, 'cvtx_aeantrag_antrag', true)).'</p>';
         $output .= '<p><strong>'.__('Line', 'cvtx').'</strong>: '.get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true).'</p>';
-        $output .= '<p><strong>'.__('Author(s)', 'cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_antrag_steller',true).'</p>';
+        $output .= '<p><strong>'.__('Author(s)', 'cvtx').'</strong>: '.get_post_meta($post->ID,'cvtx_aeantrag_steller_short',true).'</p>';
     }
     return $output;
 }
 
+
 /**
- * returns download-link for antrag/aeantrag
+ * Returns the download link for a specific resolution / amendment
  */
-function get_cvtx_rss_after_content($post) {
-    $output  = '';
-    if (function_exists('cvtx_get_file')
-        && $file = cvtx_get_file($post, 'pdf'))
-        $output .= '<p><a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a></p>';
+function cvtx_get_rss_after_content($post) {
+    $output = '';
+    if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) {
+        $output = '<p><a href="'.$file.'">'.__('Download', 'cvtx').' (pdf)</a></p>';
+    }
     return $output;
 }
+
 
 function get_aeantrag_count($post_id) {
 	$loop = new WP_Query(array('post_type'  => 'cvtx_aeantrag',
