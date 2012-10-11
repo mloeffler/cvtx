@@ -104,6 +104,7 @@ function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '',
       <?php } ?>
       <br />
      </fieldset>
+     
      <fieldset class="fieldset">
       <div class="legend"><h3><?php _e('Text', 'cvtx'); ?></h3></div>
       <div class="form-item">
@@ -133,6 +134,7 @@ function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '',
        <?php } ?>
       </div><br/>
      </fieldset>
+     
      <fieldset class="fieldset">
       <div class="legend"><h3><?php _e('Submit', 'cvtx'); ?></h3></div>
       <?php
@@ -179,10 +181,18 @@ function cvtx_submit_antrag($show_recaptcha = true) {
                 echo('<p id="message" class="error">'.__('Wrong captcha. Please try again.', 'cvtx').'</p>');
             }
         }
-        if(!is_plugin_active('wp-recaptcha/wp-recaptcha.php') || $resp->is_valid) {
+        if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php') || $resp->is_valid) {
             // check whether the required fields have been submitted
-             if(!empty($cvtx_antrag_title) && !empty($cvtx_antrag_text) && !empty($cvtx_antrag_steller) && !empty($cvtx_antrag_email) && !empty($cvtx_antrag_phone)) {
-                 // create an array which holds all data about the antrag
+            if(!empty($cvtx_antrag_title) && !empty($cvtx_antrag_text) && !empty($cvtx_antrag_steller) && !empty($cvtx_antrag_email) && !empty($cvtx_antrag_phone)) {
+                // Sanitize content using HTMLPurifier-plugin
+                if (is_plugin_active('html-purified/html-purified.php')) {
+                    global $cvtx_purifier, $cvtx_purifier_config;
+                    // Purify resolution text and meta fields
+                    $cvtx_antrag_text  = $cvtx_purifier->purify($cvtx_antrag_text,  $cvtx_purifier_config);
+                    $cvtx_antrag_grund = $cvtx_purifier->purify($cvtx_antrag_grund, $cvtx_purifier_config);
+                }
+                
+                // create an array which holds all data about the antrag
                 $antrag_data = array(
                     'post_title'          => $cvtx_antrag_title,
                     'post_content'        => $cvtx_antrag_text,
@@ -195,8 +205,8 @@ function cvtx_submit_antrag($show_recaptcha = true) {
                     'post_author'         => get_option('cvtx_anon_user'),
                     'post_type'           => 'cvtx_antrag');
                 // submit the post
-                if($antrag_id = wp_insert_post($antrag_data)) {
-                    echo '<p id="message" class="success">'.__('The resolution has been created but it is not published yet.', 'cvtx').'</p>';
+                if ($antrag_id = wp_insert_post($antrag_data)) {
+                    echo('<p id="message" class="success">'.__('The resolution has been created but it is not published yet.', 'cvtx').'</p>');
                     $erstellt = true;
                 }
                 else {
@@ -214,7 +224,7 @@ function cvtx_submit_antrag($show_recaptcha = true) {
     // nothing has been submitted yet -> include creation form
     if (!isset($erstellt)) {
         cvtx_create_antrag_form($cvtx_antrag_top, $cvtx_antrag_title, $cvtx_antrag_text, $cvtx_antrag_steller,
-                                     $cvtx_antrag_email, $cvtx_antrag_phone, $cvtx_antrag_grund, $show_recaptcha);
+                                $cvtx_antrag_email, $cvtx_antrag_phone, $cvtx_antrag_grund, $show_recaptcha);
     }
 }
 
@@ -241,6 +251,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
        <input type="text" id="cvtx_aeantrag_zeile" name="cvtx_aeantrag_zeile" class="required" value="<?php echo($cvtx_aeantrag_zeile); ?>" size="4" /><br>
       </div><br/>
      </fieldset>
+     
      <fieldset class="fieldset">
       <div class="legend"><h3><?php _e('Author(s)', 'cvtx'); ?></h3></div>
       <div class="form-group">
@@ -263,6 +274,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
        <?php } ?>
       </div><br/>
      </fieldset>
+     
      <fieldset class="fieldset">
       <div class="legend"><h3><?php _e('Text', 'cvtx'); ?></h3></div>
       <input type="hidden" id="cvtx_aeantrag_antrag" name="cvtx_aeantrag_antrag" value="<?php echo($cvtx_aeantrag_antrag); ?>"/>
@@ -293,6 +305,7 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
        <?php } ?>
       </div><br/>
      </fieldset>
+     
      <fieldset class="fieldset">
       <div class="legend"><h3><?php _e('Submit', 'cvtx'); ?></h3></div>
       <?php
@@ -325,7 +338,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true)
     
     if (isset($_POST['cvtx_form_create_aeantrag_submitted']) && $cvtx_aeantrag_antrag != 0
      && wp_verify_nonce($_POST['cvtx_form_create_aeantrag_submitted'], 'cvtx_form_create_aeantrag')) {
-        if(is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
+        if (is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
             $ropt = get_option('recaptcha_options');
             $resp = recaptcha_check_answer($ropt['private_key'],
                                            $_SERVER['REMOTE_ADDR'],
@@ -340,6 +353,14 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true)
             // check whethter the required fields have been set
             if (!empty($cvtx_aeantrag_zeile) && !empty($cvtx_aeantrag_text) && !empty($cvtx_aeantrag_steller)
              && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email) && !empty($cvtx_aeantrag_phone)) {
+                // Sanitize content using HTMLPurifier-plugin
+                if (is_plugin_active('html-purified/html-purified.php')) {
+                    global $cvtx_purifier, $cvtx_purifier_config;
+                    // Purify resolution text and meta fields
+                    $cvtx_aeantrag_text  = $cvtx_purifier->purify($cvtx_aeantrag_text,  $cvtx_purifier_config);
+                    $cvtx_aeantrag_grund = $cvtx_purifier->purify($cvtx_aeantrag_grund, $cvtx_purifier_config);
+                }
+                
                 $aeantrag_data = array(
                     'cvtx_aeantrag_steller' => $cvtx_aeantrag_steller,
                     'cvtx_aeantrag_antrag'  => $cvtx_aeantrag_antrag,
@@ -372,7 +393,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true)
     
     if (!isset($erstellt)) {
         cvtx_create_aeantrag_form($cvtx_aeantrag_antrag, $cvtx_aeantrag_zeile, $cvtx_aeantrag_text, $cvtx_aeantrag_steller,
-                                       $cvtx_aeantrag_email, $cvtx_aeantrag_phone, $cvtx_aeantrag_grund, $show_recaptcha);
+                                  $cvtx_aeantrag_email, $cvtx_aeantrag_phone, $cvtx_aeantrag_grund, $show_recaptcha);
     }
 }
 ?>

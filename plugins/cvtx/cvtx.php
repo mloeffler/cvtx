@@ -1,14 +1,14 @@
 <?php
 /**
  * @package cvtx
- * @version 0.1
+ * @version 0.2
  */
 /*
 Plugin Name: cvtx Agenda Plugin
 Plugin URI: http://cvtx-project.org
 Description: Das Antragssystem „cvtx“ stellt zahlreiche Hilfsmittel zur Verfügung, um Tagesordnungen, Anträge, Änderungsanträge und Antragsreader auf politischen Kongressen oder Mitgliederversammlungen zu verwalten. Es basiert auf dem Textsatzsystem LaTeX und ist verfügbar als Open Source.
 Author: Alexander Fecke & Max Löffler
-Version: 0.1
+Version: 0.2
 Author URI: http://alexander-fecke.de
 License: GPLv2 or later
 */
@@ -17,7 +17,7 @@ License: GPLv2 or later
 require_once(ABSPATH.'wp-includes/pluggable.php');
 require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
-define('CVTX_VERSION', '0.1');
+define('CVTX_VERSION', '0.2');
 define('CVTX_PLUGIN_FILE', plugin_basename(__FILE__));
 define('CVTX_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CVTX_PLUGIN_URL', plugin_dir_url( __FILE__ ));
@@ -29,7 +29,7 @@ require_once(CVTX_PLUGIN_DIR.'/cvtx_theme.php');
 require_once(CVTX_PLUGIN_DIR.'/cvtx_forms.php');
 
 // load language files
-load_plugin_textdomain('cvtx', false, CVTX_PLUGIN_DIR.'/languages');
+load_plugin_textdomain('cvtx', false, dirname(CVTX_PLUGIN_FILE).'/languages');
 
 // define post types
 $cvtx_types = array('cvtx_reader'   => array('cvtx_reader_style'),
@@ -65,18 +65,21 @@ $cvtx_types = array('cvtx_reader'   => array('cvtx_reader_style'),
                                              'cvtx_application_email',
                                              'cvtx_application_phone'));
 
+// Used MIME types
 $cvtx_mime_types = array('pdf' => 'application/pdf',
                          'tex' => 'application/x-latex',
                          'log' => 'text/plain');
+
+// HTML Purifier Instance / Configuration
+$cvtx_purifier = null;
+$cvtx_purifier_config = null;
+
 
 add_action('init', 'cvtx_init');
 /**
  * Create custom post types
  */
 function cvtx_init() {
-    // load language files
-    load_plugin_textdomain('cvtx', false, dirname(plugin_basename(__FILE__)).'/languages/');
-
     // Tagesordnungspunkte
     register_post_type('cvtx_top',
         array('labels'             => array(
@@ -210,6 +213,15 @@ function cvtx_init() {
                             'show_ui'      => false,
                             'query_var'    => true,
                             'rewrite'      => false));
+    
+    // Initialize HTML Purifier if plugin activated
+    if (is_plugin_active('html-purified/html-purified.php')) {
+        global $html_purifier, $cvtx_purifier, $cvtx_purifier_config;
+        $cvtx_purifier        = $html_purifier->get_purifier();
+        $cvtx_purifier_config = HTMLPurifier_Config::createDefault();
+        $cvtx_purifier_config->set('HTML.Allowed', 'strong,b,em,i,h1,h2,h3,h4,ul,ol,li,br,p,del,ins,code,span[style]');
+        $cvtx_purifier_config->set('HTML.Doctype', 'XHTML 1.1');
+    }
 }
 
 
@@ -810,6 +822,26 @@ function cvtx_the_title($before='', $after='') {
     } else {
         return $before;
     }
+}
+
+
+add_filter('the_content', 'cvtx_the_content', 20);
+/**
+ * Sanitizes the content of 
+ */
+function cvtx_the_content($content) {
+    global $post;
+    
+    // Sanitize content using HTMLPurifier-plugin
+    if (($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag')
+     && is_plugin_active('html-purified/html-purified.php')) {
+        global $cvtx_purifier, $cvtx_purifier_config;
+        // Purify resolution text and meta fields
+        $content = $cvtx_purifier->purify($content,  $cvtx_purifier_config);
+    }
+
+    // Returns the content.
+    return $content;
 }
 
 

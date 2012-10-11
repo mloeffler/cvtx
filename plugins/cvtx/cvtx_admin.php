@@ -224,7 +224,7 @@ function cvtx_antrag_meta() {
     $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);    
     
     echo('<label for="cvtx_antrag_top_select">'.__('Agenda point', 'cvtx').':</label><br />');
-    echo(cvtx_dropdown_tops($top_id, __('No agenda points enabled to resolutions.', 'cvtx').'.', true, false));
+    echo(cvtx_dropdown_tops($top_id, __('No agenda points enabled to resolutions.', 'cvtx').'.', true, ''));
     echo('<br />');
     echo('<label for="cvtx_antrag_ord_field">'.__('Resolution number', 'cvtx').':</label><br />');
     echo('<input name="cvtx_antrag_ord" id="cvtx_antrag_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
