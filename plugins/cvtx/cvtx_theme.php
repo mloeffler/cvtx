@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package cvtx
+ */
+
 
 /**
  * themed output of cvtx_antrag_steller/cvtx_aeantrag_steller/cvtx_antrag_steller_short/cvtx_aeantrag_steller_short

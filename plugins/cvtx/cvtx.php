@@ -3,6 +3,7 @@
  * @package cvtx
  * @version 0.2
  */
+
 /*
 Plugin Name: cvtx Agenda Plugin
 Plugin URI: http://cvtx-project.org

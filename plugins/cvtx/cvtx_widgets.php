@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package cvtx
+ */
+
 
 // register ReaderWidget
 add_action('widgets_init', create_function('', 'register_widget("ReaderWidget");'));

@@ -1,5 +1,10 @@
 <?php
 /**
+ * @package cvtx
+ */
+
+
+/**
  * Returns latex formatted output
  *
  * @param $out input

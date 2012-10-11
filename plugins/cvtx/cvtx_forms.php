@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package cvtx
+ */
+
 
 add_filter('mce_buttons', 'cvtx_mce_manage_buttons');
 /**
