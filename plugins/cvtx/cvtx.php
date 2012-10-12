@@ -220,8 +220,9 @@ function cvtx_init() {
         global $html_purifier, $cvtx_purifier, $cvtx_purifier_config;
         $cvtx_purifier        = $html_purifier->get_purifier();
         $cvtx_purifier_config = HTMLPurifier_Config::createDefault();
-        $cvtx_purifier_config->set('HTML.Allowed', 'strong,b,em,i,h1,h2,h3,h4,ul,ol,li,br,p,del,ins,code,span[style]');
         $cvtx_purifier_config->set('HTML.Doctype', 'XHTML 1.1');
+        $cvtx_purifier_config->set('HTML.Allowed', 'strong,b,em,i,h1,h2,h3,h4,ul,ol,li,br,p,del,ins,code,span[style]');
+        $cvtx_purifier_config->set('CSS.AllowedProperties', 'text-decoration');
     }
 }
 
