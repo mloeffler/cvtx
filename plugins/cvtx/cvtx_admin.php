@@ -249,7 +249,16 @@ function cvtx_antrag_steller() {
 // Begründung
 function cvtx_antrag_grund() {
     global $post;
-    echo('<textarea style="width: 100%" name="cvtx_antrag_grund">'.get_post_meta($post->ID, 'cvtx_antrag_grund', true).'</textarea>');
+    if (is_plugin_active('html-purified/html-purified.php')) {
+      wp_editor(get_post_meta($post->ID, 'cvtx_antrag_grund', true), 'cvtx_antrag_grund_admin', 
+      	array('media_buttons' => false,
+              'textarea_name' => 'cvtx_antrag_grund',
+              'tinymce'       => cvtx_tinymce_settings(),
+              'quicktags'     => false,
+              'teeny'         => false));
+    } else {
+	    echo('<textarea style="width: 100%" for="cvtx_antrag_grund" name="cvtx_antrag_grund">'.get_post_meta($post->ID, 'cvtx_antrag_grund', true).'</textarea>');
+    }
 }
 
 // Weitere Infos
@@ -292,7 +301,16 @@ function cvtx_aeantrag_steller() {
 // Begründung
 function cvtx_aeantrag_grund() {
     global $post;
-    echo('<textarea style="width: 100%" name="cvtx_aeantrag_grund">'.get_post_meta($post->ID, 'cvtx_aeantrag_grund', true).'</textarea>');
+    if (is_plugin_active('html-purified/html-purified.php')) {
+      wp_editor(get_post_meta($post->ID, 'cvtx_aeantrag_grund', true), 'cvtx_aeantrag_grund_admin', 
+      	array('media_buttons' => false,
+              'textarea_name' => 'cvtx_aeantrag_grund',
+              'tinymce'       => cvtx_tinymce_settings(),
+              'quicktags'     => false,
+              'teeny'         => false));
+    } else {
+	    echo('<textarea style="width: 100%" for="cvtx_aeantrag_grund" name="cvtx_aeantrag_grund">'.get_post_meta($post->ID, 'cvtx_aeantrag_grund', true).'</textarea>');
+    }
 }
 
 // Weitere Infos
@@ -313,7 +331,16 @@ function cvtx_aeantrag_verfahren() {
 
     echo('<br />');
     
-    echo('<textarea style="width: 100%" for="cvtx_aeantrag_detail" name="cvtx_aeantrag_detail">'.get_post_meta($post->ID, 'cvtx_aeantrag_detail', true).'</textarea>');
+    if (is_plugin_active('html-purified/html-purified.php')) {
+      wp_editor(get_post_meta($post->ID, 'cvtx_aeantrag_detail', true), 'cvtx_aeantrag_detail', 
+      	array('media_buttons' => false,
+              'textarea_name' => 'cvtx_aeantrag_detail',
+              'tinymce'       => cvtx_tinymce_settings(),
+              'quicktags'     => false,
+              'teeny'         => false));
+    } else {
+	    echo('<textarea style="width: 100%" for="cvtx_aeantrag_detail" name="cvtx_aeantrag_detail">'.get_post_meta($post->ID, 'cvtx_aeantrag_detail', true).'</textarea>');
+    }
 }
 
 

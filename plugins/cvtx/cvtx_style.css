@@ -1,3 +1,8 @@
+.wp_themeSkin iframe { 
+  background: #fff !important;
+  color:#000;
+}
+
 select#cvtx_aeantrag_antrag_select, select#cvtx_antrag_top_select {
     width: 100%;
 }

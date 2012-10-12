@@ -73,48 +73,48 @@ class cvtx_walker extends Walker_Nav_Menu {
 
 
 function cvtx_customize_register($wp_customize) {
-	$wp_customize->add_setting('color1', array(
+	$wp_customize->add_setting('cvtxm_color1', array(
 		'default' => '#6ab141',
 	));
-	$wp_customize->add_setting('color2', array(
+	$wp_customize->add_setting('cvtxm_color2', array(
 		'default' => '#ffe500',
 	));
-	$wp_customize->add_setting('color3', array(
+	$wp_customize->add_setting('cvtxm_color3', array(
 		'default' => '#ffe500',
 	));
-	$wp_customize->add_setting('logo', array(
+	$wp_customize->add_setting('cvtxm_logo', array(
 		'default' => get_template_directory_uri() . '/images/b90.png',
 	));
-	$wp_customize->add_setting('data_theme', array(
+	$wp_customize->add_setting('cvtxm_data_theme', array(
 		'default'	=> 'c',
 	));
-	$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color_1', array(
+	$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'cvtxm_color_1', array(
 		'label'      => __('Hintergrundfarbe Header', 'cvtx' ),
 		'section'    => 'colors',
-		'settings'   => 'color1'
+		'settings'   => 'cvtxm_color1'
 	)));
-	$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color_2', array(
+	$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'cvtxm_color_2', array(
 		'label'			 => __('Link-Farbe Header', 'cvtx'),
 		'section'		 => 'colors',
-		'settings'	 => 'color2'
+		'settings'	 => 'cvtxm_color2'
 	)));
-	$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color_3', array(
+	$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'cvtxm_color_3', array(
 		'label'			 => __('Link-Farbe', 'cvtx'),
 		'section'		 => 'colors',
-		'settings'	 => 'color3'
+		'settings'	 => 'cvtxm_color3'
 	)));
-	$wp_customize->add_section('cvtx_logo', array(
+	$wp_customize->add_section('cvtxm_cvtx_logo', array(
 		'title' 		 => __('Parteilogo', 'cvtx'),
 		'priority'	 => 30
 	));
-	$wp_customize->add_section('cvtx_data_theme', array(
+	$wp_customize->add_section('cvtxm_cvtx_data_theme', array(
 		'title'			 => __('jQuery Mobile Data Theme', 'cvtx'),
 		'priority'   => 30
 	));
-	$wp_customize->add_control('logo', array(
+	$wp_customize->add_control('cvtxm_logo', array(
 		'label'			 => __('jQuery Mobile Data Theme', 'cvtx'),
-		'section'		 => 'cvtx_data_theme',
-		'settings'	 => 'data_theme',
+		'section'		 => 'cvtxm_cvtx_data_theme',
+		'settings'	 => 'cvtxm_data_theme',
 		'type'			 => 'select',
 		'choices'		 => array(
 			'a'	 => 'data-theme a',
@@ -129,10 +129,10 @@ add_action('customize_register', 'cvtx_customize_register');
 
 function cvtx_customize_css() { ?>
   <style type="text/css">
-  	#header { background-color: <?php echo get_theme_mod('color1'); ?>;}
+  	#header, #footer { background-color: <?php echo get_theme_mod('cvtxm_color1'); ?>;}
 		#logo { background: url(<?php echo get_theme_mod('logo'); ?>) no-repeat right top; }
-		#header #headerimg h1 a { color: <?php echo get_theme_mod('color2'); ?> !important; }
-		a { color: <?php echo get_theme_mod('color3'); ?> !important; }
+		#header #headerimg h1 a { color: <?php echo get_theme_mod('cvtxm_color2'); ?> !important; }
+		a { color: <?php echo get_theme_mod('cvtxm_color3'); ?> !important; }
    </style>
 <?php }
 add_action('wp_head', 'cvtx_customize_css');

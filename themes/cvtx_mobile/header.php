@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div data-role="page" data-add-back-btn="false" data-theme="<?php echo get_theme_mod('data_theme'); ?>">
+<div data-role="page" data-add-back-btn="false" data-theme="c" id="page">
 
 	<div id="header"><div id="verlauf">
 		<div id="headerimg"><h1><a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a></h1>
@@ -19,7 +19,7 @@
      	</div>	
 	<div id="logo"></div></div></div>
 	
-	<div data-role="header" data-theme="<?php echo get_theme_mod('data_theme'); ?>">
+	<div data-role="header" data-theme="c">
 		<div data-role="navbar">
 			<ul>
 				<?php wp_nav_menu(array('theme_location' => 'header-menu', 'container' => false, 'walker' => new cvtx_walker(), 'items_wrap' => '%3$s')); ?>

@@ -10,6 +10,10 @@ License:
 License URI:
 */
 
+body {
+  font-family: "Trebuchet MS";
+}
+
 .wp_themeSkin iframe { 
   background: #fff !important;
   color:#000;
@@ -20,6 +24,23 @@ div.post {
 	padding: 1px 15px;
 	border-radius: 5px;
 	margin-bottom: 1em;
+}
+
+#footer {
+	height: 50px;
+	width: 100%;
+}
+
+#header, #footer { 
+	background-color: #6ab141;
+}
+
+#logo { 
+	background: url(/images/b90.png) no-repeat right top; 
+}
+
+#header #headerimg h1 a { 
+	color: #ffe500 !important; 
 }
 
 div.inner {
@@ -76,6 +97,14 @@ div.inner {
 /**
  * Antraege
  */
+del {
+	color: red;
+}
+
+ins {
+	color: green;
+}
+
 #ae_antraege table {
   font-size:0.8em;
   width:100%;
@@ -589,4 +618,8 @@ h3#reply-title {
 #respond .form-submit input {
 	font-size: 14px;
 	width: auto;
+}
+
+.postmetadata {
+	clear: both;
 }

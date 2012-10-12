@@ -366,6 +366,14 @@ header .description,
  * Antraege
  */
  
+del {
+	color: red;
+}
+
+ins {
+	color: green;
+}
+ 
 ul#antraege {
   margin: 0px;
   padding:0px;
