@@ -19,11 +19,14 @@
 
 \sloppy
 
+% Page Style Settings
 \pagestyle{scrheadings}
 \setheadsepline{0.4pt}
+\setuptoc{toc}{totoc}
 
 \newcommand*\adjust{\setlength\hsize{\textwidth-2\tabcolsep}}
 
+% Document Information
 \subject{<?php cvtx_name(); ?>\\ <?php cvtx_beschreibung(); ?>}
 \title{<?php cvtx_titel($post); ?>}
 \date{<?php _e('This version', 'cvtx'); ?>: \today}
@@ -35,10 +38,11 @@
     \shorthandoff{"}
 <?php } ?>
 
+% Show Title Page
 \maketitle
 
+% Show Table of Contents
 \tableofcontents
-
 
 <?php
 $top    = 0;
@@ -54,32 +58,24 @@ while ($query->have_posts()) {
     $query->the_post();
     $item = get_post(get_the_ID());
     
-    /* show antrag */
+    /* Show Resolution */
     if ($item->post_type == 'cvtx_antrag') {
-        $antrag   = $item->ID;
+        $antrag = $item->ID;
 ?>
+% Start New Page
 \newpage
-<?php
-        /* update top if changed */
-        $this_top = get_post_meta($item->ID, 'cvtx_antrag_top', true);
-        if ($top != $this_top) {
-            $top = $this_top;
-?>
-\addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
-<?php
-        }
-?>
 
-\pagestyle{scrheadings}
+% Hide Headline and Show Page Number on This Page, Define Headline Text
+\thispagestyle{plain}
 \ohead{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
-\thispagestyle{empty}
-\addcontentsline{toc}{section}{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
+% Site Title and Subtitle
 \begin{flushright}
  \textbf{\large <?php cvtx_name(); ?>}\\
  <?php cvtx_beschreibung(); ?>
 \end{flushright}
 
+% Info Box
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
                                                       &                                              \\
@@ -96,110 +92,131 @@ while ($query->have_posts()) {
     \hline
 \end{tabularx}
 
+% Resolution title
 \section*{<?php cvtx_titel($item); ?>}
 
+% Add Bookmarks and Reference for Table of Contents
+<?php   // Update agenda item if changed
+        $this_top = get_post_meta($item->ID, 'cvtx_antrag_top', true);
+        if ($top != $this_top) {
+            $top  = $this_top;
+?>
+            \addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
+<?php   } ?>
+\addcontentsline{toc}{section}{<?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+
+% Resolution Text
 \begin{linenumbers}
 \setcounter{linenumber}{1}
 <?php cvtx_antragstext($item); ?>
 \end{linenumbers}
 
+% Explanation
 <?php if (cvtx_has_begruendung($item)) { ?>
    \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
    <?php cvtx_begruendung($item); ?>
 <?php } ?>
 
+% Author(s)
 \subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
 <?php cvtx_antragsteller($item); ?>
 
-
 <?php
     }
-    /* show application */
+    
+    /* Show Application */
     else if ($item->post_type == 'cvtx_application' && cvtx_get_file($item)) {
 ?>
+% Start New Page
 \newpage
-<?php
-        /* update top if changed */
+
+% Define Headline Text
+\ohead{<?php _e('Application', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+
+% Add Bookmarks and Reference for Table of Contents
+<?php   // Update agenda item if changed
         $this_top = get_post_meta($item->ID, 'cvtx_application_top', true);
         if ($top != $this_top) {
-            $top = $this_top;
+            $top  = $this_top;
 ?>
-\addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
-<?php
-        }
-?>
-
-\pagestyle{scrheadings}
-\ohead{<?php _e('Application', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+            \addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
+<?php   } ?>
 \addcontentsline{toc}{section}{<?php _e('Application ', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
 \includepdf[pages=-, pagecommand={\thispagestyle{scrheadings}}, offset=-1.5em 2em, width=1.15\textwidth]{<?php cvtx_application_file($item); ?>}
 
 <?php
     }
-    /* show aeantrag */
+
+    /* Show Amendment */
     else if ($item->post_type == 'cvtx_aeantrag') {
 ?>
+% Start New Page
 \newpage
-<?php
-        /* update top if changed */
-        $this_antrag = get_post_meta($item->ID, 'cvtx_aeantrag_antrag', true);
-        $this_top    = get_post_meta($this_antrag, 'cvtx_antrag_top', true);
-        if ($top != $this_top) {
-            $top = $this_top;
-?>
-\addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
-<?php
-        }
-        /* update antrag if changed */
-        if ($antrag != $this_antrag) {
-            $antrag = $this_antrag;
-?>
-\addcontentsline{toc}{section}{<?php cvtx_antrag($item); ?>}
-<?php
-        }
-?>
-
-\pagestyle{scrheadings}
+% Hide Headline and Show Page Number on This Page, Define Headline Text
+\thispagestyle{plain}
 \ohead{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
-\thispagestyle{empty}
-\addcontentsline{toc}{subsection}{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
 
+% Site Title and Subtitle
 \begin{flushright}
  \textbf{\large <?php cvtx_name(); ?>}\\
  <?php cvtx_beschreibung(); ?>
 \end{flushright}
 
+% Info Box
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                     &                                                                     \\
-    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($item); ?>}}                                          \\
-                                                     &                                                                     \\
-    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($item); ?>                          \\
-                                                     &                                                                     \\
-    <?php _e('Concerning', 'cvtx'); ?>:              &   <?php cvtx_antrag($item); ?> (<?php cvtx_top_titel($item); ?>)    \\
-                                                     &                                                                     \\
+                                        &                                                                     \\
+    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($item); ?>}}                             \\
+                                        &                                                                     \\
+    <?php _e('Author(s)', 'cvtx'); ?>:  &   <?php cvtx_antragsteller_kurz($item); ?>                          \\
+                                        &                                                                     \\
+    <?php _e('Concerning', 'cvtx'); ?>: &   <?php cvtx_antrag($item); ?> (<?php cvtx_top_titel($item); ?>)    \\
+                                        &                                                                     \\
 <?php if (cvtx_has_info($item)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($item); ?>                                        \\
-                                                     &                                                                     \\
+    <?php _e('Remarks', 'cvtx'); ?>:    &   <?php cvtx_info($item); ?>                                        \\
+                                        &                                                                     \\
 <?php } ?>
     \hline
 \end{tabularx}
 
+% Amendment Title
 \section*{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
 
+% Add Bookmarks and Reference for Table of Contents
+<?php   // Update agenda item if changed
+        $this_antrag = get_post_meta($item->ID, 'cvtx_aeantrag_antrag', true);
+        $this_top    = get_post_meta($this_antrag, 'cvtx_antrag_top', true);
+        if ($top != $this_top) {
+            $top  = $this_top;
+?>
+            \addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
+<?php   }
+        // Update resolution if changed
+        if ($antrag != $this_antrag) {
+            $antrag  = $this_antrag;
+?>
+            \addcontentsline{toc}{section}{<?php cvtx_antrag($item); ?>}
+<?php   } ?>
+\addcontentsline{toc}{subsection}{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
+
+% Amendment Text
 \begin{linenumbers}
 \setcounter{linenumber}{1}
 <?php cvtx_antragstext($item); ?>
 \end{linenumbers}
 
+% Explanation
 <?php if (cvtx_has_begruendung($item)) { ?>
     \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
     <?php cvtx_begruendung($item); ?>
 <?php } ?>
 
+% Author(s)
 \subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
 <?php cvtx_antragsteller($item); ?>
+
+
 <?php
     }
 }
