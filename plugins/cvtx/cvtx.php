@@ -221,7 +221,7 @@ function cvtx_init() {
         $cvtx_purifier        = $html_purifier->get_purifier();
         $cvtx_purifier_config = HTMLPurifier_Config::createDefault();
         $cvtx_purifier_config->set('HTML.Doctype', 'XHTML 1.1');
-        $cvtx_purifier_config->set('HTML.Allowed', 'strong,b,em,i,h1,h2,h3,h4,ul,ol,li,br,p,del,ins,code,span[style]');
+        $cvtx_purifier_config->set('HTML.Allowed', 'strong,b,em,i,h1,h2,h3,h4,ul,ol,li,br,p,del,ins,code,span[style],a[href]');
         $cvtx_purifier_config->set('CSS.AllowedProperties', 'text-decoration');
     }
 }
@@ -717,6 +717,7 @@ function cvtx_create_pdf($post_id, $post = null) {
                 exec($cmd);
                 // if reader is generated: run it twice to build toc etc.
                 if ($post->post_type == 'cvtx_reader') {
+                    exec($cmd);
                     exec($cmd);
                 }
                 
