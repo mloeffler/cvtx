@@ -188,13 +188,9 @@ function cvtx_submit_antrag($show_recaptcha = true) {
         if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php') || $resp->is_valid) {
             // check whether the required fields have been submitted
             if(!empty($cvtx_antrag_title) && !empty($cvtx_antrag_text) && !empty($cvtx_antrag_steller) && !empty($cvtx_antrag_email) && !empty($cvtx_antrag_phone)) {
-                // Sanitize content using HTMLPurifier-plugin
-                if (is_plugin_active('html-purified/html-purified.php')) {
-                    global $cvtx_purifier, $cvtx_purifier_config;
-                    // Purify resolution text and meta fields
-                    $cvtx_antrag_text  = $cvtx_purifier->purify($cvtx_antrag_text,  $cvtx_purifier_config);
-                    $cvtx_antrag_grund = $cvtx_purifier->purify($cvtx_antrag_grund, $cvtx_purifier_config);
-                }
+                // Apply content filters
+                $cvtx_antrag_text  = apply_filters('the_content', $cvtx_antrag_text);
+                $cvtx_antrag_grund = apply_filters('the_content', $cvtx_antrag_grund);
                 
                 // create an array which holds all data about the antrag
                 $antrag_data = array(
@@ -208,12 +204,12 @@ function cvtx_submit_antrag($show_recaptcha = true) {
                     'post_status'         => 'pending',
                     'post_author'         => get_option('cvtx_anon_user'),
                     'post_type'           => 'cvtx_antrag');
+                
                 // submit the post
                 if ($antrag_id = wp_insert_post($antrag_data)) {
                     echo('<p id="message" class="success">'.__('The resolution has been created but it is not published yet.', 'cvtx').'</p>');
                     $erstellt = true;
-                }
-                else {
+                } else {
                     echo('<p id="message" class="error">'.__('Resolution could not be saved. God knows why.', 'cvtx').'</p>');
                 }
             }
@@ -357,14 +353,11 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true)
             // check whethter the required fields have been set
             if (!empty($cvtx_aeantrag_zeile) && !empty($cvtx_aeantrag_text) && !empty($cvtx_aeantrag_steller)
              && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email) && !empty($cvtx_aeantrag_phone)) {
-                // Sanitize content using HTMLPurifier-plugin
-                if (is_plugin_active('html-purified/html-purified.php')) {
-                    global $cvtx_purifier, $cvtx_purifier_config;
-                    // Purify resolution text and meta fields
-                    $cvtx_aeantrag_text  = $cvtx_purifier->purify($cvtx_aeantrag_text,  $cvtx_purifier_config);
-                    $cvtx_aeantrag_grund = $cvtx_purifier->purify($cvtx_aeantrag_grund, $cvtx_purifier_config);
-                }
+                // Apply content filters
+                $cvtx_aeantrag_text  = apply_filters('the_content', $cvtx_aeantrag_text);
+                $cvtx_aeantrag_grund = apply_filters('the_content', $cvtx_aeantrag_grund);
                 
+                // create an array which holds all data about the amendment
                 $aeantrag_data = array(
                     'cvtx_aeantrag_steller' => $cvtx_aeantrag_steller,
                     'cvtx_aeantrag_antrag'  => $cvtx_aeantrag_antrag,
@@ -377,12 +370,12 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true)
                     'post_content'          => $cvtx_aeantrag_text,
                     'post_type'             => 'cvtx_aeantrag',
                 );
+                
                 // submit the post!
                 if($antrag_id = wp_insert_post($aeantrag_data)) {
                     echo('<p id="message" class="success">'.__('The amendment has been created but it is not published yet.', 'cvtx').'</p>');
                     $erstellt = true;
-                }
-                else {
+                } else {
                     echo('<p id="message" class="error">'.__('Amendment could not be saved. '
                         .'Please dance around the table and try again with the computer in a '
                         .'different position.', 'cvtx').'</p>');

@@ -830,7 +830,7 @@ function cvtx_the_title($before='', $after='') {
 
 add_filter('the_content', 'cvtx_the_content', 20);
 /**
- * Sanitizes the content of 
+ * Sanitizes the content of resolutions and amendments
  */
 function cvtx_the_content($content) {
     global $post;
@@ -841,6 +841,8 @@ function cvtx_the_content($content) {
         global $cvtx_purifier, $cvtx_purifier_config;
         // Purify resolution text and meta fields
         $content = $cvtx_purifier->purify($content,  $cvtx_purifier_config);
+        // Restrict use of headline tags
+        $content = preg_replace('/(<[\/]?h)[12]>/i', '${1}3>', $content);
     }
 
     // Returns the content.

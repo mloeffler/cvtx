@@ -12,12 +12,8 @@
  * @return formatted output
  */
 function cvtx_get_latex($out, $strip_nl = false) {
-    // Sanitize content using HTMLPurifier-plugin
-    if (is_plugin_active('html-purified/html-purified.php')) {
-        global $cvtx_purifier, $cvtx_purifier_config;
-        // Purify resolution text and meta fields
-        $out = $cvtx_purifier->purify($out,  $cvtx_purifier_config);
-    }
+    // Apply content filters
+    $out = apply_filters('the_content', $out);
     
     // strip html entities
     $out = html_entity_decode($out);
