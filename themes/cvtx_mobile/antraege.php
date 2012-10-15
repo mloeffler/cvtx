@@ -69,7 +69,7 @@
           <strong><?php print __('Author(s)', 'cvtx_theme'); ?>:</strong>
           <?php print get_post_meta($post->ID,'cvtx_antrag_steller_short',true);?>
         </span>
-        <span class="ui-li-count"><?php echo get_aeantrag_count($post->ID); ?></span>
+        <span class="ui-li-count"><?php echo cvtx_get_amendment_count($post->ID); ?></span>
         <div class="clear-block"></div></li>
       <?php endwhile;?>
       <?php if($loop2->have_posts()) print '</ul>';?>
