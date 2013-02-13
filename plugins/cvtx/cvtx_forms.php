@@ -98,8 +98,8 @@ function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '',
        <input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" class="required" value="<?php echo($cvtx_antrag_email); ?>" size="70" /><br/>
       </div>
       <div class="form-item">
-       <label for="cvtx_antrag_phone"><?php _e('Mobile number', 'cvtx'); ?>: <span class="form-required" title="<?php _e('This field is mandatory', 'cvtx'); ?>">*</span></label> (<?php _e('will not be published', 'cvtx'); ?>)<br/>
-       <input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" class="required" value="<?php echo($cvtx_antrag_phone); ?>" size="70" /><br/>
+       <label for="cvtx_antrag_phone"><?php _e('Mobile number', 'cvtx'); ?>: <?php echo (get_option('cvtx_phone_required', true) == true ? '<span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')' : '</label>'); ?> <br/>
+       <input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" <?php echo (get_option('cvtx_phone_required', true) ? 'class="required"' : ''); ?> value="<?php echo($cvtx_antrag_phone); ?>" size="70" /><br/>
       </div>
       <?php
       $cvtx_privacy_message = get_option('cvtx_privacy_message');
@@ -256,16 +256,16 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
       <div class="legend"><h3><?php _e('Author(s)', 'cvtx'); ?></h3></div>
       <div class="form-group">
        <div class="form-item">
-        <label for="cvtx_aeantrag_steller"><?php _e('Author(s)', 'cvtx'); ?>: <span class="form-required" title="<?php _e('This field is mandatory', 'cvtx'); ?>">*</span></label><br/>
-        <textarea id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" class="required" size="100%" cols="50" rows="5" /><?php echo($cvtx_aeantrag_steller); ?></textarea><br/>
+          <label for="cvtx_aeantrag_steller"><?php _e('Author(s)', 'cvtx'); ?>: <span class="form-required" title="<?php _e('This field is mandatory', 'cvtx'); ?>">*</span></label><br/>
+          <textarea id="cvtx_aeantrag_steller" name="cvtx_aeantrag_steller" class="required" size="100%" cols="50" rows="5" /><?php echo($cvtx_aeantrag_steller); ?></textarea><br/>
        </div>
        <div class="form-item">
-        <label for="cvtx_aeantrag_email"><?php _e('e-mail address', 'cvtx'); ?>: <span class="form-required" title="<?php _e('This field is mandatory', 'cvtx'); ?>">*</span></label> (<?php _e('will not be published', 'cvtx'); ?>)<br/>
-        <input type="text" id="cvtx_aeantrag_email" name="cvtx_aeantrag_email" class="required" value="<?php echo($cvtx_aeantrag_email); ?>" size="70" /><br/>
+          <label for="cvtx_aeantrag_email"><?php _e('e-mail address', 'cvtx'); ?>: <span class="form-required" title="<?php _e('This field is mandatory', 'cvtx'); ?>">*</span></label> (<?php _e('will not be published', 'cvtx'); ?>)<br/>
+          <input type="text" id="cvtx_aeantrag_email" name="cvtx_aeantrag_email" class="required" value="<?php echo($cvtx_aeantrag_email); ?>" size="70" /><br/>
        </div>
        <div class="form-item">
-        <label for="cvtx_aeantrag_phone"><?php _e('mobile number', 'cvtx'); ?>: <span class="form-required" title="<?php _e('This field is mandatory', 'cvtx'); ?>">*</span></label> (<?php _e('will not be published', 'cvtx'); ?>)<br/>
-        <input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" class="required" value="<?php echo($cvtx_aeantrag_phone); ?>" size="70" /><br/>
+         <label for="cvtx_aeantrag_phone"><?php _e('Mobile number', 'cvtx'); ?>: <?php echo (get_option('cvtx_phone_required', true) == true ? '<span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')' : '</label>'); ?> <br/>
+         <input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" <?php echo (get_option('cvtx_phone_required', true) ? 'class="required"' : ''); ?> value="<?php echo($cvtx_aeantrag_phone); ?>" size="70" /><br/>
        </div>
        <?php
        $cvtx_privacy_message = get_option('cvtx_privacy_message');
