@@ -47,7 +47,10 @@
 <?php
 $top    = 0;
 $antrag = 0;
-$query  = new WP_Query(array('taxonomy'    => 'cvtx_tax_reader',
+$query  = new WP_Query(array('post_type'   => array('cvtx_antrag',
+                                                    'cvtx_aeantrag',
+                                                    'cvtx_application'),
+                             'taxonomy'    => 'cvtx_tax_reader',
                              'term'        => 'cvtx_reader_'.intval($post->ID),
                              'orderby'     => 'meta_value',
                              'meta_key'    => 'cvtx_sort',
@@ -221,6 +224,5 @@ while ($query->have_posts()) {
     }
 }
 ?>
-
 
 \end{document}

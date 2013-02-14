@@ -100,7 +100,7 @@ foreach ($resos as $resolution) {
     \multicolumn{1}{c|}{\textbf{<?php _e('Procedure', 'cvtx'); ?>}}   \\
     \hline
     \hline
-<?    
+<?php
         while ($loop->have_posts()) {
             $loop->the_post();
             $amendment = get_post(get_the_ID());
@@ -108,19 +108,15 @@ foreach ($resos as $resolution) {
     <?php cvtx_kuerzel($amendment); ?>                       &
     <?php cvtx_antragsteller_kurz($amendment); ?>            &
     <?php cvtx_antragstext($amendment); ?>                   &
-<?php
-
-cvtx_amendment_procedure($amendment);
-if (cvtx_amendment_procedure_has_details($amendment)) {
-    echo("\\vspace{2pt}\n");
-    cvtx_amendment_procedure_details($amendment);
-}
-    
-?>   \\
+    <?php
+    cvtx_amendment_procedure($amendment);
+    if (cvtx_amendment_procedure_has_details($amendment)) {
+        echo("\\vspace{2pt}\n");
+        cvtx_amendment_procedure_details($amendment);
+    }
+    ?>   \\
     \hline
-<?
-        }
-?>
+<?php   } ?>
 \end{tabularx}
 
 <?php

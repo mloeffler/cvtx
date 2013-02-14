@@ -166,12 +166,15 @@ function cvtx_reader_action($post_id = false) {
     else $post = get_post($post_id);
     if (is_object($post)) {
         $items = array();
-        $query = new WP_Query(array('taxonomy' => 'cvtx_tax_reader',
-                                    'term'     => 'cvtx_reader_'.intval($post->ID),
-                                    'orderby'  => 'meta_value',
-                                    'meta_key' => 'cvtx_sort',
-                                    'order'    => 'ASC',
-                                    'nopaging' => true));
+        $query = new WP_Query(array('post_type' => array('cvtx_antrag',
+                                                         'cvtx_aeantrag',
+                                                         'cvtx_application'),
+                                    'taxonomy'  => 'cvtx_tax_reader',
+                                    'term'      => 'cvtx_reader_'.intval($post->ID),
+                                    'orderby'   => 'meta_value',
+                                    'meta_key'  => 'cvtx_sort',
+                                    'order'     => 'ASC',
+                                    'nopaging'  => true));
         while ($query->have_posts()) {
             $query->the_post();
             $items[] = $post->ID;

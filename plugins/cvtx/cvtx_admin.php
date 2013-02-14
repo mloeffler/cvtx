@@ -73,15 +73,17 @@ function cvtx_reader_meta() {
 
     // fetch info
     $style = get_post_meta($post->ID, 'cvtx_reader_style', true);
-    $book  = ($style == 'book'  || !$style ? 'checked="checked"' : '');
-    $table = ($style == 'table'            ? 'checked="checked"' : '');
+    $book  = ($style == 'book'  || !$style ? 'checked="checked"' : '') || true;     // BUGGY!
+    $table = ($style == 'table'            ? 'checked="checked"' : '') && false;    // BUGGY!
     
     // output    
     echo(__('Create PDF as', 'cvtx').'<br />');
     echo('<input name="cvtx_reader_style" id="cvtx_reader_style_book" value="book" type="radio" '.$book.' /> ');
     echo('<label for="cvtx_reader_style_book">'.__('book', 'cvtx').'</label><br />');
+    /*
     echo('<input name="cvtx_reader_style" id="cvtx_reader_style_table" value="table" type="radio" '.$table.' /> ');
     echo('<label for="cvtx_reader_style_table">'.__('table of amendments', 'cvtx').'</label>');
+    */
 }
 
 
@@ -93,12 +95,15 @@ function cvtx_reader_contents() {
     
     // get objects in reder term
     $items = array();
-    $query = new WP_Query(array('taxonomy' => 'cvtx_tax_reader',
-                                'term'     => 'cvtx_reader_'.intval($reader_id),
-                                'orderby'  => 'meta_value',
-                                'meta_key' => 'cvtx_sort',
-                                'order'    => 'ASC',
-                                'nopaging' => true));
+    $query = new WP_Query(array('post_type' => array('cvtx_antrag',
+                                                     'cvtx_aeantrag',
+                                                     'cvtx_application'),
+                                'taxonomy'  => 'cvtx_tax_reader',
+                                'term'      => 'cvtx_reader_'.intval($reader_id),
+                                'orderby'   => 'meta_value',
+                                'meta_key'  => 'cvtx_sort',
+                                'order'     => 'ASC',
+                                'nopaging'  => true));
     while ($query->have_posts()) {
         $query->the_post();
         $items[] = $post->ID;
@@ -1603,7 +1608,7 @@ function cvtx_show_pending_number($menu) {
 /**
  * Add a cvtx-item to the wp_admin_bar
  */
-function cvtx_admin_bar_render(){
+function cvtx_admin_bar_render() {
     global $wp_admin_bar;
     // Parent, directs to the cvtx-config-page
     $wp_admin_bar->add_menu(array(
@@ -1665,6 +1670,7 @@ function cvtx_admin_bar_render(){
 }
 add_action('wp_before_admin_bar_render', 'cvtx_admin_bar_render');
 
+
 /**
  * Return all posts of a specified type, which are either pending or draft
  * @param $type
@@ -1673,4 +1679,5 @@ function cvtx_get_pending($type) {
     $count = wp_count_posts($type);
     return $count->pending + $count->draft;
 }
+
 ?>

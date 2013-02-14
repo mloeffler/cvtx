@@ -333,7 +333,7 @@ function cvtx_insert_post($post_id, $post = null) {
             $terms = explode(', ', get_option('cvtx_default_reader_aeantrag'));
         }
         // Update/insert reader taxonomy
-        else if ($post->post_type == 'cvtx_reader' & isset($_POST['cvtx_post_ids'])) {
+        else if ($post->post_type == 'cvtx_reader') {
             // Add term if new reader is created
             if (!term_exists('cvtx_reader_'.$post_id, 'cvtx_tax_reader')) {
                 wp_insert_term('cvtx_reader_'.$post_id, 'cvtx_tax_reader');
@@ -341,12 +341,15 @@ function cvtx_insert_post($post_id, $post = null) {
             
             // get all previously selected posts for this reader term
             $old   = array();
-            $query = new WP_Query(array('taxonomy' => 'cvtx_tax_reader',
-                                        'term'     => 'cvtx_reader_'.intval($post_id),
-                                        'orderby'  => 'meta_value',
-                                        'meta_key' => 'cvtx_sort',
-                                        'order'    => 'ASC',
-                                        'nopaging' => true));
+            $query = new WP_Query(array('post_type' => array('cvtx_antrag',
+                                                             'cvtx_aeantrag',
+                                                             'cvtx_application'),
+                                        'taxonomy'  => 'cvtx_tax_reader',
+                                        'term'      => 'cvtx_reader_'.intval($post_id),
+                                        'orderby'   => 'meta_value',
+                                        'meta_key'  => 'cvtx_sort',
+                                        'order'     => 'ASC',
+                                        'nopaging'  => true));
             while ($query->have_posts()) {
                 $query->the_post();
                 $old[] = get_the_ID();
