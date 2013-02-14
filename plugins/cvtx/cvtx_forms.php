@@ -187,7 +187,7 @@ function cvtx_submit_antrag($show_recaptcha = true) {
         }
         if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php') || $resp->is_valid) {
             // check whether the required fields have been submitted
-            if(!empty($cvtx_antrag_title) && !empty($cvtx_antrag_text) && !empty($cvtx_antrag_steller) && !empty($cvtx_antrag_email) && !empty($cvtx_antrag_phone)) {
+            if(!empty($cvtx_antrag_title) && !empty($cvtx_antrag_text) && !empty($cvtx_antrag_steller) && !empty($cvtx_antrag_email)) {
                 // Apply content filters
                 $cvtx_antrag_text  = apply_filters('the_content', $cvtx_antrag_text);
                 $cvtx_antrag_grund = apply_filters('the_content', $cvtx_antrag_grund);
@@ -352,7 +352,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true)
         if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php') || $resp->is_valid) {
             // check whethter the required fields have been set
             if (!empty($cvtx_aeantrag_zeile) && !empty($cvtx_aeantrag_text) && !empty($cvtx_aeantrag_steller)
-             && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email) && !empty($cvtx_aeantrag_phone)) {
+             && !empty($cvtx_aeantrag_antrag) && !empty($cvtx_aeantrag_email)) {
                 // Apply content filters
                 $cvtx_aeantrag_text  = apply_filters('the_content', $cvtx_aeantrag_text);
                 $cvtx_aeantrag_grund = apply_filters('the_content', $cvtx_aeantrag_grund);
