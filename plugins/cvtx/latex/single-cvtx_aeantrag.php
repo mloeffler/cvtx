@@ -18,7 +18,7 @@
 \sloppy
 
 \pagestyle{scrheadings}
-\ohead{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($post); ?>}
+\ohead{<?php cvtx_get_latex(__('Amendment', 'cvtx')); ?> <?php cvtx_kuerzel($post); ?>}
 \setheadsepline{0.4pt}
 
 \begin{document}
@@ -37,32 +37,32 @@
 \newcommand*\adjust{\setlength\hsize{\textwidth-2\tabcolsep}}
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                          &                                                                     \\
-    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}                               \\
-                                          &                                                                     \\
-    <?php _e('Author(s)', 'cvtx'); ?>:    &   <?php cvtx_antragsteller_kurz($post); ?>                          \\
-                                          &                                                                     \\
-    <?php _e('Concerning', 'cvtx'); ?>:   &   <?php cvtx_antrag($post); ?> (<?php cvtx_top_titel($post); ?>)    \\
-                                          &                                                                     \\
+                                                        &                                                                     \\
+    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}                                             \\
+                                                        &                                                                     \\
+    <?php cvtx_get_latex(__('Author(s)', 'cvtx')); ?>:  &   <?php cvtx_antragsteller_kurz($post); ?>                          \\
+                                                        &                                                                     \\
+    <?php cvtx_get_latex(__('Concerning', 'cvtx')); ?>: &   <?php cvtx_antrag($post); ?> (<?php cvtx_top_titel($post); ?>)    \\
+                                                        &                                                                     \\
 <?php if (cvtx_has_info($post)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:      &   <?php cvtx_info($post); ?>                                        \\
-                                          &                                                                     \\
+    <?php cvtx_get_latex(__('Remarks', 'cvtx')); ?>:    &   <?php cvtx_info($post); ?>                                        \\
+                                                        &                                                                     \\
 <?php } ?>
     \hline
 \end{tabularx}
 
-\section*{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($post); ?>}
+\section*{<?php cvtx_get_latex(__('Amendment', 'cvtx')); ?> <?php cvtx_kuerzel($post); ?>}
 
 \begin{linenumbers}
 <?php cvtx_antragstext($post); ?>
 \end{linenumbers}
 
 <?php if (cvtx_has_begruendung($post)) { ?>
-    \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
+    \subsection*{<?php cvtx_get_latex(__('Explanation', 'cvtx')); ?>}
     <?php cvtx_begruendung($post); ?>
 <?php } ?>
 
-\subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
+\subsection*{<?php cvtx_get_latex(__('Author(s)', 'cvtx')); ?>}
 <?php cvtx_antragsteller($post); ?>
 
 \end{document}

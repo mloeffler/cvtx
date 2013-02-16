@@ -35,16 +35,16 @@
 
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                     &                                              \\
-    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}    &                                              \\
-                                                     &                                              \\
-    <?php _e('Author(s)', 'cvtx'); ?>:               &   <?php cvtx_antragsteller_kurz($post); ?>   \\
-                                                     &                                              \\
-    <?php _e('Concerning', 'cvtx'); ?>:              &   <?php cvtx_top($post); ?>                  \\
-                                                     &                                              \\
+                                                        &                                              \\
+    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}       &                                              \\
+                                                        &                                              \\
+    <?php cvtx_get_latex(__('Author(s)', 'cvtx')); ?>:  &   <?php cvtx_antragsteller_kurz($post); ?>   \\
+                                                        &                                              \\
+    <?php cvtx_get_latex(__('Concerning', 'cvtx')); ?>: &   <?php cvtx_top($post); ?>                  \\
+                                                        &                                              \\
 <?php if (cvtx_has_info($post)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:                 &   <?php cvtx_info($post); ?>                 \\
-                                                     &                                              \\
+    <?php cvtx_get_latex(__('Remarks', 'cvtx')); ?>:    &   <?php cvtx_info($post); ?>                 \\
+                                                        &                                              \\
 <?php } ?>
     \hline
 \end{tabularx}
@@ -56,11 +56,11 @@
 \end{linenumbers}
 
 <?php if (cvtx_has_begruendung($post)) { ?>
-    \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
+    \subsection*{<?php cvtx_get_latex(__('Explanation', 'cvtx')); ?>}
     <?php cvtx_begruendung($post); ?>
 <?php } ?>
 
-\subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
+\subsection*{<?php cvtx_get_latex(__('Author(s)', 'cvtx')); ?>}
 <?php cvtx_antragsteller($post); ?>
 
 \end{document}

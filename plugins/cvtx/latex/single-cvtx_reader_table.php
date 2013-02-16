@@ -26,7 +26,7 @@
 
 \subject{<?php cvtx_name(); ?>\\ <?php cvtx_beschreibung(); ?>}
 \title{<?php cvtx_titel($post); ?>}
-\date{<?php _e('This version', 'cvtx'); ?>: \today}
+\date{<?php cvtx_get_latex(__('This version', 'cvtx')); ?>: \today}
 \author{}
 
 \begin{document}
@@ -92,12 +92,12 @@ foreach ($resos as $resolution) {
     \hline
     \multicolumn{4}{|l|}{}   \\
     \multicolumn{4}{|l|}{\textbf{\LARGE <?php cvtx_kuerzel($reso); ?> \large <?php cvtx_titel($reso); ?>}}   \\
-    \multicolumn{4}{|l|}{<?php _e('Author(s)', 'cvtx'); echo(': '); cvtx_antragsteller_kurz($reso); ?>}   \\
+    \multicolumn{4}{|l|}{<?php cvtx_get_latex(__('Author(s)', 'cvtx')); echo(': '); cvtx_antragsteller_kurz($reso); ?>}   \\
     \multicolumn{4}{|l|}{}   \\
-    \multicolumn{1}{|c}{\textbf{<?php _e('Line', 'cvtx'); ?>}}        &
-    \multicolumn{1}{c} {\textbf{<?php _e('Author(s)', 'cvtx'); ?>}}   &
-    \multicolumn{1}{c} {\textbf{<?php _e('Amendment', 'cvtx'); ?>}}   &
-    \multicolumn{1}{c|}{\textbf{<?php _e('Procedure', 'cvtx'); ?>}}   \\
+    \multicolumn{1}{|c}{\textbf{<?php cvtx_get_latex(__('Line', 'cvtx')); ?>}}        &
+    \multicolumn{1}{c} {\textbf{<?php cvtx_get_latex(__('Author(s)', 'cvtx')); ?>}}   &
+    \multicolumn{1}{c} {\textbf{<?php cvtx_get_latex(__('Amendment', 'cvtx')); ?>}}   &
+    \multicolumn{1}{c|}{\textbf{<?php cvtx_get_latex(__('Procedure', 'cvtx')); ?>}}   \\
     \hline
     \hline
 <?php
