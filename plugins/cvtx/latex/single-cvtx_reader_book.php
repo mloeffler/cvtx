@@ -29,7 +29,7 @@
 % Document Information
 \subject{<?php cvtx_name(); ?>\\ <?php cvtx_beschreibung(); ?>}
 \title{<?php cvtx_titel($post); ?>}
-\date{<?php _e('This version', 'cvtx'); ?>: \today}
+\date{<?php cvtx_print_latex(__('This version', 'cvtx')); ?>: \today}
 \author{}
 
 \begin{document}
@@ -81,16 +81,16 @@ while ($query->have_posts()) {
 % Info Box
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                                      &                                              \\
-    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}     &                                              \\
-                                                      &                                              \\
-    <?php _e('Author(s)', 'cvtx'); ?>:                &   <?php cvtx_antragsteller_kurz($item); ?>   \\
-                                                      &                                              \\
-    <?php _e('Concerning', 'cvtx'); ?>:               &   <?php cvtx_top($item); ?>                  \\
-                                                      &                                              \\
+                                                            &                                              \\
+    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}           &                                              \\
+                                                            &                                              \\
+    <?php cvtx_print_latex(__('Author(s)', 'cvtx')); ?>:    &   <?php cvtx_antragsteller_kurz($item); ?>   \\
+                                                            &                                              \\
+    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_top($item); ?>                  \\
+                                                            &                                              \\
 <?php if (cvtx_has_info($item)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:                  &   <?php cvtx_info($item); ?>                 \\
-                                                      &                                              \\
+    <?php cvtx_print_latex(__('Remarks', 'cvtx')); ?>:      &   <?php cvtx_info($item); ?>                 \\
+                                                            &                                              \\
 <?php } ?>
     \hline
 \end{tabularx}
@@ -116,12 +116,12 @@ while ($query->have_posts()) {
 
 % Explanation
 <?php if (cvtx_has_begruendung($item)) { ?>
-   \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
+   \subsection*{<?php cvtx_print_latex(__('Explanation', 'cvtx')); ?>}
    <?php cvtx_begruendung($item); ?>
 <?php } ?>
 
 % Author(s)
-\subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
+\subsection*{<?php cvtx_print_latex(__('Author(s)', 'cvtx')); ?>}
 <?php cvtx_antragsteller($item); ?>
 
 <?php
@@ -134,7 +134,7 @@ while ($query->have_posts()) {
 \newpage
 
 % Define Headline Text
-\ohead{<?php _e('Application', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+\ohead{<?php cvtx_print_latex(__('Application', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
 % Add Bookmarks and Reference for Table of Contents
 <?php   // Update agenda item if changed
@@ -144,7 +144,7 @@ while ($query->have_posts()) {
 ?>
             \addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
 <?php   } ?>
-\addcontentsline{toc}{section}{<?php _e('Application ', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+\addcontentsline{toc}{section}{<?php cvtx_print_latex(__('Application ', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
 \includepdf[pages=-, pagecommand={\thispagestyle{scrheadings}}, offset=-1.5em 2em, width=1.15\textwidth]{<?php cvtx_application_file($item); ?>}
 
@@ -158,7 +158,7 @@ while ($query->have_posts()) {
 \newpage
 % Hide Headline and Show Page Number on This Page, Define Headline Text
 \thispagestyle{plain}
-\ohead{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
+\ohead{<?php cvtx_print_latex(__('Amendment', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?>}
 
 % Site Title and Subtitle
 \begin{flushright}
@@ -169,22 +169,22 @@ while ($query->have_posts()) {
 % Info Box
 \begin{tabularx}{\textwidth}{|lX|}
     \hline
-                                        &                                                                     \\
-    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($item); ?>}}                             \\
-                                        &                                                                     \\
-    <?php _e('Author(s)', 'cvtx'); ?>:  &   <?php cvtx_antragsteller_kurz($item); ?>                          \\
-                                        &                                                                     \\
-    <?php _e('Concerning', 'cvtx'); ?>: &   <?php cvtx_antrag($item); ?> (<?php cvtx_top_titel($item); ?>)    \\
-                                        &                                                                     \\
+                                                            &                                                                     \\
+    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($item); ?>}}                                                 \\
+                                                            &                                                                     \\
+    <?php cvtx_print_latex(__('Author(s)', 'cvtx')); ?>:    &   <?php cvtx_antragsteller_kurz($item); ?>                          \\
+                                                            &                                                                     \\
+    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_antrag($item); ?> (<?php cvtx_top_titel($item); ?>)    \\
+                                                            &                                                                     \\
 <?php if (cvtx_has_info($item)) { ?>
-    <?php _e('Remarks', 'cvtx'); ?>:    &   <?php cvtx_info($item); ?>                                        \\
-                                        &                                                                     \\
+    <?php cvtx_print_latex(__('Remarks', 'cvtx')); ?>:      &   <?php cvtx_info($item); ?>                                        \\
+                                                            &                                                                     \\
 <?php } ?>
     \hline
 \end{tabularx}
 
 % Amendment Title
-\section*{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
+\section*{<?php cvtx_print_latex(__('Amendment', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?>}
 
 % Add Bookmarks and Reference for Table of Contents
 <?php   // Update agenda item if changed
@@ -201,7 +201,7 @@ while ($query->have_posts()) {
 ?>
             \addcontentsline{toc}{section}{<?php cvtx_antrag($item); ?>}
 <?php   } ?>
-\addcontentsline{toc}{subsection}{<?php _e('Amendment', 'cvtx'); ?> <?php cvtx_kuerzel($item); ?>}
+\addcontentsline{toc}{subsection}{<?php cvtx_print_latex(__('Amendment', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?>}
 
 % Amendment Text
 \begin{linenumbers}
@@ -211,12 +211,12 @@ while ($query->have_posts()) {
 
 % Explanation
 <?php if (cvtx_has_begruendung($item)) { ?>
-    \subsection*{<?php _e('Explanation', 'cvtx'); ?>}
+    \subsection*{<?php cvtx_print_latex(__('Explanation', 'cvtx')); ?>}
     <?php cvtx_begruendung($item); ?>
 <?php } ?>
 
 % Author(s)
-\subsection*{<?php _e('Author(s)', 'cvtx'); ?>}
+\subsection*{<?php cvtx_print_latex(__('Author(s)', 'cvtx')); ?>}
 <?php cvtx_antragsteller($item); ?>
 
 

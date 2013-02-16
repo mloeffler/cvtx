@@ -92,6 +92,10 @@ function cvtx_get_latex($out, $strip_nl = false) {
  * LaTeX Template Functions
  ************************************************************************************/
 
+function cvtx_print_latex($out, $strip_nl = false) {
+    echo(cvtx_get_latex($out, $strip_nl));
+}
+
 function cvtx_name($strip_nl = false) {
     echo(cvtx_get_latex(get_bloginfo('name'), $strip_nl));
 }
