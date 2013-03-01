@@ -26,7 +26,7 @@
 					</small>
 				</p>
 				<?php do_action('cvtx_theme_aenderungsantraege'); ?>
-		        <?php do_action('cvtx_theme_add_aeantrag'); ?>
+		    <?php do_action('cvtx_theme_add_aeantrag'); ?>
 			</div>
 		<?php endwhile; else: ?>
 		<p><?php _e('Es konnten leider keine Einträge gefunden werden!', 'cvtx'); ?></p>

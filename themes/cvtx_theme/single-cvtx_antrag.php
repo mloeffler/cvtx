@@ -26,7 +26,7 @@
 					</small>
 				</p>
 				<?php do_action('cvtx_theme_aenderungsantraege'); ?>
-		        <?php do_action('cvtx_theme_add_aeantrag'); ?>
+		    <?php do_action('cvtx_theme_add_aeantrag'); ?>
 			</div>
 		<?php endwhile; else: ?>
 		<p><?php _e('There are no posts matching your search criteria. Sorry!', 'cvtx_theme'); ?></p>

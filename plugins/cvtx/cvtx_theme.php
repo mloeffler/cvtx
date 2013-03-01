@@ -119,7 +119,7 @@ function cvtx_add_aeantrag_action($args = array('post_id' => false, 'show_recapt
     if (is_object($post)) {
         echo('<div id="add_aeantrag">');
         printf(__('<h3>Create amendment to %s</h3>', 'cvtx'), cvtx_get_short($post));
-        cvtx_submit_aeantrag($post->ID, (isset($args) && is_array($args) && isset($args['show_recaptcha']) ? $args['show_recaptcha'] : false));
+        cvtx_submit_aeantrag($post->ID, (isset($args) && is_array($args) && isset($args['show_recaptcha']) ? $args['show_recaptcha'] : true));
         echo('</div>');
     }
 }
