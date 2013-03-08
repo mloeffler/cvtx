@@ -17,6 +17,7 @@ License: GPLv2 or later
 // DEBUG
 require_once(ABSPATH.'wp-includes/pluggable.php');
 require_once(ABSPATH.'wp-admin/includes/plugin.php');
+require_once(ABSPATH . 'wp-admin/includes/image.php');
 
 define('CVTX_VERSION', '0.2');
 define('CVTX_PLUGIN_FILE', plugin_basename(__FILE__));
@@ -64,12 +65,24 @@ $cvtx_types = array('cvtx_reader'   => array('cvtx_reader_style'),
                                              'cvtx_sort',
                                              'cvtx_application_top',
                                              'cvtx_application_email',
-                                             'cvtx_application_phone'));
+                                             'cvtx_application_phone',
+                                             'cvtx_application_prename',
+                                             'cvtx_application_surname',
+                                             'cvtx_application_photo',
+                                             'cvtx_application_cv',
+                                             'cvtx_application_photo_thumb'));
 
 // Used MIME types
 $cvtx_mime_types = array('pdf' => 'application/pdf',
                          'tex' => 'application/x-latex',
                          'log' => 'text/plain');
+
+// Allowed image MIME types                                  
+    $cvtx_allowed_image_types = array('jpg'  => 'image/jpeg',
+                                      'jpeg' => 'image/jpeg',
+                                      'png'  => 'image/png',
+                                      'tiff' => 'image/tiff',
+                                      'tif'  => 'image/tiff');
 
 // HTML Purifier Instance / Configuration
 $cvtx_purifier = null;
@@ -164,7 +177,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'rewrite'     => array('slug' => __('applications (slug)', 'cvtx')),
-        'supports'    => array('title'),
+        'supports'    => array('editor'),
         )
     );
 
@@ -259,6 +272,7 @@ add_action('wp_insert_post', 'cvtx_insert_post', 10, 2);
  */
 function cvtx_insert_post($post_id, $post = null) {
     global $cvtx_types;
+    global $cvtx_allowed_image_types;
 
     if (in_array($post->post_type, array_keys($cvtx_types))) {
         $terms = array();
@@ -399,15 +413,16 @@ function cvtx_insert_post($post_id, $post = null) {
             
             /* DAS IST NOCH IMMER EHER QUICK UND DIRTY */
             if ($post->post_status != 'auto-draft') {
-                // get old filename
+                // get old filenames
                 $old_file = cvtx_get_file($post, 'pdf', 'dir');
+                $old_photo = cvtx_get_file($post, 'application_photo', 'dir');
                 // generate file name
                 $out_dir = wp_upload_dir();
                 // generate short (BUGGY!!!)
                 $top  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_short', true);
                 // format
                 $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
-                                                                        __('%resolution%', 'cvtx')   => $_POST['cvtx_application_ord']));
+                                                                        __('%resolution%', 'cvtx')   => $appl_ord));
                 if (!empty($top) && !empty($_POST['cvtx_application_ord'])) $short = $format;
                 
                 // application published?
@@ -418,6 +433,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 else {
                     $filename = $out_dir['path'].'/'.$post->ID.'.pdf';
                 }
+                $filename_photo = $out_dir['path'].'/'.$post->ID.'_photo.jpg';
                 
                 // configure attachment
                 $attachment = array('post_mime_type' => 'application/pdf',
@@ -425,7 +441,12 @@ function cvtx_insert_post($post_id, $post = null) {
                                     'post_content'   => '',
                                     'post_status'    => 'inherit',
                                     'post_parent'    => $post->ID);
-    
+                $attach_photo = array('post_mime_type' => 'image/jpeg',
+                                      'post_title'     => $post->post_type.'_photo_'.$post->ID,
+                                      'post_content'   => '',
+                                      'post_status'    => 'inherit',
+                                      'post_parent'    => $post->ID);
+
                 // file upload
                 if (isset($_FILES['cvtx_application_file']) && ($_FILES['cvtx_application_file']['size'] > 0)) {
                     $file         = $_FILES['cvtx_application_file'];
@@ -465,6 +486,56 @@ function cvtx_insert_post($post_id, $post = null) {
                     $attach_id  = wp_insert_attachment($attachment, $filename);
                     // save attachment id to application
                     update_post_meta($post->ID, 'cvtx_pdf_id', $attach_id);
+                }
+                // photo upload
+                $max_image_size = get_option('cvtx_max_image_size');
+                if (isset($_FILES['cvtx_application_photo']) && 
+                    ($_FILES['cvtx_application_photo']['size'] > 0) &&
+                    $_FILES['cvtx_application_photo']['size'] < $max_image_size*1000) {
+                    $file         = $_FILES['cvtx_application_photo'];
+                    // of which filetype is the uploaded file?
+                    $validate = wp_check_filetype_and_ext($file['tmp_name'], 
+                                                          basename($file['name']));                      
+                    // we accept only images!
+                    if(in_array($validate['type'], $cvtx_allowed_image_types)) {
+                        // is there already an attachment? remove it
+                        if ($existing = get_post_meta($post->ID, 'cvtx_application_photo_id', true)) {
+                            wp_delete_attachment($existing, true);
+                        }
+                        // upload the image
+                        $upload = wp_handle_upload($file, array('test_form' => false));
+                        // check if upload was succesful, get meta-informations
+                        if (!isset($upload['error']) && isset($upload['file'])) {
+                            // move file
+                            rename($upload['file'], $filename_photo);
+                            // insert attachment
+                            $attach_id  = wp_insert_attachment($attach_photo, $filename_photo);
+                            $attach_data = wp_generate_attachment_metadata($attach_id, $filename_photo);
+                            wp_update_attachment_metadata($attach_id, $attach_data );
+                            // save attachment id to application
+                            update_post_meta($post->ID, 'cvtx_application_photo_id', $attach_id);
+                        }
+                    }
+                    else {
+                        //cvtx_error_message('Please use one of the following image types: '.implode(', ',$cvtx_allowed_image_types));
+                    }
+                }
+                else if ($_FILES['cvtx_application_photo']['size'] > $max_image_size*1000) {
+                    // message too large
+                }
+                else if ($old_photo !== false && $old_photo != $filename_photo) {
+                    // move file
+                    rename($old_photo, $filename_photo);
+                    // delete old attachment
+                    if ($existing = get_post_meta($post->ID, 'cvtx_application_photo_id', true)) {
+                        wp_delete_attachment($existing, true);
+                    }
+                    // insert attachment
+                    $attach_id  = wp_insert_attachment($attach_photo, $filename_photo);
+                    $attach_data = wp_generate_attachment_metadata($attach_id, $filename_photo);
+                    wp_update_attachment_metadata($attach_id, $attach_data );
+                    // save attachment id to application
+                    update_post_meta($post->ID, 'cvtx_application_photo_id', $attach_id);
                 }
             }
         }
@@ -611,8 +682,7 @@ function cvtx_insert_post($post_id, $post = null) {
                             $headers);
                 }
             }
-        }
-        
+        }   
     }
 }
 
@@ -775,8 +845,12 @@ function cvtx_the_title($before='', $after='') {
         // add short name as prefix
         if ($short = cvtx_get_short($post)) {
             // Antrag or application
-            if($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_application') {
+            if($post->post_type == 'cvtx_antrag') {
                 $title = $short.' '.$title;
+            }
+            else if($post->post_type == 'cvtx_application') {
+                $title = $short.' '.get_post_meta($post->ID, 'cvtx_application_prename', true).' '
+                        .get_post_meta($post->ID, 'cvtx_application_surname', true);
             }
             // Änderungsantrag
             else if($post->post_type == 'cvtx_aeantrag') {

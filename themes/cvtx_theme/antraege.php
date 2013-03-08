@@ -113,7 +113,11 @@
         <?php
         while ($loop4->have_posts()): $loop4->the_post(); ?>
          <li class="application">
-          <h4><?php if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) the_title('<a href="'.$file.'">', ' (pdf)</a>'); else the_title(); ?></h4>
+          <!--<h4><?php if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) the_title('<a href="'.$file.'">', ' (pdf)</a>'); else the_title(); ?></h4>-->
+          <h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+            <ul class="options">
+              <li><?php if (function_exists('cvtx_get_file') && $file = cvtx_get_file($post, 'pdf')) echo('<a href="'.$file.'">Download (pdf)</a>'); else echo('Kein PDF erstellt.'); ?></li>
+            </ul>
           <div class="clear-block"></div>
          </li>
         <?php endwhile;?>

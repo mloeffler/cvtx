@@ -17,7 +17,7 @@
 		<div <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 			<h2><?php the_title(); ?></h2>
 			<div class="entry">
-				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'kubrick') . '</p>'); ?>
+				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx_theme') . '</p>'); ?>
 				<?php if(function_exists('cvtx_submit_antrag')) cvtx_submit_antrag(); ?>
 			</div>
 		</div>

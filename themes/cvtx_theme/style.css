@@ -430,7 +430,8 @@ ul#antraege li.overview ul li {
   font-size:0.9em;
 }
 
-ul#antraege li.top ul li.antrag, ul#antraege li.top ul li.application {
+ul#antraege li.top ul li.antrag, 
+ul#antraege li.top ul li.application {
   list-style:url(images/arrow.png);
 }
 
@@ -438,7 +439,9 @@ ul#antraege li.top h4 {
   margin-bottom:0.5em;
 }
 
-ul#antraege li.top ul li.antrag ul, ul#antraege li.top div.top_content ul {
+ul#antraege li.top ul li.antrag ul,
+ul#antraege li.top ul li.application ul, 
+ul#antraege li.top div.top_content ul {
   margin-top:0.5em;
   padding:0px;
 }
@@ -560,24 +563,28 @@ ul#antraege li.top div.top_content ul.ae_antraege {
 }
 
 .form-required {
-  color: red;
+    color: red;
 }
 
-form.cvtx_antrag_form label {
-  font-weight: bold;
-  color: #333;
+form.cvtx_form label {
+    font-weight: bold;
+    color: #333;
 }
 
-form.cvtx_antrag_form .form-item {
-  margin-top: 1em;
-  font-size: 12px;
-  padding: 0px 14px;
+form.cvtx_form .form-item {
+    margin: 1em 0;
+    font-size: 12px;
+    padding: 0px 14px;
 }
 
-form.cvtx_antrag_form div.form-group {
-  border: 1px solid #eee;
-  padding: 0em 1em 1em;
-  margin-top:1em;
+form.cvtx_form div.form-group {
+    border: 1px solid #eee;
+    padding: 0em 1em 1em;
+    margin-top:1em;
+}
+
+form.cvtx_form span.ending {
+    color: grey;
 }
 
 /*
@@ -686,6 +693,19 @@ ul.reader_list li {
 #wp-admin-bar-cvtx-default li span.pending-count {
   text-shadow: none;
   color: red;
+}
+
+/* Application */
+div.cvtx_application .entry {
+    float:left;
+    width: 424px;
+}
+
+div.cvtx_application .metainfos {
+    margin-left: 434px;
+    width: 160px;
+    padding: 10px;
+    background: #cdd9cd;
 }
 
 /* =Images

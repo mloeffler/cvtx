@@ -61,7 +61,13 @@ function cvtx_add_meta_boxes() {
     add_meta_box('cvtx_application_reader', __('Reader assignment', 'cvtx'),
                  'cvtx_metabox_reader', 'cvtx_application', 'side', 'low');
     add_meta_box('cvtx_application_upload', __('File upload', 'cvtx'),
-                 'cvtx_application_upload', 'cvtx_application', 'normal', 'low');
+                 'cvtx_application_upload', 'cvtx_application', 'side', 'low');
+    add_meta_box('cvtx_application_name', __('Personal Data', 'cvtx'),
+                'cvtx_application_name', 'cvtx_application', 'normal', 'high');
+    add_meta_box('cvtx_application_photo', __('Photo', 'cvtx'),
+                'cvtx_application_photo', 'cvtx_application', 'normal', 'high');
+    add_meta_box('cvtx_application_cv', __('Life career', 'cvtx'),
+                'cvtx_application_cv', 'cvtx_application', 'normal', 'high');
 }
 
 
@@ -404,6 +410,61 @@ function cvtx_application_upload() {
     echo('</p>');
 }
 
+function cvtx_application_name() {
+    global $post;
+    echo('<label for="cvtx_application_prename">'.__('First name', 'cvtx').'</label>');
+    echo('<input type="text" id="cvtx_application_prename" name="cvtx_application_prename" value="'.get_post_meta($post->ID, 'cvtx_application_prename', true).'" /><br />');
+    echo('<label for="cvtx_application_surname">'.__('Family name', 'cvtx').'</label>');
+    echo('<input type="text" id="cvtx_application_surname" name="cvtx_application_surname" value="'.get_post_meta($post->ID, 'cvtx_application_surname', true).'" /><br />');
+}
+
+function cvtx_application_photo() {
+    global $post;
+    global $cvtx_allowed_image_types;
+    
+    // get the attachments ID
+    $image = get_post_meta($post->ID, 'cvtx_application_photo_id', true);
+    // an attachment has already been uploaded
+    if ($image) {
+        echo('<p>'.wp_get_attachment_link($image,'thumbnail').'</p>');
+    } else {
+        echo('<p>'.__('No image uploaded yet.', 'cvtx').'</p>');
+    }
+    
+    // actual form
+    echo('<p>');
+    echo(' <label for="cvtx_application_photo">');
+    echo(($image ? __('Update photo', 'cvtx') : __('Upload photo', 'cvtx')));
+    echo(':</label> ');
+    echo(' <input type="file" name="cvtx_application_photo" id="cvtx_application_photo" />');
+    echo('</p>');
+    echo('<p><small>');
+    $max_image_size = get_option('cvtx_max_image_size');
+    echo(__('Allowed file endings: ','cvtx'));
+    $i = 0;
+    foreach($cvtx_allowed_image_types as $ending => $type) {
+        echo '<span class="ending">'.$ending.'</span>';
+        if($i++ != count($cvtx_allowed_image_types)-1) {
+            echo ', ';
+        }
+    }
+    echo('. '.__('Max. file size: ','cvtx').$max_image_size.' KB');
+    echo('</small></p>');
+}
+
+function cvtx_application_cv() {
+    global $post;
+    if (is_plugin_active('html-purified/html-purified.php')) {
+      wp_editor(get_post_meta($post->ID, 'cvtx_application_cv', true), 'cvtx_application_cv_admin', 
+      	array('media_buttons' => false,
+              'textarea_name' => 'cvtx_application_cv',
+              'tinymce'       => cvtx_tinymce_settings(),
+              'quicktags'     => false,
+              'teeny'         => false));
+    } else {
+	    echo('<textarea style="width: 100%" for="cvtx_application_cv" name="cvtx_application_cv">'.get_post_meta($post->ID, 'cvtx_application_cv', true).'</textarea>');
+    }
+}
 
 /* Allgemeingültige Meta-Boxen */
 
@@ -699,7 +760,6 @@ function cvtx_admin_notices() {
     }
 }
 
-
 add_filter('plugin_action_links_'.CVTX_PLUGIN_FILE, 'cvtx_settings_link');
 /**
  * Add settings link on plugin page
@@ -989,6 +1049,13 @@ function cvtx_conf() {
         if (isset($_POST['cvtx_default_reader_application']) && is_array($_POST['cvtx_default_reader_application'])) {
             update_option('cvtx_default_reader_application', implode(', ', $_POST['cvtx_default_reader_application']));
         }
+        
+        // Settings for max image size in applications
+        if (isset($_POST['cvtx_max_image_size']) && !empty($_POST['cvtx_max_image_size'])) {
+            update_option('cvtx_max_image_size', $_POST['cvtx_max_image_size']);
+        } else {
+            update_option('cvtx_max_image_size', 400);
+        }
     }
 
 
@@ -1125,7 +1192,10 @@ function cvtx_conf() {
     if (!$drop_logfile) $drop_logfile = 2;
     $latex_tpldir     = get_option('cvtx_latex_tpldir');
     if (!$latex_tpldir) $latex_tpldir = 'latex';
-
+    
+    // application settings
+    $cvtx_max_image_size = get_option('cvtx_max_image_size');
+    if (!$cvtx_max_image_size) $cvtx_max_image_size = 400;
 
     // print config page
     echo('<div class="wrap">');
@@ -1136,6 +1206,7 @@ function cvtx_conf() {
         echo('<a class="nav-tab cvtx_tool" href="#cvtx_tool">'.__('Agenda Plugin', 'cvtx').'</a>');
         echo('<a class="nav-tab cvtx_mail" href="#cvtx_mail">'.__('Notifications', 'cvtx').'</a>');
         echo('<a class="nav-tab cvtx_latex" href="#cvtx_latex">'.__('LaTeX', 'cvtx').'</a>');
+        echo('<a class="nav-tab cvtx_application" href="#cvtx_application">'.__('Application Settings', 'cvtx').'</a>');
     echo('</h2>');
     
     echo('<form action="" method="post" id="cvtx-conf">');
@@ -1529,6 +1600,20 @@ function cvtx_conf() {
             echo('</tr>');
         echo('</table>');
         
+      echo('</li>');
+      
+      echo('<li id="cvtx_application">');
+          echo('<table class="form-table">');
+              echo('<tr valign="top">');
+                  echo('<th scope="row">');
+                      echo('<label for="cvtx_max_image_size">'.__('Max. size for application images', 'cvtx').'</label>');
+                  echo('</th>');
+                  echo('<td>');
+                      echo('<input id="cvtx_max_image_size" name="cvtx_max_image_size" type="text" value="'.$cvtx_max_image_size.'" /> ');
+                      echo('<span class="description">(KB)</span>');
+                  echo('</td>');
+              echo('</tr>');
+          echo('</table>');
       echo('</li>');
     echo('</ul>');
 

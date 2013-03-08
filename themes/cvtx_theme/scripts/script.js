@@ -53,11 +53,11 @@
 		$("#ae_window .result").load(target+' #ae_antraege');
 		return false;
 	});
-    $(".cvtx_antrag_form .submit").click(function() {
+    $(".cvtx_form .submit").click(function() {
         var ret = true;
         $("#message").remove();
         
-        $(".cvtx_antrag_form .required").each(function() {
+        $(".cvtx_form .required").each(function() {
             var id = $(this).attr("id");
             
             if (!$(this).val() || ((id == 'cvtx_antrag_email' || id == 'cvtx_aeantrag_email') && !check_mail($(this).val()))
@@ -66,7 +66,7 @@
                 
                 if (ret) {
                     ret = false;
-                    $(".cvtx_antrag_form").prepend('<p id="message" class="error">Bitte f&uuml;lle alle Felder aus die mit einem '
+                    $(".cvtx_form").prepend('<p id="message" class="error">Bitte f&uuml;lle alle Felder aus die mit einem '
                                                    + '<span class="form-required">*</span> gekennzeichnet sind!</p>');
                 }
                 

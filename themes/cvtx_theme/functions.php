@@ -40,6 +40,7 @@ function cvtxtheme_script() {
     wp_enqueue_script('cvtx_script');
     wp_enqueue_script('print_element');
 }
+add_action('wp_enqueue_scripts', 'add_thickbox');
 
 /**
  * Register menu-regions for cvtx_theme
@@ -54,6 +55,13 @@ function register_my_menus() {
     array('header-menu' => __( 'Header Menu' ),
     	  'cvtx-menu' => __( 'Cvtx Menu') )
   );
+}
+
+/**
+ * Register image size for applications
+ */
+if ( function_exists( 'add_image_size' ) ) { 
+	add_image_size('cvtx_application_theme', 160, 250);
 }
 
 /**
