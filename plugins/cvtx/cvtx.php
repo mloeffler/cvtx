@@ -235,7 +235,7 @@ function cvtx_init() {
         $cvtx_purifier        = $html_purifier->get_purifier();
         $cvtx_purifier_config = HTMLPurifier_Config::createDefault();
         $cvtx_purifier_config->set('HTML.Doctype', 'XHTML 1.1');
-        $cvtx_purifier_config->set('HTML.Allowed', 'strong,b,em,i,h1,h2,h3,h4,ul,ol,li,br,p,del,ins,code,span[style],a[href]');
+        $cvtx_purifier_config->set('HTML.Allowed', 'strong,b,em,i,h1,h2,h3,h4,ul,ol,li,br,p,del,ins,code,span[style],a[href],div');
         $cvtx_purifier_config->set('CSS.AllowedProperties', 'text-decoration');
     }
 }
@@ -401,7 +401,7 @@ function cvtx_insert_post($post_id, $post = null) {
             }
         }
         // Update/insert application
-        else if ($post->post_type == 'cvtx_application' /*&& isset($_POST['cvtx_application_top'])*/) {
+        else if ($post->post_type == 'cvtx_application' && isset($_POST['cvtx_application_top'])) {
             // get top and validate data
             $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);
             $appl_ord = (isset($_POST['cvtx_application_ord']) ? $_POST['cvtx_application_ord'] : 0);
@@ -584,7 +584,7 @@ function cvtx_insert_post($post_id, $post = null) {
         }
         
         // create pdf
-        if (is_admin() & !(isset($_POST['cvtx_application_manually']) & $_POST['cvtx_application_manually'] == 'on')) cvtx_create_pdf($post_id, $post);
+        if (is_admin() & !(isset($_POST['cvtx_application_manually']) && $_POST['cvtx_application_manually'] == 'on')) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
             $tpl  = get_template_directory().'/mail.php';

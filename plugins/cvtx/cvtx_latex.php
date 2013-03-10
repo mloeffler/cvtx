@@ -16,7 +16,7 @@ function cvtx_get_latex($out, $strip_nl = false) {
     $out = apply_filters('the_content', $out);
     
     // strip html entities
-    $out = html_entity_decode($out);
+    $out = html_entity_decode($out, ENT_QUOTES);
 /*    $out = str_replace(array('&nbsp;', '&amp;', '&#8211;', '&ndash;', '&mdash;', '&#8212;'),
                        array(' ', '&', '–', '–', '—', '—'), $out);*/
     
@@ -52,6 +52,8 @@ function cvtx_get_latex($out, $strip_nl = false) {
                          'replace' => array('\begin{enumerate}', '\end{enumerate}')),
                    array('search'  => array('<li>', '</li>'),
                          'replace' => array('\item ', '')),
+                   array('search'  => array('<div>', '</div>'),
+                         'replace' => array('', "\n")),
                    array('search'  => array('</p>', '</span>'),
                          'replace' => array("\n", '}')),
                    array('search'  => array('/<span style="text\-decoration:[ ]*line\-through[;]?">/',
