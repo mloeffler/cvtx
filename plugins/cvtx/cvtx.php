@@ -1,4 +1,4 @@
-<?php
+5<?php
 /**
  * @package cvtx
  * @version 0.2
@@ -584,7 +584,7 @@ function cvtx_insert_post($post_id, $post = null) {
         }
         
         // create pdf
-        if (is_admin() & !(isset($_POST['cvtx_application_manually']) & $_POST['cvtx_application_manually'] == 'on')) cvtx_create_pdf($post_id, $post);
+        if (is_admin() & !(isset($_POST['cvtx_application_manually']) && $_POST['cvtx_application_manually'] == 'on')) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
             $tpl  = get_template_directory().'/mail.php';
