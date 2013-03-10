@@ -119,6 +119,13 @@ function cvtx_titel($post, $strip_nl = true) {
     }
 }
 
+function cvtx_text($post, $strip_nl = false) {
+    global $cvtx_types;
+    if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_application') {
+        echo(cvtx_get_latex($post->post_content, $strip_nl));
+    }
+}
+
 function cvtx_antragstext($post, $strip_nl = false) {
     global $cvtx_types;
     if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag') {
@@ -262,6 +269,27 @@ function cvtx_info($post, $strip_nl = false) {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_antrag_info', true), $strip_nl));
     } else if ($post->post_type == 'cvtx_aeantrag') {
         echo(cvtx_get_latex(get_post_meta($post->ID, 'cvtx_aeantrag_info', true), $strip_nl));
+    }
+}
+
+function cvtx_application_name($post, $strip_nl = true) {
+    if ($post->post_type == 'cvtx_application') {
+        $name = get_post_meta($post->ID, 'cvtx_application_prename', true).' '.get_post_meta($post->ID, 'cvtx_application_surname', true);
+        echo(cvtx_get_latex($name, $strip_nl));
+    }
+}
+
+function cvtx_application_cv($post, $strip_nl = true) {
+    if ($post->post_type == 'cvtx_application') {
+        $cv = get_post_meta($post->ID, 'cvtx_application_cv', true);
+        echo(cvtx_get_latex($cv, $strip_nl));
+    }
+}
+
+function cvtx_application_photo($post) {
+    if ($post->post_type == 'cvtx_application') {
+        $image = get_post_meta($post->ID, 'cvtx_application_photo_id', true);
+        echo(get_attached_file($image));
     }
 }
 

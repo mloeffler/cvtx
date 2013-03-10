@@ -63,6 +63,7 @@ $cvtx_types = array('cvtx_reader'   => array('cvtx_reader_style'),
                                              'cvtx_aeantrag_info'),
                  'cvtx_application' => array('cvtx_application_ord',
                                              'cvtx_sort',
+                                             'cvtx_application_manually',
                                              'cvtx_application_top',
                                              'cvtx_application_email',
                                              'cvtx_application_phone',
@@ -78,11 +79,11 @@ $cvtx_mime_types = array('pdf' => 'application/pdf',
                          'log' => 'text/plain');
 
 // Allowed image MIME types                                  
-    $cvtx_allowed_image_types = array('jpg'  => 'image/jpeg',
-                                      'jpeg' => 'image/jpeg',
-                                      'png'  => 'image/png',
-                                      'tiff' => 'image/tiff',
-                                      'tif'  => 'image/tiff');
+$cvtx_allowed_image_types = array('jpg'  => 'image/jpeg',
+                                  'jpeg' => 'image/jpeg',
+                                  'png'  => 'image/png',
+                                  'tiff' => 'image/tiff',
+                                  'tif'  => 'image/tiff');
 
 // HTML Purifier Instance / Configuration
 $cvtx_purifier = null;
@@ -177,7 +178,7 @@ function cvtx_init() {
         '_builtin'    => false,
         'has_archive' => false,
         'rewrite'     => array('slug' => __('applications (slug)', 'cvtx')),
-        'supports'    => array('editor'),
+        'supports'    => array('title', 'editor'),
         )
     );
 
@@ -400,13 +401,16 @@ function cvtx_insert_post($post_id, $post = null) {
             }
         }
         // Update/insert application
-        else if ($post->post_type == 'cvtx_application' && isset($_POST['cvtx_application_top'])) {
+        else if ($post->post_type == 'cvtx_application' /*&& isset($_POST['cvtx_application_top'])*/) {
             // get top and validate data
             $top_ord  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_ord', true);
             $appl_ord = (isset($_POST['cvtx_application_ord']) ? $_POST['cvtx_application_ord'] : 0);
 
             // get globally sortable string
             $_POST['cvtx_sort'] = cvtx_get_sort('cvtx_application', $top_ord, $appl_ord);
+            
+            // check whether manually file upload enabled
+            if (!isset($_POST['cvtx_application_manually'])) $_POST['cvtx_application_manually'] = 'off';
             
             // get default reader terms for applications
             $terms = explode(', ', get_option('cvtx_default_reader_application'));
@@ -497,7 +501,7 @@ function cvtx_insert_post($post_id, $post = null) {
                     $validate = wp_check_filetype_and_ext($file['tmp_name'], 
                                                           basename($file['name']));                      
                     // we accept only images!
-                    if(in_array($validate['type'], $cvtx_allowed_image_types)) {
+                    if (in_array($validate['type'], $cvtx_allowed_image_types)) {
                         // is there already an attachment? remove it
                         if ($existing = get_post_meta($post->ID, 'cvtx_application_photo_id', true)) {
                             wp_delete_attachment($existing, true);
@@ -580,7 +584,7 @@ function cvtx_insert_post($post_id, $post = null) {
         }
         
         // create pdf
-        if (is_admin()) cvtx_create_pdf($post_id, $post);
+        if (is_admin() & !(isset($_POST['cvtx_application_manually']) & $_POST['cvtx_application_manually'] == 'on')) cvtx_create_pdf($post_id, $post);
         // send mails if antrag created
         else {
             $tpl  = get_template_directory().'/mail.php';
@@ -726,6 +730,18 @@ function cvtx_create_pdf($post_id, $post = null) {
             
             // set file post type
             $file_post_type = 'cvtx_aeantrag';
+        }
+        // prepare application
+        else if ($post->post_type == 'cvtx_application') {
+            // file
+            if ($post->post_status == 'publish' && $short = cvtx_get_short($post)) {
+                $file = $out_dir.cvtx_sanitize_file_name($short);
+            } else {
+                $file = $out_dir.$post->ID;
+            }
+            
+            // set file post type
+            $file_post_type = 'cvtx_application';
         }
         // prepare Reader
         else if ($post->post_type == 'cvtx_reader') {

@@ -60,14 +60,12 @@ function cvtx_add_meta_boxes() {
                  'cvtx_metabox_pdf', 'cvtx_application', 'side', 'low');
     add_meta_box('cvtx_application_reader', __('Reader assignment', 'cvtx'),
                  'cvtx_metabox_reader', 'cvtx_application', 'side', 'low');
-    add_meta_box('cvtx_application_upload', __('File upload', 'cvtx'),
-                 'cvtx_application_upload', 'cvtx_application', 'side', 'low');
-    add_meta_box('cvtx_application_name', __('Personal Data', 'cvtx'),
-                'cvtx_application_name', 'cvtx_application', 'normal', 'high');
-    add_meta_box('cvtx_application_photo', __('Photo', 'cvtx'),
-                'cvtx_application_photo', 'cvtx_application', 'normal', 'high');
-    add_meta_box('cvtx_application_cv', __('Life career', 'cvtx'),
-                'cvtx_application_cv', 'cvtx_application', 'normal', 'high');
+    add_meta_box('cvtx_application_form_name', __('Personal Data', 'cvtx'),
+                 'cvtx_application_form_name', 'cvtx_application', 'normal', 'high');
+    add_meta_box('cvtx_application_form_photo', __('Photo', 'cvtx'),
+                 'cvtx_application_form_photo', 'cvtx_application', 'normal', 'high');
+    add_meta_box('cvtx_application_form_cv', __('Life career', 'cvtx'),
+                 'cvtx_application_form_cv', 'cvtx_application', 'normal', 'high');
 }
 
 
@@ -235,7 +233,7 @@ function cvtx_antrag_meta() {
     $top_id = get_post_meta($post->ID, 'cvtx_antrag_top', true);    
     
     echo('<label for="cvtx_antrag_top_select">'.__('Agenda point', 'cvtx').':</label><br />');
-    echo(cvtx_dropdown_tops($top_id, __('No agenda points enabled to resolutions.', 'cvtx').'.', true, ''));
+    echo(cvtx_dropdown_tops($top_id, __('No agenda points enabled to resolutions.', 'cvtx'), true, ''));
     echo('<br />');
     echo('<label for="cvtx_antrag_ord_field">'.__('Resolution number', 'cvtx').':</label><br />');
     echo('<input name="cvtx_antrag_ord" id="cvtx_antrag_ord_field" type="text" maxlength="5" value="'.get_post_meta($post->ID, 'cvtx_antrag_ord', true).'" />');
@@ -385,32 +383,8 @@ function cvtx_post_edit_form_tag() {
     }
 }
 
-/**
- * Prints an application-upload-formular
- */
-function cvtx_application_upload() {
-    global $post;
-    
-    // get the attachments ID
-    $download = cvtx_get_file($post);
-    
-    // an attachment has already been uploaded
-    if ($download) {
-        echo('<p><a href="'.$download.'">'.__('View application', 'cvtx').'</a></p>');
-    } else {
-        echo('<p>'.__('No pdf uploaded yet.', 'cvtx').'</p>');
-    }
-    
-    // actual form
-    echo('<p>');
-    echo(' <label for="cvtx_application_file">');
-    echo(($download ? __('Update application', 'cvtx') : __('Upload application', 'cvtx')));
-    echo(':</label> ');
-    echo(' <input type="file" name="cvtx_application_file" id="cvtx_application_file" />');
-    echo('</p>');
-}
-
-function cvtx_application_name() {
+// Name and first name
+function cvtx_application_form_name() {
     global $post;
     echo('<label for="cvtx_application_prename">'.__('First name', 'cvtx').'</label>');
     echo('<input type="text" id="cvtx_application_prename" name="cvtx_application_prename" value="'.get_post_meta($post->ID, 'cvtx_application_prename', true).'" /><br />');
@@ -418,7 +392,8 @@ function cvtx_application_name() {
     echo('<input type="text" id="cvtx_application_surname" name="cvtx_application_surname" value="'.get_post_meta($post->ID, 'cvtx_application_surname', true).'" /><br />');
 }
 
-function cvtx_application_photo() {
+// Image upload
+function cvtx_application_form_photo() {
     global $post;
     global $cvtx_allowed_image_types;
     
@@ -452,7 +427,8 @@ function cvtx_application_photo() {
     echo('</small></p>');
 }
 
-function cvtx_application_cv() {
+// CV of a candidate
+function cvtx_application_form_cv() {
     global $post;
     if (is_plugin_active('html-purified/html-purified.php')) {
       wp_editor(get_post_meta($post->ID, 'cvtx_application_cv', true), 'cvtx_application_cv_admin', 
@@ -465,6 +441,7 @@ function cvtx_application_cv() {
 	    echo('<textarea style="width: 100%" for="cvtx_application_cv" name="cvtx_application_cv">'.get_post_meta($post->ID, 'cvtx_application_cv', true).'</textarea>');
     }
 }
+
 
 /* Allgemeingültige Meta-Boxen */
 
@@ -483,15 +460,26 @@ function cvtx_metabox_pdf() {
         echo(__('No PDF available.', 'cvtx').' ');
     }
 
-    if ($post->post_type != 'cvtx_application') {
-        // check if tex file exists
-        if ($file = cvtx_get_file($post, 'tex')) {
-            echo('<a href="'.$file.'">(tex)</a> ');
-        }
-        // check if log file exists
-        if ($file = cvtx_get_file($post, 'log')) {
-            echo('<a href="'.$file.'">(log)</a> ');
-        }
+    // check if tex file exists
+    if ($file = cvtx_get_file($post, 'tex')) {
+        echo('<a href="'.$file.'">(tex)</a> ');
+    }
+    // check if log file exists
+    if ($file = cvtx_get_file($post, 'log')) {
+        echo('<a href="'.$file.'">(log)</a> ');
+    }
+    
+    // If application, enable manual upload of pdf files
+    if ($post->post_type == 'cvtx_application') {
+        // fetch manually or automatic generation mode?
+        $manually = (get_post_meta($post->ID, 'cvtx_application_manually', true) == "on" ? ' checked="checked"' : '');
+        
+        // actual form
+        echo('<p>');
+        echo(' <input type="checkbox" name="cvtx_application_manually" id="cvtx_application_manually" '.$manually.' />');
+        echo(' <label for="cvtx_application_manually">'.__('Manually upload application', 'cvtx').'</label><br />');
+        echo(' <input type="file" name="cvtx_application_file" id="cvtx_application_file" />');
+        echo('</p>');
     }
 }
 
@@ -1664,8 +1652,8 @@ if (is_admin()) add_action('admin_head', 'cvtx_manage_media_buttons');
  */
 function cvtx_manage_media_buttons() {
     global $post;
-    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
-     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag' || $_REQUEST['post_type'] == 'cvtx_application'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_application'))) {
         remove_all_actions('media_buttons');
     }
 }

@@ -14,8 +14,8 @@ add_filter('mce_buttons', 'cvtx_mce_manage_buttons');
  */
 function cvtx_mce_manage_buttons($buttons) {
     global $post;
-    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
-     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag' || $_REQUEST['post_type'] == 'cvtx_application'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_application'))) {
         return array('bold', 'italic', 'underline', 'strikethrough', 'ins', '|', 'bullist', 'numlist', '|', 'undo', 'redo', 'html', '|', 'formatselect');
     } else {
         return $buttons;
@@ -29,8 +29,8 @@ add_filter('mce_buttons_2', 'cvtx_mce_manage_buttons_2');
  */
 function cvtx_mce_manage_buttons_2($buttons) {
     global $post;
-    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
-     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag' || $_REQUEST['post_type'] == 'cvtx_application'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_application'))) {
         return array();
     } else {
         return $buttons;
@@ -44,8 +44,8 @@ add_filter('tiny_mce_before_init', 'cvtx_mce_before_init');
  */
 function cvtx_mce_before_init($settings) {
     global $post;
-    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag'))
-     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag'))) {
+    if ((isset($_REQUEST['post_type']) && ($_REQUEST['post_type'] == 'cvtx_antrag' || $_REQUEST['post_type'] == 'cvtx_aeantrag' || $_REQUEST['post_type'] == 'cvtx_application'))
+     || (isset($post) && isset($post->post_type) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_application'))) {
         $settings['theme_advanced_blockformats'] = __('Subsection', 'cvtx').'=h3; '.__('Subsubsection', 'cvtx').'=h4';
     }
     return $settings;
@@ -443,7 +443,7 @@ function cvtx_create_application_form($cvtx_application_prename,
             <div class="legend"><h3><?php _e('Applying for', 'cvtx'); ?></h3></div>
             <div class="form-item">
                 <label for="cvtx_application_top"><?php _e('Agenda point', 'cvtx'); ?>: <span class="form-required" title="<?php _e('This field is mandatory', 'cvtx'); ?>">*</span></label>
-                <?php echo(cvtx_dropdown_tops($cvtx_application_top, __('No agenda points enabled to applications.', 'cvtx').'.', '', true)); ?><br />
+                <?php echo(cvtx_dropdown_tops($cvtx_application_top, __('No agenda points enabled to applications.', 'cvtx'), '', true)); ?><br />
             </div>
         </fieldset>
                 
@@ -526,7 +526,7 @@ function cvtx_submit_application($show_recaptcha = true) {
             // check whethter the required fields have been set
             if (!empty($cvtx_application_prename) && !empty($cvtx_application_surname) && !empty($cvtx_application_top)
              && !empty($cvtx_application_text) && !empty($cvtx_application_cv)) {
-                if(!$cvtx_application_photo || $_FILES['cvtx_application_photo']['size'] < $max_image_size*1000) {
+                if (!$cvtx_application_photo || $_FILES['cvtx_application_photo']['size'] < $max_image_size*1000) {
                     $proceed = true;
                     if($cvtx_application_photo) {
                         $validate = wp_check_filetype_and_ext($_FILES['cvtx_application_photo']['tmp_name'], 
