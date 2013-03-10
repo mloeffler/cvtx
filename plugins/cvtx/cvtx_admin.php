@@ -737,26 +737,31 @@ if (is_admin()) add_action('admin_notices', 'cvtx_admin_notices');
  * Checks if the plugins HTML-Purified and WP-reCAPTCHA are installed
  */
 function cvtx_admin_notices() {
+    global $cvtx_types, $post_type;
     $plugins = array();
+    $screen = get_current_screen();
     
-    // Check for HTML Purified
-    if (!is_plugin_active('html-purified/html-purified.php')) {
-        $plugins[0] = '<a href="http://wordpress.org/extend/plugins/html-purified/">HTML Purified</a>';
-    }
-    // Check for WP-reCaptcha
-	if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
-        $plugins[1] = '<a href="http://wordpress.org/extend/plugins/wp-recaptcha/">WP-reCAPTCHA</a>';
-    }
-    
-    // Plugins missing?
-    if (!empty($plugins)) {
-        echo('<div class="updated">');
-        echo('<p><b>'.__('To unleash the full power of cvtx Agenda Plugin, we recommend you to install and activate the following plugin(s):', 'cvtx').'</b>');
-        echo('<ul style="list-style: disc; padding-left: 20px; margin-top: 0px;">');
-        foreach ($plugins as $plugin) {
-            echo('<li>'.$plugin.'</li>');
+    // Check if in cvtx area
+    if (in_array($post_type, array_keys($cvtx_types)) || $screen->base == "settings_page_cvtx-config") {
+        // Check for HTML Purified
+        if (!is_plugin_active('html-purified/html-purified.php')) {
+            $plugins[0] = '<a href="http://wordpress.org/extend/plugins/html-purified/">HTML Purified</a>';
         }
-        echo('</ul></div>');
+        // Check for WP-reCaptcha
+        if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
+            $plugins[1] = '<a href="http://wordpress.org/extend/plugins/wp-recaptcha/">WP-reCAPTCHA</a>';
+        }
+        
+        // Plugins missing?
+        if (!empty($plugins)) {
+            echo('<div class="updated">');
+            echo('<p><b>'.__('To unleash the full power of cvtx Agenda Plugin, we recommend you to install and activate the following plugin(s):', 'cvtx').'</b>');
+            echo('<ul style="list-style: disc; padding-left: 20px; margin-top: 0px;">');
+            foreach ($plugins as $plugin) {
+                echo('<li>'.$plugin.'</li>');
+            }
+            echo('</ul></div>');
+        }
     }
 }
 
