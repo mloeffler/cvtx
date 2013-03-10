@@ -36,7 +36,7 @@
 \begin{tabularx}{\textwidth}{|lX|rr}
     \cline{1-2}
                                                             &                                           & & \multirow{7}{*}{\includegraphics[width=6cm,height=6cm,keepaspectratio]{<?php cvtx_application_photo($post); ?>}}    \\
-    \multicolumn{2}{|>{\adjust}X|}{\textbf{\LARGE <?php cvtx_kuerzel($post); ?>}}                       & & \\
+    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}           &                                           & & \\
                                                             &                                           & & \\
     <?php cvtx_print_latex(__('Name', 'cvtx')); ?>:         &   <?php cvtx_application_name($post); ?>  & & \\
                                                             &                                           & & \\

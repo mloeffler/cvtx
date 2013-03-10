@@ -865,8 +865,9 @@ function cvtx_the_title($before='', $after='') {
                 $title = $short.' '.$title;
             }
             else if($post->post_type == 'cvtx_application') {
-                $title = $short.' '.get_post_meta($post->ID, 'cvtx_application_prename', true).' '
-                        .get_post_meta($post->ID, 'cvtx_application_surname', true);
+                $name = trim(get_post_meta($post->ID, 'cvtx_application_prename', true).' '
+                            .get_post_meta($post->ID, 'cvtx_application_surname', true));
+                $title = $short.' '.(!empty($name) ? $name : $title);
             }
             // Änderungsantrag
             else if($post->post_type == 'cvtx_aeantrag') {

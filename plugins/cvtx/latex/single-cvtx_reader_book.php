@@ -16,6 +16,8 @@
 \usepackage{hyperref}
 \usepackage[normalem]{ulem}
 \usepackage[right]{eurosym}
+\usepackage{graphicx}
+\usepackage{multirow}
 
 \sloppy
 
@@ -34,9 +36,7 @@
 
 \begin{document}
 
-<?php if (get_bloginfo('language') == 'de-DE') { ?>
-    \shorthandoff{"}
-<?php } ?>
+\shorthandoff{"}
 
 % Show Title Page
 \maketitle
@@ -128,13 +128,63 @@ while ($query->have_posts()) {
     }
     
     /* Show Application */
-    else if ($item->post_type == 'cvtx_application' && cvtx_get_file($item)) {
+    else if ($item->post_type == 'cvtx_application') {
+        // Include pdf or load latex file?
+        $manually = (get_post_meta($item->ID, 'cvtx_application_manually', true) == 'on');
+        
+        // Include PDF
+        if ($manually && cvtx_get_file($item)) {
 ?>
 % Start New Page
 \newpage
 
 % Define Headline Text
 \ohead{<?php cvtx_print_latex(__('Application', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+
+% Add Bookmarks and Reference for Table of Contents
+<?php       // Update agenda item if changed
+            $this_top = get_post_meta($item->ID, 'cvtx_application_top', true);
+            if ($top != $this_top) {
+                $top  = $this_top;
+?>
+                \addcontentsline{toc}{chapter}{<?php cvtx_top($item); ?>}
+<?php       } ?>
+\addcontentsline{toc}{section}{<?php cvtx_print_latex(__('Application ', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+
+\includepdf[pages=-, pagecommand={\thispagestyle{scrheadings}}, offset=-1.5em 2em, width=1.15\textwidth]{<?php cvtx_application_file($item); ?>}
+
+<?php
+        }
+        // Show latex inside
+        else {
+?>
+% Start New Page
+\newpage
+
+% Define Headline Text
+\ohead{<?php cvtx_print_latex(__('Application', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
+
+% Site Title and Subtitle
+\begin{flushright}
+ \textbf{\large <?php cvtx_name(); ?>}\\
+ <?php cvtx_beschreibung(); ?>
+\end{flushright}
+
+% Info Box
+\begin{tabularx}{\textwidth}{|lX|rr}
+    \cline{1-2}
+                                                            &                                           & & \multirow{7}{*}{\includegraphics[width=6cm,height=6cm,keepaspectratio]{<?php cvtx_application_photo($item); ?>}}    \\
+    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}           &                                           & & \\
+                                                            &                                           & & \\
+    <?php cvtx_print_latex(__('Name', 'cvtx')); ?>:         &   <?php cvtx_application_name($item); ?>  & & \\
+                                                            &                                           & & \\
+    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_top($item); ?>               & & \\
+                                                            &                                           & & \\
+    \cline{1-2}
+\end{tabularx}
+
+% Application title
+\section*{<?php cvtx_print_latex(__('Application', 'cvtx')); ?> <?php cvtx_titel($item); ?>}
 
 % Add Bookmarks and Reference for Table of Contents
 <?php   // Update agenda item if changed
@@ -146,9 +196,16 @@ while ($query->have_posts()) {
 <?php   } ?>
 \addcontentsline{toc}{section}{<?php cvtx_print_latex(__('Application ', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
-\includepdf[pages=-, pagecommand={\thispagestyle{scrheadings}}, offset=-1.5em 2em, width=1.15\textwidth]{<?php cvtx_application_file($item); ?>}
+% Application text
+<?php cvtx_text($item); ?>
+
+% Biography
+\subsection*{<?php cvtx_print_latex(__('Biography', 'cvtx')); ?>}
+<?php cvtx_application_cv($item); ?>
+
 
 <?php
+        }
     }
 
     /* Show Amendment */
