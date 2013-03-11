@@ -569,6 +569,7 @@ ul#antraege li.top div.top_content ul.ae_antraege {
 form.cvtx_form label {
     font-weight: bold;
     color: #333;
+    display: block;
 }
 
 form.cvtx_form .form-item {
@@ -608,7 +609,7 @@ form input.submit {
   padding: 1em;
   background: white;
   font-size:0.8em;
-  border: 1px solid #eee;
+  border: 1px solid rgba(0,0,0,0.2);
   border-radius:3px;
 }
 
@@ -624,7 +625,6 @@ form input.submit {
 }
 
 .cvtx_form fieldset .legend {
-	border-bottom: 1px solid #CCC;
 	color: #900;
 	font-size: inherit;
 	margin: 5px 14px;
@@ -640,7 +640,7 @@ form input.submit {
   font-weight: bold;
   background: white;
   font-size:0.8em;
-  border: 1px solid #eee;
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius:3px;
   -webkit-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
   -moz-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
@@ -648,12 +648,21 @@ form input.submit {
 }
 
 input {
-	padding: 0.4em 0.8em;
-  border: 1px solid #eee;
-  border-radius:3px;
-  -webkit-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
-  -moz-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
-  box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+    padding: 0.4em 0.8em;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius:3px;
+    -webkit-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 7px rgba(0,0,0,0.1);
+}
+
+.cvtx_form input {
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+.cvtx_form #cvt_application_photo {
+    border: none;
+    box-shadow: none;
 }
 
 p#message {
@@ -706,6 +715,23 @@ div.cvtx_application .metainfos {
     width: 160px;
     padding: 10px;
     background: #cdd9cd;
+    font-size: 0.8em;
+}
+
+div.cvtx_application .metainfos p {
+    margin-bottom: 1em;
+    font-size: 0.85em;
+    color: #0A321E;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+div.cvtx_application .metainfos span {
+    display: block;
+    font-size: 1.2em;
+    font-weight: normal;
+    color: #000;
+    text-transform: none;
 }
 
 /* =Images

@@ -4,7 +4,7 @@
  * @package WordPress
  * @subpackage cvtx
  */
-(function($){
+jQuery(function($){
 	$('ul.menu li').each(function() {
 	    var width = $(this).width();
 	    var id = '#'+$(this).attr('id');
@@ -60,7 +60,7 @@
         $(".cvtx_form .required").each(function() {
             var id = $(this).attr("id");
             
-            if (!$(this).val() || ((id == 'cvtx_antrag_email' || id == 'cvtx_aeantrag_email') && !check_mail($(this).val()))
+            if (!$(this).val() || ((id == 'cvtx_antrag_email' || id == 'cvtx_aeantrag_email'  || id == 'cvtx_application_mail') && !check_mail($(this).val()))
              || ((id == 'cvtx_antrag_phone' || id == 'cvtx_aeantrag_phone') && !check_phone($(this).val()))) {
                 $(this).addClass("error");
                 
@@ -70,7 +70,7 @@
                                                    + '<span class="form-required">*</span> gekennzeichnet sind!</p>');
                 }
                 
-                if ($(this).val() && (id == 'cvtx_antrag_email' || id == 'cvtx_aeantrag_email'))
+                if ($(this).val() && (id == 'cvtx_antrag_email' || id == 'cvtx_aeantrag_email' || id == 'cvtx_application_mail'))
                     $("#message").append('<ul><li>Bitte g&uuml;ltige E-Mail-Adresse angeben!</li></ul>');
                 if ($(this).val() && (id == 'cvtx_antrag_phone' || id == 'cvtx_aeantrag_phone'))
                     $("#message").append('<ul><li>Bitte g&uuml;ltige Telefonnummer angeben!</li></ul>');
@@ -82,6 +82,30 @@
         })
         return ret;
     });
+    $('input.date').datepicker({
+        dateFormat: 'dd.mm.yy',
+        changeMonth: true,
+        changeYear: true
+    });
+  
+    $.datepicker.regional['de'] = {clearText: 'löschen', clearStatus: 'aktuelles Datum löschen',
+            closeText: 'schließen', closeStatus: 'ohne Änderungen schließen',
+            prevText: '<zurück', prevStatus: 'letzten Monat zeigen',
+            nextText: 'Vor>', nextStatus: 'nächsten Monat zeigen',
+            currentText: 'heute', currentStatus: '',
+            monthNames: ['Januar','Februar','März','April','Mai','Juni',
+            'Juli','August','September','Oktober','November','Dezember'],
+            monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun',
+            'Jul','Aug','Sep','Okt','Nov','Dez'],
+            monthStatus: 'anderen Monat anzeigen', yearStatus: 'anderes Jahr anzeigen',
+            weekHeader: 'Wo', weekStatus: 'Woche des Monats',
+            dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
+            dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+            dayNamesMin: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+            dayStatus: 'Setze DD als ersten Wochentag', dateStatus: 'Wähle D, M d',
+            dateFormat: 'dd.mm.yy', firstDay: 1, 
+            initStatus: 'Wähle ein Datum', isRTL: false};
+    $.datepicker.setDefaults( $.datepicker.regional[ "de" ] );
  })(jQuery);
  
 function create_Overlay() {

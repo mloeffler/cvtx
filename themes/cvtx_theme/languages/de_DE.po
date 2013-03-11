@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cvtx Theme\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-10 10:33+0100\n"
-"PO-Revision-Date: 2012-04-10 10:33+0100\n"
+"POT-Creation-Date: 2013-03-08 22:30+0100\n"
+"PO-Revision-Date: 2013-03-08 22:31+0100\n"
 "Last-Translator: Alexander Fecke <alex@cvtx-project.org>\n"
 "Language-Team:  <alex@cvtx-project.org>\n"
 "MIME-Version: 1.0\n"
@@ -70,11 +70,11 @@ msgstr "Verfahren"
 #: ../archive.php:35
 #: ../category.php:30
 #: ../create_antrag.php:20
+#: ../create_application.php:20
 #: ../index.php:21
 #: ../search.php:23
 #: ../single-cvtx_aeantrag.php:18
 #: ../single-cvtx_antrag.php:17
-#: ../single-cvtx_application.php:16
 msgid "Read the rest of this entry &raquo;"
 msgstr "Den vollständigen Beitrag lesen &raquo;"
 
@@ -207,13 +207,42 @@ msgstr "Kategorie: %s"
 msgid "Published in %s"
 msgstr "Veröffentlicht in %s"
 
-#: ../functions.php:54
+#: ../functions.php:55
 msgid "Header Menu"
 msgstr "Menü im Kopfbereich"
 
-#: ../functions.php:55
+#: ../functions.php:56
 msgid "Cvtx Menu"
 msgstr "Cvtx-Menü"
+
+#: ../functions.php:104
+msgid "Seitenleiste, Menü, etc."
+msgstr ""
+
+#: ../functions.php:109
+msgid "2. Menü"
+msgstr ""
+
+#: ../functions.php:114
+msgid "Hintergrund Kopfbereich"
+msgstr ""
+
+#: ../functions.php:119
+msgid "Farbe Titel"
+msgstr ""
+
+#: ../functions.php:124
+msgid "Farbe Links/Überschriften"
+msgstr ""
+
+#: ../functions.php:129
+msgid "Inaktive Menü-Items"
+msgstr ""
+
+#: ../functions.php:134
+#: ../functions.php:138
+msgid "Parteilogo"
+msgstr ""
 
 #: ../search.php:12
 #, php-format
@@ -222,16 +251,19 @@ msgstr "Suchresultate für: %s"
 
 #: ../single-cvtx_aeantrag.php:23
 #: ../single-cvtx_antrag.php:22
-#: ../single-cvtx_application.php:20
+#: ../single-cvtx_application.php:27
 #, php-format
 msgid "This %1$s was published on %2$s at %3$s."
 msgstr "Dieser %1$s wurde am %2$s um %3$s eingetragen."
 
 #: ../single-cvtx_aeantrag.php:25
 #: ../single-cvtx_antrag.php:24
-#: ../single-cvtx_application.php:22
 msgid "j. F Y"
 msgstr "j. F Y"
+
+#: ../single-cvtx_application.php:17
+msgid "Life career"
+msgstr ""
 
 #: ../single-cvtx_reader.php:25
 #: ../single.php:23

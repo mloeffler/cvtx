@@ -39,6 +39,8 @@ function cvtxtheme_script() {
 		true);
     wp_enqueue_script('cvtx_script');
     wp_enqueue_script('print_element');
+    wp_enqueue_script('jquery-ui-datepicker');
+    wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css');
 }
 add_action('wp_enqueue_scripts', 'add_thickbox');
 

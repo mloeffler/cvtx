@@ -72,6 +72,7 @@ function cvtx_tinymce_settings() {
  * @param string $cvtx_antrag_grund antragsbegruendung, if already submitted
  */
 function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '', $cvtx_antrag_text = '', $cvtx_antrag_steller = '', $cvtx_antrag_email = '', $cvtx_antrag_phone = '', $cvtx_antrag_grund = '', $show_recaptcha = true) {
+    $options = get_option('cvtx_options');
     ?>
     <form id="create_antrag_form" class="cvtx_antrag_form cvtx_form" method="post" action="">
      <?php echo(wp_nonce_field('cvtx_form_create_antrag', 'cvtx_form_create_antrag_submitted')); ?>
@@ -98,13 +99,12 @@ function cvtx_create_antrag_form($cvtx_antrag_top = 0,  $cvtx_antrag_title = '',
        <input type="text" id="cvtx_antrag_email" name="cvtx_antrag_email" class="required" value="<?php echo($cvtx_antrag_email); ?>" size="70" /><br/>
       </div>
       <div class="form-item">
-       <label for="cvtx_antrag_phone"><?php _e('Mobile number', 'cvtx'); ?>: <?php echo (get_option('cvtx_phone_required', true) == true ? '<span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')' : '</label>'); ?> <br/>
-       <input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" <?php echo (get_option('cvtx_phone_required', true) ? 'class="required"' : ''); ?> value="<?php echo($cvtx_antrag_phone); ?>" size="70" /><br/>
+       <label for="cvtx_antrag_phone"><?php _e('Mobile number', 'cvtx'); ?>: <?php echo (isset($options['cvtx_phone_required']) ? '<span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')' : '</label>'); ?> <br/>
+       <input type="text" id="cvtx_antrag_phone" name="cvtx_antrag_phone" <?php echo (isset($options['cvtx_phone_required']) ? 'class="required"' : ''); ?> value="<?php echo($cvtx_antrag_phone); ?>" size="70" /><br/>
       </div>
       <?php
-      $cvtx_privacy_message = get_option('cvtx_privacy_message');
-      if (!empty($cvtx_privacy_message)) { ?>
-          <p class="form-item"><small><?php echo($cvtx_privacy_message); ?></small></p>
+      if (!empty($options['cvtx_privacy_message'])) { ?>
+          <p class="form-item"><small><?php echo($options['cvtx_privacy_message']); ?></small></p>
       <?php } ?>
       <br />
      </fieldset>
@@ -171,6 +171,7 @@ function cvtx_submit_antrag($show_recaptcha = true) {
     $cvtx_antrag_top     = (!empty($_POST['cvtx_antrag_top'])     ? trim($_POST['cvtx_antrag_top'])     : '');
     $cvtx_antrag_text    = (!empty($_POST['cvtx_antrag_text'])    ? trim($_POST['cvtx_antrag_text'])    : '');
     $cvtx_antrag_grund   = (!empty($_POST['cvtx_antrag_grund'])   ? trim($_POST['cvtx_antrag_grund'])   : '');
+    $options = get_option('cvtx_options');
 
     // Check whether the form has been submitted and the wp_nonce for security reasons
     if (isset($_POST['cvtx_form_create_antrag_submitted'] ) && wp_verify_nonce($_POST['cvtx_form_create_antrag_submitted'], 'cvtx_form_create_antrag') ){
@@ -202,7 +203,7 @@ function cvtx_submit_antrag($show_recaptcha = true) {
                     'cvtx_antrag_top'     => $cvtx_antrag_top,
                     'cvtx_antrag_grund'   => $cvtx_antrag_grund,
                     'post_status'         => 'pending',
-                    'post_author'         => get_option('cvtx_anon_user'),
+                    'post_author'         => $options['cvtx_anon_user'],
                     'post_type'           => 'cvtx_antrag');
                 
                 // submit the post
@@ -241,6 +242,7 @@ function cvtx_submit_antrag($show_recaptcha = true) {
  * @param string $cvtx_aeantrag_grund aeantragsbegruendung, if already submitted
  */
 function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zeile  = '', $cvtx_aeantrag_text  = '', $cvtx_aeantrag_steller = '', $cvtx_aeantrag_email  = '', $cvtx_aeantrag_phone = '', $cvtx_aeantrag_grund = '', $show_recaptcha = true) {
+    $options = get_option('cvtx_options');
     ?>
     <form id="create_aeantrag_form" class="cvtx_antrag_form cvtx_form" method="post" action="">
      <?php echo(wp_nonce_field('cvtx_form_create_aeantrag', 'cvtx_form_create_aeantrag_submitted')); ?>
@@ -263,13 +265,12 @@ function cvtx_create_aeantrag_form($cvtx_aeantrag_antrag = 0, $cvtx_aeantrag_zei
           <input type="text" id="cvtx_aeantrag_email" name="cvtx_aeantrag_email" class="required" value="<?php echo($cvtx_aeantrag_email); ?>" size="70" /><br/>
        </div>
        <div class="form-item">
-         <label for="cvtx_aeantrag_phone"><?php _e('Mobile number', 'cvtx'); ?>: <?php echo (get_option('cvtx_phone_required', true) == true ? '<span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')' : '</label>'); ?> <br/>
-         <input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" <?php echo (get_option('cvtx_phone_required', true) ? 'class="required"' : ''); ?> value="<?php echo($cvtx_aeantrag_phone); ?>" size="70" /><br/>
+         <label for="cvtx_aeantrag_phone"><?php _e('Mobile number', 'cvtx'); ?>: <?php echo (isset($options['cvtx_phone_required']) ? '<span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label> ('.__('will not be published', 'cvtx').')' : '</label>'); ?> <br/>
+         <input type="text" id="cvtx_aeantrag_phone" name="cvtx_aeantrag_phone" <?php echo (isset($options['cvtx_phone_required']) ? 'class="required"' : ''); ?> value="<?php echo($cvtx_aeantrag_phone); ?>" size="70" /><br/>
        </div>
        <?php
-       $cvtx_privacy_message = get_option('cvtx_privacy_message');
-       if (!empty($cvtx_privacy_message)) { ?>
-           <p class="form-item"><small><?php echo($cvtx_privacy_message); ?></small></p>
+       if (!empty($options['cvtx_privacy_message'])) { ?>
+           <p class="form-item"><small><?php echo($options['cvtx_privacy_message']); ?></small></p>
        <?php } ?>
      </fieldset>
      
@@ -333,6 +334,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true)
     $cvtx_aeantrag_phone   = (!empty($_POST['cvtx_aeantrag_phone'])   ? trim($_POST['cvtx_aeantrag_phone'])   : '');
     $cvtx_aeantrag_text    = (!empty($_POST['cvtx_aeantrag_text'])    ? trim($_POST['cvtx_aeantrag_text'])    : '');
     $cvtx_aeantrag_grund   = (!empty($_POST['cvtx_aeantrag_grund'])   ? trim($_POST['cvtx_aeantrag_grund'])   : '');
+    $options = get_option('cvtx_options');
     
     if (isset($_POST['cvtx_form_create_aeantrag_submitted']) && $cvtx_aeantrag_antrag != 0
      && wp_verify_nonce($_POST['cvtx_form_create_aeantrag_submitted'], 'cvtx_form_create_aeantrag')) {
@@ -364,7 +366,7 @@ function cvtx_submit_aeantrag($cvtx_aeantrag_antrag = 0, $show_recaptcha = true)
                     'cvtx_aeantrag_email'   => $cvtx_aeantrag_email,
                     'cvtx_aeantrag_phone'   => $cvtx_aeantrag_phone,
                     'post_status'           => 'pending',
-                    'post_author'           => get_option('cvtx_anon_user'),
+                    'post_author'           => $options['cvtx_anon_user'],
                     'post_content'          => $cvtx_aeantrag_text,
                     'post_type'             => 'cvtx_aeantrag',
                 );
@@ -403,8 +405,16 @@ function cvtx_create_application_form($cvtx_application_prename,
                                       $cvtx_application_top,
                                       $cvtx_application_text,
                                       $cvtx_application_cv,
+                                      $cvtx_application_mail,
+                                      $cvtx_application_birthdate,
+                                      $cvtx_application_gender,
+                                      $cvtx_application_topics,
+                                      $cvtx_application_kv,
+                                      $cvtx_application_bv,
+                                      $cvtx_application_website,
                                       $show_recaptcha = true) {
     global $cvtx_allowed_image_types;
+    $options = get_option('cvtx_options');
     ?>
     <form id="create_application_form" class="cvtx_application_form cvtx_form" method="post" action="" enctype="multipart/form-data">
         <?php echo(wp_nonce_field('cvtx_form_create_application', 'cvtx_form_create_application_submitted')); ?>
@@ -420,11 +430,11 @@ function cvtx_create_application_form($cvtx_application_prename,
                 <input type="text" id="cvtx_application_surname" name="cvtx_application_surname" class="required" value="<?php echo($cvtx_application_surname); ?>" size="70" /><br/>
             </div>
             <div class="form-item">
-                <label for="cvtx_application_photo"><?php _e('Photo', 'cvtx'); ?></label>:
+                <label for="cvtx_application_photo"><?php _e('Photo', 'cvtx'); ?>: </label>
                 <input type="file" name="cvtx_application_photo" id="cvt_application_photo" />
                 <p><small>
                     <?php
-                    $max_image_size           = get_option('cvtx_max_image_size');
+                    $max_image_size = $options['cvtx_max_image_size'];
                     echo(__('Allowed file endings: ','cvtx'));
                     $i = 0;
                     foreach($cvtx_allowed_image_types as $ending => $type) {
@@ -436,6 +446,63 @@ function cvtx_create_application_form($cvtx_application_prename,
                     echo('. '.__('Max. file size: ','cvtx').$max_image_size.' KB');
                     ?>
                 </small></p>
+            </div>
+            <div class="form-item">
+                <label for="cvtx_application_mail"><?php _e('e-mail address', 'cvtx'); ?>: <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label>
+                <input type="text" id="cvtx_application_mail" name="cvtx_application_mail" class="required mail" value="<?php echo($cvtx_application_mail); ?>" size="70" /><br/>
+            </div>
+            <div class="form-item">
+                <label for="cvtx_application_birthdate"><?php _e('Date of Birth', 'cvtx'); ?>: <span class="form-required" title="'.__('This field is mandatory', 'cvtx').'">*</span></label>
+                <input type="text" id="cvtx_application_birthdate" name="cvtx_application_birthdate" class="required date" value="<?php echo($cvtx_application_birthdate); ?>" size="70" /><br/>
+            </div>
+            <div class="form-item">
+                <label for="cvtx_application_gender"><?php _e('Gender', 'cvtx'); ?>:</label>
+                <select name="cvtx_application_gender" id="cvtx_application_gender">
+                    <option value="1" <?php echo ($cvtx_application_gender == 1 ? 'selected="selected"' : '') ?>><?php _e('female', 'cvtx'); ?></option>
+                    <option value="2" <?php echo ($cvtx_application_gender == 2 ? 'selected="selected"' : '') ?>><?php _e('male', 'cvtx'); ?></option>
+                    <option value="3" <?php echo ($cvtx_application_gender == 3 ? 'selected="selected"' : '') ?>><?php _e('not specified', 'cvtx'); ?></option>
+                </select>
+            </div>
+            <div class="form-item">
+                <label for="cvtx_application_topics"><?php _e('Your main topics (please select 2 topics at max)', 'cvtx');?>: </label>
+                <select name="cvtx_application_topics[]" id="cvtx_application_topics" multiple="multiple">
+                    <?php
+                    $topics = $options['cvtx_application_topics'];
+                    for($i = 0; $i < count($topics); $i++) {
+                        echo('<option value ="'.$i.'"'.(in_array($i, $cvtx_application_topics) ? ' selected="selected"' : '').'>'.$topics[$i].'</option>');
+                    }
+                    ?>
+                </select>
+            </div>
+            <?php if(!empty($options['cvtx_application_kvs_name']) && !empty($options['cvtx_application_kvs'])) { ?>
+                <div class="form-item">
+                    <label for="cvtx_application_kv"><?php echo($options['cvtx_application_kvs_name']);?>: </label>
+                    <select name="cvtx_application_kv" id="cvtx_application_kv">
+                        <?php
+                        $kvs = $options['cvtx_application_kvs'];
+                        for($i = 0; $i < count($kvs); $i++) {
+                            echo('<option value ="'.$i.'"'.($i == $cvtx_application_kv ? ' selected="selected"' : '').'>'.$kvs[$i].'</option>');
+                        }
+                        ?>
+                    </select>
+                </div>
+            <?php } ?>
+            <?php if(!empty($options['cvtx_application_bvs_name']) && !empty($options['cvtx_application_bvs'])) { ?>
+                <div class="form-item">
+                    <label for="cvtx_application_bv"><?php echo($options['cvtx_application_bvs_name']);?>: </label>
+                    <select name="cvtx_application_bv" id="cvtx_application_bv">
+                        <?php
+                        $bvs = $options['cvtx_application_bvs'];
+                        for($i = 0; $i < count($bvs); $i++) {
+                            echo('<option value ="'.$i.'"'.($i == $cvtx_application_bv ? ' selected="selected"' : '').'>'.$bvs[$i].'</option>');
+                        }
+                        ?>
+                    </select>
+                </div>
+            <?php } ?>
+            <div class="form-item">
+                <label for="cvtx_application_website"><?php _e('Website', 'cvtx'); ?>:</label>
+                <input type="text" id="cvtx_application_website" name="cvtx_application_website" value="<?php echo($cvtx_application_website); ?>" size="70" /><br/>
             </div>
         </fieldset>
         
@@ -495,21 +562,28 @@ function cvtx_create_application_form($cvtx_application_prename,
 
 
 /**
- * Method which evaluates the input of an ae_antrags_creation-form and saves it to the wordpress database
+ * Method which evaluates the input of an application-form and saves it to the wordpress database
  */
 function cvtx_submit_application($show_recaptcha = true) {
     include_once ABSPATH . 'wp-admin/includes/media.php';
     include_once ABSPATH . 'wp-admin/includes/file.php';
     include_once ABSPATH . 'wp-admin/includes/image.php';
-    $cvtx_application_photo   = (!empty($_FILES['cvtx_application_photo']) ? $_FILES['cvtx_application_photo']   : '');
-    $cvtx_application_prename = (!empty($_POST['cvtx_application_prename']) ? trim($_POST['cvtx_application_prename']) : '');
-    $cvtx_application_surname = (!empty($_POST['cvtx_application_surname']) ? trim($_POST['cvtx_application_surname'])   : '');
-    $cvtx_application_top     = (!empty($_POST['cvtx_application_top']) ? trim($_POST['cvtx_application_top'])   : '');
-    $cvtx_application_text    = (!empty($_POST['cvtx_application_text']) ? trim($_POST['cvtx_application_text'])    : '');
-    $cvtx_application_cv      = (!empty($_POST['cvtx_application_cv']) ? trim($_POST['cvtx_application_cv'])   : '');
-    $max_image_size           = get_option('cvtx_max_image_size');
+    $cvtx_application_photo     = (!empty($_FILES['cvtx_application_photo']) ? $_FILES['cvtx_application_photo']   : '');
+    $cvtx_application_prename   = (!empty($_POST['cvtx_application_prename']) ? trim($_POST['cvtx_application_prename']) : '');
+    $cvtx_application_surname   = (!empty($_POST['cvtx_application_surname']) ? trim($_POST['cvtx_application_surname'])   : '');
+    $cvtx_application_top       = (!empty($_POST['cvtx_application_top']) ? trim($_POST['cvtx_application_top'])   : '');
+    $cvtx_application_text      = (!empty($_POST['cvtx_application_text']) ? trim($_POST['cvtx_application_text'])    : '');
+    $cvtx_application_cv        = (!empty($_POST['cvtx_application_cv']) ? trim($_POST['cvtx_application_cv'])   : '');
+    $cvtx_application_mail      = (!empty($_POST['cvtx_application_mail']) ? trim($_POST['cvtx_application_mail']) : '');
+    $cvtx_application_birthdate = (!empty($_POST['cvtx_application_birthdate']) ? trim($_POST['cvtx_application_birthdate']) : '');
+    $cvtx_application_gender    = (!empty($_POST['cvtx_application_gender']) ? trim($_POST['cvtx_application_gender']) : '');
+    $cvtx_application_topics    = (!empty($_POST['cvtx_application_topics']) ? $_POST['cvtx_application_topics'] : array());
+    $cvtx_application_kv        = (!empty($_POST['cvtx_application_kv']) ? $_POST['cvtx_application_kv'] : '');
+    $cvtx_application_bv        = (!empty($_POST['cvtx_application_bv']) ? $_POST['cvtx_application_bv'] : '');
+    $cvtx_application_website   = (!empty($_POST['cvtx_application_website']) ? trim($_POST['cvtx_application_website']) : '');
+    $options = get_option('cvtx_options');
     global $cvtx_allowed_image_types;
-    
+
     if (isset($_POST['cvtx_form_create_application_submitted']) && wp_verify_nonce($_POST['cvtx_form_create_application_submitted'], 'cvtx_form_create_application')) {
         if (is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
             $ropt = get_option('recaptcha_options');
@@ -525,13 +599,13 @@ function cvtx_submit_application($show_recaptcha = true) {
         if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php') || $resp->is_valid) {
             // check whethter the required fields have been set
             if (!empty($cvtx_application_prename) && !empty($cvtx_application_surname) && !empty($cvtx_application_top)
-             && !empty($cvtx_application_text) && !empty($cvtx_application_cv)) {
-                if (!$cvtx_application_photo || $_FILES['cvtx_application_photo']['size'] < $max_image_size*1000) {
+             && !empty($cvtx_application_text) && !empty($cvtx_application_cv) && !empty($cvtx_application_mail) && !empty($cvtx_application_birthdate)) {
+                if (!$cvtx_application_photo || $_FILES['cvtx_application_photo']['size'] < $options['cvtx_max_image_size']*1000) {
                     $proceed = true;
                     if($cvtx_application_photo) {
                         $validate = wp_check_filetype_and_ext($_FILES['cvtx_application_photo']['tmp_name'], 
                                                               basename($_FILES['cvtx_application_photo']['name']));
-                        if(!in_array($validate['type'], $cvtx_allowed_image_types)) {
+                        if(!in_array($validate['type'], $cvtx_allowed_image_types) && !empty($validate['type'])) {
                             $proceed = false;
                         }
                     }
@@ -547,8 +621,15 @@ function cvtx_submit_application($show_recaptcha = true) {
                             'cvtx_application_photo'   => $cvtx_application_photo,
                             'cvtx_application_top'     => $cvtx_application_top,
                             'cvtx_application_cv'      => $cvtx_application_cv,
+                            'cvtx_application_mail'    => $cvtx_application_mail,
+                            'cvtx_application_birthdate' => $cvtx_application_birthdate,
+                            'cvtx_application_gender'  => $cvtx_application_gender,
+                            'cvtx_application_topics'  => $cvtx_application_topics,
+                            'cvtx_application_kv'      => $cvtx_application_kv,
+                            'cvtx_application_bv'      => $cvtx_application_bv,
+                            'cvtx_application_website' => $cvtx_application_website,
                             'post_status'              => 'pending',
-                            'post_author'              => get_option('cvtx_anon_user'),
+                            'post_author'              => $options['cvtx_anon_user'],
                             'post_content'             => $cvtx_application_text,
                             'post_type'                => 'cvtx_application',
                         );
@@ -568,7 +649,7 @@ function cvtx_submit_application($show_recaptcha = true) {
                     }
                 }
                 else {
-                    echo('<p id="message" class="error">'.__('The attached image is larger than the allowed size', 'cvtx').' ('.$max_image_size.' KB). '.__('Please check and upload again.', 'cvtx').$_FILES['cvtx_application_photo']['size']);
+                    echo('<p id="message" class="error">'.__('The attached image is larger than the allowed size', 'cvtx').' ('.$options['cvtx_max_image_size'].' KB). '.__('Please check and upload again.', 'cvtx').$_FILES['cvtx_application_photo']['size']);
                 }
             } else {
                 echo('<p id="message" class="error">'.__('The application could not be saved '
@@ -579,7 +660,11 @@ function cvtx_submit_application($show_recaptcha = true) {
     }
     
     if (!isset($erstellt)) {
-        cvtx_create_application_form($cvtx_application_prename,$cvtx_application_surname,$cvtx_application_photo,$cvtx_application_top,$cvtx_application_text,$cvtx_application_cv,$show_recaptcha);
+        cvtx_create_application_form($cvtx_application_prename,$cvtx_application_surname,$cvtx_application_photo,
+                                     $cvtx_application_top,$cvtx_application_text,$cvtx_application_cv,
+                                     $cvtx_application_mail,$cvtx_application_birthdate,$cvtx_application_gender,
+                                     $cvtx_application_topics,$cvtx_application_kv,$cvtx_application_bv,
+                                     $cvtx_application_website,$show_recaptcha);
     }
 }
 ?>

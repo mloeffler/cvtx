@@ -30,6 +30,8 @@ require_once(CVTX_PLUGIN_DIR.'/cvtx_widgets.php');
 require_once(CVTX_PLUGIN_DIR.'/cvtx_theme.php');
 require_once(CVTX_PLUGIN_DIR.'/cvtx_forms.php');
 
+register_activation_hook(__FILE__, 'cvtx_create_options' );
+
 // load language files
 load_plugin_textdomain('cvtx', false, dirname(CVTX_PLUGIN_FILE).'/languages');
 
@@ -70,8 +72,14 @@ $cvtx_types = array('cvtx_reader'   => array('cvtx_reader_style'),
                                              'cvtx_application_prename',
                                              'cvtx_application_surname',
                                              'cvtx_application_photo',
-                                             'cvtx_application_cv',
-                                             'cvtx_application_photo_thumb'));
+                                             'cvtx_application_birthdate',
+                                             'cvtx_application_gender',
+                                             'cvtx_application_mail',
+                                             'cvtx_application_topics',
+                                             'cvtx_application_kv',
+                                             'cvtx_application_bv',
+                                             'cvtx_application_website',
+                                             'cvtx_application_cv'));
 
 // Used MIME types
 $cvtx_mime_types = array('pdf' => 'application/pdf',
@@ -274,6 +282,7 @@ add_action('wp_insert_post', 'cvtx_insert_post', 10, 2);
 function cvtx_insert_post($post_id, $post = null) {
     global $cvtx_types;
     global $cvtx_allowed_image_types;
+    $options = get_option('cvtx_options');
 
     if (in_array($post->post_type, array_keys($cvtx_types))) {
         $terms = array();
@@ -315,7 +324,7 @@ function cvtx_insert_post($post_id, $post = null) {
             }
             
             // get default reader terms for amendments
-            $terms = explode(', ', get_option('cvtx_default_reader_antrag'));
+            $terms = explode(', ', $options['cvtx_default_reader_antrag']);
         }
         // Update/insert amendment
         else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
@@ -345,7 +354,7 @@ function cvtx_insert_post($post_id, $post = null) {
             }
         
             // get default reader terms for amendments
-            $terms = explode(', ', get_option('cvtx_default_reader_aeantrag'));
+            $terms = explode(', ', $options['cvtx_default_reader_aeantrag']);
         }
         // Update/insert reader taxonomy
         else if ($post->post_type == 'cvtx_reader') {
@@ -413,7 +422,10 @@ function cvtx_insert_post($post_id, $post = null) {
             if (!isset($_POST['cvtx_application_manually'])) $_POST['cvtx_application_manually'] = 'off';
             
             // get default reader terms for applications
-            $terms = explode(', ', get_option('cvtx_default_reader_application'));
+            if(isset($options['cvtx_default_reader_application'])) {
+                $terms = explode(', ', $options['cvtx_default_reader_application']);
+            }
+            else $terms = false;
             
             /* DAS IST NOCH IMMER EHER QUICK UND DIRTY */
             if ($post->post_status != 'auto-draft') {
@@ -425,7 +437,7 @@ function cvtx_insert_post($post_id, $post = null) {
                 // generate short (BUGGY!!!)
                 $top  = get_post_meta($_POST['cvtx_application_top'], 'cvtx_top_short', true);
                 // format
-                $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
+                $format = strtr($options['cvtx_antrag_format'], array(__('%agenda_point%', 'cvtx') => $top,
                                                                         __('%resolution%', 'cvtx')   => $appl_ord));
                 if (!empty($top) && !empty($_POST['cvtx_application_ord'])) $short = $format;
                 
@@ -492,7 +504,7 @@ function cvtx_insert_post($post_id, $post = null) {
                     update_post_meta($post->ID, 'cvtx_pdf_id', $attach_id);
                 }
                 // photo upload
-                $max_image_size = get_option('cvtx_max_image_size');
+                $max_image_size = $options['cvtx_max_image_size'];
                 if (isset($_FILES['cvtx_application_photo']) && 
                     ($_FILES['cvtx_application_photo']['size'] > 0) &&
                     $_FILES['cvtx_application_photo']['size'] < $max_image_size*1000) {
@@ -588,17 +600,17 @@ function cvtx_insert_post($post_id, $post = null) {
         // send mails if antrag created
         else {
             $tpl  = get_template_directory().'/mail.php';
-            if(get_option('cvtx_send_html_mail') == FALSE || !file_exists($tpl)) $html_mail = FALSE;
+            if($options['cvtx_send_html_mail'] == FALSE || !file_exists($tpl)) $html_mail = FALSE;
             else $html_mail = TRUE;
-            $headers = array('From: '.get_option('cvtx_send_from_email', get_bloginfo('admin_email'))."\r\n",
+            $headers = array('From: '.(!empty($options['cvtx_send_from_email']) ? $options['cvtx_send_from_email'] : get_bloginfo('admin_email'))."\r\n",
                              ($html_mail ? "Content-Type: text/html\r\n" : ''));
             
             // post type antrag created
             if ($post->post_type == 'cvtx_antrag') {
-                $mails['owner'] = array('subject' => get_option('cvtx_send_create_antrag_owner_subject'),
-                                        'body'    => get_option('cvtx_send_create_antrag_owner_body'));
-                $mails['admin'] = array('subject' => get_option('cvtx_send_create_antrag_admin_subject'),
-                                        'body'    => get_option('cvtx_send_create_antrag_admin_body'));
+                $mails['owner'] = array('subject' => $options['cvtx_send_create_antrag_owner_subject'],
+                                        'body'    => $options['cvtx_send_create_antrag_owner_body']);
+                $mails['admin'] = array('subject' => $options['cvtx_send_create_antrag_admin_subject'],
+                                        'body'    => $options['cvtx_send_create_antrag_admin_body']);
                 
                 $fields = array(__('%agenda_point_token%', 'cvtx') => __('Agenda point', 'cvtx').' '.get_post_meta($_POST['cvtx_antrag_top'], 'cvtx_top_ord', true),
                                 __('%agenda_point%', 'cvtx')       => get_the_title($_POST['cvtx_antrag_top']),
@@ -625,14 +637,14 @@ function cvtx_insert_post($post_id, $post = null) {
                 }
                 
                 // send mail(s) if option enabled
-                if (get_option('cvtx_send_create_antrag_owner')) {
+                if ($options['cvtx_send_create_antrag_owner']) {
                     wp_mail($_POST['cvtx_antrag_email'],
                             $mails['owner']['subject'],
                             $mails['owner']['body'],
                             implode("\r\n", $headers) . "\r\n");
                 }
-                if (get_option('cvtx_send_create_antrag_admin')) {
-                    wp_mail(get_option('cvtx_send_rcpt_email', get_bloginfo('admin_email')),
+                if ($options['cvtx_send_create_antrag_admin']) {
+                    wp_mail((isset($options['cvtx_send_rcpt_email']) ? $options['cvtx_send_rcpt_email'] : get_bloginfo('admin_email')),
                             $mails['admin']['subject'],
                             $mails['admin']['body'],
                             implode("\r\n", $headers));
@@ -640,10 +652,10 @@ function cvtx_insert_post($post_id, $post = null) {
             }
             // post type aeantrag created
             else if ($post->post_type == 'cvtx_aeantrag') {
-                $mails['owner'] = array('subject' => get_option('cvtx_send_create_aeantrag_owner_subject'),
-                                        'body'    => get_option('cvtx_send_create_aeantrag_owner_body'));
-                $mails['admin'] = array('subject' => get_option('cvtx_send_create_aeantrag_admin_subject'),
-                                        'body'    => get_option('cvtx_send_create_aeantrag_admin_body'));
+                $mails['owner'] = array('subject' => $options['cvtx_send_create_aeantrag_owner_subject'],
+                                        'body'    => $options['cvtx_send_create_aeantrag_owner_body']);
+                $mails['admin'] = array('subject' => $options['cvtx_send_create_aeantrag_admin_subject'],
+                                        'body'    => $options['cvtx_send_create_aeantrag_admin_body']);
                 
                 $top_id = get_post_meta($_POST['cvtx_aeantrag_antrag'], 'cvtx_antrag_top', true);
                 $fields = array(__('%agenda_point_token%', 'cvtx') => __('Agenda point', 'cvtx').' '.get_post_meta($top_id, 'cvtx_top_ord', true),
@@ -673,14 +685,14 @@ function cvtx_insert_post($post_id, $post = null) {
                 }
                 
                 // send mail(s) if option enabled
-                if (get_option('cvtx_send_create_aeantrag_owner')) {
+                if ($options['cvtx_send_create_aeantrag_owner']) {
                     wp_mail($_POST['cvtx_aeantrag_email'],
                             $mails['owner']['subject'],
                             $mails['owner']['body'],
                             $headers);
                 }
-                if (get_option('cvtx_send_create_aeantrag_admin')) {
-                    wp_mail(get_option('cvtx_send_rcpt_email'),
+                if ($options['cvtx_send_create_aeantrag_admin']) {
+                    wp_mail($options['cvtx_send_rcpt_email'],
                             $mails['admin']['subject'],
                             $mails['admin']['body'],
                             $headers);
@@ -699,13 +711,14 @@ function cvtx_insert_post($post_id, $post = null) {
  */
 function cvtx_create_pdf($post_id, $post = null) {
     global $cvtx_mime_types;
+    $options = get_option('cvtx_options');
 
-    $pdflatex = get_option('cvtx_pdflatex_cmd');
+    $pdflatex = $options['cvtx_pdflatex_cmd'];
     
     if (isset($post) && is_object($post) && !empty($pdflatex)) {
         $out_dir = wp_upload_dir();
         $out_dir = $out_dir['path'].'/';
-        $tpl_dir = get_template_directory().'/'.get_option('cvtx_latex_tpldir');
+        $tpl_dir = get_template_directory().'/'.$options['cvtx_latex_tpldir'];
     
         // prepare antrag
         if ($post->post_type == 'cvtx_antrag') {
@@ -720,7 +733,7 @@ function cvtx_create_pdf($post_id, $post = null) {
             $file_post_type = 'cvtx_antrag';
         }
         // prepare Ä-Antrag if pdf-option enabled
-        else if ($post->post_type == 'cvtx_aeantrag' && get_option('cvtx_aeantrag_pdf')) {
+        else if ($post->post_type == 'cvtx_aeantrag' && isset($options['cvtx_aeantrag_pdf'])) {
             // file
             if ($post->post_status == 'publish' && $short = cvtx_get_short($post)) {
                 $file = $out_dir.cvtx_sanitize_file_name($short);
@@ -814,13 +827,13 @@ function cvtx_create_pdf($post_id, $post = null) {
                 // remove .aux-file
                 $remove = array('aux', 'toc', 'bbl', 'blg', 'out', 'synctex.gz');
                 // remove .log-file
-                if ((get_option('cvtx_drop_logfile') == 2 && is_file($file.'.pdf'))
-                  || get_option('cvtx_drop_logfile') == 1) {
+                if (($options['cvtx_drop_logfile'] == 2 && is_file($file.'.pdf'))
+                  || $options['cvtx_drop_logfile'] == 1) {
                     $remove[] = 'log';
                 }
                 // remove .tex-file
-                if ((get_option('cvtx_drop_texfile') == 2 && is_file($file.'.pdf'))
-                  || get_option('cvtx_drop_texfile') == 1) {
+                if (($options['cvtx_drop_texfile'] == 2 && is_file($file.'.pdf'))
+                  || $options['cvtx_drop_texfile'] == 1) {
                     $remove[] = 'tex';
                 }
                 // remove files (if they exist)
@@ -951,6 +964,7 @@ function cvtx_the_content($content) {
  * @param $post the post
  */
 function cvtx_get_short($post) {
+    $options = get_option('cvtx_options');
     // post type top
     if ($post->post_type == 'cvtx_top') {
         $top = get_post_meta($post->ID, 'cvtx_top_ord', true);
@@ -963,7 +977,7 @@ function cvtx_get_short($post) {
         $antrag = get_post_meta($post->ID, 'cvtx_antrag_ord', true);
 
         // format
-        $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
+        $format = strtr($options['cvtx_antrag_format'], array(__('%agenda_point%', 'cvtx') => $top,
                                                                 __('%resolution%', 'cvtx')   => $antrag));
 
         if (!empty($top) && !empty($antrag)) return $format;
@@ -974,7 +988,7 @@ function cvtx_get_short($post) {
         $appl = get_post_meta($post->ID, 'cvtx_application_ord', true);
 
         // format
-        $format = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top,
+        $format = strtr($options['cvtx_antrag_format'], array(__('%agenda_point%', 'cvtx') => $top,
                                                                 __('%resolution%', 'cvtx')   => $appl));
 
         if (!empty($top) && !empty($appl)) return $format;
@@ -988,9 +1002,9 @@ function cvtx_get_short($post) {
         $zeile     = get_post_meta($post->ID, 'cvtx_aeantrag_zeile', true);
         
         // format and return aeantrag_short
-        $antrag = strtr(get_option('cvtx_antrag_format'), array(__('%agenda_point%', 'cvtx') => $top_nr,
+        $antrag = strtr($options['cvtx_antrag_format'], array(__('%agenda_point%', 'cvtx') => $top_nr,
                                                                 __('%resolution%', 'cvtx')   => $antrag_nr));
-        $format = strtr(get_option('cvtx_aeantrag_format'), array(__('%resolution%', 'cvtx') => $antrag,
+        $format = strtr($options['cvtx_aeantrag_format'], array(__('%resolution%', 'cvtx') => $antrag,
                                                                   __('%line%', 'cvtx')       => $zeile));
         
         if (!empty($top_nr) && !empty($antrag_nr) && !empty($zeile)) return $format;
