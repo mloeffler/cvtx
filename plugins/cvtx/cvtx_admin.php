@@ -73,8 +73,8 @@ function cvtx_reader_meta() {
 
     // fetch info
     $style = get_post_meta($post->ID, 'cvtx_reader_style', true);
-    $book  = ($style == 'book'  || !$style ? 'checked="checked"' : '') || true;     // BUGGY!
-    $table = ($style == 'table'            ? 'checked="checked"' : '') && false;    // BUGGY!
+    $book  = ($style == 'book'  || !$style || true  ? 'checked="checked"' : '');    // BUGGY!
+    $table = ($style == 'table'            && false ? 'checked="checked"' : '');    // BUGGY! View as table option is ugly crap!
     
     // output    
     echo(__('Create PDF as', 'cvtx').'<br />');
@@ -256,13 +256,13 @@ function cvtx_antrag_grund() {
     global $post;
     if (is_plugin_active('html-purified/html-purified.php')) {
       wp_editor(get_post_meta($post->ID, 'cvtx_antrag_grund', true), 'cvtx_antrag_grund_admin', 
-      	array('media_buttons' => false,
+        array('media_buttons' => false,
               'textarea_name' => 'cvtx_antrag_grund',
               'tinymce'       => cvtx_tinymce_settings(),
               'quicktags'     => false,
               'teeny'         => false));
     } else {
-	    echo('<textarea style="width: 100%" for="cvtx_antrag_grund" name="cvtx_antrag_grund">'.get_post_meta($post->ID, 'cvtx_antrag_grund', true).'</textarea>');
+        echo('<textarea style="width: 100%" for="cvtx_antrag_grund" name="cvtx_antrag_grund">'.get_post_meta($post->ID, 'cvtx_antrag_grund', true).'</textarea>');
     }
 }
 
@@ -308,13 +308,13 @@ function cvtx_aeantrag_grund() {
     global $post;
     if (is_plugin_active('html-purified/html-purified.php')) {
       wp_editor(get_post_meta($post->ID, 'cvtx_aeantrag_grund', true), 'cvtx_aeantrag_grund_admin', 
-      	array('media_buttons' => false,
+        array('media_buttons' => false,
               'textarea_name' => 'cvtx_aeantrag_grund',
               'tinymce'       => cvtx_tinymce_settings(),
               'quicktags'     => false,
               'teeny'         => false));
     } else {
-	    echo('<textarea style="width: 100%" for="cvtx_aeantrag_grund" name="cvtx_aeantrag_grund">'.get_post_meta($post->ID, 'cvtx_aeantrag_grund', true).'</textarea>');
+        echo('<textarea style="width: 100%" for="cvtx_aeantrag_grund" name="cvtx_aeantrag_grund">'.get_post_meta($post->ID, 'cvtx_aeantrag_grund', true).'</textarea>');
     }
 }
 
@@ -338,13 +338,13 @@ function cvtx_aeantrag_verfahren() {
     
     if (is_plugin_active('html-purified/html-purified.php')) {
       wp_editor(get_post_meta($post->ID, 'cvtx_aeantrag_detail', true), 'cvtx_aeantrag_detail', 
-      	array('media_buttons' => false,
+        array('media_buttons' => false,
               'textarea_name' => 'cvtx_aeantrag_detail',
               'tinymce'       => cvtx_tinymce_settings(),
               'quicktags'     => false,
               'teeny'         => false));
     } else {
-	    echo('<textarea style="width: 100%" for="cvtx_aeantrag_detail" name="cvtx_aeantrag_detail">'.get_post_meta($post->ID, 'cvtx_aeantrag_detail', true).'</textarea>');
+        echo('<textarea style="width: 100%" for="cvtx_aeantrag_detail" name="cvtx_aeantrag_detail">'.get_post_meta($post->ID, 'cvtx_aeantrag_detail', true).'</textarea>');
     }
 }
 
@@ -683,7 +683,7 @@ function cvtx_admin_notices() {
         $plugins[0] = '<a href="http://wordpress.org/extend/plugins/html-purified/">HTML Purified</a>';
     }
     // Check for WP-reCaptcha
-	if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
+    if (!is_plugin_active('wp-recaptcha/wp-recaptcha.php')) {
         $plugins[1] = '<a href="http://wordpress.org/extend/plugins/wp-recaptcha/">WP-reCAPTCHA</a>';
     }
     
@@ -944,7 +944,7 @@ function cvtx_conf() {
         
         // Privacy message
         if (isset($_POST['cvtx_privacy_message'])) {
-        	update_option('cvtx_privacy_message', $_POST['cvtx_privacy_message']);
+            update_option('cvtx_privacy_message', $_POST['cvtx_privacy_message']);
         }
 
         // Phone required
@@ -1008,7 +1008,7 @@ function cvtx_conf() {
     $default_reader_aeantrag    = get_option('cvtx_default_reader_aeantrag');
     $default_reader_application = get_option('cvtx_default_reader_application');
     $reader                     = cvtx_get_reader();
-    $cvtx_privacy_message 		  = get_option('cvtx_privacy_message');
+    $cvtx_privacy_message         = get_option('cvtx_privacy_message');
     $cvtx_phone_required        = get_option('cvtx_phone_required');
 
     // mail settings
@@ -1256,13 +1256,13 @@ function cvtx_conf() {
         
         echo('<table class="form-table">');
             echo('<tr valign="top">');
-        		    echo('<th scope="row">');
-        			      echo('<label for="cvtx_privacy_message">'.__('Privacy message to be shown below e-mail and phone form fields', 'cvtx').'</label>');
-        		    echo('</th>');
-        		    echo('<td>');
-        			      echo('<textarea id="cvtx_privacy_message" cols="40" rows="5" name="cvtx_privacy_message">'.$cvtx_privacy_message.'</textarea>');
-          		  echo('</td>');
-        	  echo('</tr>');
+                    echo('<th scope="row">');
+                          echo('<label for="cvtx_privacy_message">'.__('Privacy message to be shown below e-mail and phone form fields', 'cvtx').'</label>');
+                    echo('</th>');
+                    echo('<td>');
+                          echo('<textarea id="cvtx_privacy_message" cols="40" rows="5" name="cvtx_privacy_message">'.$cvtx_privacy_message.'</textarea>');
+                  echo('</td>');
+              echo('</tr>');
             echo('<tr valign="top">');
                 echo('<th scope="row">');
                     echo('<label for="cvtx_phone_required">'.__('Phone number','cvtx')
