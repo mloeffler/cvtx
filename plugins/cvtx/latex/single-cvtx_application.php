@@ -16,6 +16,7 @@
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{wrapfig}
+\usepackage{hyperref}
 
 \sloppy
 
@@ -34,15 +35,13 @@
  <?php cvtx_beschreibung($post); ?>
 \end{flushright}
 
-\begin{tabularx}{\textwidth}{|lX|r}
+\begin{tabularx}{\textwidth}{|lX|}
     \cline{1-2}
-                                                            &                                           & \\
-    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}           &                                           & \\
-                                                            &                                           & \\
-    <?php cvtx_print_latex(__('Name', 'cvtx')); ?>:         &   <?php cvtx_application_name($post); ?>  & \\
-                                                            &                                           & \\
-    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_top($post); ?>               & \\
-                                                            &                                           & \\
+                                                            &                               \\
+    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}           &                               \\
+                                                            &                               \\
+    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_top($post); ?>   \\
+                                                            &                               \\
     \cline{1-2}
 \end{tabularx}
 
@@ -50,12 +49,12 @@
     \vspace{-1cm}
     \begin{small}\begin{flushleft}
     \includegraphics[width=4cm,keepaspectratio]{<?php cvtx_application_photo($post); ?>}\\
-    <?php cvtx_application_gender($post); ?>\vspace{3pt} \\
-    <?php cvtx_application_birthdate($post); ?>\vspace{3pt} \\
-    <?php cvtx_application_kv($post); ?>\vspace{3pt} \\
-    <?php cvtx_application_bv($post); ?>\vspace{3pt} \\
-    <?php cvtx_application_topics_latex($post); ?>\vspace{3pt} \\
-    <?php cvtx_application_website($post); ?>\vspace{3pt} \\
+    <?php cvtx_application_gender($post); ?>\smallskip \\
+    <?php cvtx_application_birthdate($post); ?>\smallskip \\
+    <?php cvtx_application_kv($post); ?>\smallskip \\
+    <?php cvtx_application_bv($post); ?>\smallskip \\
+    <?php cvtx_application_topics_latex($post); ?>\smallskip \\
+    <?php cvtx_application_website($post); ?>
     \end{flushleft}\end{small}
 \end{wrapfigure}
 
