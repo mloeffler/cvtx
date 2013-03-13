@@ -18,6 +18,7 @@
 \usepackage[right]{eurosym}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{wrapfig}
 
 \sloppy
 
@@ -171,17 +172,31 @@ while ($query->have_posts()) {
 \end{flushright}
 
 % Info Box
-\begin{tabularx}{\textwidth}{|lX|rr}
+\begin{tabularx}{\textwidth}{|lX|r}
     \cline{1-2}
-                                                            &                                           & & \multirow{7}{*}{\includegraphics[width=6cm,height=6cm,keepaspectratio]{<?php cvtx_application_photo($item); ?>}}    \\
-    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}           &                                           & & \\
-                                                            &                                           & & \\
-    <?php cvtx_print_latex(__('Name', 'cvtx')); ?>:         &   <?php cvtx_application_name($item); ?>  & & \\
-                                                            &                                           & & \\
-    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_top($item); ?>               & & \\
-                                                            &                                           & & \\
+                                                            &                                           & \\
+    \textbf{\LARGE <?php cvtx_kuerzel($item); ?>}           &                                           & \\
+                                                            &                                           & \\
+    <?php cvtx_print_latex(__('Name', 'cvtx')); ?>:         &   <?php cvtx_application_name($item); ?>  & \\
+                                                            &                                           & \\
+    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_top($item); ?>               & \\
+                                                            &                                           & \\
     \cline{1-2}
 \end{tabularx}
+
+% application fields
+\begin{wrapfigure}{r}{4cm}
+    \vspace{-1cm}
+    \begin{small}\begin{flushleft}
+    \includegraphics[width=4cm,keepaspectratio]{<?php cvtx_application_photo($item); ?>}\\
+    <?php cvtx_application_gender($item); ?>\vspace{3pt} \\
+    <?php cvtx_application_birthdate($item); ?>\vspace{3pt} \\
+    <?php cvtx_application_kv($item); ?>\vspace{3pt} \\
+    <?php cvtx_application_bv($item); ?>\vspace{3pt} \\
+    <?php cvtx_application_topics_latex($item); ?>\vspace{3pt} \\
+    <?php cvtx_application_website($item); ?>\vspace{3pt} \\
+    \end{flushleft}\end{small}
+\end{wrapfigure}
 
 % Application title
 \section*{<?php cvtx_print_latex(__('Application', 'cvtx')); ?> <?php cvtx_titel($item); ?>}
