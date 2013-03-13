@@ -15,6 +15,7 @@
 \usepackage[right]{eurosym}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{wrapfig}
 
 \sloppy
 
@@ -33,17 +34,30 @@
  <?php cvtx_beschreibung($post); ?>
 \end{flushright}
 
-\begin{tabularx}{\textwidth}{|lX|rr}
+\begin{tabularx}{\textwidth}{|lX|r}
     \cline{1-2}
-                                                            &                                           & & \multirow{7}{*}{\includegraphics[width=6cm,height=6cm,keepaspectratio]{<?php cvtx_application_photo($post); ?>}}    \\
-    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}           &                                           & & \\
-                                                            &                                           & & \\
-    <?php cvtx_print_latex(__('Name', 'cvtx')); ?>:         &   <?php cvtx_application_name($post); ?>  & & \\
-                                                            &                                           & & \\
-    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_top($post); ?>               & & \\
-                                                            &                                           & & \\
+                                                            &                                           & \\
+    \textbf{\LARGE <?php cvtx_kuerzel($post); ?>}           &                                           & \\
+                                                            &                                           & \\
+    <?php cvtx_print_latex(__('Name', 'cvtx')); ?>:         &   <?php cvtx_application_name($post); ?>  & \\
+                                                            &                                           & \\
+    <?php cvtx_print_latex(__('Concerning', 'cvtx')); ?>:   &   <?php cvtx_top($post); ?>               & \\
+                                                            &                                           & \\
     \cline{1-2}
 \end{tabularx}
+
+\begin{wrapfigure}{r}{4cm}
+    \vspace{-1cm}
+    \begin{small}\begin{flushleft}
+    \includegraphics[width=4cm,keepaspectratio]{<?php cvtx_application_photo($post); ?>}\\
+    <?php cvtx_application_gender($post); ?>\vspace{3pt} \\
+    <?php cvtx_application_birthdate($post); ?>\vspace{3pt} \\
+    <?php cvtx_application_kv($post); ?>\vspace{3pt} \\
+    <?php cvtx_application_bv($post); ?>\vspace{3pt} \\
+    <?php cvtx_application_topics_latex($post); ?>\vspace{3pt} \\
+    <?php cvtx_application_website($post); ?>\vspace{3pt} \\
+    \end{flushleft}\end{small}
+\end{wrapfigure}
 
 \section*{<?php cvtx_print_latex(__('Application', 'cvtx')); ?> <?php cvtx_titel($post); ?>}
 

@@ -771,7 +771,7 @@ function cvtx_admin_notices() {
     $screen = get_current_screen();
     
     // Check if in cvtx area
-    if (in_array($post_type, array_keys($cvtx_types)) || $screen->base == "settings_page_cvtx-config") {
+    if (in_array($post_type, array_keys($cvtx_types)) || $screen->base == "settings_page_cvtx_config") {
         // Check for HTML Purified
         if (!is_plugin_active('html-purified/html-purified.php')) {
             $plugins[0] = '<a href="http://wordpress.org/extend/plugins/html-purified/">HTML Purified</a>';
@@ -799,7 +799,7 @@ add_filter('plugin_action_links_'.CVTX_PLUGIN_FILE, 'cvtx_settings_link');
  * Add settings link on plugin page
  */
 function cvtx_settings_link($links) { 
-    $settings_link = '<a href="options-general.php?page=cvtx-config.php">'.__('Settings', 'cvtx').'</a>'; 
+    $settings_link = '<a href="options-general.php?page=cvtx_config.php">'.__('Settings', 'cvtx').'</a>'; 
     array_unshift($links, $settings_link); 
     return $links; 
 }
@@ -1618,7 +1618,7 @@ function cvtx_admin_bar_render() {
     $wp_admin_bar->add_menu(array(
         'id'    => 'cvtx',
         'title' => __('cvtx Agenda Plugin', 'cvtx'),
-        'href'  => home_url('/wp-admin/options-general.php?page=cvtx-config')
+        'href'  => home_url('/wp-admin/options-general.php?page=cvtx_config')
     ));
     // link to cvtx_antrag
     $count = cvtx_get_pending('cvtx_antrag');

@@ -302,4 +302,73 @@ function cvtx_application_file($post) {
     }
 }
 
+function cvtx_application_gender($post) {
+    if ($post->post_type == 'cvtx_application') {
+        $gender = get_post_meta($post->ID, 'cvtx_application_gender', true);
+        echo('\textbf{'.__('Gender', 'cvtx').':}\newline ');
+        $gender_arr = array(__('female','cvtx'), __('male','cvtx'), __('not specified', 'cvtx'));
+        echo(cvtx_get_latex($gender_arr[$gender-1]));
+    }
+}
+
+function cvtx_application_birthdate($post) {
+    if ($post->post_type == 'cvtx_application') {
+        $birthdate = get_post_meta($post->ID, 'cvtx_application_birthdate', true);
+        echo('\textbf{'.__('Date of Birth', 'cvtx').':}\newline ');
+        echo(cvtx_get_latex($birthdate));
+    }
+}
+
+function cvtx_application_kv($post) {
+    if($post->post_type == 'cvtx_application') {
+        $options = get_option('cvtx_options');
+        if (!empty($options['cvtx_application_kvs_name']) && !empty($options['cvtx_application_kvs'])) {
+            $kv = get_post_meta($post->ID, 'cvtx_application_kv', true);
+            if (!empty($kv)) {
+                echo('\textbf{'.$options['cvtx_application_kvs_name'].':}\newline ');
+                echo($options['cvtx_application_kvs'][$kv]);
+            }
+        }
+    }
+}
+
+function cvtx_application_bv($post) {
+    if($post->post_type == 'cvtx_application') {
+        $options = get_option('cvtx_options');
+        if (!empty($options['cvtx_application_bvs_name']) && !empty($options['cvtx_application_bvs'])) {
+            $bv = get_post_meta($post->ID, 'cvtx_application_bv', true);
+            if (!empty($bv)) {
+                echo('\textbf{'.$options['cvtx_application_bvs_name'].':}\newline ');
+                echo($options['cvtx_application_bvs'][$bv]);
+            }
+        }
+    }
+}
+
+function cvtx_application_topics_latex($post) {
+    if($post->post_type == 'cvtx_application') {
+        $options = get_option('cvtx_options');
+        if (!empty($options['cvtx_application_topics'])) {
+            $topics = get_post_meta($post->ID, 'cvtx_application_topics', array());
+            $topic_arr = array();
+            foreach($topics as $topic_id) {
+                array_push($topic_arr,trim($options['cvtx_application_topics'][$topic_id]));
+            }
+            if (!empty($topic_arr)) {
+                echo('\textbf{'.__('Topics','cvtx').':}\newline ');
+                echo(implode(', ',$topic_arr));
+            }
+        }
+    }
+}
+
+function cvtx_application_website($post) {
+    if($post->post_type == 'cvtx_application') {
+        $website = get_post_meta($post->ID, 'cvtx_application_website', true);
+        if(!empty($website)) {
+            echo('\textbf{'.__('Website','cvtx').':}\newline ');
+            echo('\url{'.$website.'}');
+        }
+    }
+}
 ?>
