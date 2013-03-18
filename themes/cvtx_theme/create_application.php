@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Antrag erstellen
+ * Template Name: Bewerbung erstellen
  *
- * Dieses Template zeigt ein Formular zum Erstellen von Anträgen an.
+ * Dieses Template zeigt ein Formular zum Erstellen von Bewerbungen an.
  * Dafür muss das Plugin "cvtx" installiert sein.
  *
  * @package WordPress
@@ -18,7 +18,7 @@
 			<h2><?php the_title(); ?></h2>
 			<div class="entry">
 				<?php the_content('<p class="serif">' . __('Read the rest of this entry &raquo;', 'cvtx_theme') . '</p>'); ?>
-				<?php if(function_exists('cvtx_submit_antrag')) cvtx_submit_antrag(); ?>
+				<?php if(function_exists('cvtx_submit_application')) cvtx_submit_application(); ?>
 			</div>
 		</div>
 	<?php endwhile; else: ?>

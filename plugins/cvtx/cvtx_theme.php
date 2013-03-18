@@ -45,6 +45,132 @@ function cvtx_grund_action($post_id = false) {
     }
 }
 
+add_action('cvtx_theme_gender', 'cvtx_gender_action', 10, 1);
+/**
+ * themed output of cvtx_antrag_grund
+ * 
+ * @param post_id Do you want a specific posts grund?
+ *
+ */
+function cvtx_gender_action($post_id = false) {
+    if (!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    if (is_object($post)) {
+        $gender = get_post_meta($post->ID, $post->post_type.'_gender', true);
+        if (!empty($gender)) {
+            echo('<p>'.__('Gender', 'cvtx').': ');
+            $gender_arr = array(__('female','cvtx'), __('male','cvtx'), __('not specified', 'cvtx'));
+            printf('<span>%1$s</span>', $gender_arr[$gender-1]);
+            echo('</p>');
+        }
+    }
+}
+
+add_action('cvtx_theme_birthdate', 'cvtx_birthdate_action', 10, 1);
+/**
+ * themed output of cvtx_antrag_grund
+ * 
+ * @param post_id Do you want a specific posts grund?
+ *
+ */
+function cvtx_birthdate_action($post_id = false) {
+    if (!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    if (is_object($post)) {
+        $birthdate = get_post_meta($post->ID, $post->post_type.'_birthdate', true);
+        if (!empty($birthdate)) {
+            echo('<p>'.__('Date of Birth', 'cvtx').': ');
+            printf('<span>%1$s</span>', $birthdate);
+            echo('</p>');
+        }
+    }
+}
+
+add_action('cvtx_theme_kv', 'cvtx_kv_action', 10, 1);
+/**
+ * themed output of cvtx_antrag_grund
+ * 
+ * @param post_id Do you want a specific posts grund?
+ *
+ */
+function cvtx_kv_action($post_id = false) {
+    if (!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    $options = get_option('cvtx_options');
+    if (is_object($post) && !empty($options['cvtx_application_kvs_name']) && !empty($options['cvtx_application_kvs'])) {
+        $kv = get_post_meta($post->ID, 'cvtx_application_kv', true);
+        if (!empty($kv)) {
+            echo('<p>'.$options['cvtx_application_kvs_name'].': ');
+            printf('<span>%1$s</span>', $options['cvtx_application_kvs'][$kv]);
+            echo('</p>');
+        }
+    }
+}
+
+add_action('cvtx_theme_bv', 'cvtx_bv_action', 10, 1);
+/**
+ * themed output of cvtx_antrag_grund
+ * 
+ * @param post_id Do you want a specific posts grund?
+ *
+ */
+function cvtx_bv_action($post_id = false) {
+    if (!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    $options = get_option('cvtx_options');
+    if (is_object($post) && !empty($options['cvtx_application_bvs_name']) && !empty($options['cvtx_application_bvs'])) {
+        $bv = get_post_meta($post->ID, 'cvtx_application_bv', true);
+        if (!empty($bv)) {
+            echo('<p>'.$options['cvtx_application_bvs_name'].': ');
+            printf('<span>%1$s</span>', $options['cvtx_application_bvs'][$bv]);
+            echo('</p>');
+        }
+    }
+}
+
+add_action('cvtx_theme_topics', 'cvtx_topics_action', 10, 1);
+/**
+ * themed output of cvtx_antrag_grund
+ * 
+ * @param post_id Do you want a specific posts grund?
+ *
+ */
+function cvtx_topics_action($post_id = false) {
+    if (!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    $options = get_option('cvtx_options');
+    if (is_object($post) && !empty($options['cvtx_application_topics'])) {
+        $topics = get_post_meta($post->ID, 'cvtx_application_topics', array());
+        $topic_arr = array();
+        foreach($topics as $topic_id) {
+            array_push($topic_arr,trim($options['cvtx_application_topics'][$topic_id]));
+        }
+        if (!empty($topic_arr)) {
+            echo('<p>'.__('Topics','cvtx').': ');
+            printf('<span>%1$s</span>', implode(', ',$topic_arr));
+            echo('</p>');
+        }
+    }
+}
+
+add_action('cvtx_theme_website', 'cvtx_website_action', 10, 1);
+/**
+ * themed output of cvtx_antrag_grund
+ * 
+ * @param post_id Do you want a specific posts grund?
+ *
+ */
+function cvtx_website_action($post_id = false) {
+    if (!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    if (is_object($post)) {
+        $website = get_post_meta($post->ID, 'cvtx_application_website', true);
+        if (!empty($website)) {
+            echo('<p><a href="'.$website.'" class="extern">'.__('Website','cvtx').'</a></p>');
+        }
+    }
+}
+
 
 add_action('cvtx_theme_aenderungsantraege', 'cvtx_aenderungsantraege_action', 10, 1);
 /**

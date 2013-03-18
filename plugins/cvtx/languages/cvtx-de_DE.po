@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cvtx Agenda Plugin 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-21 22:29+0100\n"
-"PO-Revision-Date: 2012-09-21 22:29+0100\n"
-"Last-Translator: Max Löffler\n"
+"POT-Creation-Date: 2013-03-11 18:12+0100\n"
+"PO-Revision-Date: 2013-03-11 18:14+0100\n"
+"Last-Translator: Alexander Fecke <alex@cvtx-project.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,751 +17,990 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../latex\n"
 
-#: ../cvtx.php:83
-#: ../cvtx_admin.php:1645
-#: ../cvtx_widgets.php:221
+#: ../cvtx.php:109
+#: ../cvtx_admin.php:1654
+#: ../cvtx_widgets.php:225
 msgid "Agenda points"
 msgstr "TOPs"
 
-#: ../cvtx.php:84
-#: ../cvtx.php:511
-#: ../cvtx.php:557
-#: ../cvtx_admin.php:226
-#: ../cvtx_admin.php:327
-#: ../cvtx_admin.php:479
-#: ../cvtx_admin.php:491
-#: ../cvtx_admin.php:508
-#: ../cvtx_forms.php:32
-#: ../cvtx_widgets.php:221
+#: ../cvtx.php:110
+#: ../cvtx.php:615
+#: ../cvtx.php:661
+#: ../cvtx_admin.php:236
+#: ../cvtx_admin.php:364
+#: ../cvtx_admin.php:600
+#: ../cvtx_admin.php:612
+#: ../cvtx_admin.php:629
+#: ../cvtx_forms.php:86
+#: ../cvtx_forms.php:512
+#: ../cvtx_widgets.php:225
 msgid "Agenda point"
 msgstr "TOP"
 
-#: ../cvtx.php:85
+#: ../cvtx.php:111
 msgid "Create agenda point"
 msgstr "TOP erstellen"
 
-#: ../cvtx.php:86
+#: ../cvtx.php:112
 msgid "Edit agenda point"
 msgstr "TOP bearbeiten"
 
-#: ../cvtx.php:87
+#: ../cvtx.php:113
 msgid "View agenda point"
 msgstr "TOP ansehen"
 
-#: ../cvtx.php:88
+#: ../cvtx.php:114
 msgid "agenda points (menu_name)"
 msgstr "Tagesordnung"
 
-#: ../cvtx.php:89
+#: ../cvtx.php:115
 msgid "New agenda point"
 msgstr "Neuer TOP"
 
-#: ../cvtx.php:90
+#: ../cvtx.php:116
 msgid "Search agenda points"
 msgstr "TOP suchen"
 
-#: ../cvtx.php:91
+#: ../cvtx.php:117
 msgid "No agenda points found"
 msgstr "Keine TOPs gefunden"
 
-#: ../cvtx.php:92
+#: ../cvtx.php:118
 msgid "No agenda points found in trash"
 msgstr "Keine TOPs im Papierkorb gefunden"
 
-#: ../cvtx.php:97
+#: ../cvtx.php:123
 msgid "agenda points (slug)"
 msgstr "tops"
 
-#: ../cvtx.php:105
-#: ../cvtx_admin.php:204
-#: ../cvtx_admin.php:1619
-#: ../cvtx_widgets.php:227
+#: ../cvtx.php:131
+#: ../cvtx_admin.php:214
+#: ../cvtx_admin.php:1628
+#: ../cvtx_widgets.php:231
 msgid "Resolutions"
 msgstr "Anträge"
 
-#: ../cvtx.php:106
-#: ../cvtx.php:783
-#: ../cvtx_admin.php:269
-#: ../cvtx_admin.php:489
-#: ../cvtx_admin.php:520
-#: ../cvtx_widgets.php:227
+#: ../cvtx.php:132
+#: ../cvtx.php:905
+#: ../cvtx_admin.php:288
+#: ../cvtx_admin.php:610
+#: ../cvtx_admin.php:641
+#: ../cvtx_widgets.php:231
 msgid "Resolution"
 msgstr "Antrag"
 
-#: ../cvtx.php:107
+#: ../cvtx.php:133
 msgid "Create resolution"
 msgstr "Antrag erstellen"
 
-#: ../cvtx.php:108
+#: ../cvtx.php:134
 msgid "Edit resolution"
 msgstr "Antrag bearbeiten"
 
-#: ../cvtx.php:109
+#: ../cvtx.php:135
 msgid "View resolution"
 msgstr "Antrag ansehen"
 
-#: ../cvtx.php:110
+#: ../cvtx.php:136
 msgid "resolutions (menu_name)"
 msgstr "Anträge"
 
-#: ../cvtx.php:111
+#: ../cvtx.php:137
 msgid "New resolution"
 msgstr "Neuer Antrag"
 
-#: ../cvtx.php:112
+#: ../cvtx.php:138
 msgid "Search resolutions"
 msgstr "Antrag suchen"
 
-#: ../cvtx.php:113
+#: ../cvtx.php:139
 msgid "No resolutions found"
 msgstr "Keine Anträge gefunden"
 
-#: ../cvtx.php:114
+#: ../cvtx.php:140
 msgid "No resolutions found in trash"
 msgstr "Keine Anträge im Papierkorb gefunden"
 
-#: ../cvtx.php:119
+#: ../cvtx.php:145
 msgid "resolutions (slug)"
 msgstr "antraege"
 
-#: ../cvtx.php:127
-#: ../cvtx_admin.php:1628
-#: ../cvtx_theme.php:63
-#: ../cvtx_theme.php:252
-#: ../cvtx_widgets.php:230
+#: ../cvtx.php:153
+#: ../cvtx_admin.php:1637
+#: ../cvtx_theme.php:196
+#: ../cvtx_theme.php:392
+#: ../cvtx_widgets.php:234
 msgid "Amendments"
 msgstr "Änderungsanträge"
 
-#: ../cvtx.php:128
-#: ../cvtx.php:786
-#: ../cvtx_admin.php:517
-#: ../cvtx_widgets.php:230
+#: ../cvtx.php:154
+#: ../cvtx.php:908
+#: ../cvtx_admin.php:638
+#: ../cvtx_widgets.php:234
 #: ../latex/single-cvtx_aeantrag.php:21
 #: ../latex/single-cvtx_aeantrag.php:54
-#: ../latex/single-cvtx_reader_book.php:164
-#: ../latex/single-cvtx_reader_book.php:166
-#: ../latex/single-cvtx_reader_book.php:189
+#: ../latex/single-cvtx_reader_book.php:218
+#: ../latex/single-cvtx_reader_book.php:244
+#: ../latex/single-cvtx_reader_book.php:261
 #: ../latex/single-cvtx_reader_table.php:99
 msgid "Amendment"
 msgstr "Änderungsantrag"
 
-#: ../cvtx.php:129
+#: ../cvtx.php:155
 msgid "Create amendment"
 msgstr "Änderungsantrag erstellen"
 
-#: ../cvtx.php:130
+#: ../cvtx.php:156
 msgid "Edit amendment"
 msgstr "Änderungsantrag bearbeiten"
 
-#: ../cvtx.php:131
+#: ../cvtx.php:157
 msgid "View amendment"
 msgstr "Änderungsantrag ansehen"
 
-#: ../cvtx.php:132
+#: ../cvtx.php:158
 msgid "amendments (menu_name)"
 msgstr "Ä-Anträge"
 
-#: ../cvtx.php:133
+#: ../cvtx.php:159
 msgid "New amendment"
 msgstr "Neuer Änderungsantrag"
 
-#: ../cvtx.php:134
+#: ../cvtx.php:160
 msgid "Search amendment"
 msgstr "Änderungsantrag suchen"
 
-#: ../cvtx.php:135
+#: ../cvtx.php:161
 msgid "No amendments found"
 msgstr "Keine Änderungsanträge gefunden"
 
-#: ../cvtx.php:136
+#: ../cvtx.php:162
 msgid "No amendments found in Trash"
 msgstr "Keine Änderungsanträge im Papierkorb gefunden"
 
-#: ../cvtx.php:141
+#: ../cvtx.php:167
 msgid "amendments (slug)"
 msgstr "aeantraege"
 
-#: ../cvtx.php:149
-#: ../cvtx.php:154
-#: ../cvtx_admin.php:209
-#: ../cvtx_admin.php:1637
-#: ../cvtx_widgets.php:233
+#: ../cvtx.php:175
+#: ../cvtx.php:180
+#: ../cvtx_admin.php:219
+#: ../cvtx_admin.php:1047
+#: ../cvtx_admin.php:1646
+#: ../cvtx_widgets.php:237
 msgid "Applications"
 msgstr "Bewerbungen"
 
-#: ../cvtx.php:150
-#: ../cvtx.php:789
-#: ../cvtx_admin.php:507
-#: ../latex/single-cvtx_reader_book.php:133
+#: ../cvtx.php:176
+#: ../cvtx.php:911
+#: ../cvtx_admin.php:628
+#: ../cvtx_forms.php:518
+#: ../latex/single-cvtx_application.php:48
+#: ../latex/single-cvtx_reader_book.php:142
+#: ../latex/single-cvtx_reader_book.php:165
+#: ../latex/single-cvtx_reader_book.php:187
 msgid "Application"
 msgstr "Bewerbung"
 
-#: ../cvtx.php:151
+#: ../cvtx.php:177
 msgid "Create application"
 msgstr "Bewerbung erstellen"
 
-#: ../cvtx.php:152
+#: ../cvtx.php:178
 msgid "Edit application"
 msgstr "Bewerbung bearbeiten"
 
-#: ../cvtx.php:153
-#: ../cvtx_admin.php:361
+#: ../cvtx.php:179
 msgid "View application"
 msgstr "Bewerbung ansehen"
 
-#: ../cvtx.php:155
+#: ../cvtx.php:181
 msgid "New application"
 msgstr "Neue Bewerbung"
 
-#: ../cvtx.php:156
+#: ../cvtx.php:182
 msgid "Search applications"
 msgstr "Bewerbung suchen"
 
-#: ../cvtx.php:157
+#: ../cvtx.php:183
 msgid "No applications found"
 msgstr "Keine Bewerbungen gefunden"
 
-#: ../cvtx.php:158
+#: ../cvtx.php:184
 msgid "No applications found in Trash"
 msgstr "Keine Bewerbungen im Papierkorb gefunden"
 
-#: ../cvtx.php:162
+#: ../cvtx.php:188
 msgid "applications (slug)"
 msgstr "bewerbungen"
 
-#: ../cvtx.php:170
-#: ../cvtx.php:193
-#: ../cvtx.php:201
-#: ../cvtx.php:209
-#: ../cvtx_admin.php:1653
-#: ../cvtx_widgets.php:224
+#: ../cvtx.php:196
+#: ../cvtx.php:219
+#: ../cvtx.php:227
+#: ../cvtx.php:235
+#: ../cvtx_admin.php:1662
+#: ../cvtx_widgets.php:228
 msgid "Readers"
 msgstr "Reader"
 
-#: ../cvtx.php:171
-#: ../cvtx.php:780
-#: ../cvtx_admin.php:470
-#: ../cvtx_widgets.php:63
-#: ../cvtx_widgets.php:224
+#: ../cvtx.php:197
+#: ../cvtx.php:902
+#: ../cvtx_admin.php:591
+#: ../cvtx_widgets.php:67
+#: ../cvtx_widgets.php:228
 msgid "Reader"
 msgstr "Reader"
 
-#: ../cvtx.php:172
+#: ../cvtx.php:198
 msgid "Create reader"
 msgstr "Reader erstellen"
 
-#: ../cvtx.php:173
+#: ../cvtx.php:199
 msgid "New reader"
 msgstr "Neuer Reader"
 
-#: ../cvtx.php:174
+#: ../cvtx.php:200
 msgid "Edit reader"
 msgstr "Reader bearbeiten"
 
-#: ../cvtx.php:175
+#: ../cvtx.php:201
 msgid "View reader"
 msgstr "Reader ansehen"
 
-#: ../cvtx.php:176
+#: ../cvtx.php:202
 msgid "readers (menu_name)"
 msgstr "Reader"
 
-#: ../cvtx.php:177
+#: ../cvtx.php:203
 msgid "Search reader"
 msgstr "Reader suchen"
 
-#: ../cvtx.php:178
+#: ../cvtx.php:204
 msgid "No readers found"
 msgstr "Keine Reader gefunden"
 
-#: ../cvtx.php:179
+#: ../cvtx.php:205
 msgid "No readers found in trash"
 msgstr "Keine Reader im Papierkorb gefunden"
 
-#: ../cvtx.php:184
+#: ../cvtx.php:210
 msgid "readers (slug)"
 msgstr "reader"
 
-#: ../cvtx.php:284
-#: ../cvtx.php:314
+#: ../cvtx.php:322
+#: ../cvtx.php:352
 msgid "et al."
 msgstr "u.a."
 
-#: ../cvtx.php:392
-#: ../cvtx.php:512
-#: ../cvtx.php:558
-#: ../cvtx.php:835
-#: ../cvtx.php:846
-#: ../cvtx.php:860
-#: ../cvtx_admin.php:776
-#: ../cvtx_admin.php:872
-#: ../cvtx_admin.php:962
-#: ../cvtx_admin.php:1002
-#: ../cvtx_admin.php:1022
-#: ../cvtx_admin.php:1044
-#: ../cvtx_admin.php:1067
-#: ../cvtx_admin.php:1111
-#: ../cvtx_admin.php:1264
-#: ../cvtx_admin.php:1341
+#: ../cvtx.php:440
+#: ../cvtx.php:616
+#: ../cvtx.php:662
+#: ../cvtx.php:980
+#: ../cvtx.php:991
+#: ../cvtx.php:1005
+#: ../cvtx_admin.php:903
+#: ../cvtx_admin.php:1007
+#: ../cvtx_admin.php:1018
+#: ../cvtx_admin.php:1094
+#: ../cvtx_admin.php:1122
+#: ../cvtx_admin.php:1141
+#: ../cvtx_admin.php:1163
+#: ../cvtx_admin.php:1185
+#: ../cvtx_admin.php:1270
 msgid "%agenda_point%"
 msgstr "%top%"
 
-#: ../cvtx.php:393
-#: ../cvtx.php:561
-#: ../cvtx.php:836
-#: ../cvtx.php:847
-#: ../cvtx.php:861
-#: ../cvtx.php:862
-#: ../cvtx_admin.php:776
-#: ../cvtx_admin.php:777
-#: ../cvtx_admin.php:872
-#: ../cvtx_admin.php:879
-#: ../cvtx_admin.php:962
-#: ../cvtx_admin.php:964
-#: ../cvtx_admin.php:1046
-#: ../cvtx_admin.php:1069
-#: ../cvtx_admin.php:1111
-#: ../cvtx_admin.php:1121
-#: ../cvtx_admin.php:1343
+#: ../cvtx.php:441
+#: ../cvtx.php:665
+#: ../cvtx.php:981
+#: ../cvtx.php:992
+#: ../cvtx.php:1006
+#: ../cvtx.php:1007
+#: ../cvtx_admin.php:903
+#: ../cvtx_admin.php:904
+#: ../cvtx_admin.php:1020
+#: ../cvtx_admin.php:1094
+#: ../cvtx_admin.php:1095
+#: ../cvtx_admin.php:1165
+#: ../cvtx_admin.php:1187
+#: ../cvtx_admin.php:1270
+#: ../cvtx_admin.php:1276
 msgid "%resolution%"
 msgstr "%antrag%"
 
-#: ../cvtx.php:511
-#: ../cvtx.php:557
-#: ../cvtx_admin.php:1003
-#: ../cvtx_admin.php:1023
-#: ../cvtx_admin.php:1045
-#: ../cvtx_admin.php:1068
-#: ../cvtx_admin.php:1265
-#: ../cvtx_admin.php:1342
+#: ../cvtx.php:615
+#: ../cvtx.php:661
+#: ../cvtx_admin.php:1008
+#: ../cvtx_admin.php:1019
+#: ../cvtx_admin.php:1123
+#: ../cvtx_admin.php:1142
+#: ../cvtx_admin.php:1164
+#: ../cvtx_admin.php:1186
 msgid "%agenda_point_token%"
 msgstr "%top_kuerzel%"
 
-#: ../cvtx.php:513
-#: ../cvtx_admin.php:989
-#: ../cvtx_admin.php:1004
-#: ../cvtx_admin.php:1011
-#: ../cvtx_admin.php:1024
-#: ../cvtx_admin.php:1266
+#: ../cvtx.php:617
+#: ../cvtx_admin.php:1009
+#: ../cvtx_admin.php:1110
+#: ../cvtx_admin.php:1124
+#: ../cvtx_admin.php:1131
+#: ../cvtx_admin.php:1143
 msgid "%title%"
 msgstr "%titel%"
 
-#: ../cvtx.php:514
-#: ../cvtx.php:563
-#: ../cvtx_admin.php:1005
-#: ../cvtx_admin.php:1025
-#: ../cvtx_admin.php:1049
-#: ../cvtx_admin.php:1072
-#: ../cvtx_admin.php:1267
-#: ../cvtx_admin.php:1346
+#: ../cvtx.php:618
+#: ../cvtx.php:667
+#: ../cvtx_admin.php:1010
+#: ../cvtx_admin.php:1023
+#: ../cvtx_admin.php:1125
+#: ../cvtx_admin.php:1144
+#: ../cvtx_admin.php:1168
+#: ../cvtx_admin.php:1190
 msgid "%authors%"
 msgstr "%antragsteller%"
 
-#: ../cvtx.php:515
-#: ../cvtx.php:564
-#: ../cvtx_admin.php:1006
-#: ../cvtx_admin.php:1026
-#: ../cvtx_admin.php:1050
-#: ../cvtx_admin.php:1073
-#: ../cvtx_admin.php:1268
-#: ../cvtx_admin.php:1347
+#: ../cvtx.php:619
+#: ../cvtx.php:668
+#: ../cvtx_admin.php:1011
+#: ../cvtx_admin.php:1024
+#: ../cvtx_admin.php:1126
+#: ../cvtx_admin.php:1145
+#: ../cvtx_admin.php:1169
+#: ../cvtx_admin.php:1191
 msgid "%authors_short%"
 msgstr "%antragsteller_kurz%"
 
-#: ../cvtx.php:516
-#: ../cvtx.php:565
-#: ../cvtx_admin.php:1007
-#: ../cvtx_admin.php:1027
-#: ../cvtx_admin.php:1051
-#: ../cvtx_admin.php:1074
-#: ../cvtx_admin.php:1269
-#: ../cvtx_admin.php:1348
+#: ../cvtx.php:620
+#: ../cvtx.php:669
+#: ../cvtx_admin.php:1012
+#: ../cvtx_admin.php:1025
+#: ../cvtx_admin.php:1127
+#: ../cvtx_admin.php:1146
+#: ../cvtx_admin.php:1170
+#: ../cvtx_admin.php:1192
 msgid "%text%"
 msgstr "%antragstext%"
 
-#: ../cvtx.php:517
-#: ../cvtx.php:566
-#: ../cvtx_admin.php:1008
-#: ../cvtx_admin.php:1028
-#: ../cvtx_admin.php:1052
-#: ../cvtx_admin.php:1075
-#: ../cvtx_admin.php:1270
-#: ../cvtx_admin.php:1349
+#: ../cvtx.php:621
+#: ../cvtx.php:670
+#: ../cvtx_admin.php:1013
+#: ../cvtx_admin.php:1026
+#: ../cvtx_admin.php:1128
+#: ../cvtx_admin.php:1147
+#: ../cvtx_admin.php:1171
+#: ../cvtx_admin.php:1193
 msgid "%explanation%"
 msgstr "%begruendung%"
 
-#: ../cvtx.php:559
-#: ../cvtx_admin.php:1032
-#: ../cvtx_admin.php:1047
-#: ../cvtx_admin.php:1055
-#: ../cvtx_admin.php:1070
-#: ../cvtx_admin.php:1344
+#: ../cvtx.php:663
+#: ../cvtx_admin.php:1021
+#: ../cvtx_admin.php:1152
+#: ../cvtx_admin.php:1166
+#: ../cvtx_admin.php:1174
+#: ../cvtx_admin.php:1188
 msgid "%resolution_token%"
 msgstr "%antrag_kuerzel%"
 
-#: ../cvtx.php:562
-#: ../cvtx.php:863
-#: ../cvtx_admin.php:777
-#: ../cvtx_admin.php:879
-#: ../cvtx_admin.php:964
-#: ../cvtx_admin.php:1033
-#: ../cvtx_admin.php:1048
-#: ../cvtx_admin.php:1056
-#: ../cvtx_admin.php:1071
-#: ../cvtx_admin.php:1121
-#: ../cvtx_admin.php:1345
+#: ../cvtx.php:666
+#: ../cvtx.php:1008
+#: ../cvtx_admin.php:904
+#: ../cvtx_admin.php:1022
+#: ../cvtx_admin.php:1095
+#: ../cvtx_admin.php:1153
+#: ../cvtx_admin.php:1167
+#: ../cvtx_admin.php:1175
+#: ../cvtx_admin.php:1189
+#: ../cvtx_admin.php:1276
 msgid "%line%"
 msgstr "%zeile%"
 
-#: ../cvtx.php:755
-#: ../cvtx.php:799
-#: ../cvtx.php:807
-#: ../cvtx_admin.php:123
-#: ../cvtx_latex.php:109
-#: ../cvtx_latex.php:173
-#: ../cvtx_latex.php:177
-#: ../cvtx_latex.php:181
-#: ../cvtx_latex.php:202
-#: ../cvtx_latex.php:210
+#: ../cvtx.php:872
+#: ../cvtx.php:921
+#: ../cvtx.php:929
+#: ../cvtx_admin.php:133
+#: ../cvtx_latex.php:119
+#: ../cvtx_latex.php:190
+#: ../cvtx_latex.php:194
+#: ../cvtx_latex.php:198
+#: ../cvtx_latex.php:219
+#: ../cvtx_latex.php:227
 msgid "(no title)"
 msgstr "(kein Titel)"
 
-#: ../cvtx.php:769
+#: ../cvtx.php:891
 msgid "agenda_point_prefix_format"
 msgstr "TOP %s:"
 
-#: ../cvtx.php:827
-#: ../cvtx_latex.php:188
-#: ../cvtx_latex.php:190
-#: ../cvtx_latex.php:193
-#: ../cvtx_latex.php:195
+#: ../cvtx.php:972
+#: ../cvtx_latex.php:205
+#: ../cvtx_latex.php:207
+#: ../cvtx_latex.php:210
+#: ../cvtx_latex.php:212
 msgid "agenda_point_format"
 msgstr "TOP %s"
 
-#: ../cvtx.php:1154
-msgid "Agenda item"
-msgstr "TOP"
+#: ../cvtx.php:1299
+#: ../cvtx.php:1302
+#: ../latex/single-cvtx_aeantrag.php:45
+#: ../latex/single-cvtx_antrag.php:43
+#: ../latex/single-cvtx_application.php:43
+#: ../latex/single-cvtx_reader_book.php:89
+#: ../latex/single-cvtx_reader_book.php:181
+#: ../latex/single-cvtx_reader_book.php:234
+msgid "Concerning"
+msgstr "Gegenstand"
 
-#: ../cvtx.php:1155
-#: ../cvtx.php:1158
-#: ../cvtx_admin.php:26
-#: ../cvtx_admin.php:40
-#: ../cvtx_admin.php:490
-#: ../cvtx_admin.php:518
-#: ../cvtx_forms.php:38
-#: ../cvtx_forms.php:40
-#: ../cvtx_forms.php:197
-#: ../cvtx_forms.php:200
-#: ../cvtx_theme.php:17
-#: ../cvtx_theme.php:67
-#: ../cvtx_theme.php:223
-#: ../cvtx_theme.php:257
+#: ../cvtx.php:1300
+#: ../cvtx.php:1304
+#: ../cvtx_admin.php:27
+#: ../cvtx_admin.php:41
+#: ../cvtx_admin.php:611
+#: ../cvtx_admin.php:639
+#: ../cvtx_forms.php:92
+#: ../cvtx_forms.php:94
+#: ../cvtx_forms.php:258
+#: ../cvtx_forms.php:260
+#: ../cvtx_theme.php:22
+#: ../cvtx_theme.php:200
+#: ../cvtx_theme.php:364
+#: ../cvtx_theme.php:395
 #: ../latex/single-cvtx_aeantrag.php:43
 #: ../latex/single-cvtx_aeantrag.php:65
 #: ../latex/single-cvtx_antrag.php:41
 #: ../latex/single-cvtx_antrag.php:63
-#: ../latex/single-cvtx_reader_book.php:88
-#: ../latex/single-cvtx_reader_book.php:111
-#: ../latex/single-cvtx_reader_book.php:178
-#: ../latex/single-cvtx_reader_book.php:201
+#: ../latex/single-cvtx_reader_book.php:87
+#: ../latex/single-cvtx_reader_book.php:124
+#: ../latex/single-cvtx_reader_book.php:232
+#: ../latex/single-cvtx_reader_book.php:276
 #: ../latex/single-cvtx_reader_table.php:95
 #: ../latex/single-cvtx_reader_table.php:98
 msgid "Author(s)"
 msgstr "AntragstellerInnen"
 
-#: ../cvtx.php:1157
-#: ../cvtx_admin.php:272
-#: ../cvtx_forms.php:190
-#: ../cvtx_forms.php:192
-#: ../cvtx_theme.php:66
+#: ../cvtx.php:1303
+#: ../cvtx_admin.php:291
+#: ../cvtx_forms.php:250
+#: ../cvtx_forms.php:252
+#: ../cvtx_theme.php:199
 #: ../latex/single-cvtx_reader_table.php:97
 msgid "Line"
 msgstr "Zeile"
 
-#: ../cvtx.php:1170
-#: ../cvtx_admin.php:386
-#: ../cvtx_admin.php:542
-#: ../cvtx_admin.php:574
-#: ../cvtx_admin.php:596
-#: ../cvtx_admin.php:611
-#: ../cvtx_theme.php:130
+#: ../cvtx.php:1316
+#: ../cvtx_admin.php:496
+#: ../cvtx_admin.php:664
+#: ../cvtx_admin.php:696
+#: ../cvtx_admin.php:718
+#: ../cvtx_admin.php:733
+#: ../cvtx_theme.php:264
+#: ../cvtx_theme.php:370
 msgid "Download"
 msgstr "Download"
 
-#: ../cvtx_admin.php:12
-#: ../cvtx_admin.php:20
-#: ../cvtx_admin.php:24
-#: ../cvtx_admin.php:38
-#: ../cvtx_admin.php:57
+#: ../cvtx_admin.php:13
+#: ../cvtx_admin.php:21
+#: ../cvtx_admin.php:25
+#: ../cvtx_admin.php:39
+#: ../cvtx_admin.php:58
 msgid "Metadata"
 msgstr "Metainformationen"
 
-#: ../cvtx_admin.php:14
-#: ../cvtx_theme.php:170
+#: ../cvtx_admin.php:15
+#: ../cvtx_theme.php:309
 msgid "Contents"
 msgstr "Inhalt"
 
-#: ../cvtx_admin.php:16
-#: ../cvtx_admin.php:32
-#: ../cvtx_admin.php:50
-#: ../cvtx_admin.php:59
+#: ../cvtx_admin.php:17
+#: ../cvtx_admin.php:33
+#: ../cvtx_admin.php:51
+#: ../cvtx_admin.php:60
 msgid "PDF"
 msgstr "PDF"
 
-#: ../cvtx_admin.php:28
-#: ../cvtx_admin.php:42
-#: ../cvtx_forms.php:74
-#: ../cvtx_forms.php:235
-#: ../cvtx_theme.php:36
-#: ../cvtx_theme.php:69
+#: ../cvtx_admin.php:29
+#: ../cvtx_admin.php:43
+#: ../cvtx_forms.php:128
+#: ../cvtx_forms.php:294
+#: ../cvtx_theme.php:42
+#: ../cvtx_theme.php:202
 #: ../latex/single-cvtx_aeantrag.php:61
 #: ../latex/single-cvtx_antrag.php:59
-#: ../latex/single-cvtx_reader_book.php:107
-#: ../latex/single-cvtx_reader_book.php:197
+#: ../latex/single-cvtx_reader_book.php:119
+#: ../latex/single-cvtx_reader_book.php:271
 msgid "Explanation"
 msgstr "Begründung"
 
-#: ../cvtx_admin.php:30
-#: ../cvtx_admin.php:46
+#: ../cvtx_admin.php:31
+#: ../cvtx_admin.php:47
 #: ../latex/single-cvtx_aeantrag.php:48
 #: ../latex/single-cvtx_antrag.php:46
-#: ../latex/single-cvtx_reader_book.php:93
-#: ../latex/single-cvtx_reader_book.php:183
+#: ../latex/single-cvtx_reader_book.php:92
+#: ../latex/single-cvtx_reader_book.php:237
 msgid "Remarks"
 msgstr "Anmerkungen"
 
-#: ../cvtx_admin.php:34
-#: ../cvtx_admin.php:53
-#: ../cvtx_admin.php:61
-#: ../cvtx_admin.php:1152
+#: ../cvtx_admin.php:35
+#: ../cvtx_admin.php:54
+#: ../cvtx_admin.php:62
 msgid "Reader assignment"
 msgstr "Readerzuordnung"
 
-#: ../cvtx_admin.php:44
-#: ../cvtx_admin.php:307
-#: ../cvtx_admin.php:519
-#: ../cvtx_theme.php:70
+#: ../cvtx_admin.php:45
+#: ../cvtx_admin.php:335
+#: ../cvtx_admin.php:640
+#: ../cvtx_theme.php:203
 #: ../latex/single-cvtx_reader_table.php:100
 msgid "Procedure"
 msgstr "Verfahren"
 
-#: ../cvtx_admin.php:63
-msgid "File upload"
-msgstr "Datei Upload"
+#: ../cvtx_admin.php:64
+#: ../cvtx_forms.php:423
+msgid "Personal Data"
+msgstr "Persönliche Daten"
 
-#: ../cvtx_admin.php:80
+#: ../cvtx_admin.php:66
+#: ../cvtx_forms.php:433
+msgid "Photo"
+msgstr "Foto"
+
+#: ../cvtx_admin.php:68
+#: ../cvtx_forms.php:532
+msgid "Life career"
+msgstr "Biographie"
+
+#: ../cvtx_admin.php:85
 msgid "Create PDF as"
 msgstr "PDF erstellen als"
 
-#: ../cvtx_admin.php:82
+#: ../cvtx_admin.php:87
 msgid "book"
 msgstr "Buch"
 
-#: ../cvtx_admin.php:84
-msgid "table of amendments"
-msgstr "Änderungsantragstabelle"
-
-#: ../cvtx_admin.php:141
 #: ../cvtx_admin.php:151
+#: ../cvtx_admin.php:161
 msgid "all"
 msgstr "alle"
 
-#: ../cvtx_admin.php:142
 #: ../cvtx_admin.php:152
+#: ../cvtx_admin.php:162
 msgid "none"
 msgstr "keine"
 
-#: ../cvtx_admin.php:171
+#: ../cvtx_admin.php:181
 msgid "Items in gray have not yet been published and therefor they will not be published in the reader."
 msgstr "Graue Einträge sind noch nicht freigeschaltet und werden deshalb im Reader nicht angezeigt."
 
-#: ../cvtx_admin.php:186
+#: ../cvtx_admin.php:196
 msgid "Number of agenda point"
 msgstr "TOP-Nummer"
 
-#: ../cvtx_admin.php:189
-#: ../cvtx_admin.php:480
+#: ../cvtx_admin.php:199
+#: ../cvtx_admin.php:601
 msgid "Token"
 msgstr "Kürzel"
 
-#: ../cvtx_admin.php:194
-#: ../cvtx_admin.php:232
-#: ../cvtx_admin.php:333
+#: ../cvtx_admin.php:204
+#: ../cvtx_admin.php:242
+#: ../cvtx_admin.php:370
 msgid "This number is used."
 msgstr "Diese Nummer ist bereits vergeben."
 
-#: ../cvtx_admin.php:195
+#: ../cvtx_admin.php:205
 msgid "This token is used."
 msgstr "Dieses Kürzel ist bereits vergeben."
 
-#: ../cvtx_admin.php:196
-#: ../cvtx_admin.php:233
-#: ../cvtx_admin.php:334
+#: ../cvtx_admin.php:206
+#: ../cvtx_admin.php:243
+#: ../cvtx_admin.php:371
 msgid "Please insert number."
 msgstr "Bitte Nummer angeben."
 
-#: ../cvtx_admin.php:197
+#: ../cvtx_admin.php:207
 msgid "Please insert token."
 msgstr "Bitte Kürzel angeben."
 
-#: ../cvtx_admin.php:200
+#: ../cvtx_admin.php:210
 msgid "Enable the following contents"
 msgstr "Hinzufügen folgender Inhalte erlauben"
 
-#: ../cvtx_admin.php:215
+#: ../cvtx_admin.php:225
 msgid "View as appendix"
 msgstr "Als Anhang anzeigen"
 
-#: ../cvtx_admin.php:227
+#: ../cvtx_admin.php:237
 msgid "No agenda points enabled to resolutions."
 msgstr "Keine Tagesordnungspunkte für Anträge freigeschaltet."
 
-#: ../cvtx_admin.php:229
+#: ../cvtx_admin.php:239
 msgid "Resolution number"
 msgstr "Antragsnummer"
 
-#: ../cvtx_admin.php:240
-#: ../cvtx_admin.php:283
+#: ../cvtx_admin.php:250
+#: ../cvtx_admin.php:302
 msgid "Author(s) short"
 msgstr "AntragstellerInnen (kurz)"
 
-#: ../cvtx_admin.php:243
-#: ../cvtx_admin.php:286
-#: ../cvtx_admin.php:1253
-#: ../cvtx_forms.php:44
+#: ../cvtx_admin.php:253
+#: ../cvtx_admin.php:305
+#: ../cvtx_admin.php:1061
+#: ../cvtx_forms.php:98
 msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
-#: ../cvtx_admin.php:245
-#: ../cvtx_forms.php:48
+#: ../cvtx_admin.php:255
+#: ../cvtx_forms.php:102
+#: ../cvtx_forms.php:268
 msgid "Mobile number"
 msgstr "Telefonnummer"
 
-#: ../cvtx_admin.php:270
-#: ../cvtx_forms.php:33
+#: ../cvtx_admin.php:289
+#: ../cvtx_forms.php:87
 msgid "No agenda created"
 msgstr "Keine TOPs erstellt"
 
-#: ../cvtx_admin.php:275
+#: ../cvtx_admin.php:294
 msgid "There is another amendment concering this line."
 msgstr "Es existiert bereits ein Änderungsantrag zu dieser Zeile."
 
-#: ../cvtx_admin.php:276
+#: ../cvtx_admin.php:295
 msgid "Please insert line."
 msgstr "Bitte Zeile angeben."
 
-#: ../cvtx_admin.php:288
+#: ../cvtx_admin.php:307
 msgid "Mobile phone"
 msgstr "Telefonnummer"
 
-#: ../cvtx_admin.php:308
-#: ../cvtx_theme.php:93
+#: ../cvtx_admin.php:336
+#: ../cvtx_theme.php:225
 msgid "Adoption"
 msgstr "Übernahme"
 
-#: ../cvtx_admin.php:308
+#: ../cvtx_admin.php:336
 msgid "Modified adoption"
 msgstr "Modifizierte Übernahme"
 
-#: ../cvtx_admin.php:308
-#: ../cvtx_theme.php:95
+#: ../cvtx_admin.php:336
+#: ../cvtx_theme.php:227
 msgid "Vote"
 msgstr "Abstimmung"
 
-#: ../cvtx_admin.php:308
-#: ../cvtx_theme.php:96
+#: ../cvtx_admin.php:336
+#: ../cvtx_theme.php:228
 msgid "Withdrawn"
 msgstr "Zurückgezogen"
 
-#: ../cvtx_admin.php:308
-#: ../cvtx_theme.php:97
+#: ../cvtx_admin.php:336
+#: ../cvtx_theme.php:229
 msgid "Obsolete"
 msgstr "Erledigt"
 
-#: ../cvtx_admin.php:328
+#: ../cvtx_admin.php:365
+#: ../cvtx_forms.php:513
 msgid "No agenda points enabled to applications."
 msgstr "Keine Tagesordnungspunkte für Bewerbungen freigeschaltet."
 
-#: ../cvtx_admin.php:330
+#: ../cvtx_admin.php:367
 msgid "Application number"
 msgstr "Bewerbungsnummer"
 
-#: ../cvtx_admin.php:363
-msgid "No pdf uploaded yet."
-msgstr "Bisher kein PDF hochgeladen."
+#: ../cvtx_admin.php:391
+msgid "First name"
+msgstr "Vorname"
 
-#: ../cvtx_admin.php:369
-msgid "Update application"
-msgstr "Neue Bewerbung hochladen"
+#: ../cvtx_admin.php:393
+msgid "Family name"
+msgstr "Nachname"
 
-#: ../cvtx_admin.php:369
-msgid "Upload application"
-msgstr "Bewerbung hochladen"
+#: ../cvtx_admin.php:395
+#: ../cvtx_forms.php:455
+#: ../cvtx_theme.php:82
+msgid "Date of Birth"
+msgstr "Geburtsdatum"
 
-#: ../cvtx_admin.php:390
-#: ../cvtx_theme.php:230
+#: ../cvtx_admin.php:397
+#: ../cvtx_forms.php:264
+#: ../cvtx_forms.php:451
+msgid "e-mail address"
+msgstr "E-Mail-Adresse"
+
+#: ../cvtx_admin.php:399
+#: ../cvtx_forms.php:459
+#: ../cvtx_theme.php:61
+msgid "Gender"
+msgstr "Geschlecht"
+
+#: ../cvtx_admin.php:401
+#: ../cvtx_forms.php:461
+#: ../cvtx_theme.php:62
+msgid "female"
+msgstr "weiblich"
+
+#: ../cvtx_admin.php:402
+#: ../cvtx_forms.php:462
+#: ../cvtx_theme.php:62
+msgid "male"
+msgstr "männlich"
+
+#: ../cvtx_admin.php:403
+#: ../cvtx_forms.php:463
+#: ../cvtx_theme.php:62
+msgid "not specified"
+msgstr "keine Angabe"
+
+#: ../cvtx_admin.php:405
+msgid "Main topics (please select 2 topics at max)"
+msgstr "Themenschwerpunkte (bitte maximal zwei auswählen)"
+
+#: ../cvtx_admin.php:430
+#: ../cvtx_forms.php:504
+#: ../cvtx_theme.php:169
+msgid "Website"
+msgstr "Website"
+
+#: ../cvtx_admin.php:446
+msgid "No image uploaded yet."
+msgstr "Bisher kein Foto hochgeladen."
+
+#: ../cvtx_admin.php:452
+msgid "Update photo"
+msgstr "Neues Foto hochladen"
+
+#: ../cvtx_admin.php:452
+msgid "Upload photo"
+msgstr "Foto hochladen"
+
+#: ../cvtx_admin.php:458
+#: ../cvtx_forms.php:438
+msgid "Allowed file endings: "
+msgstr "Erlaubte Dateiendungen:"
+
+#: ../cvtx_admin.php:466
+#: ../cvtx_forms.php:446
+msgid "Max. file size: "
+msgstr "Maximale Dateigröße:"
+
+#: ../cvtx_admin.php:500
+#: ../cvtx_theme.php:372
 msgid "No PDF available."
 msgstr "Kein PDF verfügbar."
 
-#: ../cvtx_admin.php:441
+#: ../cvtx_admin.php:520
+msgid "Manually upload application"
+msgstr "Bewerbung manuell hochladen"
+
+#: ../cvtx_admin.php:562
 msgid "The resolution appears in the following readers:"
 msgstr "Der Antrag erscheint in den folgenden Readern:"
 
-#: ../cvtx_admin.php:443
+#: ../cvtx_admin.php:564
 msgid "The amendment appears in the following readers:"
 msgstr "Der Änderungsantrag erscheint in den folgenden Readern:"
 
-#: ../cvtx_admin.php:445
+#: ../cvtx_admin.php:566
 msgid "The application appears in the following readers:"
 msgstr "Die Bewerbung erscheint in den folgenden Readern:"
 
-#: ../cvtx_admin.php:455
+#: ../cvtx_admin.php:576
 msgid "The resolution is not assigned to any reader."
 msgstr "Der Antrag ist bisher keinem Reader zugeordnet."
 
-#: ../cvtx_admin.php:457
+#: ../cvtx_admin.php:578
 msgid "The amendment is not assigned to any reader."
 msgstr "Der Änderungsantrag ist bisher keinem Reader zugeordnet."
 
-#: ../cvtx_admin.php:459
+#: ../cvtx_admin.php:580
 msgid "The application is not assigned to any reader."
 msgstr "Die Bewerbung ist bisher keinem Reader zugeordnet."
 
-#: ../cvtx_admin.php:472
-#: ../cvtx_admin.php:482
-#: ../cvtx_admin.php:493
-#: ../cvtx_admin.php:510
-#: ../cvtx_admin.php:522
+#: ../cvtx_admin.php:593
+#: ../cvtx_admin.php:603
+#: ../cvtx_admin.php:614
+#: ../cvtx_admin.php:631
+#: ../cvtx_admin.php:643
 msgid "Date"
 msgstr "Datum"
 
-#: ../cvtx_admin.php:661
+#: ../cvtx_admin.php:787
 msgid "To unleash the full power of cvtx Agenda Plugin, we recommend you to install and activate the following plugin(s):"
 msgstr "Um das cvtx Antragstool in seiner Gänze nutzen zu können, empfehlen wir die Installation und Aktivierung der/des folgenden Plugins:"
 
-#: ../cvtx_admin.php:676
-#: ../cvtx_admin.php:1091
-#: ../cvtx_admin.php:1661
-#: ../cvtx_widgets.php:194
+#: ../cvtx_admin.php:802
+#: ../cvtx_admin.php:1670
+#: ../cvtx_widgets.php:198
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../cvtx_admin.php:860
-#: ../cvtx_admin.php:1611
-#: ../cvtx_widgets.php:205
+#: ../cvtx_admin.php:986
+#: ../cvtx_admin.php:1031
+#: ../cvtx_admin.php:1620
+#: ../cvtx_widgets.php:209
 msgid "cvtx Agenda Plugin"
 msgstr "cvtx Antragstool"
 
-#: ../cvtx_admin.php:867
-msgid "Cheatin&#8217; uh?"
-msgstr "Biste am Cheaten, oder wat?"
+#: ../cvtx_admin.php:990
+msgid "Main settings for cvtx."
+msgstr "Allgemeine Einstellungen für cvtx"
 
-#: ../cvtx_admin.php:988
+#: ../cvtx_admin.php:994
+#, fuzzy
+msgid "Notification settings"
+msgstr "Benachrichtigungen"
+
+#: ../cvtx_admin.php:998
+msgid "Settings related to LaTeX"
+msgstr "LaTeX-Einstellungen"
+
+#: ../cvtx_admin.php:1002
+msgid "Application settings for cvtx."
+msgstr "Einstellungen für die Bewerbungen"
+
+#: ../cvtx_admin.php:1006
+#, php-format
+msgid "Fields: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s."
+msgstr "Felder: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s."
+
+#: ../cvtx_admin.php:1017
+#, php-format
+msgid "Fields: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s."
+msgstr "Felder: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s."
+
+#: ../cvtx_admin.php:1035
+#, fuzzy
+msgid "Save Changes"
+msgstr "Einstellungen speichern"
+
+#: ../cvtx_admin.php:1042
+#, fuzzy
+msgid "Main Settings"
+msgstr "Einstellungen"
+
+#: ../cvtx_admin.php:1043
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: ../cvtx_admin.php:1044
+msgid "Resolution submitted"
+msgstr "Antrag eingereicht"
+
+#: ../cvtx_admin.php:1045
+msgid "Amendment submitted"
+msgstr "Änderungsantrag eingereicht"
+
+#: ../cvtx_admin.php:1049
+msgid "Token for resolutions and applications"
+msgstr "Kürzel für Anträge und Bewerbungen"
+
+#: ../cvtx_admin.php:1050
+msgid "Token for amendments"
+msgstr "Kürzel für Änderungsanträge"
+
+#: ../cvtx_admin.php:1051
+msgid "Generate PDF"
+msgstr "PDF-Erzeugung"
+
+#: ../cvtx_admin.php:1052
+msgid "Anonymous user"
+msgstr "Anonymer Benutzer"
+
+#: ../cvtx_admin.php:1053
+msgid "Assign submitted resolutions to the following readers"
+msgstr "Ordne neue Anträge den folgenden Readern zu"
+
+#: ../cvtx_admin.php:1054
+msgid "Assign submitted amendments to the following readers"
+msgstr "Ordne neue Änderungsanträge den folgenden Readern zu"
+
+#: ../cvtx_admin.php:1055
+msgid "Assign submitted applications to the following readers"
+msgstr "Ordne neue Bewerbungen den folgenden Readern zu"
+
+#: ../cvtx_admin.php:1056
+msgid "Privacy message to be shown below e-mail and phone form fields"
+msgstr "Datenschutz-Hinweis, der unter den E-Mail- und Telefon-Feldern angezeigt wird"
+
+#: ../cvtx_admin.php:1057
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+#: ../cvtx_admin.php:1059
+msgid "HTML mail"
+msgstr "HTML-E-Mail"
+
+#: ../cvtx_admin.php:1060
+msgid "Sender address"
+msgstr "Absender-Adresse"
+
+#: ../cvtx_admin.php:1063
+#: ../cvtx_admin.php:1070
+msgid "E-mail confirmation"
+msgstr "E-Mail-Bestätigung"
+
+#: ../cvtx_admin.php:1064
+#: ../cvtx_admin.php:1067
+#: ../cvtx_admin.php:1071
+#: ../cvtx_admin.php:1074
+msgid "Subject"
+msgstr "Betreff"
+
+#: ../cvtx_admin.php:1065
+#: ../cvtx_admin.php:1068
+#: ../cvtx_admin.php:1072
+#: ../cvtx_admin.php:1075
+msgid "Message"
+msgstr "Nachricht"
+
+#: ../cvtx_admin.php:1066
+#: ../cvtx_admin.php:1073
+msgid "Inform the admin"
+msgstr "Administrator benachrichtigen"
+
+#: ../cvtx_admin.php:1077
+msgid "LaTeX to pdf path"
+msgstr "Pfad zur pdflatex-Anwendung"
+
+#: ../cvtx_admin.php:1078
+msgid "Remove generated .tex-files"
+msgstr "Erstellte .tex-Dateien löschen"
+
+#: ../cvtx_admin.php:1079
+msgid "Remove generated .log-files"
+msgstr "Erstellte .log-Dateien löschen"
+
+#: ../cvtx_admin.php:1080
+msgid "User templates"
+msgstr "Eigene LaTeX-Vorlagen"
+
+#: ../cvtx_admin.php:1082
+msgid "Max. size for application images"
+msgstr "Maximale Dateigröße für Bewerbungsfotos"
+
+#: ../cvtx_admin.php:1083
+#: ../cvtx_theme.php:149
+msgid "Topics"
+msgstr "Themen"
+
+#: ../cvtx_admin.php:1084
+msgid "Gliederungen 1 - Name"
+msgstr ""
+
+#: ../cvtx_admin.php:1085
+msgid "Gliederungen 1 - Values"
+msgstr "Gliederungen 1 - Werte"
+
+#: ../cvtx_admin.php:1086
+msgid "Gliederungen 2 - Name"
+msgstr ""
+
+#: ../cvtx_admin.php:1087
+msgid "Gliederungen 2 - Values"
+msgstr "Gliederungen 2 - Werte"
+
+#: ../cvtx_admin.php:1109
 #, php-format
 msgid "Resolution submitted “%s”"
 msgstr "Antrag eingereicht „%s“"
 
-#: ../cvtx_admin.php:991
+#: ../cvtx_admin.php:1111
 #, php-format
 msgid ""
 "Hej,\n"
@@ -800,12 +1039,12 @@ msgstr ""
 "AntragstellerInnen:\n"
 "%4$s\n"
 
-#: ../cvtx_admin.php:1010
+#: ../cvtx_admin.php:1130
 #, php-format
 msgid "New resolution has been submitted “%s”"
 msgstr "Neuer Antrag eingereicht („%s“)"
 
-#: ../cvtx_admin.php:1013
+#: ../cvtx_admin.php:1132
 #, php-format
 msgid ""
 "Hej,\n"
@@ -844,12 +1083,12 @@ msgstr ""
 "AntragstellerInnen:\n"
 "%4$s\n"
 
-#: ../cvtx_admin.php:1031
+#: ../cvtx_admin.php:1151
 #, php-format
 msgid "Amendment to %1$s (line %2$s) submitted"
 msgstr "Änderungsantrag zu %1$s (Zeile %2$s) eingereicht"
 
-#: ../cvtx_admin.php:1035
+#: ../cvtx_admin.php:1154
 #, php-format
 msgid ""
 "Hej,\n"
@@ -892,12 +1131,12 @@ msgstr ""
 "AntragstellerInnen:\n"
 "%6$s\n"
 
-#: ../cvtx_admin.php:1054
+#: ../cvtx_admin.php:1173
 #, php-format
 msgid "New amendment to %1$s (line %2$s) has been submitted"
 msgstr "Neuer Änderungsantrag zu %1$s (Zeile %2$s) eingereicht"
 
-#: ../cvtx_admin.php:1058
+#: ../cvtx_admin.php:1176
 #, php-format
 msgid ""
 "Hej,\n"
@@ -940,406 +1179,369 @@ msgstr ""
 "AntragstellerInnen:\n"
 "%6$s\n"
 
-#: ../cvtx_admin.php:1094
-msgid "Agenda Plugin"
-msgstr "Antragstool"
-
-#: ../cvtx_admin.php:1095
-msgid "Notifications"
-msgstr "Benachrichtigungen"
-
-#: ../cvtx_admin.php:1096
-msgid "LaTeX"
-msgstr "LaTeX"
-
-#: ../cvtx_admin.php:1107
-msgid "Token for resolutions and applications"
-msgstr "Kürzel für Anträge und Bewerbungen"
-
-#: ../cvtx_admin.php:1117
-msgid "Token for amendments"
-msgstr "Kürzel für Änderungsanträge"
-
-#: ../cvtx_admin.php:1127
-msgid "Generate PDF"
-msgstr "PDF-Erzeugung"
-
-#: ../cvtx_admin.php:1132
-msgid "Generate PDF files for amendments"
-msgstr "PDF-Versionen für Änderungsanträge erstellen"
-
-#: ../cvtx_admin.php:1138
-msgid "Anonymous user"
-msgstr "Anonymer Benutzer"
-
-#: ../cvtx_admin.php:1147
+#: ../cvtx_admin.php:1292
 msgid "Wordpress user, to whom all anonymously submitted stuff will be assigned."
 msgstr "Wordpress-Benutzer, dem alle anonym eingereichten Dinge zugeordnet werden."
 
-#: ../cvtx_admin.php:1157
-msgid "Assign submitted resolutions to the following readers"
-msgstr "Ordne neue Anträge den folgenden Readern zu"
-
-#: ../cvtx_admin.php:1169
-#: ../cvtx_admin.php:1187
-#: ../cvtx_admin.php:1206
+#: ../cvtx_admin.php:1309
+#: ../cvtx_admin.php:1327
+#: ../cvtx_admin.php:1345
 msgid "No reader has been created yet."
 msgstr "Bisher keine Reader erstellt."
 
-#: ../cvtx_admin.php:1176
-msgid "Assign submitted amendments to the following readers"
-msgstr "Ordne neue Änderungsanträge den folgenden Readern zu"
+#: ../cvtx_admin.php:1357
+msgid "Uncheck, if input field phone should not be mandatory"
+msgstr "Deaktivieren, wenn das Feld für die Telefonnummer nicht erforderlich ist"
 
-#: ../cvtx_admin.php:1195
-msgid "Assign submitted applications to the following readers"
-msgstr "Ordne neue Bewerbungen den folgenden Readern zu"
-
-#: ../cvtx_admin.php:1213
-msgid "Miscellaneous"
-msgstr "Verschiedenes"
-
-#: ../cvtx_admin.php:1218
-msgid "Privacy message to be shown below e-mail and phone form fields"
-msgstr "Datenschutz-Hinweis, der unter den E-Mail- und Telefon-Feldern angezeigt wird"
-
-#: ../cvtx_admin.php:1234
-msgid "HTML mail"
-msgstr "HTML-E-Mail"
-
-#: ../cvtx_admin.php:1239
+#: ../cvtx_admin.php:1363
 msgid "Send e-mails in HTML format"
 msgstr "E-Mails im HTML-Format verschicken"
 
-#: ../cvtx_admin.php:1244
-msgid "Sender address"
-msgstr "Absender-Adresse"
-
-#: ../cvtx_admin.php:1248
+#: ../cvtx_admin.php:1369
 msgid "E-mail address to be used as sender address for notifications"
 msgstr "E-Mail-Adresse, die als Absender für Benachrichtigungen verwendet wird"
 
-#: ../cvtx_admin.php:1257
+#: ../cvtx_admin.php:1375
 msgid "E-mail address to which notifications on newly submitted stuff will be sent"
 msgstr "E-Mail-Adresse, an die Benachrichtigungen über neu eingegangene Dinge geschickt werden"
 
-#: ../cvtx_admin.php:1262
-msgid "Resolution submitted"
-msgstr "Antrag eingereicht"
-
-#: ../cvtx_admin.php:1263
-#, php-format
-msgid "Fields: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s."
-msgstr "Felder: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s."
-
-#: ../cvtx_admin.php:1275
-#: ../cvtx_admin.php:1354
-msgid "E-mail confirmation"
-msgstr "E-Mail-Bestätigung"
-
-#: ../cvtx_admin.php:1281
-#: ../cvtx_admin.php:1359
+#: ../cvtx_admin.php:1382
+#: ../cvtx_admin.php:1421
 msgid "Send a confirmation e-mail to the author(s)"
 msgstr "Bestätigungs-E-Mail an AntragstellerInnen schicken"
 
-#: ../cvtx_admin.php:1287
-#: ../cvtx_admin.php:1319
-#: ../cvtx_admin.php:1365
-#: ../cvtx_admin.php:1397
-msgid "Subject"
-msgstr "Betreff"
-
-#: ../cvtx_admin.php:1298
-#: ../cvtx_admin.php:1330
-#: ../cvtx_admin.php:1376
-#: ../cvtx_admin.php:1408
-msgid "Message"
-msgstr "Nachricht"
-
-#: ../cvtx_admin.php:1308
-#: ../cvtx_admin.php:1386
-msgid "Inform the admin"
-msgstr "Administrator benachrichtigen"
-
-#: ../cvtx_admin.php:1313
-#: ../cvtx_admin.php:1391
+#: ../cvtx_admin.php:1441
 msgid "Send an e-mail to inform the admin"
 msgstr "Benachrichtigungs-E-Mail an den Administrator schicken"
 
-#: ../cvtx_admin.php:1339
-msgid "Amendment submitted"
-msgstr "Änderungsantrag eingereicht"
-
-#: ../cvtx_admin.php:1340
-#, php-format
-msgid "Fields: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s."
-msgstr "Felder: %1$s, %2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s."
-
-#: ../cvtx_admin.php:1424
-msgid "LaTeX to pdf path"
-msgstr "Pfad zur pdflatex-Anwendung"
-
-#: ../cvtx_admin.php:1428
+#: ../cvtx_admin.php:1460
 msgid "Path to pdflatex"
 msgstr "Systempfad zum Programm, das LaTeX-Code in PDFs umwandelt"
 
-#: ../cvtx_admin.php:1434
-msgid "Remove generated .tex-files"
-msgstr "Erstellte .tex-Dateien löschen"
-
-#: ../cvtx_admin.php:1440
-#: ../cvtx_admin.php:1459
+#: ../cvtx_admin.php:1468
+#: ../cvtx_admin.php:1483
 msgid "always"
 msgstr "immer"
 
-#: ../cvtx_admin.php:1443
-#: ../cvtx_admin.php:1462
+#: ../cvtx_admin.php:1471
+#: ../cvtx_admin.php:1486
 msgid "if successfull"
 msgstr "nur wenn fehlerfrei"
 
-#: ../cvtx_admin.php:1446
-#: ../cvtx_admin.php:1465
+#: ../cvtx_admin.php:1474
+#: ../cvtx_admin.php:1489
 msgid "never"
 msgstr "niemals"
 
-#: ../cvtx_admin.php:1453
-msgid "Remove generated .log-files"
-msgstr "Erstellte .log-Dateien löschen"
-
-#: ../cvtx_admin.php:1472
-msgid "User templates"
-msgstr "Eigene LaTeX-Vorlagen"
-
-#: ../cvtx_admin.php:1476
+#: ../cvtx_admin.php:1496
 msgid "Subdirectory of the used theme that provides LaTeX templates"
 msgstr "Unterverzeichnis des aktivierten Themes, in dem spezielle LaTeX-Templates liegen"
 
-#: ../cvtx_admin.php:1484
-msgid "Save settings"
-msgstr "Einstellungen speichern"
-
-#: ../cvtx_admin.php:1575
+#: ../cvtx_forms.php:49
 msgid "Subsection"
 msgstr "Zwischenüberschrift"
 
-#: ../cvtx_admin.php:1575
+#: ../cvtx_forms.php:49
 msgid "Subsubsection"
 msgstr "Unterüberschrift"
 
-#: ../cvtx_forms.php:26
-#: ../cvtx_forms.php:28
-#: ../cvtx_widgets.php:68
-#: ../cvtx_widgets.php:122
-#: ../cvtx_widgets.php:170
+#: ../cvtx_forms.php:80
+#: ../cvtx_forms.php:82
+#: ../cvtx_widgets.php:72
+#: ../cvtx_widgets.php:126
+#: ../cvtx_widgets.php:174
 msgid "Title"
 msgstr "Titel"
 
-#: ../cvtx_forms.php:28
-#: ../cvtx_forms.php:32
-#: ../cvtx_forms.php:40
-#: ../cvtx_forms.php:44
-#: ../cvtx_forms.php:48
-#: ../cvtx_forms.php:61
-#: ../cvtx_forms.php:192
-#: ../cvtx_forms.php:200
-#: ../cvtx_forms.php:204
-#: ../cvtx_forms.php:208
-#: ../cvtx_forms.php:222
+#: ../cvtx_forms.php:82
+#: ../cvtx_forms.php:86
+#: ../cvtx_forms.php:94
+#: ../cvtx_forms.php:98
+#: ../cvtx_forms.php:102
+#: ../cvtx_forms.php:115
+#: ../cvtx_forms.php:252
+#: ../cvtx_forms.php:260
+#: ../cvtx_forms.php:264
+#: ../cvtx_forms.php:268
+#: ../cvtx_forms.php:281
+#: ../cvtx_forms.php:512
+#: ../cvtx_forms.php:520
+#: ../cvtx_forms.php:532
 msgid "This field is mandatory"
 msgstr "Dieses Feld wird benötigt"
 
-#: ../cvtx_forms.php:44
-#: ../cvtx_forms.php:48
-#: ../cvtx_forms.php:204
-#: ../cvtx_forms.php:208
+#: ../cvtx_forms.php:98
+#: ../cvtx_forms.php:102
+#: ../cvtx_forms.php:264
+#: ../cvtx_forms.php:268
 msgid "will not be published"
 msgstr "wird nicht veröffentlicht"
 
-#: ../cvtx_forms.php:59
-#: ../cvtx_forms.php:61
-#: ../cvtx_forms.php:219
-#: ../cvtx_forms.php:222
-#: ../cvtx_theme.php:68
+#: ../cvtx_forms.php:113
+#: ../cvtx_forms.php:115
+#: ../cvtx_forms.php:278
+#: ../cvtx_forms.php:281
+#: ../cvtx_theme.php:201
 msgid "Text"
 msgstr "Text"
 
-#: ../cvtx_forms.php:88
-#: ../cvtx_forms.php:249
+#: ../cvtx_forms.php:143
+#: ../cvtx_forms.php:309
+#: ../cvtx_forms.php:546
 msgid "Submit"
 msgstr "Abschicken"
 
-#: ../cvtx_forms.php:99
+#: ../cvtx_forms.php:154
 msgid "Submit resolution"
 msgstr "Antrag erstellen"
 
-#: ../cvtx_forms.php:130
-#: ../cvtx_forms.php:288
+#: ../cvtx_forms.php:186
+#: ../cvtx_forms.php:349
+#: ../cvtx_forms.php:596
 msgid "Wrong captcha. Please try again."
 msgstr "Falscher Captcha. Bitte nochmal versuchen."
 
-#: ../cvtx_forms.php:150
+#: ../cvtx_forms.php:211
 msgid "The resolution has been created but it is not published yet."
 msgstr "Der Antrag wurde erstellt und muss noch freigeschaltet werden."
 
-#: ../cvtx_forms.php:154
+#: ../cvtx_forms.php:214
 msgid "Resolution could not be saved. God knows why."
 msgstr "Antrag konnte nicht erstellt werden. Weiß der Himmel, weshalb."
 
-#: ../cvtx_forms.php:159
-#: ../cvtx_forms.php:318
+#: ../cvtx_forms.php:219
+#: ../cvtx_forms.php:384
 msgid "The amendment could not be saved because some mandatory fields (marked by <span class=\"form-required\" title=\"This field is mandatory\">*</span>) are empty."
-msgstr "Der Änderungsantrag konnte nicht gespeichert werden, weil einige der benötigten Felder (marked by <span class=\"form-required\" title=\"Dieses Feld wird benötigt\">*</span>) leer waren."
+msgstr "Der Änderungsantrag konnte nicht gespeichert werden, weil einige der benötigten Felder (mit <span class=\"form-required\" title=\"Dieses Feld wird benötigt\">*</span> gekennzeichnet) leer waren."
 
-#: ../cvtx_forms.php:204
-msgid "e-mail address"
-msgstr "E-Mail-Adresse"
-
-#: ../cvtx_forms.php:208
-msgid "mobile number"
-msgstr "Telefonnummer"
-
-#: ../cvtx_forms.php:259
+#: ../cvtx_forms.php:319
 msgid "Submit amendment"
 msgstr "Änderungsantrag einreichen"
 
-#: ../cvtx_forms.php:309
+#: ../cvtx_forms.php:376
 msgid "The amendment has been created but it is not published yet."
 msgstr "Der Änderungsantrag wurde erstellt und muss noch freigeschaltet werden."
 
-#: ../cvtx_forms.php:313
+#: ../cvtx_forms.php:379
 msgid "Amendment could not be saved. Please dance around the table and try again with the computer in a different position."
 msgstr "Der Änderungsantrag konnte nicht gespeichert werden. Bitte tanze einmal um den Tisch, bring den Computer in eine andere Stellung und probiere es dann erneut."
 
-#: ../cvtx_theme.php:63
+#: ../cvtx_forms.php:425
+msgid "First Name"
+msgstr "Vorname"
+
+#: ../cvtx_forms.php:429
+msgid "Family Name"
+msgstr "Nachname"
+
+#: ../cvtx_forms.php:467
+msgid "Your main topics (please select 2 topics at max)"
+msgstr "Themenschwerpunkte (bitte maximal 2 auswählen)"
+
+#: ../cvtx_forms.php:510
+msgid "Applying for"
+msgstr "Bewerben für"
+
+#: ../cvtx_forms.php:520
+msgid "Application text"
+msgstr "Bewerbungstext"
+
+#: ../cvtx_forms.php:556
+msgid "Submit application"
+msgstr "Bewerbung absenden"
+
+#: ../cvtx_forms.php:639
+msgid "The application has been created but it is not published yet."
+msgstr "Die Bewerbung wurde erstellt und muss noch freigeschaltet werden."
+
+#: ../cvtx_forms.php:642
+msgid "Application could not be saved. Please dance around the table and try again with the computer in a different position."
+msgstr "Die Bewerbung konnte nicht gespeichert werden. Bitte tanze einmal um den Tisch, bring den Computer in eine andere Stellung und probiere es dann erneut."
+
+#: ../cvtx_forms.php:648
+msgid "Please upload an image of one of the following file-types: "
+msgstr "Bitte lade ein Foto eines der folgenden Dateitypen hoch:"
+
+#: ../cvtx_forms.php:652
+msgid "The attached image is larger than the allowed size"
+msgstr "Das hochgeladene Foto überschreitet die erlaubte Dateigröße"
+
+#: ../cvtx_forms.php:652
+msgid "Please check and upload again."
+msgstr "Bitte erneut hochladen"
+
+#: ../cvtx_forms.php:655
+msgid "The application could not be saved because some mandatory fields (marked by <span class=\"form-required\" title=\"This field is mandatory\">*</span>) are empty."
+msgstr "Die Bewerbung konnte nicht gespeichert werden, weil einige der benötigten Felder (mit <span class=\"form-required\" title=\"Dieses Feld wird benötigt\">*</span> gekennzeichnet) leer waren."
+
+#: ../cvtx_theme.php:196
 msgid " to "
 msgstr " zu "
 
-#: ../cvtx_theme.php:94
+#: ../cvtx_theme.php:226
 msgid "modified adoption"
 msgstr "Modifizierte Übernahme"
 
-#: ../cvtx_theme.php:114
+#: ../cvtx_theme.php:247
 #, php-format
 msgid "<h3>Create amendment to %s</h3>"
 msgstr "<h3>Änderungsantrag zu %s erstellen</h3>"
 
-#: ../cvtx_theme.php:145
+#: ../cvtx_theme.php:280
 #, php-format
 msgid "<p><strong>Line:</strong> %1$s</p>"
 msgstr "<p><strong>Zeile:</strong> %1$s</p>"
 
-#: ../cvtx_theme.php:234
+#: ../cvtx_theme.php:375
 msgid "Add amendment"
 msgstr "Änderungsantrag erstellen"
 
-#: ../cvtx_theme.php:246
+#: ../cvtx_theme.php:386
 msgid "Overview"
 msgstr "Änderungsantragsübersicht"
 
-#: ../cvtx_widgets.php:11
+#: ../cvtx_widgets.php:15
 msgid "Reader list"
 msgstr "Reader-Übersicht"
 
-#: ../cvtx_widgets.php:11
+#: ../cvtx_widgets.php:15
 msgid "Show list of published readers."
 msgstr "Zeigt eine Liste der veröffentlichten Reader."
 
-#: ../cvtx_widgets.php:35
+#: ../cvtx_widgets.php:39
 msgid "View PDF"
 msgstr "PDF anzeigen"
 
-#: ../cvtx_widgets.php:64
-#: ../cvtx_widgets.php:72
+#: ../cvtx_widgets.php:68
+#: ../cvtx_widgets.php:76
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../cvtx_widgets.php:87
-#: ../cvtx_widgets.php:118
+#: ../cvtx_widgets.php:91
+#: ../cvtx_widgets.php:122
 msgid "Statistics"
 msgstr "Statistik"
 
-#: ../cvtx_widgets.php:87
+#: ../cvtx_widgets.php:91
 msgid "List with total count of published resolutions, amendments and applications."
 msgstr "Listet die Anzahl veröffentlichter Anträge, Änderungsanträge und Bewerbungen auf."
 
-#: ../cvtx_widgets.php:100
+#: ../cvtx_widgets.php:104
 msgid "Online:"
 msgstr "Es sind veröffentlicht:"
 
-#: ../cvtx_widgets.php:101
+#: ../cvtx_widgets.php:105
 msgid "resolution"
 msgstr "Antrag"
 
-#: ../cvtx_widgets.php:101
+#: ../cvtx_widgets.php:105
 msgid "resolutions"
 msgstr "Anträge"
 
-#: ../cvtx_widgets.php:102
+#: ../cvtx_widgets.php:106
 msgid "amendment"
 msgstr "Änderungsantrag"
 
-#: ../cvtx_widgets.php:102
+#: ../cvtx_widgets.php:106
 msgid "amendments"
 msgstr "Änderungsanträge"
 
-#: ../cvtx_widgets.php:103
-#: ../cvtx_widgets.php:233
+#: ../cvtx_widgets.php:107
+#: ../cvtx_widgets.php:237
 msgid "application"
 msgstr "Bewerbung"
 
-#: ../cvtx_widgets.php:103
+#: ../cvtx_widgets.php:107
 msgid "applications"
 msgstr "Bewerbungen"
 
-#: ../cvtx_widgets.php:136
+#: ../cvtx_widgets.php:140
 msgid "RSS feed for amendments"
 msgstr "RSS-Feed für Änderungsanträge"
 
-#: ../cvtx_widgets.php:136
+#: ../cvtx_widgets.php:140
 msgid "Offers a link to the RSS-Feed for new amendments to specific resolution."
 msgstr "Bietet einen Link zum RSS-Feed für neue Änderungsanträge eines spezifischen Antrags an."
 
-#: ../cvtx_widgets.php:150
-#: ../cvtx_widgets.php:166
+#: ../cvtx_widgets.php:154
+#: ../cvtx_widgets.php:170
 msgid "RSS feed"
 msgstr "RSS-Feed"
 
-#: ../cvtx_widgets.php:151
+#: ../cvtx_widgets.php:155
 #, php-format
 msgid "Stay updated about %s? <p>Sign up for %s with all amendments!</p>"
 msgstr "Immer auf dem Laufenden über %s bleiben? <p>Abbonier doch einfach diesen %s mit allen Änderungsanträgen!</p>"
 
-#: ../cvtx_widgets.php:182
+#: ../cvtx_widgets.php:186
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: ../cvtx_widgets.php:188
+#: ../cvtx_widgets.php:192
 msgid "Pending"
 msgstr "Ausstehend"
 
-#: ../cvtx_widgets.php:195
+#: ../cvtx_widgets.php:199
 msgid "<p>Questions? Get some <a href=\"http://cvtx-project.org/\">answers</a>!"
 msgstr "<p>Fragen? Hier gibt's <a href=\"http://cvtx-project.org/\">Antworten</a>!"
 
-#: ../feeds/feed-cvtx_aeantrag-rss2.php:40
+#: ../feeds/feed-cvtx_aeantrag-rss2.php:38
 #, php-format
 msgid "Amendments to %s"
 msgstr "Änderungsanträge zu %s"
 
-#: ../latex/single-cvtx_aeantrag.php:45
-#: ../latex/single-cvtx_antrag.php:43
-#: ../latex/single-cvtx_reader_book.php:90
-#: ../latex/single-cvtx_reader_book.php:180
-msgid "Concerning"
-msgstr "Gegenstand"
+#: ../latex/single-cvtx_application.php:41
+#: ../latex/single-cvtx_reader_book.php:179
+msgid "Name"
+msgstr "Name"
 
-#: ../latex/single-cvtx_reader_book.php:29
+#: ../latex/single-cvtx_application.php:52
+#: ../latex/single-cvtx_reader_book.php:203
+msgid "Biography"
+msgstr "Biografie"
+
+#: ../latex/single-cvtx_reader_book.php:34
 #: ../latex/single-cvtx_reader_table.php:29
 msgid "This version"
 msgstr "Stand"
 
-#: ../latex/single-cvtx_reader_book.php:134
+#: ../latex/single-cvtx_reader_book.php:152
+#: ../latex/single-cvtx_reader_book.php:197
 msgid "Application "
 msgstr "Bewerbung"
+
+#~ msgid "Cheatin&#8217; uh?"
+#~ msgstr "Biste am Cheaten, oder wat?"
+
+#~ msgid "Agenda Plugin"
+#~ msgstr "Antragstool"
+
+#~ msgid "LaTeX"
+#~ msgstr "LaTeX"
+
+#~ msgid "Generate PDF files for amendments"
+#~ msgstr "PDF-Versionen für Änderungsanträge erstellen"
+
+#~ msgid "Miscellaneous"
+#~ msgstr "Verschiedenes"
+
+#~ msgid "File upload"
+#~ msgstr "Datei Upload"
+
+#~ msgid "No pdf uploaded yet."
+#~ msgstr "Bisher kein PDF hochgeladen."
+
+#~ msgid "Update application"
+#~ msgstr "Neue Bewerbung hochladen"
+
+#~ msgid "Agenda item"
+#~ msgstr "TOP"
+
+#~ msgid "table of amendments"
+#~ msgstr "Änderungsantragstabelle"
+
+#~ msgid "mobile number"
+#~ msgstr "Telefonnummer"
 
 #, fuzzy
 #~ msgid "Wrong captcha. Please try again"

@@ -16,7 +16,7 @@ function cvtx_get_latex($out, $strip_nl = false) {
     $out = apply_filters('the_content', $out);
     
     // strip html entities
-    $out = html_entity_decode($out);
+    $out = html_entity_decode($out, ENT_QUOTES);
 /*    $out = str_replace(array('&nbsp;', '&amp;', '&#8211;', '&ndash;', '&mdash;', '&#8212;'),
                        array(' ', '&', '–', '–', '—', '—'), $out);*/
     
@@ -52,6 +52,8 @@ function cvtx_get_latex($out, $strip_nl = false) {
                          'replace' => array('\begin{enumerate}', '\end{enumerate}')),
                    array('search'  => array('<li>', '</li>'),
                          'replace' => array('\item ', '')),
+                   array('search'  => array('<div>', '</div>'),
+                         'replace' => array('', "\n")),
                    array('search'  => array('</p>', '</span>'),
                          'replace' => array("\n", '}')),
                    array('search'  => array('/<span style="text\-decoration:[ ]*line\-through[;]?">/',
@@ -116,6 +118,13 @@ function cvtx_titel($post, $strip_nl = true) {
     if (in_array($post->post_type, array_keys($cvtx_types))) {
         $title = (empty($post->post_title) ? __('(no title)', 'cvtx') : $post->post_title);
         echo(cvtx_get_latex($title, $strip_nl));
+    }
+}
+
+function cvtx_text($post, $strip_nl = false) {
+    global $cvtx_types;
+    if ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_application') {
+        echo(cvtx_get_latex($post->post_content, $strip_nl));
     }
 }
 
@@ -265,6 +274,27 @@ function cvtx_info($post, $strip_nl = false) {
     }
 }
 
+function cvtx_application_name($post, $strip_nl = true) {
+    if ($post->post_type == 'cvtx_application') {
+        $name = get_post_meta($post->ID, 'cvtx_application_prename', true).' '.get_post_meta($post->ID, 'cvtx_application_surname', true);
+        echo(cvtx_get_latex($name, $strip_nl));
+    }
+}
+
+function cvtx_application_cv($post, $strip_nl = true) {
+    if ($post->post_type == 'cvtx_application') {
+        $cv = get_post_meta($post->ID, 'cvtx_application_cv', true);
+        echo(cvtx_get_latex($cv, $strip_nl));
+    }
+}
+
+function cvtx_application_photo($post) {
+    if ($post->post_type == 'cvtx_application') {
+        $image = get_post_meta($post->ID, 'cvtx_application_photo_id', true);
+        echo(get_attached_file($image));
+    }
+}
+
 function cvtx_application_file($post) {
     if ($post->post_type == 'cvtx_application') {
         $appl = get_post(get_post_meta($post->ID, 'cvtx_antrag_info', true));
@@ -272,4 +302,73 @@ function cvtx_application_file($post) {
     }
 }
 
+function cvtx_application_gender($post) {
+    if ($post->post_type == 'cvtx_application') {
+        $gender = get_post_meta($post->ID, 'cvtx_application_gender', true);
+        echo('\textbf{'.__('Gender', 'cvtx').':}\newline ');
+        $gender_arr = array(__('female','cvtx'), __('male','cvtx'), __('not specified', 'cvtx'));
+        echo(cvtx_get_latex($gender_arr[$gender-1]));
+    }
+}
+
+function cvtx_application_birthdate($post) {
+    if ($post->post_type == 'cvtx_application') {
+        $birthdate = get_post_meta($post->ID, 'cvtx_application_birthdate', true);
+        echo('\textbf{'.__('Date of Birth', 'cvtx').':}\newline ');
+        echo(cvtx_get_latex($birthdate));
+    }
+}
+
+function cvtx_application_kv($post) {
+    if($post->post_type == 'cvtx_application') {
+        $options = get_option('cvtx_options');
+        if (!empty($options['cvtx_application_kvs_name']) && !empty($options['cvtx_application_kvs'])) {
+            $kv = get_post_meta($post->ID, 'cvtx_application_kv', true);
+            if (!empty($kv)) {
+                echo('\textbf{'.$options['cvtx_application_kvs_name'].':}\newline ');
+                echo($options['cvtx_application_kvs'][$kv]);
+            }
+        }
+    }
+}
+
+function cvtx_application_bv($post) {
+    if($post->post_type == 'cvtx_application') {
+        $options = get_option('cvtx_options');
+        if (!empty($options['cvtx_application_bvs_name']) && !empty($options['cvtx_application_bvs'])) {
+            $bv = get_post_meta($post->ID, 'cvtx_application_bv', true);
+            if (!empty($bv)) {
+                echo('\textbf{'.$options['cvtx_application_bvs_name'].':}\newline ');
+                echo($options['cvtx_application_bvs'][$bv]);
+            }
+        }
+    }
+}
+
+function cvtx_application_topics_latex($post) {
+    if($post->post_type == 'cvtx_application') {
+        $options = get_option('cvtx_options');
+        if (!empty($options['cvtx_application_topics'])) {
+            $topics = get_post_meta($post->ID, 'cvtx_application_topics', array());
+            $topic_arr = array();
+            foreach($topics as $topic_id) {
+                array_push($topic_arr,trim($options['cvtx_application_topics'][$topic_id]));
+            }
+            if (!empty($topic_arr)) {
+                echo('\textbf{'.__('Topics','cvtx').':}\newline ');
+                echo(implode(', ',$topic_arr));
+            }
+        }
+    }
+}
+
+function cvtx_application_website($post) {
+    if($post->post_type == 'cvtx_application') {
+        $website = get_post_meta($post->ID, 'cvtx_application_website', true);
+        if(!empty($website)) {
+            echo('\textbf{'.__('Website','cvtx').':}\newline ');
+            echo('\url{'.$website.'}');
+        }
+    }
+}
 ?>

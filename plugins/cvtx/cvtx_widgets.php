@@ -195,7 +195,7 @@ function cvtx_dashboard_widget_function() {
     echo(' </tbody></table>');
     echo('</div>');
     echo('<div class="more">');
-    echo(' <p><a href="options-general.php?page=cvtx-config">'.__('Settings', 'cvtx').'</a></p>');
+    echo(' <p><a href="options-general.php?page=cvtx_config">'.__('Settings', 'cvtx').'</a></p>');
     echo(__('<p>Questions? Get some <a href="http://cvtx-project.org/">answers</a>!', 'cvtx'));
     echo('</div>');
 } 
