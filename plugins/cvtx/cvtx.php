@@ -324,7 +324,7 @@ function cvtx_insert_post($post_id, $post = null) {
             }
             
             // get default reader terms for amendments
-            $terms = explode(', ', $options['cvtx_default_reader_antrag']);
+            $terms = $options['cvtx_default_reader_antrag'];
         }
         // Update/insert amendment
         else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {
@@ -354,7 +354,7 @@ function cvtx_insert_post($post_id, $post = null) {
             }
         
             // get default reader terms for amendments
-            $terms = explode(', ', $options['cvtx_default_reader_aeantrag']);
+            $terms = $options['cvtx_default_reader_aeantrag'];
         }
         // Update/insert reader taxonomy
         else if ($post->post_type == 'cvtx_reader') {
@@ -423,7 +423,7 @@ function cvtx_insert_post($post_id, $post = null) {
             
             // get default reader terms for applications
             if(isset($options['cvtx_default_reader_application'])) {
-                $terms = explode(', ', $options['cvtx_default_reader_application']);
+                $terms = $options['cvtx_default_reader_application'];
             }
             else $terms = false;
             

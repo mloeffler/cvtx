@@ -1238,9 +1238,9 @@ function cvtx_create_options() {
             "Wirtschaft"
         ),
         'cvtx_application_kvs_name' => '',
-        'cvtx_application_kvs' => '',
+        'cvtx_application_kvs' => array(),
         'cvtx_application_bvs_name' => '',
-        'cvtx_application_bvs' => '',
+        'cvtx_application_bvs' => array(),
     );
     if(!get_option('cvtx_options')) {
         // check for older version of options
