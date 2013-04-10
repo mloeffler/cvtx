@@ -192,7 +192,7 @@ function cvtx_aenderungsantraege_action($post_id = false) {
                                                            'value'   => $post->ID,
                                                            'compare' => '='))));
     if ($loop->have_posts()): ?>
-        <div id="ae_antraege">
+        <div id="ae_antraege" class="entry-content">
             <h3><?php _e('Amendments', 'cvtx'); ?><?php if (isset($_GET['ae_antraege']) && $_GET['ae_antraege'] == 1) _e(' to ', 'cvtx').cvtx_get_short($post); ?></h3>
             <table cellpadding="3" cellspacing="0" valign="top" class="ae_antraege_table">
                 <tr>
@@ -242,8 +242,8 @@ add_action('cvtx_theme_add_aeantrag', 'cvtx_add_aeantrag_action', 10, 1);
 function cvtx_add_aeantrag_action($args = array('post_id' => false, 'show_recaptcha' => true)) {
     if (!isset($args['post_id']) || !$args['post_id']) global $post;
     else $post = get_post($post_id);
-    if (is_object($post)) {
-        echo('<div id="add_aeantrag">');
+    if (is_object($post) && $post->post_type == 'cvtx_antrag') {
+        echo('<div id="add_aeantrag" class="entry-content">');
         printf(__('<h3>Create amendment to %s</h3>', 'cvtx'), cvtx_get_short($post));
         cvtx_submit_aeantrag($post->ID, (isset($args) && is_array($args) && isset($args['show_recaptcha']) ? $args['show_recaptcha'] : true));
         echo('</div>');
@@ -282,6 +282,22 @@ function cvtx_zeile_action($post_id = false) {
    }
 }
 
+add_action('cvtx_theme_cv', 'cvtx_cv_action', 10, 1);
+/**
+ * themed output of life career
+ */
+function cvtx_cv_action($post_id = false) {
+    if(!isset($post_id) || !$post_id) global $post;
+    else $post = get_post($post_id);
+    if(is_object($post) && $post->post_type == 'cvtx_application') {
+        $cv = get_post_meta($post->ID, 'cvtx_application_cv', true);
+        if(!empty($cv)) {
+            echo ('<h2>'.__('Life career', 'cvtx').'</h2>');
+            echo ('<p>'.get_post_meta($post->ID, 'cvtx_application_cv', true).'</p>');
+        }
+    }
+}
+
 
 add_action('cvtx_theme_reader', 'cvtx_reader_action', 10, 1);
 /**
@@ -290,7 +306,7 @@ add_action('cvtx_theme_reader', 'cvtx_reader_action', 10, 1);
 function cvtx_reader_action($post_id = false) {
     if (!isset($post_id) || !$post_id) global $post;
     else $post = get_post($post_id);
-    if (is_object($post)) {
+    if (is_object($post) && $post->post_type == 'cvtx_reader') {
         $items = array();
         $query = new WP_Query(array('post_type' => array('cvtx_antrag',
                                                          'cvtx_aeantrag',

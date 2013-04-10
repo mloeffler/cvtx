@@ -166,19 +166,19 @@ nav ul li a {
 nav ul li.first a {
 	background: url(images/home.jpg) no-repeat center;
 	width:20px;
-	text-indent: -1000px;
+	text-indent: -9999px;
 }
 
 nav ul li#menu-item-89 a {
 	background: url(images/igel.jpg) no-repeat bottom center;
 	width: 45px;
-	text-indent: -1000px;
+	text-indent: -9999px;
 }
 
 nav ul li.menu-item-home a {
 	background: url(images/home.jpg) no-repeat center;
 	width:20px;
-	text-indent: -1000px;
+	text-indent: -9999px;
 }
 
 nav ul li.current_page_item {
@@ -618,6 +618,11 @@ form input.submit {
 
 .cvtx_form fieldset .legend h3 {
 	font-size: 20px;
+}
+
+.cvtx_form fieldset input,
+.cvtx_form fieldset textarea {
+    max-width: 417px;
 }
 
 #searchsubmit {
