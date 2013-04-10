@@ -152,7 +152,7 @@ class RSS_aeantrag_Widget extends WP_Widget {
                                         'cvtx_aeantrag_antrag' => $post->ID),
                                   get_feed_link('rss2'));
             $rss_url = '<a href="'.$link.'">'.__('RSS feed', 'cvtx').'</a>';
-            printf(__('Stay updated about %s? <p>Sign up for %s with all amendments!</p>', 'cvtx'), $post_title, $rss_url);
+            printf(__('<p>Stay updated about %s? Sign up for %s with all amendments!</p>', 'cvtx'), $post_title, $rss_url);
             echo($after_widget);
         }
     }

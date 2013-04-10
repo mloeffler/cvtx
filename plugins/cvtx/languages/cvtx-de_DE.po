@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cvtx Agenda Plugin 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-11 18:12+0100\n"
-"PO-Revision-Date: 2013-03-11 18:14+0100\n"
+"POT-Creation-Date: 2013-04-10 12:56+0100\n"
+"PO-Revision-Date: 2013-04-10 12:56+0100\n"
 "Last-Translator: Alexander Fecke <alex@cvtx-project.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,7 @@ msgstr "antraege"
 #: ../cvtx.php:153
 #: ../cvtx_admin.php:1637
 #: ../cvtx_theme.php:196
-#: ../cvtx_theme.php:392
+#: ../cvtx_theme.php:408
 #: ../cvtx_widgets.php:234
 msgid "Amendments"
 msgstr "Änderungsanträge"
@@ -139,9 +139,9 @@ msgstr "Änderungsanträge"
 #: ../cvtx_widgets.php:234
 #: ../latex/single-cvtx_aeantrag.php:21
 #: ../latex/single-cvtx_aeantrag.php:54
-#: ../latex/single-cvtx_reader_book.php:218
-#: ../latex/single-cvtx_reader_book.php:244
-#: ../latex/single-cvtx_reader_book.php:261
+#: ../latex/single-cvtx_reader_book.php:233
+#: ../latex/single-cvtx_reader_book.php:259
+#: ../latex/single-cvtx_reader_book.php:276
 #: ../latex/single-cvtx_reader_table.php:99
 msgid "Amendment"
 msgstr "Änderungsantrag"
@@ -195,10 +195,10 @@ msgstr "Bewerbungen"
 #: ../cvtx.php:911
 #: ../cvtx_admin.php:628
 #: ../cvtx_forms.php:518
-#: ../latex/single-cvtx_application.php:48
-#: ../latex/single-cvtx_reader_book.php:142
-#: ../latex/single-cvtx_reader_book.php:165
-#: ../latex/single-cvtx_reader_book.php:187
+#: ../latex/single-cvtx_application.php:61
+#: ../latex/single-cvtx_reader_book.php:143
+#: ../latex/single-cvtx_reader_book.php:166
+#: ../latex/single-cvtx_reader_book.php:202
 msgid "Application"
 msgstr "Bewerbung"
 
@@ -444,9 +444,9 @@ msgstr "TOP %s"
 #: ../latex/single-cvtx_aeantrag.php:45
 #: ../latex/single-cvtx_antrag.php:43
 #: ../latex/single-cvtx_application.php:43
-#: ../latex/single-cvtx_reader_book.php:89
-#: ../latex/single-cvtx_reader_book.php:181
-#: ../latex/single-cvtx_reader_book.php:234
+#: ../latex/single-cvtx_reader_book.php:90
+#: ../latex/single-cvtx_reader_book.php:182
+#: ../latex/single-cvtx_reader_book.php:249
 msgid "Concerning"
 msgstr "Gegenstand"
 
@@ -462,16 +462,16 @@ msgstr "Gegenstand"
 #: ../cvtx_forms.php:260
 #: ../cvtx_theme.php:22
 #: ../cvtx_theme.php:200
-#: ../cvtx_theme.php:364
-#: ../cvtx_theme.php:395
+#: ../cvtx_theme.php:380
+#: ../cvtx_theme.php:411
 #: ../latex/single-cvtx_aeantrag.php:43
 #: ../latex/single-cvtx_aeantrag.php:65
 #: ../latex/single-cvtx_antrag.php:41
 #: ../latex/single-cvtx_antrag.php:63
-#: ../latex/single-cvtx_reader_book.php:87
-#: ../latex/single-cvtx_reader_book.php:124
-#: ../latex/single-cvtx_reader_book.php:232
-#: ../latex/single-cvtx_reader_book.php:276
+#: ../latex/single-cvtx_reader_book.php:88
+#: ../latex/single-cvtx_reader_book.php:125
+#: ../latex/single-cvtx_reader_book.php:247
+#: ../latex/single-cvtx_reader_book.php:291
 #: ../latex/single-cvtx_reader_table.php:95
 #: ../latex/single-cvtx_reader_table.php:98
 msgid "Author(s)"
@@ -493,7 +493,7 @@ msgstr "Zeile"
 #: ../cvtx_admin.php:718
 #: ../cvtx_admin.php:733
 #: ../cvtx_theme.php:264
-#: ../cvtx_theme.php:370
+#: ../cvtx_theme.php:386
 msgid "Download"
 msgstr "Download"
 
@@ -506,7 +506,7 @@ msgid "Metadata"
 msgstr "Metainformationen"
 
 #: ../cvtx_admin.php:15
-#: ../cvtx_theme.php:309
+#: ../cvtx_theme.php:325
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -525,8 +525,8 @@ msgstr "PDF"
 #: ../cvtx_theme.php:202
 #: ../latex/single-cvtx_aeantrag.php:61
 #: ../latex/single-cvtx_antrag.php:59
-#: ../latex/single-cvtx_reader_book.php:119
-#: ../latex/single-cvtx_reader_book.php:271
+#: ../latex/single-cvtx_reader_book.php:120
+#: ../latex/single-cvtx_reader_book.php:286
 msgid "Explanation"
 msgstr "Begründung"
 
@@ -534,8 +534,8 @@ msgstr "Begründung"
 #: ../cvtx_admin.php:47
 #: ../latex/single-cvtx_aeantrag.php:48
 #: ../latex/single-cvtx_antrag.php:46
-#: ../latex/single-cvtx_reader_book.php:92
-#: ../latex/single-cvtx_reader_book.php:237
+#: ../latex/single-cvtx_reader_book.php:93
+#: ../latex/single-cvtx_reader_book.php:252
 msgid "Remarks"
 msgstr "Anmerkungen"
 
@@ -565,6 +565,7 @@ msgstr "Foto"
 
 #: ../cvtx_admin.php:68
 #: ../cvtx_forms.php:532
+#: ../cvtx_theme.php:295
 msgid "Life career"
 msgstr "Biographie"
 
@@ -713,6 +714,7 @@ msgstr "Nachname"
 
 #: ../cvtx_admin.php:395
 #: ../cvtx_forms.php:455
+#: ../cvtx_latex.php:317
 #: ../cvtx_theme.php:82
 msgid "Date of Birth"
 msgstr "Geburtsdatum"
@@ -725,24 +727,28 @@ msgstr "E-Mail-Adresse"
 
 #: ../cvtx_admin.php:399
 #: ../cvtx_forms.php:459
+#: ../cvtx_latex.php:308
 #: ../cvtx_theme.php:61
 msgid "Gender"
 msgstr "Geschlecht"
 
 #: ../cvtx_admin.php:401
 #: ../cvtx_forms.php:461
+#: ../cvtx_latex.php:309
 #: ../cvtx_theme.php:62
 msgid "female"
 msgstr "weiblich"
 
 #: ../cvtx_admin.php:402
 #: ../cvtx_forms.php:462
+#: ../cvtx_latex.php:309
 #: ../cvtx_theme.php:62
 msgid "male"
 msgstr "männlich"
 
 #: ../cvtx_admin.php:403
 #: ../cvtx_forms.php:463
+#: ../cvtx_latex.php:309
 #: ../cvtx_theme.php:62
 msgid "not specified"
 msgstr "keine Angabe"
@@ -753,6 +759,7 @@ msgstr "Themenschwerpunkte (bitte maximal zwei auswählen)"
 
 #: ../cvtx_admin.php:430
 #: ../cvtx_forms.php:504
+#: ../cvtx_latex.php:369
 #: ../cvtx_theme.php:169
 msgid "Website"
 msgstr "Website"
@@ -780,7 +787,7 @@ msgid "Max. file size: "
 msgstr "Maximale Dateigröße:"
 
 #: ../cvtx_admin.php:500
-#: ../cvtx_theme.php:372
+#: ../cvtx_theme.php:388
 msgid "No PDF available."
 msgstr "Kein PDF verfügbar."
 
@@ -975,6 +982,7 @@ msgid "Max. size for application images"
 msgstr "Maximale Dateigröße für Bewerbungsfotos"
 
 #: ../cvtx_admin.php:1083
+#: ../cvtx_latex.php:358
 #: ../cvtx_theme.php:149
 msgid "Topics"
 msgstr "Themen"
@@ -1392,11 +1400,11 @@ msgstr "<h3>Änderungsantrag zu %s erstellen</h3>"
 msgid "<p><strong>Line:</strong> %1$s</p>"
 msgstr "<p><strong>Zeile:</strong> %1$s</p>"
 
-#: ../cvtx_theme.php:375
+#: ../cvtx_theme.php:391
 msgid "Add amendment"
 msgstr "Änderungsantrag erstellen"
 
-#: ../cvtx_theme.php:386
+#: ../cvtx_theme.php:402
 msgid "Overview"
 msgstr "Änderungsantragsübersicht"
 
@@ -1470,8 +1478,8 @@ msgstr "RSS-Feed"
 
 #: ../cvtx_widgets.php:155
 #, php-format
-msgid "Stay updated about %s? <p>Sign up for %s with all amendments!</p>"
-msgstr "Immer auf dem Laufenden über %s bleiben? <p>Abbonier doch einfach diesen %s mit allen Änderungsanträgen!</p>"
+msgid "<p>Stay updated about %s? Sign up for %s with all amendments!</p>"
+msgstr "<p>Immer auf dem Laufenden über %s bleiben? Abbonier doch einfach diesen %s mit allen Änderungsanträgen!</p>"
 
 #: ../cvtx_widgets.php:186
 msgid "Published"
@@ -1490,25 +1498,24 @@ msgstr "<p>Fragen? Hier gibt's <a href=\"http://cvtx-project.org/\">Antworten</a
 msgid "Amendments to %s"
 msgstr "Änderungsanträge zu %s"
 
-#: ../latex/single-cvtx_application.php:41
-#: ../latex/single-cvtx_reader_book.php:179
-msgid "Name"
-msgstr "Name"
-
-#: ../latex/single-cvtx_application.php:52
-#: ../latex/single-cvtx_reader_book.php:203
+#: ../latex/single-cvtx_application.php:65
+#: ../latex/single-cvtx_reader_book.php:218
 msgid "Biography"
 msgstr "Biografie"
 
-#: ../latex/single-cvtx_reader_book.php:34
+#: ../latex/single-cvtx_reader_book.php:35
 #: ../latex/single-cvtx_reader_table.php:29
 msgid "This version"
 msgstr "Stand"
 
-#: ../latex/single-cvtx_reader_book.php:152
-#: ../latex/single-cvtx_reader_book.php:197
+#: ../latex/single-cvtx_reader_book.php:153
+#: ../latex/single-cvtx_reader_book.php:212
 msgid "Application "
 msgstr "Bewerbung"
+
+#: ../latex/single-cvtx_reader_book.php:180
+msgid "Name"
+msgstr "Name"
 
 #~ msgid "Cheatin&#8217; uh?"
 #~ msgstr "Biste am Cheaten, oder wat?"
