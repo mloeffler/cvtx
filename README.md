@@ -1,5 +1,5 @@
-cvtx
-====
+cvtx Agenda Plugin
+==================
 
 *cvtx Agenda Plugin* is a Wordpress plugin that supports you in setting up and organizing the schedule and the agenda of political conventions. It offers several web forms to easily submit motions, amendments and applications, it automatically produces high-quality PDF files and helps you to manage and publish these documents in different formats (which look pretty awesome!).  Because the plugin is based on Wordpress, you can do a lot of cool stuff to increase the news coverage of your convention like blogging, include Twitter, post photos etc. So, *cvtx Agenda Plugin* takes care of all the annoying work while you can focus on the important things and enjoy your event.
 
