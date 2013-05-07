@@ -23,8 +23,8 @@ function cvtx_get_latex($out, $strip_nl = false) {
     // recode special chars
     $tmp = time().'\\textbackslash'.rand();
     $out = str_replace('\\', $tmp, $out);
-    $out = str_replace(array('$', '%', '_', '{', '}', '&', '#', '–', '€'),
-                       array('\\$', '\\%', '\\_', '\\{', '\\}', '\\&', '\\#', '--', '{\euro}'), $out);
+    $out = str_replace(array('$', '%', '_', '{', '}', '&', '#', '–', '—', '€'),
+                       array('\\$', '\\%', '\\_', '\\{', '\\}', '\\&', '\\#', '--', '---', '{\euro}'), $out);
     $out = str_replace($tmp, '{\\textbackslash}', $out);
     
     // recode formatting rules

@@ -1504,30 +1504,35 @@ function cvtx_max_image_size() {
 
 function cvtx_application_topics() {
     $options = get_option('cvtx_options');
+    if (!isset($options['cvtx_application_topics']) || !is_array($options['cvtx_application_topics'])) $options['cvtx_application_topics'] = array();
     echo('<textarea id="cvtx_application_topics" name="cvtx_options[cvtx_application_topics]" cols="60" rows="10">'.implode("\n", $options['cvtx_application_topics']).'</textarea> ');
     echo('<span class="description">(enter topics in each line)</span>');
 }
 
 function cvtx_application_bvs_name() {
     $options = get_option('cvtx_options');
+    if (!isset($options['cvtx_application_bvs_name'])) $options['cvtx_application_bvs_name'] = '';
     echo('<input id="cvtx_application_bvs_name" name="cvtx_options[cvtx_application_bvs_name]" type="text" value="'.$options['cvtx_application_bvs_name'].'" /> ');
     echo('<span class="description">set name of gliederungen type</span>');
 }
 
 function cvtx_application_bvs() {
     $options = get_option('cvtx_options');
+    if (!isset($options['cvtx_application_bvs']) || !is_array($options['cvtx_application_bvs'])) $options['cvtx_application_bvs'] = array();
     echo('<textarea id="cvtx_application_bvs" name="cvtx_options[cvtx_application_bvs]" cols="60" rows="10">'.implode("\n", $options['cvtx_application_bvs']).'</textarea> ');
     echo('<span class="description">(enter gliederung values in each line)</span>');
 }
 
 function cvtx_application_kvs_name() {
     $options = get_option('cvtx_options');
+    if (!isset($options['cvtx_application_kvs_name'])) $options['cvtx_application_kvs_name'] = '';
     echo('<input id="cvtx_application_kvs_name" name="cvtx_options[cvtx_application_kvs_name]" type="text" value="'.$options['cvtx_application_kvs_name'].'" /> ');
     echo('<span class="description">set name of gliederungen type</span>');
 }
 
 function cvtx_application_kvs() {
     $options = get_option('cvtx_options');
+    if (!isset($options['cvtx_application_kvs']) || !is_array($options['cvtx_application_kvs'])) $options['cvtx_application_kvs'] = array();
     echo('<textarea id="cvtx_application_kvs" name="cvtx_options[cvtx_application_kvs]" cols="60" rows="10">'.implode("\n", $options['cvtx_application_kvs']).'</textarea> ');
     echo('<span class="description">(enter gliederung values in each line)</span>');
 }

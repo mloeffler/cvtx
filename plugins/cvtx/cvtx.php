@@ -324,7 +324,7 @@ function cvtx_insert_post($post_id, $post = null) {
             }
             
             // get default reader terms for amendments
-            $terms = $options['cvtx_default_reader_antrag'];
+            $terms = (isset($options['cvtx_default_reader_antrag']) ? $options['cvtx_default_reader_antrag'] : array());
         }
         // Update/insert amendment
         else if ($post->post_type == 'cvtx_aeantrag' && isset($_POST['cvtx_aeantrag_antrag']) && isset($_POST['cvtx_aeantrag_zeile'])) {

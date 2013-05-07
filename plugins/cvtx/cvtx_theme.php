@@ -15,10 +15,26 @@ add_action('cvtx_theme_antragsteller', 'cvtx_antragsteller_action', 10, 1);
 function cvtx_antragsteller_action($args = array('post_id' => false, 'short' => true)) {
     if (!isset($args['post_id']) || !$args['post_id']) global $post;
     else $post = get_post($args['post_id']);
+    
     if (is_object($post)) {
+        // Fetch authors
         $field = $post->post_type.'_steller'.(isset($args['short']) && $args['short'] ? '_short' : '');
         $antragsteller = get_post_meta($post->ID, $field, true);
+        
+        // Purify authors
+        if (is_plugin_active('html-purified/html-purified.php')) {
+            global $cvtx_purifier, $cvtx_purifier_config;
+            $antragsteller = $cvtx_purifier->purify($antragsteller, $cvtx_purifier_config);
+        }
+        // Trim authors
+        $antragsteller = trim($antragsteller);
+        
+        // Anything left to print?
         if (!empty($antragsteller)) {
+            // Convert line breaks to paragraphs
+            $antragsteller = '<p>'.preg_replace('/[\r\n]+/', '</p><p>', $antragsteller).'</p>';
+            
+            // Print authors
             echo('<strong>'.__('Author(s)', 'cvtx').':</strong> ');
             printf('%1$s', $antragsteller);
         }
@@ -31,14 +47,29 @@ add_action('cvtx_theme_grund', 'cvtx_grund_action', 10, 1);
  * themed output of cvtx_antrag_grund
  * 
  * @param post_id Do you want a specific posts grund?
- *
  */
 function cvtx_grund_action($post_id = false) {
     if (!isset($post_id) || !$post_id) global $post;
     else $post = get_post($post_id);
+    
     if (is_object($post)) {
+        // Fetch explanation
         $grund = get_post_meta($post->ID, $post->post_type.'_grund', true);
+        
+        // Purify explanation
+        if (is_plugin_active('html-purified/html-purified.php')) {
+            global $cvtx_purifier, $cvtx_purifier_config;
+            $grund = $cvtx_purifier->purify($grund, $cvtx_purifier_config);
+        }
+        // Trim explanation
+        $grund = trim($grund);
+        
+        // Anything left to print?
         if (!empty($grund)) {
+            // Convert line breaks to paragraphs
+            $grund = '<p>'.preg_replace('/[\r\n]+/', '</p><p>', $grund).'</p>';
+            
+            // Print explanation
             echo('<strong>'.__('Explanation', 'cvtx').':</strong> ');
             printf('%1$s', $grund);
         }
