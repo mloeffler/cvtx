@@ -16,7 +16,7 @@ function cvtx_get_latex($out, $strip_nl = false) {
     $out = apply_filters('the_content', $out);
     
     // strip html entities
-    $out = html_entity_decode($out, ENT_QUOTES);
+    $out = html_entity_decode($out, ENT_QUOTES, 'UTF-8');
 /*    $out = str_replace(array('&nbsp;', '&amp;', '&#8211;', '&ndash;', '&mdash;', '&#8212;'),
                        array(' ', '&', '–', '–', '—', '—'), $out);*/
     
