@@ -943,7 +943,7 @@ function cvtx_the_content($content) {
     global $post;
     
     // Sanitize content using HTMLPurifier-plugin
-    if (($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag')
+    if (is_object($post) && ($post->post_type == 'cvtx_antrag' || $post->post_type == 'cvtx_aeantrag' || $post->post_type == 'cvtx_application')
      && is_plugin_active('html-purified/html-purified.php')) {
         global $cvtx_purifier, $cvtx_purifier_config;
         // Purify resolution text and meta fields
