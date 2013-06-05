@@ -455,3 +455,8 @@ add_action( 'customize_preview_init', 'twentytwelve_customize_preview_js' );
 if ( function_exists( 'add_image_size' ) ) { 
 	add_image_size('cvtx_application_theme', 160, 250);
 }
+
+add_action('wp_enqueue_scripts', 'twentytwelve_fzs_scripts');
+function twentytwelve_fzs_scripts() {
+	wp_enqueue_script('jquery');
+}
