@@ -18,7 +18,12 @@
 \usepackage[right]{eurosym}
 \usepackage{graphicx}
 \usepackage{multirow}
-\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{floatflt}
+\usepackage[strict]{changepage}
+\DeclareUnicodeCharacter{A0}{ }
+
+<?php $options = get_option('cvtx_options'); ?>
 
 \sloppy
 
@@ -185,18 +190,17 @@ while ($query->have_posts()) {
 \end{tabularx}
 
 % application fields
-\begin{wrapfigure}{r}{4cm}
-    \vspace{-1cm}
-    \begin{small}\begin{flushleft}
-    \includegraphics[width=4cm,keepaspectratio]{<?php cvtx_application_photo($item); ?>}\\
-    <?php cvtx_application_gender($item); ?>\vspace{3pt} \\
-    <?php cvtx_application_birthdate($item); ?>\vspace{3pt} \\
-    <?php cvtx_application_kv($item); ?>\vspace{3pt} \\
-    <?php cvtx_application_bv($item); ?>\vspace{3pt} \\
-    <?php cvtx_application_topics_latex($item); ?>\vspace{3pt} \\
-    <?php cvtx_application_website($item); ?>\vspace{3pt} \\
-    \end{flushleft}\end{small}
-\end{wrapfigure}
+\begin{floatingtable}[r]{
+    \begin{tabularx}{4.5cm}{X}
+    \includegraphics[width=4.1cm,keepaspectratio]{<?php cvtx_application_photo($item); ?>}\\
+    <?php cvtx_application_gender($item); ?>\smallskip \\
+    <?php cvtx_application_birthdate($item); ?>\smallskip \\
+    <?php if (!empty($options['cvtx_application_kvs_name'])) { cvtx_application_kv($item); ?>\smallskip \\ <?php } ?>
+    <?php if (!empty($options['cvtx_application_bvs_name'])) { cvtx_application_bv($item); ?>\smallskip \\ <?php } ?>
+    <?php if (!empty($options['cvtx_application_topics'])) { cvtx_application_topics_latex($item); ?>\smallskip \\ <?php } ?>
+    <?php cvtx_application_website($item); ?>
+    \end{tabularx}}
+\end{floatingtable}
 
 % Application title
 \section*{<?php cvtx_print_latex(__('Application', 'cvtx')); ?> <?php cvtx_titel($item); ?>}
@@ -211,12 +215,16 @@ while ($query->have_posts()) {
 <?php   } ?>
 \addcontentsline{toc}{section}{<?php cvtx_print_latex(__('Application ', 'cvtx')); ?> <?php cvtx_kuerzel($item); ?> <?php cvtx_titel($item); ?>}
 
+\begin{adjustwidth}{}{5cm}
+
 % Application text
 <?php cvtx_text($item); ?>
 
 % Biography
 \subsection*{<?php cvtx_print_latex(__('Biography', 'cvtx')); ?>}
 <?php cvtx_application_cv($item); ?>
+
+\end{adjustwidth}
 
 
 <?php

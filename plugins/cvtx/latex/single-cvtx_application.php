@@ -15,8 +15,12 @@
 \usepackage[right]{eurosym}
 \usepackage{graphicx}
 \usepackage{multirow}
-\usepackage{wrapfig}
+\usepackage{floatflt}
+\usepackage[strict]{changepage}
 \usepackage{hyperref}
+\DeclareUnicodeCharacter{A0}{ }
+
+<?php $options = get_option('cvtx_options'); ?>
 
 \sloppy
 
@@ -45,24 +49,26 @@
     \cline{1-2}
 \end{tabularx}
 
-\begin{wrapfigure}{r}{4cm}
-    \vspace{-1cm}
-    \begin{small}\begin{flushleft}
-    \includegraphics[width=4cm,keepaspectratio]{<?php cvtx_application_photo($post); ?>}\\
+\begin{floatingtable}[r]{
+    \begin{tabularx}{4.5cm}{X}
+    \includegraphics[width=4.1cm,keepaspectratio]{<?php cvtx_application_photo($post); ?>}\\
     <?php cvtx_application_gender($post); ?>\smallskip \\
-    <?php cvtx_application_birthdate($post); ?>\smallskip \\
-    <?php cvtx_application_kv($post); ?>\smallskip \\
-    <?php cvtx_application_bv($post); ?>\smallskip \\
-    <?php cvtx_application_topics_latex($post); ?>\smallskip \\
+    <?php cvtx_application_birthdate($post); ?>\smallskip \\<?php if (!empty($options['cvtx_application_kvs_name'])) { cvtx_application_kv($post); ?>\smallskip \\ <?php } ?>
+    <?php if (!empty($options['cvtx_application_bvs_name'])) { cvtx_application_bv($post); ?>\smallskip \\ <?php } ?>
+    <?php if (!empty($options['cvtx_application_topics'])) { cvtx_application_topics_latex($post); ?>\smallskip \\ <?php } ?>
     <?php cvtx_application_website($post); ?>
-    \end{flushleft}\end{small}
-\end{wrapfigure}
+    \end{tabularx}}
+\end{floatingtable}
 
 \section*{<?php cvtx_print_latex(__('Application', 'cvtx')); ?> <?php cvtx_titel($post); ?>}
+
+\begin{adjustwidth}{}{5cm}
 
 <?php cvtx_text($post); ?>
 
 \subsection*{<?php cvtx_print_latex(__('Biography', 'cvtx')); ?>}
 <?php cvtx_application_cv($post); ?>
+
+\end{adjustwidth}
 
 \end{document}

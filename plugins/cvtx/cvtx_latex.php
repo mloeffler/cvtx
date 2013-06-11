@@ -281,7 +281,7 @@ function cvtx_application_name($post, $strip_nl = true) {
     }
 }
 
-function cvtx_application_cv($post, $strip_nl = true) {
+function cvtx_application_cv($post, $strip_nl = false) {
     if ($post->post_type == 'cvtx_application') {
         $cv = get_post_meta($post->ID, 'cvtx_application_cv', true);
         echo(cvtx_get_latex($cv, $strip_nl));
