@@ -14,6 +14,7 @@
 \usepackage{scrpage2}
 \usepackage[normalem]{ulem}
 \usepackage[right]{eurosym}
+\DeclareUnicodeCharacter{A0}{ }
 
 \sloppy
 
