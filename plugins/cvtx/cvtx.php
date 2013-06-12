@@ -254,10 +254,10 @@ function cvtx_init() {
  */
 function cvtx_get_sort($post_type, $top=false, $subject=false, $zeile=false, $vari=false) {
     $sorts            = array();
-    $sorts['top']     = ($top     !== false ? (intval($top)     ? sprintf('%1$05d', intval($top))     : 'ZZZZZ' ) : 'AAAAA' );
-    $sorts['subject'] = ($subject !== false ? (intval($subject) ? sprintf('%1$05d', intval($subject)) : 'ZZZZZ' ) : 'AAAAA' );
-    $sorts['zeile']   = ($zeile   !== false ? (intval($zeile)   ? sprintf('%1$06d', intval($zeile))   : 'ZZZZZZ') : 'AAAAAA');
-    $sorts['vari']    = ($vari    !== false ? (intval($vari)    ? sprintf('%1$06d', intval($vari))    : 'ZZZZZZ') : 'AAAAAA');
+    $sorts['top']     = ($top     !== false ? (intval($top)     ? sprintf('%1$05d', intval(floatval($top)*100)) : 'ZZZZZ' ) : 'AAAAA' );
+    $sorts['subject'] = ($subject !== false ? (intval($subject) ? sprintf('%1$05d', intval($subject))           : 'ZZZZZ' ) : 'AAAAA' );
+    $sorts['zeile']   = ($zeile   !== false ? (intval($zeile)   ? sprintf('%1$06d', intval($zeile))             : 'ZZZZZZ') : 'AAAAAA');
+    $sorts['vari']    = ($vari    !== false ? (intval($vari)    ? sprintf('%1$06d', intval($vari))              : 'ZZZZZZ') : 'AAAAAA');
 
     foreach ($sorts as $key => $value) {
         if (intval($value) > 0) {
