@@ -866,7 +866,7 @@ add_filter('the_title', 'cvtx_the_title', 1, 2);
 function cvtx_the_title($before='', $after='') {
     global $cvtx_types, $cvtx_mime_types;
 
-    if(is_numeric($after)) $post = &get_post($after);
+    if(is_numeric($after)) $post = get_post($after);
     
     if(isset($post)) {
         $title = (!empty($post->post_title) ? $post->post_title : __('(no title)', 'cvtx'));

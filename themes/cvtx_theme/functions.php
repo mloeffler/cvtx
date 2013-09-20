@@ -72,11 +72,11 @@ if ( function_exists( 'add_image_size' ) ) {
  * the actual depth to sub-menus and adds a HTML-element for theming.
  */
 class cvtx_walker extends Walker_Nav_Menu {
-	function start_lvl(&$output, $depth) {
-		$indent = str_repeat("\t", $depth);
-		$output .= "\n$indent<ul class=\"sub-menu depth-$depth\">\n";
+  function start_lvl( &$output, $depth = 0, $args = array() ) {
+    $indent = str_repeat("\t", $depth);
+    $output .= "\n$indent<ul class=\"sub-menu depth-$depth\">\n";
 		if($depth == 0) $output .= "\n<span class=\"arrow\"></span>\n";
-	}
+  }
 }
 
 // Theme-Customization
