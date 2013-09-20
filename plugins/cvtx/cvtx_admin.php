@@ -98,7 +98,7 @@ function cvtx_reader_contents() {
     $reader_id = $post->ID;
     $post_bak = $post;
     
-    // get objects in reder term
+    // get objects in reader term
     $items = array();
     $query = new WP_Query(array('post_type' => array('cvtx_antrag',
                                                      'cvtx_aeantrag',

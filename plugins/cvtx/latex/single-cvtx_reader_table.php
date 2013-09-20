@@ -17,6 +17,7 @@
 \usepackage[right]{eurosym}
 \usepackage{hyperref}
 \usepackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm,includehead,includefoot]{geometry}
+\DeclareUnicodeCharacter{A0}{ }
 
 \sloppy
 \renewcommand\arraystretch{1.5}

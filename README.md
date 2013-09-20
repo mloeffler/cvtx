@@ -12,7 +12,8 @@ Wanna know more about *cvtx Agenda Plugin*? Check out our [website](http://cvtx-
 You can see our plugin in action:
 - [Bündnis 90/Die Grünen NRW](http://hamm2013.gruene-ldk.de/)
 - Grüne Jugend [Bundesverband](https://www.buko.gruene-jugend.de/), [Niedersachsen](http://lmv.gj-nds.de), [NRW](http://nrw.gj-lmv.de), [Hessen](http://hessen.gj-lmv.de/), [Baden-Württemberg](https://lmv.gjbw.de/), [Bayern](http://ljk.gj-bayern.de/)
-- [Federation of Young European Greens](http://fyeg.cvtx-project.org)
-- [Jeunes Écologistes](http://jeunes-ecolos.cvtx-project.org/)
+- [Federation of Young European Greens (FYEG)](http://fyeg.cvtx-project.org)
+- [Les Jeunes Écologistes](http://jeunes-ecolos.cvtx-project.org/)
+- [Freier Zusammenschluss von StudentInnenschaften (fzs)](http://fzs-mv.de)
 
 Or just go to our [demo site](http://demo.cvtx-project.org/) (of course you can also get the admin login, please send us a [message](http://cvtx-project.org/impressum/)).
