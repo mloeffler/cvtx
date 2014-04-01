@@ -812,6 +812,7 @@ function cvtx_create_pdf($post_id, $post = null) {
             // save output to latex file. success?
             if (file_put_contents($file.'.tex', $out) !== false) {
                 $cmd = $pdflatex.' -interaction=nonstopmode '
+                                .' -output-format=pdf '
                                 .' -output-directory='.escapeshellcmd($out_dir)
                                 .' '.escapeshellcmd($file).'.tex';
 
